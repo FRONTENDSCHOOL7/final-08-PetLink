@@ -1,8 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-function ProfilePage() {
+function ProfilePage({ userInfo }) {
     const [imgSrc, setImgSrc] = useState('');
     const [newIntro, setNewIntro] = useState('');
+    const [newUsername, setNewUsername] = useState('');
+    const [newAccountName, setNewAccountName] = useState('');
+
+    useEffect(() => {
+        if (userInfo) {
+            setImgSrc(userInfo.image);
+            setNewIntro(userInfo.intro);
+            setNewUsername(userInfo.username);
+            setNewAccountName(userInfo.accountname);
+        }
+    }, [userInfo]);
 
     const uploadImage = async (imageFile) => {
         const baseUrl = "https://api.mandarin.weniv.co.kr/";
@@ -17,28 +28,38 @@ function ProfilePage() {
         });
 
         const json = await res.json();
-        setImgSrc(baseUrl + json.filename);
+
+        return baseUrl + json.filename;
     };
 
-    const handleChangeImage = (e) => {
+    const handleChangeImage = async (e) => {
         const imageFile = e.target.files[0];
-        uploadImage(imageFile);
+        if (imageFile) {
+            const uploadedImageUrl = await uploadImage(imageFile);
+            setImgSrc(uploadedImageUrl);
+        }
     };
 
     const updateProfile = async () => {
         const token = localStorage.getItem('token');
-        const baseUrl = "https://api.mandarin.weniv.co.kr/user/updateProfile";
-        const form = new FormData();
-        form.append("image", imgSrc); // 이미지 파일 자체를 추가
-        form.append("intro", newIntro);
-    
+        const updateUrl = "https://api.mandarin.weniv.co.kr/user";
+        const payload = {
+            user: {
+                username: newUsername,
+                accountname: newAccountName,
+                intro: newIntro,
+                image: imgSrc
+            }
+        };
+
         try {
-            const response = await fetch(baseUrl, {
-                method: "POST",
+            const response = await fetch(updateUrl, {
+                method: "PUT",
                 headers: {
                     'Authorization': `Bearer ${token}`,
+                    'Content-type': 'application/json'
                 },
-                body: form
+                body: JSON.stringify(payload)
             });
     
             if (response.ok) {
@@ -59,7 +80,13 @@ function ProfilePage() {
             <input type="file" onChange={handleChangeImage} />
 
             <div>
-                <label>New Introduction:</label>
+                <label>Username:</label>
+                <input type="text" value={newUsername} onChange={(e) => setNewUsername(e.target.value)} />
+
+                <label>Account Name:</label>
+                <input type="text" value={newAccountName} onChange={(e) => setNewAccountName(e.target.value)} />
+
+                <label>소개글 수정:</label>
                 <textarea value={newIntro} onChange={(e) => setNewIntro(e.target.value)}></textarea>
             </div>
 
