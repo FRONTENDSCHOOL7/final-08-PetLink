@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import JoinPage from "./Components/JoinPage";
-import LoginPage from "./Components/LoginPage";
-import ProfilePage from "./Components/ProfilePage";
-import Login from "./Login";
+import JoinPage from "./Components/JoinPage/JoinPage";
+import LoginPage from "./Components/LoginPage/LoginPage_dev";
+import ProfilePage from "./Components/ProfilePage/ProfilePage";
 
 function App() {
     const [page, setPage] = useState('login');
@@ -30,7 +29,6 @@ function App() {
 
     return (
         <div>
-            <Login />
             <button type="button" onClick={getMyInfo}>내 정보 불러오기</button>
             <button type="button" onClick={() => handlePage('profile')}>Profile Page</button>
             {userInfo && JSON.stringify(userInfo)}
