@@ -62,7 +62,7 @@ export default function Login() {
         
     const handlePw = (e) => {
         setPw(e.target.value);
-        const regex = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,}$/;
+        const regex = /^.{8,}$/;
         if (regex.test(e.target.value)) {
             setPwValid(true);
         } else {

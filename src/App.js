@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import JoinPage from "./Components/JoinPage";
 import LoginPage from "./Components/LoginPage";
 import ProfilePage from "./Components/ProfilePage";
+import Login from "./Login";
 
 function App() {
-    const [page, setPage] = useState('login'); // updated state to handle multiple pages
-    const [info, setInfo] = useState("");
+    const [page, setPage] = useState('login');
+    const [userInfo, setUserInfo] = useState(null); // userInfo 상태 추가
 
     const handlePage = (newPage) => {
         setPage(newPage);
@@ -24,18 +25,19 @@ function App() {
             })
         const json = await res.json();
         console.log(json);
-        setInfo(JSON.stringify(json))
+        setUserInfo(json); // userInfo 상태를 업데이트합니다.
     }
 
     return (
         <div>
+            <Login />
             <button type="button" onClick={getMyInfo}>내 정보 불러오기</button>
             <button type="button" onClick={() => handlePage('profile')}>Profile Page</button>
-            {info}
+            {userInfo && JSON.stringify(userInfo)}
 
             {page === 'login' && <LoginPage handlePage={() => handlePage('join')} />}
             {page === 'join' && <JoinPage handlePage={() => handlePage('login')} />}
-            {page === 'profile' && <ProfilePage />} {/* Adding ProfilePage to the rendering logic */}
+            {page === 'profile' && <ProfilePage userInfo={userInfo} />} {/* userInfo prop을 전달 */}
         </div>
     );
 }
