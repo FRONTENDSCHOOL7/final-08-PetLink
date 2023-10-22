@@ -12,9 +12,9 @@ export default function CommunityPage() {
     <div className="container">
 
       {/* <!-- Header 공용 컴포넌트 추가 필요 --> */}
-      <header classNae="header">
+      <header className="header">
         <h1>커뮤니티</h1>
-        <img src={iconSearch} alt="검색" />
+        <img className="icon-search" src={iconSearch} alt="검색" />
       </header>
 
       {/* <!-- main 시작 --> */}
@@ -27,14 +27,14 @@ export default function CommunityPage() {
         </div>
 
         <div className="share-info-map">
-        <img src={iconMap} alt="위치표시" />
+        <img className="icon-map-mark" src={iconMap} alt="위치표시" />
           <p>서울시 중구</p>
-          <img src={shareInfoMap} alt="정보공유 지도" />
+          <img className="icon-share-info-map" src={shareInfoMap} alt="정보공유 지도" />
         </div>
 
         <article className="share-info-post">
           <a href="#">
-            <img src={userProfile} alt="user-profile" />
+            <img className="icon-user-profile" src={userProfile} alt="user-profile" />
             <div>
               <h2>광화문 24시 동물병원 추천!</h2>
               <p>김펫피</p>

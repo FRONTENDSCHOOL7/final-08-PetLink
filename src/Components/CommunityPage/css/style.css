@@ -1,8 +1,33 @@
-.container {
-  width: 390px;
+body, html {
+  background-color: #d4e8ff;
+  height: 100%;
+  display: flex;
+  justify-content: center; /* 가로 중앙 정렬 */
 }
 
-.icon-search{
+.container {
+  background-color: white;
+  width: 390px;
+  height: 100%;
+}
+
+.header {
+  display:flex;
+  padding: 16px 13px 12px 19px;
+  justify-content: space-between;
+  border-bottom: 1px solid #dbdbdb;
+}
+
+
+.header h1 {
+  color: #004E98;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.header .icon-search{
   width: 24px;
   height: 24px;
 } 
