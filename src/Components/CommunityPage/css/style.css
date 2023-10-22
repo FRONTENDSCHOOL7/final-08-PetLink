@@ -11,6 +11,7 @@ body, html {
   height: 100%;
 }
 
+/* header 시작 */
 .header {
   display:flex;
   padding: 16px 13px 12px 19px;
@@ -31,6 +32,28 @@ body, html {
   width: 24px;
   height: 24px;
 } 
+/* header 끝 */
+
+/* main 시작 */
+.community-category {
+  padding: 30px 13px;
+}
+
+.community-category button {
+  width: 87px;
+  height: 24px;
+  margin: 0 2px;
+  font-family: 'Nanum Gothic', sans-serif;
+  font-weight: bold;
+  background-color: #6C9BD1;
+  color: #ffffff;
+  border-radius: 30px;
+  border-style: none;
+}
+
+.community-category button:hover {
+  background-color: #004E98;
+}
 
 .icon-map-mark{
   width: 16px;

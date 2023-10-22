@@ -20,10 +20,10 @@ export default function CommunityPage() {
       {/* <!-- main 시작 --> */}
       <main>
         <div className="community-category">
-          <button>정보 공유</button>
-          <button>산책 크루</button>
-          <button>반려 돌보미</button>
-          <button>실종 신고</button>
+          <button className="info-share-btn">정보 공유</button>
+          <button className="walking-crew-btn">산책 크루</button>
+          <button className="pet-care-btn">반려 돌보미</button>
+          <button className="missing-report-btn">실종 신고</button>
         </div>
 
         <div className="share-info-map">
