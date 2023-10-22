@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import JoinPage from "./Components/JoinPage";
-import LoginPage from "./Components/LoginPage";
-import ProfilePage from "./Components/ProfilePage";
-import Login from "./Login";
+import JoinPage from "./Components/JoinPage/JoinPage.jsx";
+import LoginPage from "./Components/LoginPage/LoginPage.jsx";
+import ProfilePage from "./Components//ProfilePage/ProfilePage.jsx";
+import Login from "./Login.jsx";
 
 function App() {
     const [page, setPage] = useState('login');
