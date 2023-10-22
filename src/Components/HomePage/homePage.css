@@ -15,6 +15,7 @@ button{
     background: none;
 }
 
+/* Header */
 .home-post-wrapp{
     width: 390px;
     margin: 0 auto;
@@ -34,24 +35,23 @@ height: 24px;
 cursor: pointer;
 }
 
-.post-container{
-    padding: 20px 16px;
-}
+/* contents userInfo */
 .post-list{
+    padding: 20px 16px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
-.post-item .user-info{
+.user-info{
     display: flex;
     justify-content: space-between;
 }
-.post-item .user-info .user-profile{
+.user-info .user-profile{
     display: flex;
     gap: 12px;
 }
-.post-item .user-info .user-profile a img{
+ .user-info .user-profile a img{
     width: 42px;
     height: 42px;
     border-radius: 50%;
@@ -87,6 +87,7 @@ white-space: nowrap;
     margin-right: 16px;
 }
 
+/* contents */
 .content{
     margin: 16px 16px 16px 54px ;
 }
@@ -139,41 +140,159 @@ margin-top: 16px;
     height: 15px;
 }
 
-.post-date span{
+.post-date{
     font-size:12px ;
 }
 
+
+/* 댓글 목록 */
+/* .comment-box{
+    border-top: 1px solid #DBDBDB ;
+    padding: 20px 16px;
+} */
+
+.comment-box{
+border-top: 1px solid #dbdbdb;
+  }
+  
+  .comment-box  .user-infos {
+      display: flex;
+      align-items: center;
+    justify-content: center;
+    gap: 6px;
+    left: 48px;
+    position: absolute;
+    top: 6px;
+  }
+
+  .user-infos a img{
+    width: 36px;
+    height: 36px;
+  }
+  
+  .group .text-wrapper {
+    color: #000000;
+    font-family: "Noto Sans", Helvetica;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: normal;
+    margin-top: -1px;
+    position: relative;
+    width: fit-content;
+  }
+  
+  .group .div {
+    color: var(--x-767676);
+    font-family: "Noto Sans", Helvetica;
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: normal;
+    position: relative;
+    width: fit-content;
+  }
+  
+  .group .p {
+    color: var(--gray-1);
+    font-family: "Noto Sans", Helvetica;
+    font-size: 14px;
+    font-weight: 400;
+    left: 48px;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    top: 39px;
+    width: 310px;
+  }
+  
+  .group .ellipse {
+    height: 36px;
+    left: 0;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    width: 36px;
+  }
+  
+  .group .more-vertical {
+    height: 20px;
+    left: 338px;
+    position: absolute;
+    top: 5px;
+    width: 20px;
+  }
+  
+/* 댓글 입력 박스 */
+.input-comment{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 390px;
+    bottom: 0;
+    position: fixed;
+    padding: 12px 16px;
+    background-color: #fff;
+    border-top: 1px solid #DBDBDB ;
+    z-index: 1;
+
+}
+.input-comment .profile-img{
+    vertical-align: top;
+    width: 36px;
+    height: 36px;
+    margin-right: 18px;
+}
+
+.input-comment #commemt-input{
+    border: none;
+    outline: none;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+
+.btnDisabled {
+   color: #C4C4C4;
+  }
+.btnActive {
+ color: #004E98;
+ }
+
+
+
+
+
+
+
+
 /* 신고하기 모달 */
 .bottomsheet-complain{
-position: fixed;
-display: flex;
-flex-direction: column;
-width: 100%;
-height: 92px;
-background: #fff;
-bottom: 0;
-border-top-right-radius:10px ;
-border-top-left-radius:10px ;
-z-index: 100;
-transition: .3s ease-out;
-}
-
-.bottomsheet-complain .bar{
-    width:50px ;
-    height: 4px;
-    border-radius: 5px;
-    background-color: #DBDBDB;
-    margin: 16px auto;
-}
-.bottomsheet-complain> span{
-height: 46px;
-font-size: 14px;
-margin-left: 26px;
-margin-top:13px;
-cursor: pointer;
-}
-
-.comment{
-    width: 390px;
-
-}
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 92px;
+    background: #fff;
+    bottom: 0;
+    border-top-right-radius:10px ;
+    border-top-left-radius:10px ;
+    z-index: 100;
+    transition: .3s ease-out;
+    }
+    
+    .bottomsheet-complain .bar{
+        width:50px ;
+        height: 4px;
+        border-radius: 5px;
+        background-color: #DBDBDB;
+        margin: 16px auto;
+    }
+    .bottomsheet-complain> span{
+    height: 46px;
+    font-size: 14px;
+    margin-left: 26px;
+    margin-top:13px;
+    cursor: pointer;
+    }
+    
