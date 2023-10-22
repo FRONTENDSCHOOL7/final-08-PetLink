@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import JoinPage from "./Components/JoinPage";
-import LoginPage from "./Components/LoginPage";
-import ProfilePage from "./Components/ProfilePage";
+import JoinPage from "./Components/JoinPage/JoinPage";
+import LoginPage from "./Components/LoginPage/LoginPage";
+import ProfilePage from "./Components/ProfilePage/ProfilePage";
 import Login from "./Login";
 
 function App() {
@@ -37,7 +37,7 @@ function App() {
 
             {page === 'login' && <LoginPage handlePage={() => handlePage('join')} />}
             {page === 'join' && <JoinPage handlePage={() => handlePage('login')} />}
-            {page === 'profile' && <ProfilePage userInfo={userInfo} />} {/* userInfo prop을 전달 */}
+            {page === 'profile' && <ProfilePage userInfo={userInfo} />} userInfo prop을 전달
         </div>
     );
 }
