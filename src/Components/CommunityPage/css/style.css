@@ -89,43 +89,43 @@ body, html {
 } 
 
 /* 사용자 게시글 */
-
-/* 기본 스타일 */
 .share-info-post {
-  padding: 10px;
-  max-width: 600px;  /* 최대 넓이 설정, 필요에 따라 조정 */
-  margin: 20px auto;  /* 페이지 중앙 정렬 */
-  display: flex;  /* Flexbox 사용 */
-  align-items: center;  /* 요소를 수직 중앙으로 정렬 */
+  padding: 0 23px;
+  margin-bottom: 20px;
 }
 
 .share-info-post a {
-  display: flex;  /* Flexbox 사용 */
-  align-items: center;  /* 요소를 수직 중앙으로 정렬 */
-  text-decoration: none;  /* 링크 밑줄 제거 */
-  color: inherit;  /* 글자색 상속 */
-  width: 100%;  /* 전체 넓이 사용 */
-}
-
-/* 사용자 프로필 아이콘 */
-.icon-user-profile {
-  border-radius: 50%;  /* 원형으로 만들기 */
-  margin-right: 20px;  /* 아이콘과 텍스트 사이의 간격 */
-  width: 40px;  /* 아이콘 넓이 */
-  height: 40px;  /* 아이콘 높이 */
-}
-
-/* 제목 스타일 */
-.share-info-post h2 {
-  margin-bottom: 10px;  /* 제목과 작성자 사이의 간격 */
-  font-weight: bold;  /* 굵게 */
-  font-size: 14px;  /* 글자 크기 */
-}
-
-/* 김펫피, 좋아요, 댓글 텍스트 스타일 */
-.share-info-post .post-sub-txt {
   display: flex;
-  margin-bottom: 5px;  /* 각 텍스트 사이의 간격 */
-  font-size: 12px;  /* 글자 크기 */
+  align-items: center; 
+  width: 100%;
+  color: inherit;  
+  width: 100%;  
+}
+
+.icon-user-profile {
+  margin-right: 12px;  
+  width: 42px; 
+  height: 42px; 
+}
+
+.post-title {
+  width: 100%;
+}
+
+.post-title h2 {
+  margin-bottom: 10px; 
+  font-weight: bold;  
+  font-size: 14px;  
+}
+
+.post-sub-txt {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;  
   color: #767676;
+}
+
+.post-reaction{
+  display: flex;
+  gap:10px;
 }

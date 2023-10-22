@@ -5,6 +5,8 @@ import iconSearch from '../../assets/images/icon-search.png'
 import iconMap from '../../assets/images/icon-map.png'
 import shareInfoMap from '../../assets/images/img-share-info-map.png';
 import userProfile from '../../assets/images/icon-basic-profile.png';
+import userProfile2 from '../../assets/images/icon-test-user-profile.png';
+import userProfile3 from '../../assets/images/icon-test-user-profile2.png';
 
 
 export default function CommunityPage() {
@@ -37,15 +39,49 @@ export default function CommunityPage() {
         <article className="share-info-post">
           <a href="#">
             <img className="icon-user-profile" src={userProfile} alt="user-profile" />
-            <div>
+            <div className='post-title'>
               <h2>광화문 24시 동물병원 추천!</h2>
                 <div className="post-sub-txt">
-                <p>김펫피</p>
-                <p>좋아요 0 댓글 0</p>
+                  <p>김펫피</p>
+                  <div className='post-reaction'>
+                    <p>좋아요 0</p>
+                    <p>댓글 0</p>
+                  </div>
                 </div>
             </div>
           </a>
         </article>
+        <article className="share-info-post">
+          <a href="#">
+            <img className="icon-user-profile" src={userProfile2} alt="user-profile" />
+            <div className='post-title'>
+              <h2>종각역 애견카페 추천드려요~</h2>
+                <div className="post-sub-txt">
+                  <p>패션피플</p>
+                  <div className='post-reaction'>
+                    <p>좋아요 0</p>
+                    <p>댓글 0</p>
+                  </div>
+                </div>
+            </div>
+          </a>
+        </article>
+        <article className="share-info-post">
+          <a href="#">
+            <img className="icon-user-profile" src={userProfile3} alt="user-profile" />
+            <div className='post-title'>
+              <h2>시청역 강아지 동반 음식점</h2>
+                <div className="post-sub-txt">
+                  <p>시츄사랑</p>
+                  <div className='post-reaction'>
+                    <p>좋아요 0</p>
+                    <p>댓글 0</p>
+                  </div>
+                </div>
+            </div>
+          </a>
+        </article>
+        
       </main>
       {/* <!-- main 끝 --> */}
 
