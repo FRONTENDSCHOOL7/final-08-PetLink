@@ -1,3 +1,23 @@
-body {
-    background-color: pink;
+.container {
+  width: 390px;
 }
+
+.icon-search{
+  width: 24px;
+  height: 24px;
+} 
+
+.icon-map-mark{
+  width: 16px;
+  height: 20px;
+} 
+
+.icon-share-info-map{
+  width: 349px;
+  height: 258px;
+} 
+
+.icon-user-profile{
+  width: 42px;
+  height: 42px;
+} 
