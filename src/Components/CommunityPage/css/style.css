@@ -28,13 +28,15 @@ body, html {
   line-height: normal;
 }
 
-.header .icon-search{
+.icon-search{
   width: 24px;
   height: 24px;
 } 
 /* header 끝 */
 
+
 /* main 시작 */
+/* 커뮤니티 카테고리 */
 .community-category {
   padding: 30px 13px;
 }
@@ -51,38 +53,79 @@ body, html {
   border-style: none;
 }
 
+.community-category .info-share-btn {
+  background-color: #004E98;
+}
+
 .community-category button:hover {
   background-color: #004E98;
 }
 
+/* 사용자 위치 및 지도 */
 .share-info-map {
-  margin: 0 21px;
+  margin: 0 21px 28px;
 }
 
-.share-info-map .my-location {
+.my-location {
   display: flex;
   align-items: center;
   margin-bottom: 13px;
 }
-
-.share-info-map .my-location p {
-  font-size: 12px;
-  font-weight: bold;
-  padding-left: 7px;
-}
-
 
 .icon-map-mark{
   width: 16px;
   height: 20px;
 } 
 
+.my-location p {
+  font-size: 12px;
+  font-weight: bold;
+  padding-left: 7px;
+}
+
 .icon-share-info-map{
   width: 349px;
   height: 258px;
 } 
 
-.icon-user-profile{
-  width: 42px;
-  height: 42px;
-} 
+/* 사용자 게시글 */
+
+/* 기본 스타일 */
+.share-info-post {
+  padding: 10px;
+  max-width: 600px;  /* 최대 넓이 설정, 필요에 따라 조정 */
+  margin: 20px auto;  /* 페이지 중앙 정렬 */
+  display: flex;  /* Flexbox 사용 */
+  align-items: center;  /* 요소를 수직 중앙으로 정렬 */
+}
+
+.share-info-post a {
+  display: flex;  /* Flexbox 사용 */
+  align-items: center;  /* 요소를 수직 중앙으로 정렬 */
+  text-decoration: none;  /* 링크 밑줄 제거 */
+  color: inherit;  /* 글자색 상속 */
+  width: 100%;  /* 전체 넓이 사용 */
+}
+
+/* 사용자 프로필 아이콘 */
+.icon-user-profile {
+  border-radius: 50%;  /* 원형으로 만들기 */
+  margin-right: 20px;  /* 아이콘과 텍스트 사이의 간격 */
+  width: 40px;  /* 아이콘 넓이 */
+  height: 40px;  /* 아이콘 높이 */
+}
+
+/* 제목 스타일 */
+.share-info-post h2 {
+  margin-bottom: 10px;  /* 제목과 작성자 사이의 간격 */
+  font-weight: bold;  /* 굵게 */
+  font-size: 14px;  /* 글자 크기 */
+}
+
+/* 김펫피, 좋아요, 댓글 텍스트 스타일 */
+.share-info-post .post-sub-txt {
+  display: flex;
+  margin-bottom: 5px;  /* 각 텍스트 사이의 간격 */
+  font-size: 12px;  /* 글자 크기 */
+  color: #767676;
+}

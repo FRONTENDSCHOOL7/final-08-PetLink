@@ -39,9 +39,10 @@ export default function CommunityPage() {
             <img className="icon-user-profile" src={userProfile} alt="user-profile" />
             <div>
               <h2>광화문 24시 동물병원 추천!</h2>
-              <p>김펫피</p>
-              <p>좋아요 0</p>
-              <p>댓글 0</p>
+                <div className="post-sub-txt">
+                <p>김펫피</p>
+                <p>좋아요 0 댓글 0</p>
+                </div>
             </div>
           </a>
         </article>
