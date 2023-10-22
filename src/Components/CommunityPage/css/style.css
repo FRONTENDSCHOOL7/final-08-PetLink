@@ -55,6 +55,23 @@ body, html {
   background-color: #004E98;
 }
 
+.share-info-map {
+  margin: 0 21px;
+}
+
+.share-info-map .my-location {
+  display: flex;
+  align-items: center;
+  margin-bottom: 13px;
+}
+
+.share-info-map .my-location p {
+  font-size: 12px;
+  font-weight: bold;
+  padding-left: 7px;
+}
+
+
 .icon-map-mark{
   width: 16px;
   height: 20px;

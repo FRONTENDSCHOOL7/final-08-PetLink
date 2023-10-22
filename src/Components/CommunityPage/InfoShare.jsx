@@ -27,8 +27,10 @@ export default function CommunityPage() {
         </div>
 
         <div className="share-info-map">
-        <img className="icon-map-mark" src={iconMap} alt="위치표시" />
-          <p>서울시 중구</p>
+          <div className="my-location">
+            <img className="icon-map-mark" src={iconMap} alt="위치표시" />
+            <p>서울시 중구</p>
+          </div>
           <img className="icon-share-info-map" src={shareInfoMap} alt="정보공유 지도" />
         </div>
 
