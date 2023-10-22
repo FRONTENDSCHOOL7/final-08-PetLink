@@ -1,0 +1,179 @@
+@import url(//fonts.googleapis.com/earlyaccess/nanumgothic.css);
+
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Nanum Gothic', sans-serif;
+}
+li{
+    list-style: none;
+}
+button{
+    border: none;
+    background: none;
+}
+
+.home-post-wrapp{
+    width: 390px;
+    margin: 0 auto;
+}
+
+.home-nav-top{
+ display: flex;
+ justify-content: space-between;
+ width: 100%;
+ height: 48px;
+ padding: 13px 16px;
+ border-bottom: 1px solid #DBDBDB ;
+}
+.home-nav-top a img{
+width: 24px;
+height: 24px;
+cursor: pointer;
+}
+
+.post-container{
+    padding: 20px 16px;
+}
+.post-list{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.post-item .user-info{
+    display: flex;
+    justify-content: space-between;
+}
+.post-item .user-info .user-profile{
+    display: flex;
+    gap: 12px;
+}
+.post-item .user-info .user-profile a img{
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.icon-more{
+    width: 18px;
+    height: 18px;
+    margin-top: 4px;
+    cursor: pointer;
+}
+
+.user-detail{
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-top: 4px;
+    cursor: pointer;
+}
+.user-detail .title{
+font-size:14px ;
+font-weight: 500;
+text-overflow: ellipsis;
+overflow: hidden;
+white-space: nowrap;
+}
+.user-detail .user-id{
+    font-size:12px ;
+    font-weight: 400;
+}
+.icon-more{
+    margin-right: 16px;
+}
+
+.content{
+    margin: 16px 16px 16px 54px ;
+}
+
+.content .text{
+    font-size: 14px;
+    font-weight: 400;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    overflow: hidden;
+}
+
+.content .text-comment{
+    font-size: 14px;
+    font-weight: 400;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+}
+
+.content > img{
+border-radius: 10px;
+width: 304px;
+object-fit: cover;
+margin-top: 16px;
+}
+
+.post-icons{
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    gap: 17px;
+}
+
+.post-icons button{
+    border: none;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    margin:12px 0 16px;
+    cursor: pointer;
+}
+
+.post-icons img{
+    width: 15px;
+    height: 15px;
+}
+
+.post-date span{
+    font-size:12px ;
+}
+
+/* 신고하기 모달 */
+.bottomsheet-complain{
+position: fixed;
+display: flex;
+flex-direction: column;
+width: 100%;
+height: 92px;
+background: #fff;
+bottom: 0;
+border-top-right-radius:10px ;
+border-top-left-radius:10px ;
+z-index: 100;
+transition: .3s ease-out;
+}
+
+.bottomsheet-complain .bar{
+    width:50px ;
+    height: 4px;
+    border-radius: 5px;
+    background-color: #DBDBDB;
+    margin: 16px auto;
+}
+.bottomsheet-complain> span{
+height: 46px;
+font-size: 14px;
+margin-left: 26px;
+margin-top:13px;
+cursor: pointer;
+}
+
+.comment{
+    width: 390px;
+
+}
