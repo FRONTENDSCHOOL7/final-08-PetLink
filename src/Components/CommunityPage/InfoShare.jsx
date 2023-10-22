@@ -1,15 +1,20 @@
 import React from 'react';
 import './css/style.css';
 import './css/reset.css';
+import iconSearch from '../../assets/images/icon-search.png'
+import iconMap from '../../assets/images/icon-map.png'
+import shareInfoMap from '../../assets/images/img-share-info-map.png';
+import userProfile from '../../assets/images/icon-basic-profile.png';
+
 
 export default function CommunityPage() {
   return (
     <div className="container">
 
       {/* <!-- Header 공용 컴포넌트 추가 필요 --> */}
-      <header>
+      <header classNae="header">
         <h1>커뮤니티</h1>
-        <img src="../../assets/images/icon-search.png" alt="search-icon" />
+        <img src={iconSearch} alt="검색" />
       </header>
 
       {/* <!-- main 시작 --> */}
@@ -22,14 +27,14 @@ export default function CommunityPage() {
         </div>
 
         <div className="share-info-map">
-          <img src="../../assets/images/icon-map.png" alt="map-icon" />
+        <img src={iconMap} alt="위치표시" />
           <p>서울시 중구</p>
-          <img src="../../assets/images/img-share-info-map.png" alt="info-map" />
+          <img src={shareInfoMap} alt="정보공유 지도" />
         </div>
 
         <article className="share-info-post">
           <a href="#">
-            <img className="profile" src="../../assets/images/icon-basic-profile.png" alt="user-profile" />
+            <img src={userProfile} alt="user-profile" />
             <div>
               <h2>광화문 24시 동물병원 추천!</h2>
               <p>김펫피</p>
@@ -43,8 +48,7 @@ export default function CommunityPage() {
 
       {/* <!-- NavBar 컴포넌트 추가 필요 --> */}
       <nav>
-        {/* You can add your NavBar component here */}
-        {/* <NavBar /> */}
+
       </nav>
     </div>
   );
