@@ -2,23 +2,23 @@ import React, { useEffect } from 'react'
 import { BrowserRouter, Link, Route, Routes, useNavigate, useLocation } from 'react-router-dom'
 import logoError from '../../assets/images/marketItem1.png';
 import addBtn from '../../assets/images/icon-add.png'
-
+import { AddBtn, Item, MainContainer, NavMenu, PageTitle } from './MarketPageStyle';
 import ProductDetail from './ProductDetail';
 
 
 function Product({items}) {
   return (
-    <div>
+    <MainContainer>
       {items.map((item, index) => (
         <Link to={`/product/${index}`} key={index}>
-          <div>
+          <Item>
             <img src={logoError} alt="상품이미지"/>
             <p className='item-title'>{item.title}</p>
             <strong className='item-price'>{item.price}원</strong>
-          </div>
+          </Item>
         </Link>
       ))}
-    </div>
+    </MainContainer>
   )
 }
 function Dogs() {
@@ -92,9 +92,9 @@ function MarketContent() {
 
   return (
         <div>
-          <h1>반결장터</h1>
+          <PageTitle>반결장터</PageTitle>
           <nav>
-            <ul>
+            <NavMenu>
               <li>
                 <NavBtn to="/dogs">강아지</NavBtn>
               </li>
@@ -104,7 +104,7 @@ function MarketContent() {
               <li>
                 <NavBtn to="/others">기타</NavBtn>
               </li>
-            </ul>
+            </NavMenu>
           </nav>
           <Routes>
             <Route path="/dogs" element={<Dogs/>}/>
@@ -112,9 +112,9 @@ function MarketContent() {
             <Route path="/others" element={<Others/>}/>
             <Route path='/product/:id' element={<ProductDetail/>}/>
           </Routes>
-          <button>
+          <AddBtn>
             <img src={addBtn} alt="" />
-          </button>
+          </AddBtn>
         </div>
   )
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import SNSLoginSection from './SnsLogin';
-import styles from './MainLogin.module.css'; // CSS 모듈을 추가해주세요.
+import styles from './MainLogin.module.css';
 
 function MainLoginPage({ handlePage }) {
     return (

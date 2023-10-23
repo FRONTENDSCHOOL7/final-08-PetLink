@@ -1,0 +1,39 @@
+.splash-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #004E98;
+  z-index: 1000;
+}
+
+.splash-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.splash-logo {
+  max-width: 50%;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+/* 미디어 쿼리를 사용하여 화면 크기에 따라 스타일을 조정합니다. */
+@media (max-width: 768px) {
+  .splash-content {
+      font-size: 14px; /* 작은 화면에 대해 폰트 크기를 조절합니다. */
+  }
+}
+
+@media (min-width: 769px) {
+  .splash-content {
+      font-size: 20px; /* 큰 화면에 대해 폰트 크기를 조절합니다. */
+  }
+}
