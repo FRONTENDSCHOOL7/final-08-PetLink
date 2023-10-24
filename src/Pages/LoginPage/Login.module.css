@@ -35,6 +35,18 @@
   border-bottom: 1px solid #3498db;
 }
 
+.buttonGroup {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%; 
+}
+
+.divider {
+  align-self: flex-end;
+}
+
+
 .bottomButton {
   width: 100%;
   padding: 1em;

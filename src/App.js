@@ -5,8 +5,9 @@ import { GlobalStyle } from "./Styles/reset.style";
 function App() {
   return (
     <>
-    <GlobalStyle />
-    <Router />
+      <GlobalStyle />
+      <Router>
+      </Router>
     </>
   );
 }
