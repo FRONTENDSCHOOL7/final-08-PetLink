@@ -1,0 +1,35 @@
+.mainLoginPage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    padding: 90px;
+    box-sizing: border-box;
+}
+
+.buttonGroup {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.loginButton {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.loginButton.email:hover {
+  color: blue;
+}
+
+.loginButton.signup:hover {
+  color: red;
+}
+
+.divider {
+  padding: 0 5px;
+}
