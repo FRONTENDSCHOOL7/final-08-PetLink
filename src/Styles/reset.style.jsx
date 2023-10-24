@@ -14,6 +14,8 @@ export const GlobalStyle = createGlobalStyle`
   body {
     background-color: #e9e9e9;
     font-family: 'Nanum Gothic', sans-serif;
+    display: flex;
+    justify-content: center;
   }
 
   ol, ul {
