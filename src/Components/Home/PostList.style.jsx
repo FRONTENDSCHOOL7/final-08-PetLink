@@ -75,30 +75,6 @@ export const IconMore = styled.img`
   cursor: pointer;
 `
 
-// export const UserDetail = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   gap: 2px;
-//   margin-top: 4px;
-//   cursor: pointer;
-
-
-// `;
-
-// export const Title = styled.div`
-//   font-size: 14px;
-//   font-weight: 500;
-//   text-overflow: ellipsis;
-//   overflow: hidden;
-//   white-space: nowrap;
-// `;
-
-// export const UserId = styled.div`
-//   font-size: 12px;
-//   font-weight: 400;
-// `;
-
-
 export const PostList = styled.ul`
   padding: 20px 16px;
   display: flex;

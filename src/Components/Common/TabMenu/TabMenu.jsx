@@ -12,7 +12,7 @@ export default function TabMenu() {
   return (
 <>
     <Nav className='nav'>
-          <NavLink href='/' >
+          <NavLink href='/home' >
              <NavImg src={HomeIcon} />
              <NavText >홈</NavText>
            </NavLink>
