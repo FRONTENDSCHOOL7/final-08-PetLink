@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './SnsLogin.style.css';
+import styles from './SnsLogin.module.css';
 
 const socialLogin = (platform) => {
   switch (platform) {
