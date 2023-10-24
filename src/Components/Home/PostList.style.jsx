@@ -3,6 +3,7 @@ import styled from 'styled-components';
 // 홈 화면 스타일드 컴포넌트
 export const PostLayout = styled.div`
   width: 390px;
+  background-color: #fff;
   margin: 0 auto;
 `
 
@@ -29,6 +30,7 @@ export const HomeHeader = styled.header`
 export const UserInfo = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
 `
 
 export const UserProfile = styled.div`

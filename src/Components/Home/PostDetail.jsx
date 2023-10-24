@@ -1,17 +1,22 @@
-import React from 'react'
+import React, { useState } from 'react'
 import *as S from './PostList.style'
 import moreIcon from '../../assets/image/icon- more-vertical.png'
 import profileIcon from '../../assets/image/icon-basic-profile.png'
 import searchIcon from '../../assets/image/icon-search.png'
 import BackIcon from '../../assets/image/icon-arrow-left.png'
 import { PostContents } from './PostList'
+import { useNavigate } from 'react-router-dom'
 
 
 
 export default function PostDetail(props) {
+  const navigate = useNavigate()
+  const GotoPrev = ()=>{
+navigate(-1)
+  }
     return (
       <S.PostLayout>
-          <PostDetailHeader/>
+          <PostDetailHeader GotoPrev={GotoPrev}/>
           <PostContents />
           <CommentList/>
           <WriteComment/>
@@ -20,11 +25,11 @@ export default function PostDetail(props) {
   }
 
 
-export function PostDetailHeader(){
+export function PostDetailHeader(props){
     return(
    
         <S.HomeHeader>
-            <img src={BackIcon} alt='뒤로가기' width={22} height={22}/>
+            <button onClick={props.GotoPrev}><img src={BackIcon} alt='뒤로가기' width={22} height={22}/></button>
             <a href="#"><img src={searchIcon} aria-label='검색하기'/></a>
           </S.HomeHeader>
 
@@ -48,11 +53,15 @@ export const CommentList = () => {
   };
 
 function WriteComment(){
+  const [comment, setComment] = useState('')
+  const inputComment = (e)=>{
+    setComment(e.target.value)
+  }
     return(
       <S.InputForm>
              <div >
                 <img src={profileIcon} alt="사용자 프로필"/>
-                 <input type="text" id="commemt-input" placeholder="댓글 입력하기..."/>
+                 <input type="text" id="commemt-input" placeholder="댓글 입력하기..." onChange={inputComment}/>
              </div>
               <button type="submit"  disabled>게시</button>
       </S.InputForm>
