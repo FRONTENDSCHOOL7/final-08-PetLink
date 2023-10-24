@@ -6,6 +6,8 @@ import profileIcon from '../../assets/image/icon-basic-profile.png'
 import moreIcon from '../../assets/image/icon- more-vertical.png'
 import redHeartIcon from '../../assets/image/icon-heart-red.png'
 import commentIcon from '../../assets/image/icon-comment.png'
+import { Link } from 'react-router-dom'
+import TabMenu from '../Common/TabMenu/TabMenu'
 
 export default function PostList({handlePage}) {
 
@@ -16,11 +18,13 @@ export default function PostList({handlePage}) {
   }
   
   return (
-
-         <S.PostLayout>
-            <PostHeader/>
-            <PostContents handlePage={handlePage}/>
-         </S.PostLayout>
+      <>
+           <S.PostLayout>
+              <PostHeader/>
+              <PostContents handlePage={handlePage} likeNum={likeNum} onChangeNum={onChangeNum}/>
+           </S.PostLayout>
+              <TabMenu/>
+      </>
      
   )
 }
@@ -30,7 +34,7 @@ export default function PostList({handlePage}) {
     return(
    
         <S.HomeHeader>
-            <img src={logoTxt} alt='반결고리 로고' height={21}/>
+            <img src={logoTxt} alt='반결고리 로고' width={75}/>
             <a href="#"><img src={searchIcon} aria-label='검색하기'/></a>
           </S.HomeHeader>
   
@@ -67,12 +71,12 @@ export  function PostContents(props){
                 <S.PostIcons>
                   <button aria-label='좋아요 누르기' onClick={props.onChangeNum}>
                     <img src={redHeartIcon} alt='하트 아이콘'/>
-                    <span>1</span>
+                    <span>{props.likeNum}</span>
                   </button>
-                  <a aria-label='댓글 남기기' onClick={props.handlePage} >
+                  <Link to='/post/detail' aria-label='댓글 남기기' href='/post' >
                     <img src={commentIcon} alt='채팅 아이콘' />
                   <span>1</span>
-                  </a>
+                  </Link>
                 </S.PostIcons>
         
                 <S.PostDate>2023년 10월 21일</S.PostDate>

@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import styled  from 'styled-components'
 
 export const Nav = styled.nav`
@@ -10,7 +11,7 @@ export const Nav = styled.nav`
     display: flex;
 `
 
-export const NavLink = styled.a`
+export const NavLink = styled(Link)`
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -26,7 +27,7 @@ export const NavLink = styled.a`
 
     &:hover{
         background-color: #004E98;
-    cursor: pointer;
+        cursor: pointer;
     }
 
 `
@@ -38,5 +39,5 @@ color: #fff;
 
 export const NavImg = styled.img`
  width:24px ;
-    height: 24px;
+ height: 24px;
 `

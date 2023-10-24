@@ -14,7 +14,7 @@ export default function PostDetail(props) {
           <PostDetailHeader/>
           <PostContents />
           <CommentList/>
-          {/* <WriteComment/> */}
+          <WriteComment/>
       </S.PostLayout>
     )
   }
@@ -27,7 +27,7 @@ export function PostDetailHeader(){
             <img src={BackIcon} alt='뒤로가기' width={22} height={22}/>
             <a href="#"><img src={searchIcon} aria-label='검색하기'/></a>
           </S.HomeHeader>
-  
+
     )
   }
 
@@ -49,13 +49,13 @@ export const CommentList = () => {
 
 function WriteComment(){
     return(
-      <S.InputBox>
+      <S.InputForm>
              <div >
                 <img src={profileIcon} alt="사용자 프로필"/>
                  <input type="text" id="commemt-input" placeholder="댓글 입력하기..."/>
              </div>
               <button type="submit"  disabled>게시</button>
-      </S.InputBox>
+      </S.InputForm>
     )
   }
   

@@ -13,11 +13,10 @@ export const HomeHeader = styled.header`
   height: 48px;
   padding: 12px 16px;
   border-bottom: 1px solid #DBDBDB;
+  box-sizing: border-box;
 
-  img {
-    
-    object-fit: cover;
-    cursor: pointer;
+  img{
+    height: 21px;
   }
 
   a img{
@@ -25,8 +24,6 @@ export const HomeHeader = styled.header`
     height: 24px;
     cursor: pointer;
   }
-
-
 `
 
 export const UserInfo = styled.div`
@@ -42,8 +39,6 @@ export const UserProfile = styled.div`
     width: 42px;
     height: 42px;
     border-radius: 50%;
-    object-fit: cover;
-
   }
 `
 
@@ -95,10 +90,10 @@ export const Content = styled.div`
     overflow: hidden;
   }
 
-  a{
+  /* a{
     text-decoration:none;
     color:#000000;
-  }
+  } */
 
   img {
     border-radius: 10px;
@@ -171,17 +166,19 @@ img{
 
 `
 export const CommentTxt =styled.div`
- 
+overflow: auto;
+max-height: calc(100vh - 120px);
+padding-bottom:60px;
   font-size: 14px;
   margin:4px 0 15px 48px ;
   display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 4;
-    overflow: hidden
+    overflow: hidden;
 
 `
 // 댓글 입력창 컴포넌트
-export const InputBox = styled.form`
+export const InputForm = styled.form`
   border-top: 1px solid #dbdbdb;
    display: flex;
     justify-content: space-between;
