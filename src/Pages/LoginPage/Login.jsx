@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import SNSLoginSection from '../../Components/Login/SnsLogin';
 import LoginForm from '../../Components/Login/LoginForm';
 import styles from './Login.module.css';
 
 function LoginPage({ handlePage }) {
+    const navigate = useNavigate();
     const [view, setView] = useState('initial');
 
     return (
@@ -26,7 +28,7 @@ function LoginPage({ handlePage }) {
                         <div className={styles.divider}>|</div> 
                         <button 
                             className={`${styles.loginButton} ${styles.signup}`} 
-                            onClick={() => handlePage('join')}
+                            onClick={() => navigate('/join')}
                         >
                             회원가입
                         </button>
