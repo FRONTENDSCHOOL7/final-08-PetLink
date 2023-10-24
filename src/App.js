@@ -1,12 +1,14 @@
-import Community from "./Pages/CommunityPage/Community";
+import React from 'react';
+import Router from './Router/Router';
 import { GlobalStyle } from "./Styles/reset.style";
 
 function App() {
   return (
     <>
-    <GlobalStyle/>
-      <Community />
+    <GlobalStyle />
+    <Router />
     </>
   );
 }
+
 export default App;
