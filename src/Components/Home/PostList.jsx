@@ -30,7 +30,7 @@ export default function PostList({handlePage}) {
     return(
    
         <S.HomeHeader>
-            <img src={logoTxt} alt='반결고리 로고'/>
+            <img src={logoTxt} alt='반결고리 로고' height={21}/>
             <a href="#"><img src={searchIcon} aria-label='검색하기'/></a>
           </S.HomeHeader>
   
