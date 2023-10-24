@@ -1,0 +1,134 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 100vh; /* 뷰포트 높이의 100% */
+  padding: 0 20px 30px; /* 좌우 패딩 추가 */
+}
+
+/* 버튼 컨테이너에 대한 스타일 */
+.buttonContainer {
+  display: flex;
+  flex-direction: column; /* 버튼을 세로로 정렬 */
+  align-items: center; /* 버튼을 중앙에 정렬 */
+}
+
+/* 버튼 공통 스타일 */
+.customButton {
+  width: 100%; /* 기본적으로 버튼의 너비를 100%로 설정 */
+  min-width: 350px;
+  height: 50px;
+  margin: 10px 0;
+  border-radius: 25px;
+  font-size: 16px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+/* 화면 너비가 768px 이상일 때 적용되는 스타일 */
+@media (min-width: 768px) {
+  .customButton {
+      width: auto; /* PC 환경에서는 버튼의 너비를 50%로 조절 */
+      max-width: 400px; /* 버튼의 최대 너비를 400px로 제한 */
+  }
+}
+
+.kakaoConnect {
+  background: rgb(255, 255, 255) url('img/kakao.svg') no-repeat scroll 13px 0px / 28px 45px padding-box border-box;
+  border: 1px solid #F2C94C;
+}
+
+.kakaoConnect:hover {
+  border-color: #F2C94C;
+  background: #F2C94C url('img/kakao.svg') no-repeat scroll 12px 0px / 28px 45px padding-box border-box;
+  transition: all .8s ease-out;
+}
+
+.kakaoConnect span {
+  box-sizing: border-box;
+  color: #767676;
+  cursor: pointer;
+  text-align: center;
+  text-transform: uppercase;
+  transition: all .3s ease;
+}
+
+.kakaoConnect:hover span {
+  color: #FFF;
+  transition: all .3s ease;
+}
+
+.googleConnect {
+  background: rgb(255, 255, 255) url('img/google.svg') no-repeat scroll 12px 11px / 28px 28px padding-box border-box;
+  border: 1px solid #767676;
+}
+
+.googleConnect:hover {
+  border-color: rgb(220, 74, 61);
+  background: rgb(220, 74, 61) url('img/google.svg') no-repeat scroll 12px 11px / 28px 28px padding-box border-box;
+  transition: all .8s ease-out;
+}
+
+.googleConnect span {
+  box-sizing: border-box;
+  color: #767676;
+  cursor: pointer;
+  text-align: center;
+  text-transform: uppercase;
+  transition: all .3s ease;
+}
+
+.googleConnect:hover span {
+  color: #FFF;
+  transition: all .3s ease;
+}
+
+.facebookConnect {
+  background: rgb(255, 255, 255) url('img/facebook.svg') no-repeat scroll 5px 0px / 30px 50px padding-box border-box;
+  border: 1px solid #2D9CDB;
+}
+
+.facebookConnect:hover {
+  border-color: #2D9CDB;
+  background: #2D9CDB url('img/facebook.svg') no-repeat scroll 5px 0px / 30px 50px padding-box border-box;
+  transition: all .8s ease-out;
+}
+
+.facebookConnect span {
+  box-sizing: border-box;
+  color: #767676;
+  cursor: pointer;
+  text-align: center;
+  text-transform: uppercase;
+  transition: all .3s ease;
+}
+
+.facebookConnect:hover span {
+  color: #FFF;
+  transition: all .3s ease;
+}
+
+.naverConnect {
+  background: rgb(255, 255, 255) url('img/naver.svg') no-repeat scroll 12px 10px / 28px 28px padding-box border-box;
+  border: 1px solid #00BF18;
+}
+
+.naverConnect:hover {
+  border-color: #00BF18;
+  background: #00BF18 url('img/naver.svg') no-repeat scroll 12px 10px / 28px 28px padding-box border-box;
+  transition: all .8s ease-out;
+}
+
+.naverConnect span {
+  box-sizing: border-box;
+  color: #767676;
+  cursor: pointer;
+  text-align: center;
+  text-transform: uppercase;
+  transition: all .3s ease;
+}
+
+.naverConnect:hover span {
+  color: #FFF;
+  transition: all .3s ease;
+}
