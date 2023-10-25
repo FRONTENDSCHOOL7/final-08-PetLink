@@ -5,7 +5,6 @@ export const Container = styled.div`
   width: 100%;
   max-width: 390px;
   margin: 0 auto;
-  box-sizing: border-box;
   background-color: white;
   position: relative;
 `;
