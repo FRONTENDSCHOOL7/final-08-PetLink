@@ -59,27 +59,31 @@ export default function PostList({handlePage}) {
 // }, [url]);
 
 
-// async function PostFeedReq(){
-//   const url = 'https://api.mandarin.weniv.co.kr/'
-//   const reqData = {
-//     "Authorization" : "Bearer {token}",
-//     "Content-type" : "application/json"
-//   }
+async function PostFeedReq(){
+  const url = 'https://api.mandarin.weniv.co.kr/'
+  const reqData = {
+    "Authorization" : "Bearer {token}",
+    "Content-type" : "application/json"
+  }
 
-//   try {
-//     const res = await fetch(url+'/post/feed/?limit=Number&skip=Number' ,{
-//       method : 'GET',
-//       headers:{
-//         "Content-type" : "application/json"
-//     },
-//       body: JSON.stringify(reqData)
-//     })
-//     const result = await res.json()
-//     console.log(json)
-//   }catch(err){
-//     console.log(err)
-//   }
-// }
+  try {
+    const res = await fetch(url+'/post/feed/?limit=Number&skip=Number' ,{
+      method : 'GET',
+      headers:{
+        "Content-type" : "application/json"
+    },
+      body: JSON.stringify(reqData)
+    })
+    const result = await res.json()
+    console.log(json)
+  }catch(err){
+    console.log(err)
+  }
+}
+
+
+
+
   return (
       <>
            <S.PostLayout>

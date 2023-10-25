@@ -192,7 +192,7 @@ export const InputForm = styled.form`
     background-color: #fff;
     border-top: 1px solid #DBDBDB ;
     z-index: 1;
-
+ 
     img{
       vertical-align: top;
       width:36px ;
@@ -207,7 +207,11 @@ export const InputForm = styled.form`
     margin-top: 10px;
     }
 
-    button{
+    button:disabled{
       color: #C4C4C4;
     }
+
+button{
+  color: #004E98;
+}
 `
