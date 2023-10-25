@@ -8,9 +8,9 @@ export const GlobalStyle = createGlobalStyle`
     padding: 0;
   }
   
-*{
-  box-sizing: border-box;
-}
+  * {
+    box-sizing: border-box;
+  }
 
   * {
     box-sizing: border-box;
@@ -20,9 +20,12 @@ export const GlobalStyle = createGlobalStyle`
     background-color: #e9e9e9;
     font-family: 'Nanum Gothic', sans-serif;
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     // display: flex;
     // justify-content: center;
+>>>>>>> develop
+=======
 >>>>>>> develop
   }
 

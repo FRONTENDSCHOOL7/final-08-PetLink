@@ -5,6 +5,7 @@ export const Container = styled.div`
   background-color: white;
   width: 390px;
   height: 100%;
+  margin: auto;
 `;
 
 // Header
@@ -40,14 +41,11 @@ export const CommunityCategory = styled.div`
     border-radius: 30px;
     border-style: none;
 
-    &:hover {
+    &:hover,
+    &.active {
       background-color: #004E98;
     }
   }
-`;
-
-export const InfoShareButton = styled.button`
-  background-color: #004E98;
 `;
 
 // Share Info Map
