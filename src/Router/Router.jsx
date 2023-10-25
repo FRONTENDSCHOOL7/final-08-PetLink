@@ -8,7 +8,7 @@ import ChatPage from '../Pages/ChatPage/Chat';
 import CommunityPage from '../Pages/CommunityPage/Community';
 import CommunityUpload from '../Pages/CommunityPage/CommunityUpload'
 import MarketPage from '../Pages/MarketPage/Market';
-import MarketDetail from '../Pages/MarketPage/MarketDetail';
+import ProductDetail from '../Components/Product/ProductDetail';
 import ProfilePage from '../Pages/ProfilePage/Profile';
 import FollowPage from '../Pages/FollowPage/FollowList';
 import ErrorPage from '../Pages/ErrorPage/Error404';
@@ -28,7 +28,7 @@ export default function Router() {
         <Route path="/community" element={<CommunityPage />} />
         <Route path="/community/upload" element={<CommunityUpload />} />
         <Route path="/market" element={<MarketPage />} />
-        <Route path="/market/detail" element={<MarketDetail />} />
+        <Route path="/market/detail" element={<ProductDetail />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/follow" element={<FollowPage />} />
         <Route path="*" element={<ErrorPage />} />
