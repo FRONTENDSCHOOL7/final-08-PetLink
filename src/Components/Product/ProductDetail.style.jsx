@@ -1,44 +1,16 @@
-import styled,{createGlobalStyle } from 'styled-components';
+import styled from 'styled-components';
 
-export const GlobalStyle = createGlobalStyle`
-  @import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');
-
-  body, h1, h2, h3, h4, ul, li, button, img, p, strong {
-    margin: 0;
-    padding: 0;
-  }
-
-  body {
-    background-color: #e9e9e9;
-    font-family: 'Nanum Gothic', sans-serif;
-  }
-
-  ul, li {
-    list-style: none;
-  }
-
-  button {
-    cursor: pointer;
-    font-family: inherit;
-    background: none;
-    border: 0;
-  }
-`;
-
-export const Container = styled.div`
-  width: 100%;
-  max-width: 390px;
-  margin: 0 auto;
-  box-sizing: border-box;
-  background-color: white;
-  position: relative;
-`;
+// export const Container = styled.div`
+//   width: 100%;
+//   max-width: 390px;
+//   margin: 0 auto;
+//   background-color: white;
+//   position: relative;
+// `;
 
 export const Header = styled.header`
   width: 100%;
   height: 48px;
-  /* padding: 0 16px; */
-  box-sizing: border-box;
   border-bottom: 1px solid #DBDBDB;
   display: flex;
   justify-content: space-between;
@@ -58,7 +30,6 @@ export const HeaderButton = styled.button`
 export const DetailContainer = styled.main`
   width: 100%;
   padding: 17px 34px;
-  box-sizing: border-box;
 `
 
 export const ProductImg = styled.div`
@@ -134,4 +105,12 @@ export const ProductDesc = styled.div`
     line-height: 1.5;
   }
 `
-
+export const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+`
