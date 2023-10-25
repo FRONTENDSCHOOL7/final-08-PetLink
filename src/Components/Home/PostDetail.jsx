@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import *as S from './PostList.style'
 import moreIcon from '../../assets/image/icon- more-vertical.png'
 import profileIcon from '../../assets/image/icon-basic-profile.png'
@@ -6,6 +6,7 @@ import searchIcon from '../../assets/image/icon-search.png'
 import BackIcon from '../../assets/image/icon-arrow-left.png'
 import { PostContents } from './PostList'
 import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
 
 
 
@@ -54,16 +55,62 @@ export const CommentList = () => {
 
 function WriteComment(){
   const [comment, setComment] = useState('')
-  const inputComment = (e)=>{
+
+
+  const reqUrl = "https://api.mandarin.weniv.co.kr/user/myinfo";
+  const postData = {
+    "Authorization" : "Bearer {token}"
+  }
+
+useEffect(()=>{
+  const userInfo = () =>{
+    return (
+      axios.get('reqUrl',postData).then((결과)=>{
+        console.log(결과.postData)
+      })
+      .catch(()=>{
+        console.log('22')
+      })
+    )
+      }
+}, [])
+
+  // const SendComment = async()=>{
+  //   const baseUrl = "https://api.mandarin.weniv.co.kr"
+  //   const reqPath ="/post/:post_id/comments"
+  //   const reqUrl = baseUrl+reqPath
+  //   const PostData ={
+  //     "comment":{
+  //         "content":String
+  //     }
+  // }
+  // fetch( reqUrl, {
+  //   method:"POST",
+  //   headers:{
+  //       "Authorization" : "Bearer {token}",
+  //       "Content-type" : "application/json"
+  //   },
+  //   body:JSON.stringify(PostData)
+  // })
+  // }
+
+
+
+
+  const inputComment= (e)=>{
     setComment(e.target.value)
   }
+  const submitComment= (e)=>{
+e.preventDefault()
+// SendComment()
+  }
     return(
-      <S.InputForm>
+      <S.InputForm onSubmit={submitComment}>
              <div >
                 <img src={profileIcon} alt="사용자 프로필"/>
                  <input type="text" id="commemt-input" placeholder="댓글 입력하기..." onChange={inputComment}/>
              </div>
-              <button type="submit"  disabled>게시</button>
+              <button type="submit" disabled={comment.length === 0}>게시</button>
       </S.InputForm>
     )
   }
