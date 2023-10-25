@@ -2,8 +2,8 @@ import React from 'react'
 import productImg from '../../assets/image/marketItem1.png'
 import addBtn from '../../assets/image/icon-add.png'
 import { useState } from 'react'
-import { BtnAdd, BtnAddWrap, BtnNav, Container, Item, ItemContainer, NavMenu, PageTitle, StyledLink } from './Market.style'
-import { GlobalStyle } from '../../Styles/reset.style'
+import { BtnAdd, BtnAddWrap, BtnNav, Item, ItemContainer, NavMenu, PageTitle, StyledLink } from './Market.style'
+import { GlobalStyle, Container } from '../../Styles/reset.style'
 
 export default function Market() {
   const navItems = ['강아지', '고양이', '기타']
