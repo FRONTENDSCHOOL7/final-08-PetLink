@@ -17,7 +17,6 @@ const ProfilePage = () => {
                     },
                 });
     
-                // Check if the expected data structure is received
                 if (response.data && response.data[0] && response.data[0].user) {
                     setProfileData(response.data[0].user);
                 } else {
@@ -36,7 +35,7 @@ const ProfilePage = () => {
     }
 
     if (!profileData) {
-        return <div>Loading...</div>;
+        return <div>로딩중...</div>;
     }
 
     return (
@@ -46,7 +45,6 @@ const ProfilePage = () => {
             <h2>{profileData.username} (@{profileData.accountname})</h2>
             <p>Followers: {profileData.followerCount}</p>
             <p>Following: {profileData.followingCount}</p>
-            {/* Add more profile information here as needed */}
         </div>
     );
 };

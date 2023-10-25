@@ -11,7 +11,7 @@ function SplashPage() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsVisible(false); // 상태를 false로 설정하여 스플래시 화면을 숨깁니다.
-      navigate('/home'); // 홈 페이지로 리디렉션
+      navigate('/login'); // 홈 페이지로 리디렉션
     }, 3000); // 3초 후
 
     return () => {
