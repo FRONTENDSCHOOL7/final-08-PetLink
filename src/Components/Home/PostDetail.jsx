@@ -48,23 +48,6 @@ function WriteComment(){
   const [comment, setComment] = useState('')
 
 
-  const reqUrl = "https://api.mandarin.weniv.co.kr/user/myinfo";
-  const postData = {
-    "Authorization" : "Bearer {token}"
-  }
-
-useEffect(()=>{
-  const userInfo = () =>{
-    return (
-      axios.get('reqUrl',postData).then((결과)=>{
-        console.log(결과.postData)
-      })
-      .catch(()=>{
-        console.log('22')
-      })
-    )
-      }
-}, [])
 
   // const SendComment = async()=>{
   //   const baseUrl = "https://api.mandarin.weniv.co.kr"

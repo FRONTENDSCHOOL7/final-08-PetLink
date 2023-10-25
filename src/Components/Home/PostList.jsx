@@ -8,12 +8,41 @@ import { Link, json } from 'react-router-dom'
 import TabMenu from '../Common/TabMenu/TabMenu'
 import { Container } from '../../Styles/reset.style'
 import HeaderLayouts from '../Common/Header/Header'
+import ProfilePage from '../../Pages/ProfilePage/Profile'
+import { async } from 'q'
+import axios from 'axios'
+import { userInfo } from 'os'
 
 export default function PostList({handlePage}) {
    const [likeNum, setLikeNum] = useState(0)
    const onChangeNum = ()=>{
   setLikeNum(likeNum+1)
   }
+
+// 유저 정보
+const reqUrl = "https://api.mandarin.weniv.co.kr/user/myinfo";
+const token =  localStorage.getItem('token')
+  const userData = {
+    "Authorization" : `Bearer ${token}`,
+    "Content-type" : "application/json"
+  }
+useEffect(()=>{
+  const userInfo = async () =>{
+    try{
+     const res = await axios.get('reqUrl',userData)
+     .then((result)=>{
+        console.log(result)
+      })
+    }catch(err){
+      console.log('erro입니다.')
+    }
+  
+      }
+      userInfo()
+}, [])
+
+
+
 
 // URL : https://api.mandarin.weniv.co.kr/
 //   GET /post/feed
@@ -59,27 +88,28 @@ export default function PostList({handlePage}) {
 // }, [url]);
 
 
-async function PostFeedReq(){
-  const url = 'https://api.mandarin.weniv.co.kr/'
-  const reqData = {
-    "Authorization" : "Bearer {token}",
-    "Content-type" : "application/json"
-  }
 
-  try {
-    const res = await fetch(url+'/post/feed/?limit=Number&skip=Number' ,{
-      method : 'GET',
-      headers:{
-        "Content-type" : "application/json"
-    },
-      body: JSON.stringify(reqData)
-    })
-    const result = await res.json()
-    console.log(json)
-  }catch(err){
-    console.log(err)
-  }
-}
+// async function PostFeedReq(){
+//   const url = 'https://api.mandarin.weniv.co.kr/'
+//   const reqData = {
+//     "Authorization" : "Bearer {token}",
+//     "Content-type" : "application/json"
+//   }
+
+//   try {
+//     const res = await fetch(url+'/post/feed/?limit=Number&skip=Number' ,{
+//       method : 'GET',
+//       headers:{
+//         "Content-type" : "application/json"
+//     },
+//       body: JSON.stringify(reqData)
+//     })
+//     const result = await res.json()
+//     console.log(json)
+//   }catch(err){
+//     console.log(err)
+//   }
+// }
 
 
   return (
@@ -102,7 +132,7 @@ async function PostFeedReq(){
         <a href='#'><img src={profileIcon} alt='사용자 프로필 이미지'/></a>
         <S.UserName >
             <p >애월읍에서 강아지들에게 유명한 곳</p>
-            <span> @활동명</span>
+            <span> {userInfo.accountname}</span>
         </S.UserName> 
       </S.UserProfile>
       <button ><S.IconMore src={moreIcon} alt='신고하기 모달창 불러오기'/></button>
