@@ -7,6 +7,7 @@ import JoinPage from '../Pages/JoinPage/Join';
 import ChatPage from '../Pages/ChatPage/Chat';
 import CommunityPage from '../Pages/CommunityPage/Community';
 import CommunityUpload from '../Pages/CommunityPage/CommunityUpload'
+import CommunityDetail from '../Components/Community/CommunityDetail'
 import MarketPage from '../Pages/MarketPage/Market';
 import ProductDetail from '../Components/Product/ProductDetail';
 import ProfilePage from '../Pages/ProfilePage/Profile';
@@ -27,6 +28,7 @@ export default function Router() {
         <Route path="/join" element={<JoinPage />} />
         <Route path="/community" element={<CommunityPage />} />
         <Route path="/community/upload" element={<CommunityUpload />} />
+        <Route path="/community/detail" element={<CommunityDetail />} />
         <Route path="/market" element={<MarketPage />} />
         <Route path="/market/detail" element={<ProductDetail />} />
         <Route path="/profile" element={<ProfilePage />} />
