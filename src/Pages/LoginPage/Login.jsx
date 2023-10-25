@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SNSLoginSection from "../../Components/Login/SnsLogin";
 import LoginForm from "../../Components/Login/LoginForm";
-import { ButtonGroup, LoginButton, Divider, Logo } from "./Login.styles";
+import { ButtonGroup, LoginButton, Divider, Logo } from "../../Components/Login/Login.styles";
 import logoImage from '../../assets/image/logo-petlink.png'
 import logoTxt from '../../assets/image/logo-txt.png'
 
