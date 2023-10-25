@@ -1,5 +1,13 @@
 import React from 'react';
-import styles from './SnsLogin.module.css';
+import {
+  Container,
+  ButtonContainer,
+  GoogleButton,
+  FacebookButton,
+  NaverButton,
+  KakaoButton,
+  SNSLoginWrapper,
+} from './SnsLogin.styles';
 
 const socialLogin = (platform) => {
   switch (platform) {
@@ -32,36 +40,24 @@ const socialLogin = (platform) => {
   }
 };
 
-function SNSLoginSection() {
+function SNSLoginSection({ children }) {
   return (
-      <div className={styles.container}> {/* 컨테이너 스타일 적용 */}
-          <section className={styles.buttonContainer}> {/* 버튼 컨테이너 스타일 적용 */}
-              <button
-                  onClick={() => socialLogin("google")}
-                  className={`${styles.googleConnect} ${styles.customButton}`}
-              >
-                  <span>구글 계정으로 로그인</span>
-              </button>
-              <button
-                  onClick={() => socialLogin("facebook")}
-                  className={`${styles.facebookConnect} ${styles.customButton}`}
-              >
-                  <span>페이스북 계정으로 로그인</span>
-              </button>
-              <button
-                  onClick={() => socialLogin("naver")}
-                  className={`${styles.naverConnect} ${styles.customButton}`}
-              >
-                  <span>네이버 계정으로 로그인</span>
-              </button>
-              <button
-                  onClick={() => socialLogin("kakao")}
-                  className={`${styles.kakaoConnect} ${styles.customButton}`}
-              >
-                  <span>카카오톡 계정으로 로그인</span>
-              </button>
-          </section>
-      </div>
+    <Container>
+      <SNSLoginWrapper>
+        <ButtonContainer>
+          <GoogleButton onClick={() => socialLogin("google")}>
+            구글 계정으로 로그인
+          </GoogleButton>
+          <NaverButton onClick={() => socialLogin("naver")}>
+            네이버 계정으로 로그인
+          </NaverButton>
+          <KakaoButton onClick={() => socialLogin("kakao")}>
+            카카오톡 계정으로 로그인
+          </KakaoButton>
+        </ButtonContainer>
+        {children}
+      </SNSLoginWrapper>
+    </Container>
   );
 }
 
