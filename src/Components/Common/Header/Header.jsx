@@ -4,6 +4,7 @@ import backIcon from '../../../assets/image/icon-arrow-left.png'
 import searchIcon from '../../../assets/image/icon-search.png'
 import logoTxt from '../../../assets/image/logo-color_txt.png'
 import { useNavigate } from 'react-router'
+import { Link } from 'react-router-dom'
 
 
 export default function HeaderLayouts(props){
@@ -22,14 +23,14 @@ export default function HeaderLayouts(props){
             </S.HeaderButton>
           )}
           {props.search && (
-            <S.HeaderButton>
-              <img src={searchIcon} alt="검색하기" />
-            </S.HeaderButton>
+            <Link to='/search' >
+              <S.SearchImg src={searchIcon} alt="검색하기" />
+            </Link>
           )}
             {props.searchInput && (
             <>
             <S.HeaderButton onClick={handleBack}><img src={backIcon} alt="'뒤로가기'" /></S.HeaderButton>
-            <S.SearchInput type="text" placeholder='계정 검색' />
+            <S.SearchInput type="keyword" placeholder='계정 검색' />
             </>
           )}
 

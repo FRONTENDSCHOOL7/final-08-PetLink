@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 
+
 // export const Container = styled.div`
 //   width: 100%;
 //   max-width: 390px;
@@ -29,6 +30,12 @@ export const HeaderButton = styled.button`
   }
 `
 
+export const SearchImg =styled.img`
+      width: 22px;
+      height: 22px;
+    object-fit: cover;
+
+`
 export const SearchInput = styled.input`
     padding: 6px 16px;
     width: 100%;
