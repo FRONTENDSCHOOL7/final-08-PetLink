@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { GlobalStyle } from '../../Styles/reset.style'
 import { Container, Header, BackBtn, UploadBtn, InputField, TextArea, ImageUpload, ImageUploadLabel, ImagePreviewBox } from './CommunityUpload.style';
 
@@ -9,7 +10,12 @@ import imgUploadBtn from '../../assets/image/icon-img-button.png'
 
 export default function CommunityUploadPage() {
 
+  const navigate = useNavigate();
   const [preview, setPreview] = useState(null);
+
+  const handleBackBtnClick = () => {
+    navigate('/community');
+  };
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -27,7 +33,7 @@ export default function CommunityUploadPage() {
       <GlobalStyle />
       <Container>
         <Header>
-          <BackBtn src={backBtn} alt="뒤로가기" />
+          <BackBtn src={backBtn} alt="뒤로가기" onClick={handleBackBtnClick} />
           <UploadBtn>업로드</UploadBtn>
         </Header>
 
