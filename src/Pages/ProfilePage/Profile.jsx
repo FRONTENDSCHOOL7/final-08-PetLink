@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
+import TabMenu from '../../Components/Common/TabMenu/TabMenu'
 import {
     ProfileContainer,
     ProfileImage,
     ProfileUsername,
+    ProfileAccountname,
     FollowInfo,
     FollowGroup,
     FollowCount,
     FollowLabel,
     ProfileIntro,
-    ProfileImageContainer
+    ProfileImageContainer,
+    EditProfileButton
 } from '../../Components/Profile/Profile.style';
 
 const ProfilePage = () => {
@@ -37,10 +41,7 @@ const ProfilePage = () => {
             }
         };
     
-        fetchData();
-    }, []);
-
-    const email = localStorage.getItem('userEmail');
+        fetchData();    }, []);
 
     if (error) {
         return <div>Error occurred: {error.message}</div>;
@@ -51,6 +52,7 @@ const ProfilePage = () => {
     }
 
     return (
+        <>
         <ProfileContainer>
             <FollowInfo>
                 <FollowGroup>
@@ -60,7 +62,8 @@ const ProfilePage = () => {
                 
                 <ProfileImageContainer>
                     <ProfileImage src={profileData.image} alt="Profile" />
-                    <ProfileUsername>{profileData.username} (@{profileData.accountname})</ProfileUsername>
+                    <ProfileUsername>{profileData.username} </ProfileUsername>
+                    <ProfileAccountname>@{profileData.accountname}</ProfileAccountname>
                 </ProfileImageContainer>
                 
                 <FollowGroup>
@@ -70,7 +73,13 @@ const ProfilePage = () => {
             </FollowInfo>
 
             <ProfileIntro>{profileData.intro}</ProfileIntro>
+
+            <Link to="/profile-edit">
+                <EditProfileButton>프로필 수정</EditProfileButton>
+            </Link>
         </ProfileContainer>
+        <TabMenu/>
+        </>
     );
 };
 

@@ -13,6 +13,7 @@ import FollowPage from '../Pages/FollowPage/FollowList';
 import ErrorPage from '../Pages/ErrorPage/Error404';
 import SplashPage from '../Pages/Splashpage/Splash';
 import PostDetail from '../Components/Home/PostDetail';
+import ProfileEdit from '../Components/Profile/ProfileEdit'
 
 export default function Router() {
   return (
@@ -28,6 +29,7 @@ export default function Router() {
         <Route path="/market" element={<MarketPage />} />
         <Route path="/market/detail" element={<MarketDetail />} />
         <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/profile/edit" element={<ProfileEdit />} />
         <Route path="/follow" element={<FollowPage />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>
