@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { saveToken } from '../../utils/tokenUtils';
 import styles from "./LoginFrom.module.css";
 
 function LoginForm({ handlePage }) {
@@ -41,11 +42,9 @@ function LoginForm({ handlePage }) {
       console.log("API Response:", resJson);
 
       if (res.ok) {
-        // 로그인 성공, 토큰을 로컬 스토리지에 저장하고 프로필 페이지로 이동
-        localStorage.setItem("token", resJson.user.token);
+        saveToken(resJson.user.token); // 로그인 성공 시 토큰을 저장합니다.
         navigate("/home");
       } else {
-        // 로그인 실패, 에러 메시지를 알림
         alert(resJson.message || "로그인에 실패했습니다!");
       }
     } catch (err) {

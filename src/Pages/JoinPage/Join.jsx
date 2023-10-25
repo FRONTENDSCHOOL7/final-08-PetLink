@@ -1,5 +1,4 @@
 import { useState } from "react"
-// import styles from './Join.module.css';
 import { useNavigate } from 'react-router-dom';
 import { Modal, Wrapper, FormWrapper, Logo, Input, Button } from '../../Components/Join/JoinPage.style';
 
