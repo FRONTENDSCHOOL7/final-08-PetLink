@@ -174,7 +174,7 @@ export default function CommunityPage() {
             <BtnAdd><img src={addBtn} alt="추가버튼" /></BtnAdd>
         </main>
         <nav>
-          {/* NavBar 컴포넌트 추가 필요 */}
+          {/* NavBar 컴포넌트 추가 필요 */} 
         </nav>
 
       </Container>
