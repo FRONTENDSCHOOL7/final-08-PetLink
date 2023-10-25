@@ -11,19 +11,9 @@ export const GlobalStyle = createGlobalStyle`
   box-sizing: border-box;
 }
 
-  * {
-    box-sizing: border-box;
-  }
-
-  * {
-    box-sizing: border-box;
-  }
-
   body {
     background-color: #e9e9e9;
     font-family: 'Nanum Gothic', sans-serif;
-    display: flex;
-    justify-content: center;
   }
 
   ol, ul {
