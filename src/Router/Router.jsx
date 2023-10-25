@@ -14,6 +14,7 @@ import FollowPage from '../Pages/FollowPage/FollowList';
 import ErrorPage from '../Pages/ErrorPage/Error404';
 import SplashPage from '../Pages/Splashpage/Splash';
 import PostDetail from '../Components/Home/PostDetail';
+import Search from '../Pages/HomePage/Search';
 
 export default function Router() {
   return (
@@ -22,6 +23,7 @@ export default function Router() {
         <Route path="/" element={<SplashPage />} />
         <Route path="/home" element={<HomePage />} />
         <Route path="/post/detail" element={<PostDetail />} />
+        <Route path="/search" element={<Search />} />
         <Route path="/chat" element={<ChatPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/join" element={<JoinPage />} />

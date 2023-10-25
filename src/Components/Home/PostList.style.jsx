@@ -7,6 +7,7 @@ export const PostLayout = styled.div`
   margin: 0 auto;
 `
 
+
 export const HomeHeader = styled.header`
   display: flex;
   justify-content: space-between;
@@ -14,7 +15,7 @@ export const HomeHeader = styled.header`
   height: 48px;
   padding: 12px 16px;
   border-bottom: 1px solid #DBDBDB;
-  box-sizing: border-box;
+  /* box-sizing: border-box; */
 
   img{
     height: 21px;

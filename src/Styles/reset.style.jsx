@@ -12,21 +12,9 @@ export const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
   }
 
-  * {
-    box-sizing: border-box;
-  }
-
   body {
     background-color: #e9e9e9;
     font-family: 'Nanum Gothic', sans-serif;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-    // display: flex;
-    // justify-content: center;
->>>>>>> develop
-=======
->>>>>>> develop
   }
 
   ol, ul {
@@ -44,7 +32,14 @@ export const GlobalStyle = createGlobalStyle`
     text-decoration: none;
     color: inherit;
   }
-`;
+
+  
+input {
+  border: none;
+  outline: none;
+}
+  
+`
 
 export const Container = styled.div`
   width: 100%;

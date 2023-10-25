@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import *as S from './PostList.style'
-import logoTxt from '../../assets/image/logo-color_txt.png'
-import searchIcon from '../../assets/image/icon-search.png'
 import profileIcon from '../../assets/image/icon-basic-profile.png'
 import moreIcon from '../../assets/image/icon- more-vertical.png'
 import redHeartIcon from '../../assets/image/icon-heart-red.png'
 import commentIcon from '../../assets/image/icon-comment.png'
 import { Link, json } from 'react-router-dom'
 import TabMenu from '../Common/TabMenu/TabMenu'
+import { Container } from '../../Styles/reset.style'
+import HeaderLayouts from '../Common/Header/Header'
 
 export default function PostList({handlePage}) {
    const [likeNum, setLikeNum] = useState(0)
@@ -82,31 +82,18 @@ async function PostFeedReq(){
 }
 
 
-
-
   return (
       <>
-           <S.PostLayout>
-              <PostHeader/>
+           <Container>
+              <HeaderLayouts logo search />
               <PostContents handlePage={handlePage} likeNum={likeNum} onChangeNum={onChangeNum}/>
-           </S.PostLayout>
+           </Container>
               <TabMenu/>
       </>
      
   )
 }
 
-
- export function PostHeader(){
-    return(
-   
-        <S.HomeHeader>
-            <img src={logoTxt} alt='반결고리 로고' width={75}/>
-            <a href="#"><img src={searchIcon} aria-label='검색하기'/></a>
-          </S.HomeHeader>
-  
-    )
-  }
 
   export function PostUserInfo(props){
     return(
@@ -136,7 +123,7 @@ export  function PostContents(props){
                     <img src="https://via.placeholder.com/304x228" alt="포스팅 이미지"  />
                 </a>
                 <S.PostIcons>
-                  <button aria-label='좋아요 누르기' onClick={props.onChangeNum}>
+                  <button onClick={props.onChangeNum}>
                     <img src={redHeartIcon} alt='하트 아이콘'/>
                     <span>{props.likeNum}</span>
                   </button>
