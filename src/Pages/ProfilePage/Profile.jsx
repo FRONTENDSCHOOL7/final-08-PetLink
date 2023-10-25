@@ -1,5 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import {
+    ProfileContainer,
+    ProfileImage,
+    ProfileUsername,
+    FollowInfo,
+    FollowGroup,
+    FollowCount,
+    FollowLabel,
+    ProfileIntro,
+    ProfileImageContainer
+} from '../../Components/Profile/Profile.style';
 
 const ProfilePage = () => {
     const [profileData, setProfileData] = useState(null);
@@ -8,17 +19,16 @@ const ProfilePage = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const token = localStorage.getItem('token'); // Get token directly from localStorage
-    
+                const token = localStorage.getItem('token'); 
                 const response = await axios.get('https://api.mandarin.weniv.co.kr/user/myinfo', {
                     headers: {
                         Authorization: token ? `Bearer ${token}` : null,
                         'Content-type': 'application/json',
                     },
                 });
-    
-                if (response.data && response.data[0] && response.data[0].user) {
-                    setProfileData(response.data[0].user);
+            
+                if (response.data && response.data.user) {
+                    setProfileData(response.data.user);
                 } else {
                     setError(new Error('Unexpected response format'));
                 }
@@ -28,24 +38,39 @@ const ProfilePage = () => {
         };
     
         fetchData();
-    }, []);    
+    }, []);
+
+    const email = localStorage.getItem('userEmail');
 
     if (error) {
         return <div>Error occurred: {error.message}</div>;
     }
 
     if (!profileData) {
-        return <div>로딩중...</div>;
+        return <div>Loading...</div>;
     }
 
     return (
-        <div>
-            <h1>Profile Page</h1>
-            <img src={profileData.image} alt="Profile" />
-            <h2>{profileData.username} (@{profileData.accountname})</h2>
-            <p>Followers: {profileData.followerCount}</p>
-            <p>Following: {profileData.followingCount}</p>
-        </div>
+        <ProfileContainer>
+            <FollowInfo>
+                <FollowGroup>
+                    <FollowCount>{profileData.followingCount}</FollowCount>
+                    <FollowLabel>Following</FollowLabel>
+                </FollowGroup>
+                
+                <ProfileImageContainer>
+                    <ProfileImage src={profileData.image} alt="Profile" />
+                    <ProfileUsername>{profileData.username} (@{profileData.accountname})</ProfileUsername>
+                </ProfileImageContainer>
+                
+                <FollowGroup>
+                    <FollowCount>{profileData.followerCount}</FollowCount>
+                    <FollowLabel>Followers</FollowLabel>
+                </FollowGroup>
+            </FollowInfo>
+
+            <ProfileIntro>{profileData.intro}</ProfileIntro>
+        </ProfileContainer>
     );
 };
 
