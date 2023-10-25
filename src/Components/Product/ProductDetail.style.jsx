@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 
-export const Container = styled.div`
-  width: 100%;
-  max-width: 390px;
-  margin: 0 auto;
-  background-color: white;
-  position: relative;
-`;
+// export const Container = styled.div`
+//   width: 100%;
+//   max-width: 390px;
+//   margin: 0 auto;
+//   background-color: white;
+//   position: relative;
+// `;
 
 export const Header = styled.header`
   width: 100%;

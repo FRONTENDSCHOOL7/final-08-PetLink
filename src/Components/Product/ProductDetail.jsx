@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { Container, Header, HeaderButton, DetailContainer, ProductImg, ProfileInfo, ProfileImg, ProfileContents, ProfileTxt, ChatBtn, ProfileName, ProfileId, ProductInfo, ProductDesc, Overlay} from './ProductDetail.style'
-import {GlobalStyle} from '../../Styles/reset.style'
+import { Header, HeaderButton, DetailContainer, ProductImg, ProfileInfo, ProfileImg, ProfileContents, ProfileTxt, ChatBtn, ProfileName, ProfileId, ProductInfo, ProductDesc, Overlay} from './ProductDetail.style'
+import {GlobalStyle, Container} from '../../Styles/reset.style'
 import backBtn from '../../assets/image/icon-arrow-left.png'
 import moreBtn from '../../assets/image/icon-more-vertical.png'
 import product from '../../assets/image/marketItem1.png'
