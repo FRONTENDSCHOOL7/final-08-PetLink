@@ -43,7 +43,6 @@ export default function CommunityUploadPage() {
 
 
   
-
   return (
     <>
       <GlobalStyle />
