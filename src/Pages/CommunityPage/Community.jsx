@@ -1,7 +1,10 @@
 import React from 'react';
 import { useState } from 'react'
 import { GlobalStyle } from '../../Styles/reset.style'
-import { CommunityCategory, Container, Header, IconMapMark, IconSearch, IconShareInfoMap, IconUserProfile, InfoShareButton, MyLocation, PostReaction, PostSubTxt, PostTitle, ShareInfoMap, ShareInfoPost, BtnAdd } from './Community.style';
+import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import TabMenu from '../../Components/Common/TabMenu/TabMenu';
+import { CommunityCategory, Container, Header, IconMapMark, IconSearch, IconShareInfoMap, IconUserProfile, MyLocation, PostReaction, PostSubTxt, PostTitle, ShareInfoMap, ShareInfoPost, BtnAdd } from './Community.style';
 
 import iconSearch from '../../assets/image/icon-search.png'
 import iconMap from '../../assets/image/icon-map.png'
@@ -14,7 +17,12 @@ import userProfile3 from '../../assets/image/icon-test-user-profile2.png';
 import addBtn from '../../assets/image/icon-add.png'
 
 export default function CommunityPage() {
+  const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState('정보 공유');
+
+  const handleBtnAddClick = () => {
+    navigate('/community/upload');
+  };
 
   const contentData = {
     '정보 공유': {
@@ -143,6 +151,8 @@ export default function CommunityPage() {
           
           <button className={activeCategory === '실종 신고' ? 'active' : ''}
           onClick={() => setActiveCategory('실종 신고')}>실종 신고</button>
+
+
           </CommunityCategory>
 
           <ShareInfoMap>
@@ -155,7 +165,7 @@ export default function CommunityPage() {
 
           {currentContent.posts.map((post, index) => (
             <ShareInfoPost key={index}>
-              <a href="#">
+              <Link to="/community/detail">
                 <IconUserProfile src={post.profileImage} alt="user-profile" />
                 <PostTitle>
                   <h2>{post.title}</h2>
@@ -167,17 +177,16 @@ export default function CommunityPage() {
                     </PostReaction>
                   </PostSubTxt>
                 </PostTitle>
-              </a>
+              </Link>
             </ShareInfoPost>
             
           ))}
-            <BtnAdd><img src={addBtn} alt="추가버튼" /></BtnAdd>
+            <BtnAdd onClick={handleBtnAddClick}>
+              <img src={addBtn} alt="추가버튼" />
+            </BtnAdd>
         </main>
-        <nav>
-          {/* NavBar 컴포넌트 추가 필요 */}
-        </nav>
-
       </Container>
+      <TabMenu />
     </>
   );
 }

@@ -1,15 +1,34 @@
 import React from 'react';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { GlobalStyle } from '../../Styles/reset.style'
 import { Container, Header, BackBtn, UploadBtn, InputField, TextArea, ImageUpload, ImageUploadLabel, ImagePreviewBox } from './CommunityUpload.style';
 
+import PopupModal from '../../Components/Common/Modal/PopupModal';
 import backBtn from '../../assets/image/icon-arrow-left.png'
 import imgUploadBtn from '../../assets/image/icon-img-button.png'
 
 
 export default function CommunityUploadPage() {
 
+  const navigate = useNavigate();
   const [preview, setPreview] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+
+
+  const handleBackBtnClick = () => {
+    setShowModal(true);
+  };
+
+  const handleConfirm = () => {
+    setShowModal(false);
+    navigate('/community');
+  };
+  
+  const handleCancel = () => {
+    setShowModal(false);
+  };
+  
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -22,12 +41,15 @@ export default function CommunityUploadPage() {
     }
   };
 
+
+  
+
   return (
     <>
       <GlobalStyle />
       <Container>
         <Header>
-          <BackBtn src={backBtn} alt="뒤로가기" />
+          <BackBtn src={backBtn} alt="뒤로가기" onClick={handleBackBtnClick} />
           <UploadBtn>업로드</UploadBtn>
         </Header>
 
@@ -57,7 +79,7 @@ export default function CommunityUploadPage() {
         <nav>
           {/* NavBar 컴포넌트 추가 필요 */}
         </nav>
-
+        {showModal && <PopupModal onConfirm={handleConfirm} onCancel={handleCancel} />}
       </Container>
     </>
   );
