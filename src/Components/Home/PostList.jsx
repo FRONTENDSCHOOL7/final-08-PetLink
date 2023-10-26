@@ -81,7 +81,6 @@ return [accountname, imgUrl]
     }
 
 
-
 export  function PostContents(props){
         return(
           <S.PostList> 

@@ -5,8 +5,6 @@ import moreIcon from '../../assets/image/icon- more-vertical.png'
 import profileIcon from '../../assets/image/icon-basic-profile.png'
 import { PostContents } from './PostList'
 import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
-import SearchHeader, { DetailHeader } from '../Common/Header/Header'
 import { Container } from '../../Styles/reset.style'
 import HeaderLayouts from '../Common/Header/Header'
 
@@ -20,7 +18,7 @@ navigate(-1)
     return (
       <Container>
           <HeaderLayouts back search/>
-          <PostContents />
+          <PostContents likeNum={props.likeNum} />
           <CommentList/>
           <WriteComment/>
       </Container>
