@@ -10,7 +10,7 @@ import HeaderLayouts from '../Common/Header/Header'
 
 
 
-export default function PostList() {
+export default function PostList(props) {
   
    const [likeNum, setLikeNum] = useState(0)
    const onChangeNum = ()=>{

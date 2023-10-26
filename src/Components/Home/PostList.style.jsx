@@ -43,6 +43,7 @@ export const UserProfile = styled.div`
     height: 42px;
     border-radius: 50%;
     object-fit: cover;
+    vertical-align: top;
   }
 `
 

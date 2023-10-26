@@ -18,7 +18,7 @@ navigate(-1)
     return (
       <Container>
           <HeaderLayouts back search/>
-          <PostContents likeNum={props.likeNum} />
+          <PostContents  likeNum={props.likeNum} />
           <CommentList/>
           <WriteComment/>
       </Container>
@@ -44,31 +44,6 @@ export const CommentList = () => {
 
 function WriteComment(){
   const [comment, setComment] = useState('')
-
-
-
-  // const SendComment = async()=>{
-  //   const baseUrl = "https://api.mandarin.weniv.co.kr"
-  //   const reqPath ="/post/:post_id/comments"
-  //   const reqUrl = baseUrl+reqPath
-  //   const PostData ={
-  //     "comment":{
-  //         "content":String
-  //     }
-  // }
-  // fetch( reqUrl, {
-  //   method:"POST",
-  //   headers:{
-  //       "Authorization" : "Bearer {token}",
-  //       "Content-type" : "application/json"
-  //   },
-  //   body:JSON.stringify(PostData)
-  // })
-  // }
-
-
-
-
   const inputComment= (e)=>{
     setComment(e.target.value)
   }
