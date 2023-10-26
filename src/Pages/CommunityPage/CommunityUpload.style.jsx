@@ -21,6 +21,7 @@ export const Header = styled.header`
 export const BackBtn = styled.img`
   width: 22px;
   height: 22px;
+  cursor: pointer;
 `;
 
 export const UploadBtn = styled.button`
