@@ -34,7 +34,16 @@ const ProfilePage = () => {
                 });
             
                 if (response.data && response.data.user) {
-                    setProfileData(response.data.user);
+                    const user = response.data.user;
+    
+                    // Extract the content after #intro: tag from the intro
+                    const introMatch = user.intro.match(/#intro:(.*?)(?=#|$)/);
+                    const introContent = introMatch ? introMatch[1].trim() : user.intro;
+                    
+                    setProfileData({
+                        ...user,
+                        intro: introContent
+                    });
                 } else {
                     setError(new Error('Unexpected response format'));
                 }
@@ -43,7 +52,8 @@ const ProfilePage = () => {
             }
         };
     
-        fetchData();    }, []);
+        fetchData();    
+    }, []);
 
     if (error) {
         return <div>Error occurred: {error.message}</div>;
