@@ -7,6 +7,7 @@ import product from '../../assets/image/marketItem1.png'
 import profile from '../../assets/image/icon-basic-profile.png'
 import BottomModal from '../Common/Modal/BottomModal'
 import { useNavigate } from 'react-router-dom'
+import TabMenu from '../Common/TabMenu/TabMenu'
 
 export default function MarketDetail() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -51,6 +52,7 @@ export default function MarketDetail() {
             <BottomModal/>
           </>
         )}
+        <TabMenu/>
       </Container>
     </>
   )
