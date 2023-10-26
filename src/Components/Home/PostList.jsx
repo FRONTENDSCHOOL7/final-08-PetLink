@@ -1,95 +1,28 @@
 import React, { useEffect, useState } from 'react'
 import *as S from './PostList.style'
-import logoTxt from '../../assets/image/logo-color_txt.png'
-import searchIcon from '../../assets/image/icon-search.png'
-import profileIcon from '../../assets/image/icon-basic-profile.png'
 import moreIcon from '../../assets/image/icon- more-vertical.png'
 import redHeartIcon from '../../assets/image/icon-heart-red.png'
 import commentIcon from '../../assets/image/icon-comment.png'
-import { Link, json } from 'react-router-dom'
+import { Link} from 'react-router-dom'
 import TabMenu from '../Common/TabMenu/TabMenu'
+import { Container } from '../../Styles/reset.style'
+import HeaderLayouts from '../Common/Header/Header'
 
-export default function PostList({handlePage}) {
+
+
+export default function PostList(props) {
+  
    const [likeNum, setLikeNum] = useState(0)
    const onChangeNum = ()=>{
   setLikeNum(likeNum+1)
   }
 
-// URL : https://api.mandarin.weniv.co.kr/
-//   GET /post/feed
-//   GET /post/feed/?limit=Number&skip=Number
-//   {
-//     "Authorization" : "Bearer {token}",
-//     "Content-type" : "application/json"
-//   }
-//   const url = 'https://api.mandarin.weniv.co.kr/'
-//   const reqData = {
-//     "Authorization" : "Bearer {token}",
-//     "Content-type" : "application/json"
-//   }
-//   const token = 'your_user_token'; 
-//   // const [followedUserExists, setFollowedUserExists] = useState(false);
-
-// useEffect(()=>{
-//   const fetchUserData = async () => {
-//     try {
-//       const response = await fetch(url, {
-//         method: 'GET',
-//         headers: {
-//           'Authorization': `Bearer ${token}`,
-//           'Content-type': 'application/json',
-//         },
-//         body: JSON.stringify(reqData)
-//       });
-//       if (!response.ok) {
-//         throw new Error('서버에서 데이터를 가져오는 중에 문제가 발생했습니다.');
-//       }
-
-//       const data = await response.json();
-
-//       // 팔로우한 사용자가 있는지 여부 확인
-//       // const userExists = data.posts.length > 0;
-//       // setFollowedUserExists(userExists);
-//     } catch (error) {
-//       console.error('회원 정보를 가져오는 중에 오류가 발생했습니다:', error);
-//     }
-//   };
-
-//   fetchUserData();
-// }, [url]);
-
-
-async function PostFeedReq(){
-  const url = 'https://api.mandarin.weniv.co.kr/'
-  const reqData = {
-    "Authorization" : "Bearer {token}",
-    "Content-type" : "application/json"
-  }
-
-  try {
-    const res = await fetch(url+'/post/feed/?limit=Number&skip=Number' ,{
-      method : 'GET',
-      headers:{
-        "Content-type" : "application/json"
-    },
-      body: JSON.stringify(reqData)
-    })
-    const result = await res.json()
-    console.log(json)
-  }catch(err){
-    console.log(err)
-  }
-}
-
-
-
-
-  return (
+return (
       <>
-           <S.PostLayout>
-              <PostHeader/>
-              <PostContents handlePage={handlePage} likeNum={likeNum} onChangeNum={onChangeNum}/>
-           </S.PostLayout>
+           <Container>
+              <HeaderLayouts logo search />
+              <PostContents  likeNum={likeNum} onChangeNum={onChangeNum}/>
+           </Container>
               <TabMenu/>
       </>
      
@@ -97,32 +30,55 @@ async function PostFeedReq(){
 }
 
 
- export function PostHeader(){
-    return(
-   
-        <S.HomeHeader>
-            <img src={logoTxt} alt='반결고리 로고' width={75}/>
-            <a href="#"><img src={searchIcon} aria-label='검색하기'/></a>
-          </S.HomeHeader>
-  
-    )
-  }
-
   export function PostUserInfo(props){
+    const [accountname, setAccountName] = useState('');
+    const [imgUrl, setImgUrl] = useState(null)
+  useEffect(() => {
+    // 컴포넌트가 마운트될 때 사용자의 accountname을 가져오기 위해 호출
+    fetchAccountName();
+  }, []);
+
+  const fetchAccountName = async () => {
+    try {
+      const response = await fetch('https://api.mandarin.weniv.co.kr/user/myinfo', {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`, // 토큰을 포함시키기 위해 템플릿 리터럴 사용
+        },
+      });
+      const data = await response.json();
+  //     if (data.user && data.user.accountname) {
+  //       setAccountName(data.user.accountname);
+  //     }
+  //    else if(data.user && data.image){
+  //       setImgUrl(data.image)
+  //     }
+  //   } catch (error) {
+  //     console.error('에러:', error);
+  //   }
+  // };
+  if (data.user) {
+    setAccountName(data.user.accountname || '');
+    setImgUrl(data.user.image || 'https://api.mandarin.weniv.co.kr/Ellipse.png'); // 프로필 이미지가 없으면 사용
+}
+} catch (error) {
+console.error('에러:', error);
+}
+return [accountname, imgUrl]
+};
     return(
       <S.UserInfo >
        <S.UserProfile>
-        <a href='#'><img src={profileIcon} alt='사용자 프로필 이미지'/></a>
+        <Link to='#'><img src={imgUrl} alt='사용자 프로필 이미지'/></Link>
         <S.UserName >
             <p >애월읍에서 강아지들에게 유명한 곳</p>
-            <span> @활동명</span>
+            <span>{accountname} </span>
         </S.UserName> 
       </S.UserProfile>
       <button ><S.IconMore src={moreIcon} alt='신고하기 모달창 불러오기'/></button>
     </S.UserInfo>
     )
     }
-
 
 
 export  function PostContents(props){
@@ -136,7 +92,7 @@ export  function PostContents(props){
                     <img src="https://via.placeholder.com/304x228" alt="포스팅 이미지"  />
                 </a>
                 <S.PostIcons>
-                  <button aria-label='좋아요 누르기' onClick={props.onChangeNum}>
+                  <button onClick={props.onChangeNum}>
                     <img src={redHeartIcon} alt='하트 아이콘'/>
                     <span>{props.likeNum}</span>
                   </button>
