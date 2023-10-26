@@ -17,6 +17,7 @@ import SplashPage from '../Pages/Splashpage/Splash';
 import PostDetail from '../Components/Home/PostDetail';
 import AddProduct from '../Pages/MarketPage/AddProduct';
 import ChatRoom from '../Pages/ChatPage/ChatRoom';
+import Search from '../Pages/HomePage/Search';
 
 export default function Router() {
   return (
@@ -25,6 +26,7 @@ export default function Router() {
         <Route path="/" element={<SplashPage />} />
         <Route path="/home" element={<HomePage />} />
         <Route path="/post/detail" element={<PostDetail />} />
+        <Route path="/search" element={<Search />} />
         <Route path="/chat" element={<ChatPage />} />
         <Route path="/chatroom/:id" element={<ChatRoom />} />
         <Route path="/login" element={<LoginPage />} />
