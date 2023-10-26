@@ -12,17 +12,16 @@ const slideUp = keyframes`
 `;
 
 const BottomModalContainer = styled.div`
-  position: absolute;
-  bottom: 0;
-  left: 0;
+  position: fixed;
+  bottom: 60px;
   width: 100%;
+  max-width: 390px;
   height: 92px;
   padding: 1em 2em;
   background-color: white;
   border: 1px solid #e9e9e9;
   border-radius: 10px 10px 0 0;
-  display: flex;
-  z-index: 2000;
+  z-index: 20;
 
   animation: ${slideUp} 0.2s ease-out forwards;
 `
