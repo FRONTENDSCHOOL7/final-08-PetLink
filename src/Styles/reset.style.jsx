@@ -1,4 +1,5 @@
 import {createGlobalStyle} from 'styled-components'
+import styled from 'styled-components'
 
 export const GlobalStyle = createGlobalStyle`
 
@@ -7,15 +8,17 @@ export const GlobalStyle = createGlobalStyle`
     padding: 0;
   }
   
-*{
-  box-sizing: border-box;
-}
+  * {
+    box-sizing: border-box;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
 
   body {
     background-color: #e9e9e9;
     font-family: 'Nanum Gothic', sans-serif;
-    // display: flex;
-    // justify-content: center;
   }
 
   ol, ul {
@@ -33,4 +36,11 @@ export const GlobalStyle = createGlobalStyle`
     text-decoration: none;
     color: inherit;
   }
+`;
+
+export const Container = styled.div`
+  width: 100%;
+  max-width: 390px;
+  margin: 0 auto;
+  background-color: white;
 `;

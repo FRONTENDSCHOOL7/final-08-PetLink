@@ -132,10 +132,17 @@ export default function CommunityPage() {
 
         <main>
           <CommunityCategory>
-            <InfoShareButton onClick={() => setActiveCategory('정보 공유')}>정보 공유</InfoShareButton>
-            <button className="walking-crew-btn" onClick={() => setActiveCategory('산책 크루')}>산책 크루</button>
-            <button className="pet-care-btn" onClick={() => setActiveCategory('반려 돌보미')}>반려 돌보미</button>
-            <button className="missing-report-btn" onClick={() => setActiveCategory('실종 신고')}>실종 신고</button>
+          <button className={activeCategory === '정보 공유' ? 'active' : ''} 
+          onClick={() => setActiveCategory('정보 공유')}>정보 공유</button>
+
+          <button className={activeCategory === '산책 크루' ? 'active' : ''}
+          onClick={() => setActiveCategory('산책 크루')}>산책 크루</button>
+
+          <button className={activeCategory === '반려 돌보미' ? 'active' : ''}
+          onClick={() => setActiveCategory('반려 돌보미')}>반려 돌보미</button>
+          
+          <button className={activeCategory === '실종 신고' ? 'active' : ''}
+          onClick={() => setActiveCategory('실종 신고')}>실종 신고</button>
           </CommunityCategory>
 
           <ShareInfoMap>
