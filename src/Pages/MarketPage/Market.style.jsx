@@ -1,14 +1,6 @@
 import styled,{createGlobalStyle} from 'styled-components'
 import {Link} from 'react-router-dom'
 
-// export const Container = styled.div`
-//   width: 100%;
-//   max-width: 390px;
-//   margin: 0 auto;
-//   background-color: white;
-//   position: relative;
-// `;
-
 export const PageTitle = styled.h1`
   font-size: 20px;
   color: #004E98;

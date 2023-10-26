@@ -4,6 +4,7 @@ import addBtn from '../../assets/image/icon-add.png'
 import { useState } from 'react'
 import { BtnAdd, BtnAddWrap, BtnNav, Item, ItemContainer, NavMenu, PageTitle, StyledLink } from './Market.style'
 import { GlobalStyle, Container } from '../../Styles/reset.style'
+import TabMenu from '../../Components/Common/TabMenu/TabMenu'
 
 export default function Market() {
   const navItems = ['강아지', '고양이', '기타']
@@ -57,9 +58,14 @@ export default function Market() {
                 </Item>
               </StyledLink>
             ))}
-            <BtnAdd><img src={addBtn} alt="추가버튼" /></BtnAdd>
           </ItemContainer>
+          <StyledLink to="/market/add-product">
+              <BtnAdd>
+                <img src={addBtn} alt="추가버튼" />
+              </BtnAdd>
+          </StyledLink>
         </div>
+        <TabMenu/>
       </Container>
     </>
   )
