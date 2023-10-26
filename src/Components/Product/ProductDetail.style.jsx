@@ -1,13 +1,5 @@
 import styled from 'styled-components';
 
-// export const Container = styled.div`
-//   width: 100%;
-//   max-width: 390px;
-//   margin: 0 auto;
-//   background-color: white;
-//   position: relative;
-// `;
-
 export const Header = styled.header`
   width: 100%;
   height: 48px;
@@ -112,5 +104,5 @@ export const Overlay = styled.div`
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.3);
-  z-index: 1000;
+  z-index: 10;
 `
