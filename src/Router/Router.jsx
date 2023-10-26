@@ -15,6 +15,8 @@ import FollowPage from '../Pages/FollowPage/FollowList';
 import ErrorPage from '../Pages/ErrorPage/Error404';
 import SplashPage from '../Pages/Splashpage/Splash';
 import PostDetail from '../Components/Home/PostDetail';
+import AddProduct from '../Pages/MarketPage/AddProduct';
+import ChatRoom from '../Pages/ChatPage/ChatRoom';
 
 export default function Router() {
   return (
@@ -24,6 +26,7 @@ export default function Router() {
         <Route path="/home" element={<HomePage />} />
         <Route path="/post/detail" element={<PostDetail />} />
         <Route path="/chat" element={<ChatPage />} />
+        <Route path="/chatroom/:id" element={<ChatRoom />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/join" element={<JoinPage />} />
         <Route path="/community" element={<CommunityPage />} />
@@ -31,6 +34,7 @@ export default function Router() {
         <Route path="/community/detail" element={<CommunityDetail />} />
         <Route path="/market" element={<MarketPage />} />
         <Route path="/market/detail" element={<ProductDetail />} />
+        <Route path="/market/add-product" element={<AddProduct />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/follow" element={<FollowPage />} />
         <Route path="*" element={<ErrorPage />} />
