@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import TabMenu from '../../Components/Common/TabMenu/TabMenu'
 
 function ProfileEdit() {
     const [username, setUsername] = useState('');
@@ -88,7 +87,7 @@ async function imageUpload(file) {
     return (
         <form onSubmit={handleSubmit}>
             <div>
-                <label>이미지 수정</label>
+                <label>이미지 교체</label>
                 <input
                     type="file"
                     onChange={handleImageChange}
