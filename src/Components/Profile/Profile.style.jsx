@@ -8,21 +8,24 @@ export const ProfileContainer = styled.div`
 `;
 
 export const ProfileImage = styled.img`
-    width: 150px;
-    height: 150px;
+    width: 110px;
+    height: 110px;
     border-radius: 50%;
     object-fit: cover;
     margin-bottom: 20px;
+    border: 1px solid var(--DBDBDB, #DBDBDB);
+    background: url(<path-to-image>), lightgray 50% / cover no-repeat;
+
 `;
 
 export const ProfileUsername = styled.h2`
-    margin: 10px 0;
-    font-size: 28px;
+    margin: 5px 0;
+    font-size: 20px;
 `;
 
 export const ProfileAccountname = styled.h3`
     margin: 10px 0;
-    font-size: 15px;
+    font-size: 12px;
     color: #767676;
 `;
 
@@ -41,9 +44,10 @@ export const ProfileFollow = styled.div`
 `;
 
 export const ProfileIntro = styled.p`
-    margin-top: 20px;
-    font-size: 18px;
+    margin-top: 10px;
+    font-size: 14px;
     text-align: center;
+    color : #767676;
 `;
 
 export const FollowGroup = styled.div`
@@ -80,22 +84,28 @@ export const ProfileImageContainer = styled.div`
     align-items: center;
 `;
 
-export const EditProfileButton = styled.button`
+export const BtnGrop = styled.div`
+    display: flex;
+    align-items: center;
+    margin-right: 30px;
+`
+
+export const Button = styled.button`
+    border-color: var(--dbdbdb);
+    position: relative;
+    height: 34px;
     padding: 5px 20px;
     color: #767676;
-    border: none;
+    border: 1px solid;
     border-radius: 30px;
     cursor: pointer;
     font-size: 16px;
     margin-top: 20px;
+    margin-left: 10px;
 
-        background-color: #ffffff;
-        border: 1px solid;
-        border-color: var(--dbdbdb);
-        height: 34px;
-        position: relative;
 
     &:hover {
-        background-color: #2980b9;
+        background-color: #004e98;
+        color: #ffffff;
     }
 `;
