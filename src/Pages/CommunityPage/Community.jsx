@@ -1,10 +1,10 @@
 import React from 'react';
 import { useState } from 'react'
-import { GlobalStyle } from '../../Styles/reset.style'
+import { GlobalStyle, Container } from '../../Styles/reset.style'
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import TabMenu from '../../Components/Common/TabMenu/TabMenu';
-import { CommunityCategory, Container, Header, IconMapMark, IconSearch, IconShareInfoMap, IconUserProfile, MyLocation, PostReaction, PostSubTxt, PostTitle, ShareInfoMap, ShareInfoPost, BtnAdd } from './Community.style';
+import { CommunityCategory, Header, IconMapMark, IconSearch, IconShareInfoMap, IconUserProfile, MyLocation, PostReaction, PostSubTxt, PostTitle, ShareInfoMap, ShareInfoPost, BtnAdd } from './Community.style';
 
 import iconSearch from '../../assets/image/icon-search.png'
 import iconMap from '../../assets/image/icon-map.png'
