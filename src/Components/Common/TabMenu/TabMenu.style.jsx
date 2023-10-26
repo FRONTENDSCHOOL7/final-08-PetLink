@@ -5,6 +5,9 @@ export const Nav = styled.nav`
     position: fixed;
     bottom: 0;
     width: 100%;
+    max-width: 390px; // Container의 최대 너비와 동일
+    left: 50%;
+    transform: translateX(-50%); // 중앙 정렬
     height: 60px;
     background-color:#6C9BD1 ;
     overflow-x:auto ;
