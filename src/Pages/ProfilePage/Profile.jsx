@@ -74,7 +74,7 @@ const ProfilePage = () => {
 
             <ProfileIntro>{profileData.intro}</ProfileIntro>
 
-            <Link to="/profile-edit">
+            <Link to="/profile/edit">
                 <EditProfileButton>프로필 수정</EditProfileButton>
             </Link>
         </ProfileContainer>
