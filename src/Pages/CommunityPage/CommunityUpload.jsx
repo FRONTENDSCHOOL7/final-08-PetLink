@@ -30,10 +30,6 @@ export default function CommunityUploadPage() {
   };
   
 
-  const handleBackBtnClick = () => {
-    navigate('/community');
-  };
-
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
