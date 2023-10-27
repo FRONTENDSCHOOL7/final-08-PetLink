@@ -60,7 +60,7 @@ const ProfilePage = () => {
     }
 
     if (!profileData) {
-        return <div>Loading...</div>;
+        return <div>로딩...</div>;
     }
 
     return (

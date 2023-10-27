@@ -3,7 +3,7 @@ import axios from "axios";
 import * as DropdownComponents from "./Dropdown";
 import TabMenu from "../Common/TabMenu/TabMenu";
 import { GlobalStyle, Container } from "../../Styles/reset.style";
-import { Title, ProfileImage, ProfileContainer, ImageUpbtn, ImageWrap, InputGroup, EditWrap, StyledInput, Styledlabel, Styledpetinfo, SubBtn, PetInfo } from "./Profile.style";
+import { Title, ProfileImage, ImageUpbtn, ImageWrap, InputGroup, EditWrap, StyledInput, Styledlabel, Styledpetinfo, SubBtn, PetInfo } from "./Profile.style";
 
 function convertInfoToTags(intro, pet, gender, birthdate, location) {
     return `#intro:${intro} #pet:${pet} #gender:${gender} #birthdate:${birthdate} #location:${location}`;
