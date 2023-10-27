@@ -16,7 +16,7 @@ function LoginPage({ handlePage }) {
   return (
     <>
     <GlobalStyle/>
-    <Container style={{ backgroundColor: '#6C9BD1', overflow: 'hidden' }}>
+    <Container style={{ backgroundColor: '#004E98', overflow: 'hidden' }}>
     <div>
         {view === "initial" ? (
           <Logo>
