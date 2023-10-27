@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { BtnAdd, BtnAddWrap, BtnNav, Item, ItemContainer, NavMenu, PageTitle, StyledLink } from './Market.style'
 import { GlobalStyle, Container } from '../../Styles/reset.style'
 import TabMenu from '../../Components/Common/TabMenu/TabMenu'
+import HeaderLayouts from '../../Components/Common/Header/Header'
 
 export default function Market() {
   const navItems = ['강아지', '고양이', '기타']
@@ -37,7 +38,8 @@ export default function Market() {
     <>
       <GlobalStyle/>
       <Container>
-        <PageTitle>반결장터</PageTitle>
+        {/* <PageTitle>반결장터</PageTitle> */}
+        <HeaderLayouts title="반결장터" logo={true} />
         <nav>
           <NavMenu>
             {navItems.map((navItem) => (
