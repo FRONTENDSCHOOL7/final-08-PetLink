@@ -26,7 +26,6 @@ export const locationOptions = [
     { value: "경상북도", label: "경상북도" },
     { value: "경상남도", label: "경상남도" },
     { value: "제주", label: "제주" },
-    // ... (다른 도시 옵션 추가)
 ];
 
 export function DropdownSelect({ value, onChange, options }) {
