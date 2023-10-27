@@ -20,8 +20,8 @@ export const HeaderTitle = styled.h1`
 `
 
 export const HeaderButton = styled.button`
-  width: 44px;
-  height: 44px;
+  /* width: 44px;
+  height: 44px; */
 
   img {
     width: 22px;
@@ -48,4 +48,15 @@ export const SearchInput = styled.input`
     &:focus{
         border: 1px solid #004e98 ;
     }
+`
+export const HeaderFollowButton = styled.div`
+display: flex;
+img {
+    width: 22px;
+    height: 22px;
+    object-fit: cover;
+  }
+h3{
+  margin-left:8px;
+}
 `
