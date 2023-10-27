@@ -134,7 +134,7 @@ export default function CommunityPage() {
     <>
       <GlobalStyle />
       <Container>
-      <HeaderLayouts title="커뮤니티" logo={true} />
+      <HeaderLayouts title="커뮤니티" logo={true} search />
 
         <main>
           <CommunityCategory>
