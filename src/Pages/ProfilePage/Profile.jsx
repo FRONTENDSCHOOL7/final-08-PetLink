@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { Container } from '../../Styles/reset.style'
 import TabMenu from '../../Components/Common/TabMenu/TabMenu'
 import {
-    ProfileContainer,
     ProfileImage,
     ProfileUsername,
     ProfileAccountname,
@@ -13,7 +13,9 @@ import {
     FollowLabel,
     ProfileIntro,
     ProfileImageContainer,
-    EditProfileButton
+    Button,
+    BtnGrop,
+    ProfileContainer
 } from '../../Components/Profile/Profile.style';
 
 const ProfilePage = () => {
@@ -32,7 +34,16 @@ const ProfilePage = () => {
                 });
             
                 if (response.data && response.data.user) {
-                    setProfileData(response.data.user);
+                    const user = response.data.user;
+    
+                    // Extract the content after #intro: tag from the intro
+                    const introMatch = user.intro.match(/#intro:(.*?)(?=#|$)/);
+                    const introContent = introMatch ? introMatch[1].trim() : user.intro;
+                    
+                    setProfileData({
+                        ...user,
+                        intro: introContent
+                    });
                 } else {
                     setError(new Error('Unexpected response format'));
                 }
@@ -41,7 +52,8 @@ const ProfilePage = () => {
             }
         };
     
-        fetchData();    }, []);
+        fetchData();    
+    }, []);
 
     if (error) {
         return <div>Error occurred: {error.message}</div>;
@@ -53,7 +65,8 @@ const ProfilePage = () => {
 
     return (
         <>
-        <ProfileContainer>
+        <Container>
+            <ProfileContainer>
             <FollowInfo>
                 <FollowGroup>
                     <FollowCount>{profileData.followingCount}</FollowCount>
@@ -73,11 +86,14 @@ const ProfilePage = () => {
             </FollowInfo>
 
             <ProfileIntro>{profileData.intro}</ProfileIntro>
-
-            <Link to="/profile/edit">
-                <EditProfileButton>프로필 수정</EditProfileButton>
-            </Link>
+            <BtnGrop>
+                <Link to="/profile/edit">
+                    <Button>프로필 수정</Button>
+                </Link>
+                    <Button>상품 등록</Button>
+            </BtnGrop>
         </ProfileContainer>
+        </Container>
         <TabMenu/>
         </>
     );
