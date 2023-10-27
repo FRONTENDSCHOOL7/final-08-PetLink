@@ -30,17 +30,19 @@ navigate(-1)
 
 export const CommentList = () => {
     return (
-      <S.CommentBox>
-        <S.UserInfo>
-     <div>
-            <a href='#'><img src={profileIcon} alt='사용자 프로필 이미지' /></a>
-              <p>서귀포시 무슨 농장 <span>· 5분 전</span></p>
-              
-     </div>
-        <button ><img src={moreIcon} alt='신고하기 모달창 불러오기'/></button>
-        </S.UserInfo>
-        <S.CommentTxt>게시글 답글 ~~ !! 최고최고</S.CommentTxt>
-      </S.CommentBox>
+   <Container>
+        <S.CommentBox>
+          <S.UserInfo>
+       <div>
+              <a href='#'><img src={profileIcon} alt='사용자 프로필 이미지' /></a>
+                <p>서귀포시 무슨 농장 <span>· 5분 전</span></p>
+                
+       </div>
+          <button ><img src={moreIcon} alt='신고하기 모달창 불러오기'/></button>
+          </S.UserInfo>
+          <S.CommentTxt>게시글 답글 ~~ !! 최고최고</S.CommentTxt>
+        </S.CommentBox>
+   </Container>
     );
   };
 
