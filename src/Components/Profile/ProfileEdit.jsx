@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import * as DropdownComponents from "./Dropdown";
 import TabMenu from "../Common/TabMenu/TabMenu";
-import { Container } from "../../Styles/reset.style";
-import { Title, ProfileImage, ProfileContainer, ImageUpbtn, ImageWrap, InputGroup, EditWrap, StyledInput, Styledlabel, Styledpetinfo, SubBtn } from "./Profile.style";
+import { GlobalStyle, Container } from "../../Styles/reset.style";
+import { Title, ProfileImage, ImageUpbtn, ImageWrap, InputGroup, EditWrap, StyledInput, Styledlabel, Styledpetinfo, SubBtn, PetInfo } from "./Profile.style";
 
 function convertInfoToTags(intro, pet, gender, birthdate, location) {
     return `#intro:${intro} #pet:${pet} #gender:${gender} #birthdate:${birthdate} #location:${location}`;
@@ -159,83 +159,89 @@ function ProfileEdit() {
     }
 
     return (
-        <Container>
+    <>
+    <GlobalStyle/>
+    <Container>
         <Title>프로필 수정</Title>
+        {/* <HeaderLayouts title="반결장터" logo={true} /> */}
             <form onSubmit={handleSubmit}>
-            <ImageWrap>
-                {previewImage ? (
-                <ProfileImage src={previewImage} alt="Profile Preview" />
-                ) : (
-                <ProfileImage src={image} alt="Profile" />
-                )}
-                <ImageUpbtn uploaded={!!previewImage}>
-                <input type="file" onChange={handleImageChange} />
-                </ImageUpbtn>
-            </ImageWrap>
-            <EditWrap>
-            <InputGroup>
-                <Styledlabel>활동명*</Styledlabel>
-                <StyledInput
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                required
-                />
-            </InputGroup>
-            <InputGroup>
-                <Styledlabel>계정 ID*</Styledlabel>
-                <StyledInput
-                type="text"
-                value={accountname}
-                onChange={(e) => setAccountname(e.target.value)}
-                required
-                />
-            </InputGroup>
-            <InputGroup>
-                <Styledlabel>상태메시지</Styledlabel>
-                <StyledInput
-                value={intro}
-                onChange={(e) => setIntro(e.target.value)}
-                />
-            </InputGroup>
-            <Styledpetinfo>반려동물 정보등록</Styledpetinfo>
-            <div>
-                <label>반려동물</label>
-                <DropdownComponents.DropdownSelect
-                value={pet}
-                onChange={(e) => setPet(e.target.value)}
-                options={DropdownComponents.petOptions}
-                />
-            </div>
-            <div>
-                <label>성별</label>
-                <DropdownComponents.DropdownSelect
-                value={gender}
-                onChange={(e) => setGender(e.target.value)}
-                options={DropdownComponents.genderOptions}
-                />
-            </div>
-            <div>
-                <label>생일</label>
-                <input
-                type="date"
-                value={birthdate}
-                onChange={(e) => setBirthdate(e.target.value)}
-                />
-            </div>
-            <div>
-                <label>위치</label>
-                <DropdownComponents.DropdownSelect
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-                options={DropdownComponents.locationOptions}
-                />
-            </div>
-            <SubBtn type="submit">프로필 수정</SubBtn>
-        </EditWrap>
-        </form>
+                <ImageWrap>
+                    {previewImage ? (
+                    <ProfileImage src={previewImage} alt="Profile Preview" />
+                    ) : (
+                    <ProfileImage src={image} alt="Profile" />
+                    )}
+                    <ImageUpbtn uploaded={!!previewImage}>
+                    <input type="file" onChange={handleImageChange} />
+                    </ImageUpbtn>
+                </ImageWrap>
+                <EditWrap>
+                <InputGroup>
+                    <Styledlabel>활동명*</Styledlabel>
+                    <StyledInput
+                    type="text"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    required
+                    />
+                </InputGroup>
+                <InputGroup>
+                    <Styledlabel>계정 ID*</Styledlabel>
+                    <StyledInput
+                    type="text"
+                    value={accountname}
+                    onChange={(e) => setAccountname(e.target.value)}
+                    required
+                    />
+                </InputGroup>
+                <InputGroup>
+                    <Styledlabel>상태메시지</Styledlabel>
+                    <StyledInput
+                    value={intro}
+                    onChange={(e) => setIntro(e.target.value)}
+                    />
+                </InputGroup>
+                <PetInfo>
+                    <Styledpetinfo>반려동물 정보등록</Styledpetinfo>
+                    <div>
+                        <label>반려동물</label>
+                        <DropdownComponents.DropdownSelect
+                        value={pet}
+                        onChange={(e) => setPet(e.target.value)}
+                        options={DropdownComponents.petOptions}
+                        />
+                    </div>
+                    <div>
+                        <label>성별</label>
+                        <DropdownComponents.DropdownSelect
+                        value={gender}
+                        onChange={(e) => setGender(e.target.value)}
+                        options={DropdownComponents.genderOptions}
+                        />
+                    </div>
+                    <div>
+                        <label>생일</label>
+                        <input
+                        type="date"
+                        value={birthdate}
+                        onChange={(e) => setBirthdate(e.target.value)}
+                        />
+                    </div>
+                    <div>
+                        <label>위치</label>
+                        <DropdownComponents.DropdownSelect
+                        value={location}
+                        onChange={(e) => setLocation(e.target.value)}
+                        options={DropdownComponents.locationOptions}
+                        />
+                    </div>
+                </PetInfo>
+                <SubBtn type="submit">프로필 수정</SubBtn>
+            </EditWrap>
+            </form>
         <TabMenu />
-        </Container>
+    </Container>
+    </>
     );
 }
 

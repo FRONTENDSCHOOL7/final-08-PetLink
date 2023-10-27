@@ -8,5 +8,4 @@ export const ProfileImage = styled.img`
     margin-bottom: 20px;
     border: 1px solid var(--DBDBDB, #DBDBDB);
     background: url(<path-to-image>), lightgray 50% / cover no-repeat;
-
 `;
