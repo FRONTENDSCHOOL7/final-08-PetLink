@@ -1,13 +1,6 @@
 import styled from 'styled-components';
 
 
-// export const Container = styled.div`
-//   width: 100%;
-//   max-width: 390px;
-//   margin: 0 auto;
-//   background-color: white;
-// `;
-
 // 서치 스타일드 컴포넌트
 export const HeaderLayout = styled.div`
   height: 48px;
@@ -17,6 +10,13 @@ export const HeaderLayout = styled.div`
   padding: 8px 16px;
   gap: 20px;
   border-bottom: 1px solid #DBDBDB;
+`
+
+export const HeaderTitle = styled.h1`
+  color: #004E98;
+  font-size: 23px;
+  /* font-weight: 400; */
+  font-family: 'Yeongdo-Rg';
 `
 
 export const HeaderButton = styled.button`
