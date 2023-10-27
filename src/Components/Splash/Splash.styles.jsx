@@ -1,24 +1,34 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
-export const SplashScreen = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+export const bounce = keyframes`
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+`;
+
+export const SplashContainer = styled.div`
+  width: 100%;
+  max-width: 390px;
+  height: 100vh;
+  margin: 0 auto;
   background-color: #004E98;
-  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 export const SplashContent = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  text-align: center;
+  align-items: center;
+  flex-direction: column;
+  animation: ${bounce} 1s infinite;
 
   @media (max-width: 768px) {
     font-size: 14px; /* 작은 화면에 대해 폰트 크기를 조절합니다. */
@@ -29,8 +39,20 @@ export const SplashContent = styled.div`
   }
 `;
 
-export const SplashLogo = styled.img`
-  max-width: 50%;
-  height: auto;
-  margin-bottom: 20px;
+export const LogoIcon = styled.img`
+  width: 190px;
+  height: 120px;
 `;
+
+export const LogoText = styled.span`
+  margin-top: 16px;
+  font-size: 60px;
+  font-family: 'Yeongdo-Rg';
+  color: white;
+`;
+
+export const SubText = styled.span`
+  margin-top: 10px;
+  font-size: 14px;
+  color: white;
+`

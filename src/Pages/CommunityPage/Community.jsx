@@ -1,12 +1,13 @@
 import React from 'react';
 import { useState } from 'react'
-import { GlobalStyle } from '../../Styles/reset.style'
+import { GlobalStyle, Container } from '../../Styles/reset.style'
+import { CommunityCategory, IconMapMark, IconShareInfoMap, IconUserProfile, MyLocation, PostReaction, PostSubTxt, PostTitle, ShareInfoMap, ShareInfoPost, BtnAdd } from './Community.style';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import TabMenu from '../../Components/Common/TabMenu/TabMenu';
-import { CommunityCategory, Container, Header, IconMapMark, IconSearch, IconShareInfoMap, IconUserProfile, MyLocation, PostReaction, PostSubTxt, PostTitle, ShareInfoMap, ShareInfoPost, BtnAdd } from './Community.style';
+import HeaderLayouts from '../../Components/Common/Header/Header';
 
-import iconSearch from '../../assets/image/icon-search.png'
+
 import iconMap from '../../assets/image/icon-map.png'
 import shareInfoMap from '../../assets/image/img-share-info-map.png';
 import walkingCrewMap from '../../assets/image/img-walking-crew-map.png';
@@ -133,10 +134,7 @@ export default function CommunityPage() {
     <>
       <GlobalStyle />
       <Container>
-        <Header>
-          <h1>커뮤니티</h1>
-          <IconSearch src={iconSearch} alt="검색" />
-        </Header>
+      <HeaderLayouts title="커뮤니티" logo={true} search />
 
         <main>
           <CommunityCategory>
