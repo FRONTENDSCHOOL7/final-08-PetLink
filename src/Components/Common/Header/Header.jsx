@@ -2,20 +2,19 @@ import React from 'react'
 import *as S from './Header.style'
 import backIcon from '../../../assets/image/icon-arrow-left.png'
 import searchIcon from '../../../assets/image/icon-search.png'
-import logoTxt from '../../../assets/image/logo-color_txt.png'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 
 
 export default function HeaderLayouts(props){
-   const navigate = useNavigate()
-   const handleBack = ()=>{
+  const navigate = useNavigate()
+  const handleBack = ()=>{
   navigate(-1)
     }
     return(
         <S.HeaderLayout>
-         {props.logo && (
-            <img src={logoTxt} alt="반결고리 로고" width={75} height={21} />
+        {props.title && (
+            <S.HeaderTitle>{props.title}</S.HeaderTitle>
           )}
           {props.back && (
             <S.HeaderButton onClick={handleBack}>
@@ -52,7 +51,7 @@ export default function HeaderLayouts(props){
 
   // export function LogoHeader(){
   //   return(
-   
+  
   //       <S.HeaderLayout>
   //          <img src={logoTxt} alt='반결고리 로고' width={75} height={21} />
   //           <S.HeaderButton ><img src={searchIcon} aria-label='검색하기' />
