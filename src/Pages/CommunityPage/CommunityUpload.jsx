@@ -6,7 +6,6 @@ import { Container, Header, BackBtn, UploadBtn, InputField, TextArea, ImageUploa
 
 import PopupModal from '../../Components/Common/Modal/PopupModal';
 import backBtn from '../../assets/image/icon-arrow-left.png'
-import imgUploadBtn from '../../assets/image/icon-img-button.png'
 
 
 export default function CommunityUploadPage() {
@@ -15,20 +14,9 @@ export default function CommunityUploadPage() {
   const [preview, setPreview] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
-
   const handleBackBtnClick = () => {
     setShowModal(true);
   };
-
-  const handleConfirm = () => {
-    setShowModal(false);
-    navigate('/community');
-  };
-  
-  const handleCancel = () => {
-    setShowModal(false);
-  };
-  
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -49,6 +37,15 @@ export default function CommunityUploadPage() {
       <Container>
         <Header>
           <BackBtn src={backBtn} alt="뒤로가기" onClick={handleBackBtnClick} />
+          <PopupModal 
+            isVisible={showModal}
+            setIsVisible={setShowModal}
+            onConfirm={() => navigate('/community')} 
+            onCancel={() => console.log('Cancel')} 
+            alertText="작성을 취소하시겠습니까?"
+            cancelText="취소"
+            confirmText="확인"
+          />
           <UploadBtn>업로드</UploadBtn>
         </Header>
 
@@ -78,7 +75,6 @@ export default function CommunityUploadPage() {
         <nav>
           {/* NavBar 컴포넌트 추가 필요 */}
         </nav>
-        {showModal && <PopupModal onConfirm={handleConfirm} onCancel={handleCancel} />}
       </Container>
     </>
   );
