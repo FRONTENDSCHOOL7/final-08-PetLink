@@ -7,11 +7,12 @@ import { Link} from 'react-router-dom'
 import TabMenu from '../Common/TabMenu/TabMenu'
 import { Container } from '../../Styles/reset.style'
 import HeaderLayouts from '../Common/Header/Header'
+import { Overlay } from '../Product/ProductDetail.style'
+import BottomModal from '../Common/Modal/BottomModal'
 
 
 
 export default function PostList(props) {
-  
    const [likeNum, setLikeNum] = useState(0)
    const onChangeNum = ()=>{
   setLikeNum(likeNum+1)
@@ -21,7 +22,12 @@ return (
       <>
            <Container>
               <HeaderLayouts logo search />
-              <PostContents  likeNum={likeNum} onChangeNum={onChangeNum}/>
+              <S.PostList>
+                 <li>
+                 <PostUserInfo/>
+                  <PostContents  likeNum={likeNum} onChangeNum={onChangeNum} />
+                  </li>
+              </S.PostList>  
            </Container>
               <TabMenu/>
       </>
@@ -31,8 +37,10 @@ return (
 
 
   export function PostUserInfo(props){
+
     const [accountname, setAccountName] = useState('');
     const [imgUrl, setImgUrl] = useState(null)
+
   useEffect(() => {
     // 컴포넌트가 마운트될 때 사용자의 accountname을 가져오기 위해 호출
     fetchAccountName();
@@ -47,16 +55,7 @@ return (
         },
       });
       const data = await response.json();
-  //     if (data.user && data.user.accountname) {
-  //       setAccountName(data.user.accountname);
-  //     }
-  //    else if(data.user && data.image){
-  //       setImgUrl(data.image)
-  //     }
-  //   } catch (error) {
-  //     console.error('에러:', error);
-  //   }
-  // };
+
   if (data.user) {
     setAccountName(data.user.accountname || '');
     setImgUrl(data.user.image || 'https://api.mandarin.weniv.co.kr/Ellipse.png'); // 프로필 이미지가 없으면 사용
@@ -66,27 +65,33 @@ console.error('에러:', error);
 }
 return [accountname, imgUrl]
 };
+
     return(
-      <S.UserInfo >
-       <S.UserProfile>
-        <Link to='#'><img src={imgUrl} alt='사용자 프로필 이미지'/></Link>
-        <S.UserName >
-            <p >애월읍에서 강아지들에게 유명한 곳</p>
-            <span>{accountname} </span>
-        </S.UserName> 
-      </S.UserProfile>
-      <button ><S.IconMore src={moreIcon} alt='신고하기 모달창 불러오기'/></button>
-    </S.UserInfo>
+
+<>
+          <S.UserInfo >
+           <S.UserProfile>
+            <Link to='#'><img src={imgUrl} alt='사용자 프로필 이미지'/></Link>
+            <S.UserName >
+                <p >애월읍에서 강아지들에게 유명한 곳</p>
+                <span>{accountname} </span>
+            </S.UserName> 
+          </S.UserProfile>
+          <button><S.IconMore src={moreIcon} alt='신고하기 모달창 불러오기'/></button>
+        </S.UserInfo>
+</>
+
     )
     }
 
 
 export  function PostContents(props){
+  const [likeNum, setLikeNum] = useState(0)
+  const onChangeNum = ()=>{
+ setLikeNum(likeNum+1)
+ }
         return(
-          <S.PostList> 
-            <li >
-              <PostUserInfo/>
-              <S.Content> 
+       <S.Content> 
                 <a href='/post/detail'>
                     <p className='text'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore tenetur quaerat ut fugit sequi. Temporibus illo nihil facere tempora deserunt?</p>
                     <img src="https://via.placeholder.com/304x228" alt="포스팅 이미지"  />
@@ -105,9 +110,14 @@ export  function PostContents(props){
                 <S.PostDate>2023년 10월 21일</S.PostDate>
               
               </S.Content>
-          </li>
-        </S.PostList>
+     
         
         )
         }
+        
+
+
+
+
+
         

@@ -8,25 +8,25 @@ export const PostLayout = styled.div`
 `
 
 
-export const HomeHeader = styled.header`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 48px;
-  padding: 12px 16px;
-  border-bottom: 1px solid #DBDBDB;
-  /* box-sizing: border-box; */
+// export const HomeHeader = styled.header`
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+//   height: 48px;
+//   padding: 12px 16px;
+//   border-bottom: 1px solid #DBDBDB;
+//   /* box-sizing: border-box; */
 
-  img{
-    height: 21px;
-  }
+//   img{
+//     height: 21px;
+//   }
 
-  a img{
-    width: 24px;
-    height: 24px;
-    cursor: pointer;
-  }
-`
+//   a img{
+//     width: 24px;
+//     height: 24px;
+//     cursor: pointer;
+//   }
+// `
 
 export const UserInfo = styled.div`
   display: flex;
