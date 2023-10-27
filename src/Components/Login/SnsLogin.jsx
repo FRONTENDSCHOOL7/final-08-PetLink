@@ -1,9 +1,9 @@
 import React from 'react';
+import { GlobalStyle, Container } from '../../Styles/reset.style'
 import {
-  Container,
+  SNSContainer,
   ButtonContainer,
   GoogleButton,
-  FacebookButton,
   NaverButton,
   KakaoButton,
   SNSLoginWrapper,
@@ -43,6 +43,7 @@ const socialLogin = (platform) => {
 function SNSLoginSection({ children }) {
   return (
     <Container>
+      <GlobalStyle/>
       <SNSLoginWrapper>
         <ButtonContainer>
           <GoogleButton onClick={() => socialLogin("google")}>

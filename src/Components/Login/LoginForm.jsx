@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
+import { GlobalStyle, Container } from '../../Styles/reset.style'
+import { TitleWrap, SubmitButton, InputField, StyledInput, FieldLabel } from './LoginForm.style'
 import { useNavigate } from "react-router-dom";
 import { saveToken } from '../../utils/tokenUtils';
-import styles from "./LoginFrom.module.css";
 
 function LoginForm({ handlePage }) {
   const [email, setEmail] = useState("");
@@ -84,49 +85,40 @@ function LoginForm({ handlePage }) {
   };
 
   return (
-    <div className={styles.page}>
-      <div className={styles.titleWrap}>로그인</div>
-      <form onSubmit={submitLogin}>
-        <div className={styles.contentWrap}>
-          {/* Email Input */}
-          <div className={styles.inputTitle}>이메일 주소</div>
-          <div className={styles.inputWrap}>
-            <input
-              className={styles.input}
+    <>
+      <GlobalStyle />
+      <Container>
+        <TitleWrap>로그인</TitleWrap>
+        <>
+        <form onSubmit={submitLogin}>
+          
+          <InputField>
+            <FieldLabel>이메일</FieldLabel>
+            <StyledInput
               type="text"
               placeholder="이메일 입력"
               value={email}
               onChange={handleEmail}
             />
-          </div>
-
-          {/* Password Input */}
-          <div className={styles.inputTitle} style={{ marginTop: "26px" }}>
-            비밀번호
-          </div>
-          <div className={styles.inputWrap}>
-            <input
-              className={styles.input}
+          </InputField>
+          
+          <InputField>
+            <FieldLabel>비밀번호</FieldLabel>
+            <StyledInput
               type="password"
               placeholder="영문, 숫자, 특수문자 포함 8자 이상"
               value={password}
               onChange={handlePassword}
             />
-          </div>
-        </div>
-
-        {/* Submit Button */}
-        <div>
-          <button
-            type="submit"
-            disabled={notAllow}
-            className={styles.bottomButton}
-          >
+          </InputField>
+          
+          <SubmitButton type="submit" disabled={notAllow}>
             로그인
-          </button>
-        </div>
-      </form>
-    </div>
+          </SubmitButton>
+        </form>
+        </>
+      </Container>
+    </>
   );
 }
 
