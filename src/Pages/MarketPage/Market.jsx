@@ -38,8 +38,7 @@ export default function Market() {
     <>
       <GlobalStyle/>
       <Container>
-        {/* <PageTitle>반결장터</PageTitle> */}
-        <HeaderLayouts title="반결장터" logo={true} />
+        <HeaderLayouts title="반결장터" logo />
         <nav>
           <NavMenu>
             {navItems.map((navItem) => (

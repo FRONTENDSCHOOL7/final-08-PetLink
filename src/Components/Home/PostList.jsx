@@ -12,20 +12,20 @@ import HeaderLayouts from '../Common/Header/Header'
 
 export default function PostList(props) {
   
-   const [likeNum, setLikeNum] = useState(0)
-   const onChangeNum = ()=>{
+  const [likeNum, setLikeNum] = useState(0)
+  const onChangeNum = ()=>{
   setLikeNum(likeNum+1)
   }
 
 return (
       <>
-           <Container>
-              <HeaderLayouts logo search />
+          <Container>
+              <HeaderLayouts title="반결고리" search />
               <PostContents  likeNum={likeNum} onChangeNum={onChangeNum}/>
-           </Container>
+          </Container>
               <TabMenu/>
       </>
-     
+    
   )
 }
 
@@ -68,15 +68,15 @@ return [accountname, imgUrl]
 };
     return(
       <S.UserInfo >
-       <S.UserProfile>
-        <Link to='#'><img src={imgUrl} alt='사용자 프로필 이미지'/></Link>
-        <S.UserName >
-            <p >애월읍에서 강아지들에게 유명한 곳</p>
-            <span>{accountname} </span>
-        </S.UserName> 
-      </S.UserProfile>
-      <button ><S.IconMore src={moreIcon} alt='신고하기 모달창 불러오기'/></button>
-    </S.UserInfo>
+        <S.UserProfile>
+          <Link to='#'><img src={imgUrl} alt='사용자 프로필 이미지'/></Link>
+          <S.UserName >
+              <p >애월읍에서 강아지들에게 유명한 곳</p>
+              <span>{accountname} </span>
+          </S.UserName> 
+        </S.UserProfile>
+        <button ><S.IconMore src={moreIcon} alt='신고하기 모달창 불러오기'/></button>
+      </S.UserInfo>
     )
     }
 
