@@ -13,21 +13,20 @@ import BottomModal from '../Common/Modal/BottomModal'
 
 
 export default function PostList(props) {
+   const [isModalOpen, setIsModalOpen] = useState(false);
    const [likeNum, setLikeNum] = useState(0)
    const onChangeNum = ()=>{
-  setLikeNum(likeNum+1)
+    setLikeNum(likeNum+1)
+  }
+  const onChangeModal=()=>{
+    setIsModalOpen(true)
   }
 
-return (
+  return (
       <>
            <Container>
-              <HeaderLayouts logo search />
-              <S.PostList>
-                 <li>
-                 <PostUserInfo/>
-                  <PostContents  likeNum={likeNum} onChangeNum={onChangeNum} />
-                  </li>
-              </S.PostList>  
+              <HeaderLayouts title="반결고리" logo={true} search />
+                  <PostListItem />  
            </Container>
               <TabMenu/>
       </>
@@ -35,14 +34,20 @@ return (
   )
 }
 
-
-  export function PostUserInfo(props){
-
+  export function PostListItem(props){
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [accountname, setAccountName] = useState('');
     const [imgUrl, setImgUrl] = useState(null)
+    const [likeNum, setLikeNum] = useState(0)
+    const onChangeNum = ()=>{
+     setLikeNum(likeNum+1)
+    }
+    const onChangeModal=()=>{
+      setIsModalOpen(true)
+    }
 
+   //  accountname 호출
   useEffect(() => {
-    // 컴포넌트가 마운트될 때 사용자의 accountname을 가져오기 위해 호출
     fetchAccountName();
   }, []);
 
@@ -56,68 +61,58 @@ return (
       });
       const data = await response.json();
 
-  if (data.user) {
-    setAccountName(data.user.accountname || '');
-    setImgUrl(data.user.image || 'https://api.mandarin.weniv.co.kr/Ellipse.png'); // 프로필 이미지가 없으면 사용
-}
-} catch (error) {
-console.error('에러:', error);
-}
-return [accountname, imgUrl]
+        if (data.user) {
+          setAccountName(data.user.accountname || '');
+          setImgUrl(data.user.image || 'https://api.mandarin.weniv.co.kr/Ellipse.png'); // 프로필 이미지가 없으면 사용
+      }
+        }
+        catch (error) {
+        console.error('에러:', error);
+        }
+        return [accountname, imgUrl]
 };
 
     return(
-
 <>
-          <S.UserInfo >
-           <S.UserProfile>
+        <S.UserInfo >
+          <S.UserProfile>
             <Link to='#'><img src={imgUrl} alt='사용자 프로필 이미지'/></Link>
             <S.UserName >
                 <p >애월읍에서 강아지들에게 유명한 곳</p>
                 <span>{accountname} </span>
             </S.UserName> 
           </S.UserProfile>
-          <button><S.IconMore src={moreIcon} alt='신고하기 모달창 불러오기'/></button>
+          <button onClick={onChangeModal}><S.IconMore src={moreIcon} alt='신고하기 모달창 불러오기'/></button>
         </S.UserInfo>
+
+{/* 컨텐츠 내용 */}
+        <S.Content> 
+            <a href='/post/detail'>
+                 <p className='text'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore tenetur quaerat ut fugit sequi. Temporibus illo nihil facere tempora deserunt?</p>
+                <img src="https://via.placeholder.com/304x228" alt="포스팅 이미지"  />
+            </a>
+             <S.PostIcons>
+                  <button onClick={props.onChangeNum}>
+                    <img src={redHeartIcon} alt='하트 아이콘'/>
+                    <span>{likeNum}</span>
+                  </button>
+                  <Link to='/post/detail' aria-label='댓글 남기기'  >
+                    <img src={commentIcon} alt='채팅 아이콘' />
+                    <span>1</span>
+                  </Link>
+            </S.PostIcons>
+                <S.PostDate>2023년 10월 21일</S.PostDate>              
+        </S.Content>
+
+{/* 신고하기 모달 창 */}
+     
+        {isModalOpen &&(
+          <>
+            <Overlay onClick={()=> setIsModalOpen(false)}/>
+            <BottomModal/>
+          </>
+        )}
 </>
 
     )
     }
-
-
-export  function PostContents(props){
-  const [likeNum, setLikeNum] = useState(0)
-  const onChangeNum = ()=>{
- setLikeNum(likeNum+1)
- }
-        return(
-       <S.Content> 
-                <a href='/post/detail'>
-                    <p className='text'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore tenetur quaerat ut fugit sequi. Temporibus illo nihil facere tempora deserunt?</p>
-                    <img src="https://via.placeholder.com/304x228" alt="포스팅 이미지"  />
-                </a>
-                <S.PostIcons>
-                  <button onClick={props.onChangeNum}>
-                    <img src={redHeartIcon} alt='하트 아이콘'/>
-                    <span>{props.likeNum}</span>
-                  </button>
-                  <Link to='/post/detail' aria-label='댓글 남기기'  >
-                    <img src={commentIcon} alt='채팅 아이콘' />
-                  <span>1</span>
-                  </Link>
-                </S.PostIcons>
-        
-                <S.PostDate>2023년 10월 21일</S.PostDate>
-              
-              </S.Content>
-     
-        
-        )
-        }
-        
-
-
-
-
-
-        

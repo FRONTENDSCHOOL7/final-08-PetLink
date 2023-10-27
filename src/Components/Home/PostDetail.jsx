@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import *as S from './PostList.style'
 import moreIcon from '../../assets/image/icon- more-vertical.png'
 import profileIcon from '../../assets/image/icon-basic-profile.png'
-import { PostContents, PostUserInfo } from './PostList'
+import { PostListItem } from './PostList'
 import { useNavigate } from 'react-router-dom'
 import { Container } from '../../Styles/reset.style'
 import HeaderLayouts from '../Common/Header/Header'
@@ -18,12 +18,9 @@ navigate(-1)
     return (
       <Container>
           <HeaderLayouts back search/>
-              <S.PostList>
-                 <li>
-                 <PostUserInfo/>
-                  <PostContents  likeNum={likeNum}/>
-                  </li>
-              </S.PostList> 
+
+                <PostListItem/>
+
           <CommentList/>
           <WriteComment/>
       </Container>
