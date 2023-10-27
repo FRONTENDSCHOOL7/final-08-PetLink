@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import *as S from './PostList.style'
-
 import moreIcon from '../../assets/image/icon- more-vertical.png'
 import profileIcon from '../../assets/image/icon-basic-profile.png'
-import { PostContents } from './PostList'
+import { PostListItem } from './PostList'
 import { useNavigate } from 'react-router-dom'
 import { Container } from '../../Styles/reset.style'
 import HeaderLayouts from '../Common/Header/Header'
@@ -11,6 +10,7 @@ import HeaderLayouts from '../Common/Header/Header'
 
 
 export default function PostDetail(props) {
+  const [likeNum, setLikeNum] = useState(0)
   const navigate = useNavigate()
   const handleBack = ()=>{
 navigate(-1)
@@ -18,7 +18,9 @@ navigate(-1)
     return (
       <Container>
           <HeaderLayouts back search/>
-          <PostContents  likeNum={props.likeNum} />
+
+                <PostListItem/>
+
           <CommentList/>
           <WriteComment/>
       </Container>
