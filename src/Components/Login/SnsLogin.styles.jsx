@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Container = styled.div`
+export const SNSContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -13,7 +13,7 @@ export const SNSLoginWrapper = styled.div`
   padding: 20px;
   border-radius: 20px 20px 0 0;
   width: 100%;
-  max-width: 600px;
+  max-width: 390px; /* 컨테이너와 일치하도록 수정 */
   position: fixed;
   bottom: 0;
   left: 50%;
@@ -30,7 +30,7 @@ export const ButtonContainer = styled.section`
 export const CustomButton = styled.button`
   width: 100%;
   max-width: 400px;
-  min-width: 350px;
+  min-width: 300px;
   height: 50px;
   margin: 10px 0;
   border-radius: 25px;
