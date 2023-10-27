@@ -200,3 +200,6 @@ export const SubBtn = styled.button`
 export const EditWrap = styled.div`
 margin: 20px;
 `
+export const PetInfo = styled.div`
+margin: 20px;
+`
