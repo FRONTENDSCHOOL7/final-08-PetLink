@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { Container } from '../../Styles/reset.style'
+import { Container, GlobalStyle } from '../../Styles/reset.style'
 import TabMenu from '../../Components/Common/TabMenu/TabMenu'
 import {
     ProfileImage,
@@ -65,6 +65,7 @@ const ProfilePage = () => {
 
     return (
         <>
+        <GlobalStyle/>
         <Container>
             <ProfileContainer>
             <FollowInfo>
