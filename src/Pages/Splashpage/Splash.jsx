@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Container } from '../../Styles/reset.style'
-import { SplashScreen, SplashContent, SplashLogo } from '../../Components/Splash/Splash.styles';
+import { LogoIcon, LogoText, SplashContainer, SplashContent, SubText } from '../../Components/Splash/Splash.styles';
 import logoPetlink from '../../assets/image/logo-petlink.png';
-import txtPetlink from '../../assets/image/logo-txt.png';
 
 function SplashPage() {
   const navigate = useNavigate();
@@ -11,9 +9,9 @@ function SplashPage() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setIsVisible(false);
-      navigate('/login');
-    }, 3000);
+      setIsVisible(false); // 상태를 false로 설정하여 스플래시 화면을 숨깁니다.
+      navigate('/login'); // 홈 페이지로 리디렉션
+    }, 2000); // 2초 후
 
     return () => {
       clearTimeout(timer);
@@ -22,14 +20,13 @@ function SplashPage() {
 
   return (
     isVisible && (
-      <Container>
-      <SplashScreen>
+      <SplashContainer>
         <SplashContent>
-          <SplashLogo src={logoPetlink} alt="Logo" />
-          <SplashLogo src={txtPetlink} alt="Logo" />
+          <LogoIcon src={logoPetlink} alt="반결고리 로고" />
+          <LogoText>반결고리</LogoText>
+          <SubText>반려동물 연결고리 </SubText>
         </SplashContent>
-      </SplashScreen>
-      </Container>
+      </SplashContainer>
     )
   );
 }
