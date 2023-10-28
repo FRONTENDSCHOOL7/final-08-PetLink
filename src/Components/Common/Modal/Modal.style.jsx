@@ -51,7 +51,7 @@ export const ModalButton = styled.button`
   height: 38px;
   border-radius: 44px;
   border: none;
-  background-color: ${props => props.isConfirm ? '#004E98' : '#7299BE'};
+  background-color: ${props => props.$isConfirm ? '#004E98' : '#7299BE'};
   color: white;
   cursor: pointer;
 `;
