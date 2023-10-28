@@ -1,35 +1,53 @@
-import React, { useEffect, useState } from 'react'
-import *as S from '../Home/PostList.style'
-import moreIcon from '../../assets/image/icon- more-vertical.png'
-import profileIcon from '../../assets/image/icon-basic-profile.png'
-import PostList, { PostListItem } from '../Home/PostList'
-import { useNavigate } from 'react-router-dom'
-import { Container } from '../../Styles/reset.style'
-import HeaderLayouts from '../Common/Header/Header'
-import { Overlay } from '../Product/ProductDetail.style'
-import BottomModal from '../Common/Modal/BottomModal'
+import React, { useEffect, useState } from 'react';
+import * as S from '../Home/PostList.style';
+import moreIcon from '../../assets/image/icon-more-vertical.png';
+import profileIcon from '../../assets/image/icon-basic-profile.png';
+import PostList, { PostListItem } from '../Home/PostList';
+import { useLocation } from 'react-router-dom'; // useLocation을 불러옵니다
+import { Container } from '../../Styles/reset.style';
+import HeaderLayouts from '../Common/Header/Header';
+import { Overlay } from '../Product/ProductDetail.style';
+import BottomModal from '../Common/Modal/BottomModal';
+import redHeartIcon from '../../assets/image/icon-heart-red.png';
+import commentIcon from '../../assets/image/icon-comment.png';
 
 
-export default function PostDetail(props) {
-  const [likeNum, setLikeNum] = useState(0)
-  const [isModalOpen, setIsModalOpen] = useState(false); 
-  const navigate = useNavigate()
-  const selectedPost = props.location?.state?.selectedPost || null;
-  const handleBack = ()=>{
-    navigate(-1)
-  }
+export default function PostDetail() {
+  const [likeNum, setLikeNum] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const onChangeModal = ({ post }) => { 
+   // useLocation을 사용하여 현재 위치 정보를 가져옵니다.
+   const location = useLocation();
+   const selectedPost = location.state.selectedPost;
+
+  const onChangeModal = () => {
     setIsModalOpen(true);
-  }
+  };
     return (
       <Container>
           <HeaderLayouts back search/>
-                <PostListItem post={selectedPost}/>
-
-          <CommentList onChangeModal={onChangeModal}/>
-          <WriteComment/>
-
+ <S.UserInfo>
+        <S.UserProfile>
+          <img src={profileIcon} alt='사용자 프로필 이미지' />
+          <S.UserName>
+            <p>{selectedPost?.author?.username}</p>
+            <p>{selectedPost?.author?.accountname}</p>
+          </S.UserName>
+        </S.UserProfile>
+      </S.UserInfo>
+      <S.Content>
+        <p className='text'>{selectedPost?.content}</p>
+        {selectedPost?.image && <img src={selectedPost?.image} alt="포스팅 이미지" />}
+      </S.Content>
+      <S.PostIcons>
+        <button onClick={() => setLikeNum(likeNum + 1)}>
+          <img src={redHeartIcon} alt='좋아요 버튼' />
+          <span>{likeNum}</span>
+        </button>
+        <button onClick={onChangeModal}>
+          <img src={commentIcon} alt='댓글 개수' />
+        </button>
+      </S.PostIcons>
           {isModalOpen && (
             <>
               <Overlay onClick={() => setIsModalOpen(false)} />
@@ -64,7 +82,7 @@ function WriteComment(){
   }
   const submitComment= (e)=>{
 e.preventDefault()
-// SendComment()
+
   }
     return(
       <S.InputForm onSubmit={submitComment}>

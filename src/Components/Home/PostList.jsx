@@ -3,7 +3,7 @@ import * as S from './PostList.style';
 import moreIcon from '../../assets/image/icon-more-vertical.png';
 import redHeartIcon from '../../assets/image/icon-heart-red.png';
 import commentIcon from '../../assets/image/icon-comment.png';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import TabMenu from '../Common/TabMenu/TabMenu';
 import { Container } from '../../Styles/reset.style';
 import HeaderLayouts from '../Common/Header/Header';
@@ -13,7 +13,7 @@ import BottomModal from '../Common/Modal/BottomModal';
 export default function PostList(props) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [posts, setPosts] = useState([]);
-  const [selectedPost, setSelectedPost] = useState(null);
+  const navigate = useNavigate()
   
   useEffect(() => {
     fetchPostList();
@@ -40,7 +40,7 @@ console.log(data)
     }
   };
 const handlePostClick = (post)=>{
-  setSelectedPost(post)
+  // setSelectedPost(post)
   Navigate(`/post/${post.id}`, { state: { selectedPost: post } });
 }
 
@@ -62,19 +62,25 @@ const handlePostClick = (post)=>{
 export function PostListItem({ post }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [accountname, setAccountName] = useState('');
+  const [username, setUserName] = useState('');
   const [userImg, setUserImg] = useState(null);
   const [contentImgUrl, setContentImgUrl] = useState(null);
   const [content, setContent] = useState('');
   const [likeNum, setLikeNum] = useState(0);
   const [date, setDate] = useState('');
-
+  // const navigate = useNavigate()
+  // const handlePostClick = (post)=>{
+  //   // setSelectedPost(post)
+  //   Navigate(`/post/${post.id}`, { state: { selectedPost: post } });
+  // }
   useEffect(() => {
     if(post){
     setAccountName(post.author.accountname || '');
+    setUserName(post.author.username || '');
     setUserImg(post.author.image || 'https://api.mandarin.weniv.co.kr/Ellipse.png');
     setContentImgUrl(post.image || '');
     setContent(post.content || '');
-    setDate(post.updatedAt || '');
+    setDate(post.createdAt || '');
   }
   }, [post]);
 
@@ -90,11 +96,11 @@ export function PostListItem({ post }) {
     <>
       <S.UserInfo>
         <S.UserProfile>
-          <Link to="#">
+          <Link to={`/post/detail`} state={{ selectedPost: post }}>
             <img src={userImg} alt='사용자 프로필 이미지' />
           </Link>
           <S.UserName>
-            <p>애월읍에서 강아지들에게 유명한 곳</p>
+            <p>{username}</p>
             <span>{accountname}</span>
           </S.UserName>
         </S.UserProfile>
@@ -105,17 +111,17 @@ export function PostListItem({ post }) {
 
       {/* 컨텐츠 내용 */}
       <S.Content>
-        <Link to='/post/detail'>
+        <Link  to={`/post/detail`} state={{ selectedPost: post }}>
           <p className='text'>{content}</p>
           {contentImgUrl && <img src={contentImgUrl} alt="포스팅 이미지" />}
         </Link>
         <S.PostIcons>
-          <button onClick={onChangeNum}>
+          <button onClick={()=>setLikeNum(likeNum+1)}>
             <img src={redHeartIcon} alt='하트 아이콘' />
             <span>{likeNum}</span>
           </button>
-          <Link to='/post/detail' aria-label='댓글 남기기'  >
-            <img src={commentIcon} alt='채팅 아이콘' />
+          <Link to={`/post/detail`} state={{ selectedPost: post }} >
+            <img src={commentIcon} alt='댓글 개수' />
             <span>1</span>
           </Link>
         </S.PostIcons>
