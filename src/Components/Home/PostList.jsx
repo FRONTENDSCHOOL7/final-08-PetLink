@@ -13,9 +13,9 @@ import BottomModal from '../Common/Modal/BottomModal'
 
 
 export default function PostList(props) {
-   const [isModalOpen, setIsModalOpen] = useState(false);
-   const [likeNum, setLikeNum] = useState(0)
-   const onChangeNum = ()=>{
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [likeNum, setLikeNum] = useState(0)
+  const onChangeNum = ()=>{
     setLikeNum(likeNum+1)
   }
   const onChangeModal=()=>{
@@ -24,13 +24,13 @@ export default function PostList(props) {
 
   return (
       <>
-           <Container>
+          <Container>
               <HeaderLayouts title="반결고리" logo={true} search />
                   <PostListItem />  
-           </Container>
+          </Container>
               <TabMenu/>
       </>
-     
+    
   )
 }
 
@@ -40,7 +40,7 @@ export default function PostList(props) {
     const [imgUrl, setImgUrl] = useState(null)
     const [likeNum, setLikeNum] = useState(0)
     const onChangeNum = ()=>{
-     setLikeNum(likeNum+1)
+    setLikeNum(likeNum+1)
     }
     const onChangeModal=()=>{
       setIsModalOpen(true)
@@ -88,10 +88,10 @@ export default function PostList(props) {
 {/* 컨텐츠 내용 */}
         <S.Content> 
             <a href='/post/detail'>
-                 <p className='text'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore tenetur quaerat ut fugit sequi. Temporibus illo nihil facere tempora deserunt?</p>
+                <p className='text'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore tenetur quaerat ut fugit sequi. Temporibus illo nihil facere tempora deserunt?</p>
                 <img src="https://via.placeholder.com/304x228" alt="포스팅 이미지"  />
             </a>
-             <S.PostIcons>
+            <S.PostIcons>
                   <button onClick={props.onChangeNum}>
                     <img src={redHeartIcon} alt='하트 아이콘'/>
                     <span>{likeNum}</span>
@@ -105,7 +105,7 @@ export default function PostList(props) {
         </S.Content>
 
 {/* 신고하기 모달 창 */}
-     
+    
         {isModalOpen &&(
           <>
             <Overlay onClick={()=> setIsModalOpen(false)}/>

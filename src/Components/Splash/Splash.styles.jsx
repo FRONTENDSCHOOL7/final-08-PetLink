@@ -17,7 +17,7 @@ export const SplashContainer = styled.div`
   max-width: 390px;
   height: 100vh;
   margin: 0 auto;
-  background-color: #004E98;
+  background-color: #6C9BD1;
   display: flex;
   justify-content: center;
   align-items: center;
