@@ -13,7 +13,7 @@ const FollowingList = () => {
     };
   return (
     <Container>
-    <HeaderLayouts follow txt='Followers'/>
+    <HeaderLayouts backTxt txt='Followings'/>
     <S.UserInfo >
         <S.UserProfile>
           <Link to="/profile"><img src={imgUrl} alt='사용자 프로필 이미지'/></Link>
