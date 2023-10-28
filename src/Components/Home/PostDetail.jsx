@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import *as S from '../Home/PostList.style'
 import moreIcon from '../../assets/image/icon- more-vertical.png'
 import profileIcon from '../../assets/image/icon-basic-profile.png'
-import { PostListItem } from '../Home/PostList'
+import PostList, { PostListItem } from '../Home/PostList'
 import { useNavigate } from 'react-router-dom'
 import { Container } from '../../Styles/reset.style'
 import HeaderLayouts from '../Common/Header/Header'
@@ -14,19 +14,18 @@ export default function PostDetail(props) {
   const [likeNum, setLikeNum] = useState(0)
   const [isModalOpen, setIsModalOpen] = useState(false); 
   const navigate = useNavigate()
-
+  const selectedPost = props.location?.state?.selectedPost || null;
   const handleBack = ()=>{
     navigate(-1)
   }
 
-  const onChangeModal = () => { 
+  const onChangeModal = ({ post }) => { 
     setIsModalOpen(true);
   }
     return (
       <Container>
           <HeaderLayouts back search/>
-
-                <PostListItem/>
+                <PostListItem post={selectedPost}/>
 
           <CommentList onChangeModal={onChangeModal}/>
           <WriteComment/>
