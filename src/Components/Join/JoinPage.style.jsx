@@ -120,3 +120,11 @@ export const FieldLabel = styled.label`
   font-size: 14px;
   color: #767676;
 `;
+
+export const PetInfo = styled.div`
+font-size: 14px;
+`;
+
+export const Styledpetinfo = styled.h2`
+font-size: 14px;
+`;
