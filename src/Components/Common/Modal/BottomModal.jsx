@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled, { keyframes } from 'styled-components'
 import { GlobalStyle } from '../../../Styles/reset.style'
+import PopupModal from './PopupModal';
 
+// 슬라이드업 애니메이션
 const slideUp = keyframes`
   from {
     transform: translateY(100%); // 처음 상태: 화면 아래
@@ -13,10 +15,9 @@ const slideUp = keyframes`
 
 const BottomModalContainer = styled.div`
   position: fixed;
-  bottom: 60px;
+  bottom: 0;
   width: 100%;
   max-width: 390px;
-  height: 92px;
   padding: 1em 2em;
   background-color: white;
   border: 1px solid #e9e9e9;
@@ -26,16 +27,18 @@ const BottomModalContainer = styled.div`
   animation: ${slideUp} 0.2s ease-out forwards;
 `
 
-const Report = styled.p`
+// 버튼 스타일링
+const Report = styled.button`
   color: red;
   font-size: 14px;
+  text-align: left;
   position: relative;
   padding-top: 20px;
   display: inline-block;
   width: 100%;
 
   &::before {
-    content: "";
+    content: ${props => props.$first ? '""' : 'none'};
     position: absolute;
     top: 0;
     left: 50%;
@@ -47,13 +50,38 @@ const Report = styled.p`
 `
 
 
-export default function BottomModal() {
+export default function BottomModal({reportTxt, setIsModalOpen}) {
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
+  const [selectedReport, setSelectedReport] = useState("");
+
+  const handleReportClick = (text) => {
+    setSelectedReport(text); // report의 text 설정
+    setIsPopupVisible(true); // 팝업 모달 표시
+  }
+
+  const handlePopupClose = () => {
+    setIsPopupVisible(false); // 팝업 모달 숨기기
+    setIsModalOpen(false); // 하단 모달 숨기기
+  }
+  
   return (
     <>
       <GlobalStyle/>
       <BottomModalContainer>
-        <Report>신고하기</Report>
+        {reportTxt.map((text, index) => (
+          <Report key={index} $first={index === 0} onClick={()=>handleReportClick(text)}>{text}하기</Report>
+        ))}
       </BottomModalContainer>
+
+      <PopupModal
+        isVisible={isPopupVisible}
+        setIsVisible={handlePopupClose}
+        alertText={`${selectedReport} 하시겠습니까?`}
+        cancelText="취소"
+        confirmText="확인"
+        onConfirm={handlePopupClose}
+        onCancel={handlePopupClose}
+      />
     </>
   )
 }
