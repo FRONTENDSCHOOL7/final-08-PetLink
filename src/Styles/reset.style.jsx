@@ -21,6 +21,7 @@ export const GlobalStyle = createGlobalStyle`
   body {
     background-color: #e9e9e9;
     font-family: 'Nanum Gothic', sans-serif;
+    overflow-y: scroll;
   }
 
   ol, ul {
@@ -49,7 +50,7 @@ input {
 
 export const Container = styled.div`
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   max-width: 390px;
   margin: 0 auto;
   background-color: white;
