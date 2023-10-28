@@ -1,4 +1,4 @@
-import styled,{createGlobalStyle} from 'styled-components'
+import styled from 'styled-components'
 import {Link} from 'react-router-dom'
 
 export const PageTitle = styled.h1`
@@ -21,16 +21,11 @@ export const BtnNav = styled.button`
   color: white;
   font-weight: 700;
 
+  &:hover,
   &.active {
     background-color: #004E98;
   }
 `
-/* .item-container-wrapper {
-  position: relative;
-  max-height: 100vh;
-  overflow-y: auto;
-  height: 100vh;
-} */
 
 export const ItemContainer = styled.ul`
   padding: 41px 34px;
@@ -67,16 +62,13 @@ export const Item = styled.li`
   }
 `
 
-export const BtnAddWrap = styled.div`
-  text-align: right;
-`
 
 export const BtnAdd = styled.button`
   display: inline-block;
-  position: absolute;
-  bottom: 30px;
-  right: 30px;
-  /* z-index: 100; */
+  position: fixed;
+  bottom: 70px;
+  right: calc(50% - 175px); // Container의 max-width: 390px; 고려한 오른쪽 여백 계산
+  z-index: 100;
 
   img {
     width: 51px;
