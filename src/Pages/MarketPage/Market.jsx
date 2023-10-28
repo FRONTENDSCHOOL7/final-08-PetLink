@@ -2,8 +2,8 @@ import React from 'react'
 import productImg from '../../assets/image/marketItem1.png'
 import addBtn from '../../assets/image/icon-add.png'
 import { useState } from 'react'
-import { BtnAdd, BtnAddWrap, BtnNav, Item, ItemContainer, NavMenu, PageTitle, StyledLink } from './Market.style'
-import { GlobalStyle, Container } from '../../Styles/reset.style'
+import { BtnAdd, BtnNav, Item, ItemContainer, NavMenu, StyledLink } from './Market.style'
+import { Container, GlobalStyle} from '../../Styles/reset.style'
 import TabMenu from '../../Components/Common/TabMenu/TabMenu'
 import HeaderLayouts from '../../Components/Common/Header/Header'
 
@@ -13,6 +13,10 @@ export default function Market() {
 
   const itemsData = {
     '강아지': [
+      {img: productImg, title: '강아지 옷', price: '25,000원'},
+      {img: productImg, title: '강아지 장난감', price: '20,000원'},
+      {img: productImg, title: '강아지 모자', price: '15,000원'},
+      {img: productImg, title: '강아지 간식', price: '10,000원'},
       {img: productImg, title: '강아지 옷', price: '25,000원'},
       {img: productImg, title: '강아지 장난감', price: '20,000원'},
       {img: productImg, title: '강아지 모자', price: '15,000원'},
@@ -48,24 +52,22 @@ export default function Market() {
             ))}
           </NavMenu>
         </nav>
-        <div className='item-container-wrapper'>
-          <ItemContainer>
-            {items.map((item, index)=> (
-              <StyledLink to="/market/detail" key={index}>
-                <Item>
-                  <img src={item.img} alt="상품" />
-                  <p className='item-title'>{item.title}</p>
-                  <strong className='item-price'>{item.price}</strong>
-                </Item>
-              </StyledLink>
-            ))}
-          </ItemContainer>
-          <StyledLink to="/market/add-product">
-              <BtnAdd>
-                <img src={addBtn} alt="추가버튼" />
-              </BtnAdd>
-          </StyledLink>
-        </div>
+        <ItemContainer>
+          {items.map((item, index)=> (
+            <StyledLink to="/market/detail" key={index}>
+              <Item>
+                <img src={item.img} alt="상품" />
+                <p className='item-title'>{item.title}</p>
+                <strong className='item-price'>{item.price}</strong>
+              </Item>
+            </StyledLink>
+          ))}
+        </ItemContainer>
+        <StyledLink to="/market/add-product">
+          <BtnAdd>
+            <img src={addBtn} alt="추가버튼" />
+          </BtnAdd>
+        </StyledLink>
         <TabMenu/>
       </Container>
     </>
