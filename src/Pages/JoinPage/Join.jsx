@@ -2,9 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { GlobalStyle, Container } from "../../Styles/reset.style"
 import {
-    Wrapper,
     FormWrapper,
-    Input,
     Button,
     Modal,
     ModalContent,

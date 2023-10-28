@@ -69,7 +69,6 @@ export const CloseButton = styled.span`
     float;
 `;
 
-// 새로운 스타일 컴포넌트 추가
 export const TitleWrap = styled.div`
   font-size: 30px;
   margin-bottom: 20px;
