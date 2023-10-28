@@ -1,80 +1,101 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { GlobalStyle, Container } from '../../Styles/reset.style';
+import { Header, HeaderButton, DetailContainer, SaveButton, AddImg, InputTitle, InputImg, AddImgBtn, PostInfo, CategoryContainer, DropdownSelect } from './CommunityUpload.style'
 import { useNavigate } from 'react-router-dom';
-import { GlobalStyle } from '../../Styles/reset.style'
-import { Container, Header, BackBtn, UploadBtn, InputField, TextArea, ImageUpload, ImageUploadLabel, ImagePreviewBox } from './CommunityUpload.style';
+import backBtn from '../../assets/image/icon-arrow-left.png';
+import imgBtn from '../../assets/image/icon-img-button.png';
 
-import PopupModal from '../../Components/Common/Modal/PopupModal';
-import backBtn from '../../assets/image/icon-arrow-left.png'
+function CustomInput({ title, placeholder, type = "text", value, onChange }) {
+  if (type === "dropdown") {
+    return (
+      <PostInfo>
+        <InputTitle>{title}</InputTitle>
+        <select value={value} onChange={onChange}>
+          <option value="">선택</option>
+          <option value="정보 공유">정보 공유</option>
+          <option value="산책 크루">산책 크루</option>
+          <option value="반려 돌보미">반려 돌보미</option>
+          <option value="실종 신고">실종 신고</option>
+        </select>
+      </PostInfo>
+    );
+  }
+
+  return (
+    <PostInfo>
+      <InputTitle>{title}</InputTitle>
+      <input type={type} placeholder={placeholder} value={value} onChange={onChange} />
+    </PostInfo>
+  );
+}
 
 
 export default function CommunityUploadPage() {
-
   const navigate = useNavigate();
-  const [preview, setPreview] = useState(null);
-  const [showModal, setShowModal] = useState(false);
+  const [selectedImg, setSelectedImg] = useState(null);
+  const [category, setCategory] = useState("");
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
 
-  const handleBackBtnClick = () => {
-    setShowModal(true);
-  };
-
-  const handleImageChange = (e) => {
+  const handleImgChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setPreview(reader.result);
-      }
+        setSelectedImg(reader.result);
+      };
       reader.readAsDataURL(file);
     }
   };
 
-
-  
   return (
     <>
       <GlobalStyle />
       <Container>
         <Header>
-          <BackBtn src={backBtn} alt="뒤로가기" onClick={handleBackBtnClick} />
-          <PopupModal 
-            isVisible={showModal}
-            setIsVisible={setShowModal}
-            onConfirm={() => navigate('/community')} 
-            onCancel={() => console.log('Cancel')} 
-            alertText="작성을 취소하시겠습니까?"
-            cancelText="취소"
-            confirmText="확인"
-          />
-          <UploadBtn>업로드</UploadBtn>
+          <HeaderButton onClick={() => navigate(-1)}><img src={backBtn} alt="" /></HeaderButton>
+          <SaveButton>업로드</SaveButton>
         </Header>
-
-        <main>
-          <div className='category-choice'>
-            <p>카테고리</p>
-          </div>
-
-          <form>
-            <label>
-                제목:
-                <InputField type="text" placeholder="제목을 입력하세요" />
-              </label>
-              <label>
-                내용:
-                <TextArea placeholder="내용을 입력하세요"></TextArea>
-              </label>
-              <ImageUploadLabel>
-          <ImageUpload type="file" accept="image/*" id="imgUpload" onChange={handleImageChange} />
-          <label htmlFor="imgUpload"></label>
-        </ImageUploadLabel>
-        <ImagePreviewBox>
-          {preview ? <img src={preview} alt="Upload preview" /> : "이미지를 추가해주세요"}
-        </ImagePreviewBox>
-      </form>
-        </main>
-        <nav>
-          {/* NavBar 컴포넌트 추가 필요 */}
-        </nav>
+        <DetailContainer>
+        <CategoryContainer>
+            <InputTitle>카테고리</InputTitle>
+            <DropdownSelect value={category} onChange={e => setCategory(e.target.value)}>
+              <option value="" disabled selected>선택</option> 
+              <option value="정보 공유">정보 공유</option>
+              <option value="산책 크루">산책 크루</option>
+              <option value="반려 돌보미">반려 돌보미</option>
+              <option value="실종 신고">실종 신고</option>
+            </DropdownSelect>
+          </CategoryContainer>
+          <CustomInput
+            title="제목"
+            placeholder="2~15자 이내여야 합니다."
+            value={title}
+            onChange={e => setTitle(e.target.value)}
+          />
+          <CustomInput
+            title="내용"
+            type="textarea"
+            placeholder="내용을 입력해 주세요."
+            value={content}
+            onChange={e => setContent(e.target.value)}
+          />
+          <AddImg>
+            <InputTitle>이미지 등록</InputTitle>
+            <InputImg img={selectedImg}>
+              <input
+                type="file"
+                id='imgUpload'
+                onChange={handleImgChange}
+              />
+              <AddImgBtn>
+                <label htmlFor="imgUpload">
+                  <img src={imgBtn} alt="사진 추가 버튼" />
+                </label>
+              </AddImgBtn>
+            </InputImg>
+          </AddImg>
+        </DetailContainer>
       </Container>
     </>
   );
