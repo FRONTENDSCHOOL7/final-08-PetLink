@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { GlobalStyle, Container } from '../../Styles/reset.style'
 import { TitleWrap, SubmitButton, InputField, StyledInput, FieldLabel } from './LoginForm.style'
+import { LoginButton } from "../../Components/Login/Login.styles";
 import { useNavigate } from "react-router-dom";
 import { saveToken } from '../../utils/tokenUtils';
 
@@ -77,7 +78,7 @@ function LoginForm({ handlePage }) {
 
   const submitLogin = async (e) => {
     e.preventDefault();
-    if (!emailValid || !pwValid) {
+    if (!emailValid || !pwValid || !email || !password) {
       alert("Please enter a valid email and password.");
     } else {
       await login(email, password);
@@ -115,6 +116,10 @@ function LoginForm({ handlePage }) {
           <SubmitButton type="submit" disabled={notAllow}>
             로그인
           </SubmitButton>
+          <LoginButton onClick={() => navigate("/join")}
+          style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto'}}>
+      이메일로 회원가입
+    </LoginButton>
         </form>
         </>
       </Container>

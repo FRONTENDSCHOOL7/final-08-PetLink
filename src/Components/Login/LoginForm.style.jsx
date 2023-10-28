@@ -11,14 +11,15 @@ export const SubmitButton = styled.button`
   width: 90%;
   height: 50px;
   border-radius: 50px;
-  background-color: #004e98;
+  background-color: ${(props) => (props.disabled ? "#b2dffb" : "#004e98")};
   color: white;
   font-size: 16px;
-  cursor: pointer;
+  cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
   border: none;
   margin: auto;
   margin-bottom: 20px;
   display: block;
+  transition: background-color 0.3s ease; /* Optional: for a smooth color transition */
 `;
 
 export const InputField = styled.div`
