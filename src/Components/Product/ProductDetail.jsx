@@ -49,7 +49,7 @@ export default function MarketDetail() {
         {isModalOpen &&(
           <>
             <Overlay onClick={()=> setIsModalOpen(false)}/>
-            <BottomModal/>
+            <BottomModal setIsModalOpen={setIsModalOpen} reportTxt={["신고", "차단"]}/>
           </>
         )}
         <TabMenu/>
