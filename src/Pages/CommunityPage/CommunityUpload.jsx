@@ -4,6 +4,7 @@ import { Header, HeaderButton, DetailContainer, SaveButton, AddImg, InputTitle, 
 import { useNavigate } from 'react-router-dom';
 import backBtn from '../../assets/image/icon-arrow-left.png';
 import imgBtn from '../../assets/image/icon-img-button.png';
+import PopupModal from '../../Components/Common/Modal/PopupModal';
 
 function CustomInput({ title, placeholder, type = "text", value, onChange }) {
   if (type === "dropdown") {
@@ -21,10 +22,19 @@ function CustomInput({ title, placeholder, type = "text", value, onChange }) {
     );
   }
 
+  if (type === "textarea") {
+    return (
+      <PostInfo>
+        <InputTitle>{title}</InputTitle>
+        <textarea placeholder={placeholder} value={value} onChange={onChange} rows="10" />
+      </PostInfo>
+    );
+  }
+
   return (
     <PostInfo>
       <InputTitle>{title}</InputTitle>
-      <input type={type} placeholder={placeholder} value={value} onChange={onChange} />
+      <input type={type} placeholder={placeholder} value={value} onChange={onChange} maxLength={title ? 15 : undefined} />
     </PostInfo>
   );
 }
@@ -36,6 +46,7 @@ export default function CommunityUploadPage() {
   const [category, setCategory] = useState("");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [showModal, setShowModal] = useState(false);
 
   const handleImgChange = (e) => {
     const file = e.target.files[0];
@@ -48,14 +59,30 @@ export default function CommunityUploadPage() {
     }
   };
 
+  const handleBackBtnClick = () => {
+    setShowModal(true);  // backBtn 클릭 시 모달을 보이게 합니다.
+  };
+
+  const isTitleValid = title.length >= 2 && title.length <= 15;
+  const isAllFieldsFilled = category && isTitleValid && content;
+
   return (
     <>
       <GlobalStyle />
       <Container>
         <Header>
-          <HeaderButton onClick={() => navigate(-1)}><img src={backBtn} alt="" /></HeaderButton>
-          <SaveButton>업로드</SaveButton>
+          <HeaderButton onClick={handleBackBtnClick}><img src={backBtn} alt="" /></HeaderButton>
+          <SaveButton isActive={isAllFieldsFilled}>업로드</SaveButton>
         </Header>
+        <PopupModal 
+            isVisible={showModal}
+            setIsVisible={setShowModal}
+            onConfirm={() => navigate('/community')}
+            onCancel={() => console.log('Cancel')}
+            alertText="작성을 취소하시겠습니까?"
+            cancelText="취소"
+            confirmText="확인"
+        />
         <DetailContainer>
         <CategoryContainer>
             <InputTitle>카테고리</InputTitle>

@@ -28,7 +28,7 @@ export const SaveButton = styled.button`
   height: 32px;
   margin-right: 16px;
   border-radius: 32px;
-  background-color: ${props => props.$active ? "#004E98" : "#7299BE"};
+  background-color: ${({ isActive }) => (isActive ? '#004E98' : '#7299BE')};
   color: white;
 `;
 
@@ -50,18 +50,42 @@ export const PostInfo = styled.div`
   gap: 10px;
   margin-bottom: 40px;
 
+  textarea {
+    width: 100%;
+    height: auto;
+    border: none;
+    resize: none;  // textarea 크기 조절을 사용자가 못하게 함
+    overflow-y: auto;  // 내용이 많아질 때 스크롤 생성
+    white-space: pre-wrap;  // 줄바꿈 및 공백 유지
+    word-wrap: break-word;  // 단어 내에서 줄바꿈
+  }
+
   input {
     border: none;
     border-bottom: 1px solid #DBDBDB;
   }
 
-  input:focus {
+  input, textarea {
+    color: #535353;
+    font-family: 'Nanum Gothic', sans-serif;
+    font-size: 14px;
+    font-weight: 400; 
+  }
+
+  input:focus,
+  textarea:focus {
     outline: none;
   }
 
-  input::placeholder {
+  input::placeholder,
+  textarea::placeholder {
     color: #DBDBDB;
+    font-family: 'Nanum Gothic', sans-serif;
+    font-size: 14px;
+    font-weight: 400; 
   }
+
+  
 `;
 
 export const CategoryContainer = styled.div`
@@ -70,6 +94,7 @@ export const CategoryContainer = styled.div`
   align-items: center;
   gap: 10px;
   margin-bottom: 43px;
+  color:#767676;
 `;
 
 export const DropdownSelect = styled.select`
