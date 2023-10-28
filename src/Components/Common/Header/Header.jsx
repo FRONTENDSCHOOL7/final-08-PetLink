@@ -32,7 +32,7 @@ export default function HeaderLayouts(props){
             <S.SearchInput type="keyword" placeholder='계정 검색' />
             </>
           )}
-            {props.txt && (
+            {props.backTxt && (
             <S.HeaderFollowButton onClick={handleBack}>
               <img src={backIcon} alt="뒤로가기" />
               <h3>{props.txt}</h3>
