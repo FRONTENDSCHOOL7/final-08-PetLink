@@ -1,20 +1,19 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { GlobalStyle, Container } from "../../Styles/reset.style"
 import {
-  Wrapper,
-  FormWrapper,
-  Logo,
-  Input,
-  Button,
-  Modal,
-  ModalContent,
-  CloseButton,
-  TitleWrap,
-  SubmitButton,
-  InputField,
-  StyledInput,
-  FieldLabel,
+    Wrapper,
+    FormWrapper,
+    Input,
+    Button,
+    Modal,
+    ModalContent,
+    CloseButton,
+    TitleWrap,
+    SubmitButton,
 } from "../../Components/Join/JoinPage.style";
+import { LoginTitleWrap, SubmitButton as LoginSubmitButton, InputField, StyledInput, FieldLabel } from "../../Components/Login/LoginForm.style"
+
 
 const JoinPage = () => {
   const navigate = useNavigate();
@@ -120,63 +119,84 @@ const JoinPage = () => {
 
   return (
     <>
-      <Wrapper>
+    <Container>
+    <GlobalStyle/>
+
         <FormWrapper>
-          <Logo>이메일 회원가입</Logo>
+          <TitleWrap>이메일 회원가입</TitleWrap>
 
           {currentPage === "join" && (
             <>
-              <Input
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={inputEmail}
-              />
-              <Input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={inputPassword}
-              />
+                      <InputField>
+            <FieldLabel>이메일</FieldLabel>
+            <StyledInput
+              type="email"
+              placeholder="이메일 주소를 입력해 주세요."
+              value={email}
+              onChange={inputEmail}
+            />
+          </InputField>
+          <InputField>
+            <FieldLabel>비밀번호</FieldLabel>
+            <StyledInput
+              type="password"
+              placeholder="비밀번호 입력해주세요."
+              value={password}
+              onChange={inputPassword }
+            />
+          </InputField> 
               <SubmitButton
                 type="button"
                 onClick={goToProfilePage}
                 disabled={!isValidEmailAndPassword()}
               >
-                Next
+                다음
               </SubmitButton>
             </>
           )}
 
           {currentPage === "profile" && (
             <>
-              <Input
-                type="text"
-                placeholder="Username"
-                value={username}
-                onChange={inputUsername}
-              />
-              <Input
-                type="text"
-                placeholder="Account Name"
-                value={accountname}
-                onChange={inputAccountname}
-              />
-              <Input
-                type="text"
-                placeholder="Introduction"
-                value={info}
-                onChange={inputInfo}
-              />
-              <SubmitButton
+            <InputField>
+            <FieldLabel>활동명</FieldLabel>
+            <StyledInput
+            type="text"
+            placeholder="2 ~ 10자 이내여야 합니다."
+            value={username}
+            onChange={inputUsername}
+            />
+            </InputField>
+            
+            <InputField>
+            <FieldLabel>계정 ID</FieldLabel>
+            <StyledInput
+            type="text"
+            placeholder="영문, 숫자, 특수문자(.),(_)만 사용 가능합니다."
+            value={accountname}
+            onChange={inputAccountname}
+            />
+            </InputField>
+
+            <InputField>
+            <FieldLabel>상태메시지</FieldLabel>
+            <StyledInput
+            type="text"
+            placeholder="자신의 반려동물에 대해 소개해 주세요!"
+            value={accountname}
+            onChange={inputAccountname}
+            />
+            </InputField>
+
+        
+            <SubmitButton
                 type="button"
                 onClick={submitJoin}
                 disabled={!isValidProfile()}
-              >
-                Join
-              </SubmitButton>
+            >
+                반결고리 시작하기
+            </SubmitButton>
             </>
-          )}
+        )}
 
           {showModal && (
             <Modal>
@@ -190,7 +210,7 @@ const JoinPage = () => {
             </Modal>
           )}
         </FormWrapper>
-      </Wrapper>
+    </Container>
     </>
   );
 };

@@ -16,7 +16,6 @@ export const FormWrapper = styled.div`
 `;
 
 export const Logo = styled.h1`
-    font-family: 'Pacifico', cursive;
     font-size: 36px;
     text-align: center;
 `;
