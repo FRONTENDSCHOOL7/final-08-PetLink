@@ -13,7 +13,7 @@ import {
     SubmitButton,
 } from "../../Components/Join/JoinPage.style";
 import { LoginTitleWrap, SubmitButton as LoginSubmitButton, InputField, StyledInput, FieldLabel } from "../../Components/Login/LoginForm.style"
-
+import PetInfo from "../../Components/Profile/PetInfo";
 
 const JoinPage = () => {
   const navigate = useNavigate();
@@ -27,6 +27,10 @@ const JoinPage = () => {
   const [info, setInfo] = useState("");
   const [currentPage, setCurrentPage] = useState("join");
   const [showModal, setShowModal] = useState(false);
+  const [pet, setPet] = useState("");
+  const [gender, setGender] = useState("");
+  const [birthdate, setBirthdate] = useState("");
+  const [location, setLocation] = useState("");
 
   const goToProfilePage = () => {
     setCurrentPage("profile");
@@ -182,11 +186,18 @@ const JoinPage = () => {
             <StyledInput
             type="text"
             placeholder="자신의 반려동물에 대해 소개해 주세요!"
-            value={accountname}
-            onChange={inputAccountname}
+            value={info}
+            onChange={inputInfo}
             />
             </InputField>
 
+            <PetInfo 
+    tagString={setInfo}
+    pet={pet} setPet={setPet}
+    gender={gender} setGender={setGender}
+    birthdate={birthdate} setBirthdate={setBirthdate}
+    location={location} setLocation={setLocation}
+/>
         
             <SubmitButton
                 type="button"
