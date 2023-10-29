@@ -7,13 +7,8 @@ import {ChatItem} from '../../Components/Chat/ChatList'
 
 import styled from 'styled-components';
 import TabMenu from '../../Components/Common/TabMenu/TabMenu'
+import HeaderLayouts from '../../Components/Common/Header/Header'
 
-const PageTitle = styled.h1`
-  font-size: 20px;
-  color: #004E98;
-  padding: 13px;
-  border-bottom: 1px solid #DBDBDB;
-`
 
 const ChatListContainer = styled.div`
   width: 100%;
@@ -32,7 +27,7 @@ export default function Chat() {
     <>
       <GlobalStyle/>
       <Container> 
-      <PageTitle>채팅</PageTitle>
+      <HeaderLayouts title="채팅" />
         <ChatListContainer>
           {chatData.map(chat => (
             <ChatItem key={chat.id} {...chat} />

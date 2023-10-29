@@ -2,6 +2,11 @@ import React from "react"
 import styled from "styled-components"
 import { Link } from "react-router-dom"
 
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: inherit;
+`
+
 const ChatList = styled.div`
   margin-bottom: 25px;
   display: flex;
@@ -38,8 +43,9 @@ const ChatContents = styled.p`
 `
 
 export function ChatItem({id, imgSrc, nickname, content, date}) {
+
   return(
-    <Link to={`/chatroom/${id}`}>
+    <StyledLink to={`/chatroom/${id}`}>
       <ChatList>
         <img src={imgSrc} alt={`${nickname}의 프로필 이미지`} />
         <ChatListTxt>
@@ -50,6 +56,6 @@ export function ChatItem({id, imgSrc, nickname, content, date}) {
           </ChatContents>
         </ChatListTxt>
       </ChatList>
-    </Link>
+    </StyledLink>
   )
 }

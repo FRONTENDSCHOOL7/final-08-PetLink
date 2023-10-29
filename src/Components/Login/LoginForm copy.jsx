@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { GlobalStyle, Container } from '../../Styles/reset.style'
 import { useNavigate } from "react-router-dom";
 import { saveToken } from '../../utils/tokenUtils';
 import styles from "./LoginFrom.module.css";
@@ -84,6 +85,8 @@ function LoginForm({ handlePage }) {
   };
 
   return (
+    <>
+    <GlobalStyle />
     <div className={styles.page}>
       <div className={styles.titleWrap}>로그인</div>
       <form onSubmit={submitLogin}>
@@ -127,6 +130,7 @@ function LoginForm({ handlePage }) {
         </div>
       </form>
     </div>
+    </>
   );
 }
 
