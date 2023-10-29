@@ -2,18 +2,18 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { GlobalStyle, Container } from "../../Styles/reset.style"
 import {
-    Wrapper,
     FormWrapper,
-    Input,
     Button,
     Modal,
     ModalContent,
     CloseButton,
     TitleWrap,
     SubmitButton,
+    PetInfo,
+    Styledpetinfo
 } from "../../Components/Join/JoinPage.style";
 import { LoginTitleWrap, SubmitButton as LoginSubmitButton, InputField, StyledInput, FieldLabel } from "../../Components/Login/LoginForm.style"
-import PetInfo from "../../Components/Profile/PetInfo";
+
 
 const JoinPage = () => {
   const navigate = useNavigate();
@@ -21,6 +21,7 @@ const JoinPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [accountname, setAccountname] = useState("");
+  const [intro, setIntro] = useState("");
   const [imgSrc, setImgSrc] = useState(
     "https://api.mandarin.weniv.co.kr/Ellipse.png"
   );
@@ -72,6 +73,7 @@ const JoinPage = () => {
     setInfo(e.target.value);
   };
 
+
   const uploadImage = async (imageFile) => {
     const baseUrl = "https://api.mandarin.weniv.co.kr/";
     const reqUrl = baseUrl + "image/uploadfile";
@@ -88,6 +90,17 @@ const JoinPage = () => {
   const handleChangeImage = (e) => {
     const imageFile = e.target.files[0];
     uploadImage(imageFile);
+  };
+
+  const handleIntroChange = () => {
+    const hashtags = [
+      `#intro:${intro}`,
+      `#pet:${pet}`,
+      `#gender:${gender}`,
+      `#birthdate:${birthdate}`,
+      `#location:${location}`,
+    ];
+    setInfo(hashtags.join(" "));
   };
 
   const submitJoin = () => {
@@ -186,8 +199,8 @@ const JoinPage = () => {
             <StyledInput
             type="text"
             placeholder="자신의 반려동물에 대해 소개해 주세요!"
-            value={info}
-            onChange={inputInfo}
+            value={accountname}
+            onChange={inputAccountname}
             />
             </InputField>
 
@@ -214,7 +227,7 @@ const JoinPage = () => {
               <ModalContent>
                 <TitleWrap>반결고리에 오신것을 환영합니다!</TitleWrap>
                 <Button type="button" onClick={() => navigate("/login")}>
-                  Login
+                  로그인
                 </Button>
                 <CloseButton>&times;</CloseButton>
               </ModalContent>

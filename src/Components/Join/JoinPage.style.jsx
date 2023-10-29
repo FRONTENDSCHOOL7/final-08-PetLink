@@ -69,7 +69,6 @@ export const CloseButton = styled.span`
     float;
 `;
 
-// 새로운 스타일 컴포넌트 추가
 export const TitleWrap = styled.div`
   font-size: 30px;
   margin-bottom: 20px;
@@ -119,4 +118,12 @@ export const StyledInput = styled.input`
 export const FieldLabel = styled.label`
   font-size: 14px;
   color: #767676;
+`;
+
+export const PetInfo = styled.div`
+font-size: 14px;
+`;
+
+export const Styledpetinfo = styled.h2`
+font-size: 14px;
 `;

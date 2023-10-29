@@ -109,7 +109,7 @@ export default function PostList(props) {
         {isModalOpen &&(
           <>
             <Overlay onClick={()=> setIsModalOpen(false)}/>
-            <BottomModal/>
+            <BottomModal reportTxt={["신고"]} setIsModalOpen={setIsModalOpen} />
           </>
         )}
 </>
