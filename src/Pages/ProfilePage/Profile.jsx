@@ -17,6 +17,7 @@ import {
     BtnGrop,
     ProfileContainer
 } from '../../Components/Profile/Profile.style';
+import MyFeed from '../../Components/Profile/MyFeed';
 
 const ProfilePage = () => {
     const [profileData, setProfileData] = useState(null);
@@ -94,6 +95,7 @@ const ProfilePage = () => {
                     <Button>상품 등록</Button>
             </BtnGrop>
         </ProfileContainer>
+        <MyFeed/>
         </Container>
         <TabMenu/>
         </>

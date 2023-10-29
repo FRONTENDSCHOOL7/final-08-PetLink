@@ -56,14 +56,6 @@ export const IconMore = styled.img`
   cursor: pointer;
 `
 
-// export const PostListStyle = styled.ul`
-//   padding: 20px 16px;
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: center;
-//   align-items: center;
-// `;
-
 export const Content = styled.div`
   margin: 16px 16px 16px 54px;
 
@@ -76,10 +68,6 @@ export const Content = styled.div`
     overflow: hidden;
   }
 
-  /* a{
-    text-decoration:none;
-    color:#000000;
-  } */
 
   img {
     border-radius: 10px;

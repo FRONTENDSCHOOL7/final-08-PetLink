@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
 import * as S from './PostList.style';
 import moreIcon from '../../assets/image/icon-more-vertical.png';
 import redHeartIcon from '../../assets/image/icon-heart-red.png';
 import commentIcon from '../../assets/image/icon-comment.png';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import TabMenu from '../Common/TabMenu/TabMenu';
 import { Container } from '../../Styles/reset.style';
 import HeaderLayouts from '../Common/Header/Header';
@@ -14,7 +15,7 @@ export default function PostList(props) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [posts, setPosts] = useState([]);
   const navigate = useNavigate()
-  
+
   useEffect(() => {
     fetchPostList();
   }, []);
@@ -41,7 +42,7 @@ console.log(data)
   };
 const handlePostClick = (post)=>{
   // setSelectedPost(post)
-  Navigate(`/post/${post.id}`, { state: { selectedPost: post } });
+  navigate(`/post/${post._id}`);
 }
 
   return (
@@ -68,11 +69,11 @@ export function PostListItem({ post }) {
   const [content, setContent] = useState('');
   const [likeNum, setLikeNum] = useState(0);
   const [date, setDate] = useState('');
-  // const navigate = useNavigate()
-  // const handlePostClick = (post)=>{
-  //   // setSelectedPost(post)
-  //   Navigate(`/post/${post.id}`, { state: { selectedPost: post } });
-  // }
+  const navigate = useNavigate()
+
+  const handlePostClick = (post)=>{
+    navigate(`/post/${post._id}`);
+  }
   useEffect(() => {
     if(post){
     setAccountName(post.author.accountname || '');
@@ -96,7 +97,7 @@ export function PostListItem({ post }) {
     <>
       <S.UserInfo>
         <S.UserProfile>
-          <Link to={`/post/detail`} state={{ selectedPost: post }}>
+        <Link to={`/post/detail`} state={{ selectedPost: post }}>
             <img src={userImg} alt='사용자 프로필 이미지' />
           </Link>
           <S.UserName>
@@ -111,7 +112,7 @@ export function PostListItem({ post }) {
 
       {/* 컨텐츠 내용 */}
       <S.Content>
-        <Link  to={`/post/detail`} state={{ selectedPost: post }}>
+      <Link to={`/post/detail`} state={{ selectedPost: post }}>
           <p className='text'>{content}</p>
           {contentImgUrl && <img src={contentImgUrl} alt="포스팅 이미지" />}
         </Link>
@@ -120,7 +121,7 @@ export function PostListItem({ post }) {
             <img src={redHeartIcon} alt='하트 아이콘' />
             <span>{likeNum}</span>
           </button>
-          <Link to={`/post/detail`} state={{ selectedPost: post }} >
+          <Link to={`/post/detail`} state={{ selectedPost: post }}>
             <img src={commentIcon} alt='댓글 개수' />
             <span>1</span>
           </Link>
