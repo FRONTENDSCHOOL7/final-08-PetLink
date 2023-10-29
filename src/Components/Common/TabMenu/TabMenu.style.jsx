@@ -28,7 +28,7 @@ export const NavLink = styled(Link)`
     transition: 0.1s ease-in-out;
     padding: 12px 0 5px;
 
-    &:hover
+    &:hover,
     &.active {
         background-color: #004E98;
         cursor: pointer;
