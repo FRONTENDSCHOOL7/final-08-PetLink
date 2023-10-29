@@ -1,35 +1,5 @@
 import styled from "styled-components"
 
-export const Header = styled.header`
-  width: 100%;
-  height: 48px;
-  /* padding: 0 16px; */
-  box-sizing: border-box;
-  border-bottom: 1px solid #DBDBDB;
-  display: flex;
-  justify-content: space-between;
-`
-
-export const HeaderButton = styled.button`
-  width: 48px;
-  height: 48px;
-
-  img {
-    width: 22px;
-    height: 22px;
-    object-fit: cover;
-  }
-`
-
-export const Overlay = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.3);
-  z-index: 1000;
-`
 
 export const ChatRoomContents = styled.div`
   display: flex;
@@ -57,10 +27,10 @@ export const ChatMessage = styled.p`
   font-size: 14px;
   max-width: 240px;
   padding: 12px;
-  border: 1px solid #C4C4C4;
+  border: ${ props => props.hasImage ? "none" : "1px solid #C4C4C4"};
   border-radius: ${props => props.radius || "0"};
-  background-color: ${props => props.isFirst ? "#transparent" : "#004E98"};
-  color: ${props => props.isFirst ? "initial" : "white"};
+  background-color: ${props => props.hasImage ? "#transparent" : (props.isFirst ? "#transparent" : "#004E98")};
+  color: ${props => props.isFirst && !props.hasImage ? "initial" : "white"};
 `
 
 export const ChatTime = styled.span`
@@ -110,6 +80,16 @@ export const ChatInput = styled.input`
 export const SendBtn = styled.button`
   width: 65px;
   flex-shrink: 0;
-  color: ${props => props.$active ? "#C4C4C4" : "004E98"};
-  font-size: 14px;
+  color: ${props => props.$active ? "#004E98" : "#C4C4C4" };
+  font-size: 16px;
+`
+
+export const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 10;
 `

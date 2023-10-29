@@ -42,12 +42,25 @@ const ChatContents = styled.p`
   justify-content: space-between;
 `
 
-export function ChatItem({id, imgSrc, nickname, content, date}) {
+const UnreadIndicator = styled.div`
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: red;
+  position: absolute;
+  top: 0;
+  left: 0;
+`
+
+export function ChatItem({id, imgSrc, nickname, content, date, unread, onRead}) {
 
   return(
-    <StyledLink to={`/chatroom/${id}`}>
+    <StyledLink to={`/chatroom/${id}`} onClick={()=> onRead()}>
       <ChatList>
-        <img src={imgSrc} alt={`${nickname}의 프로필 이미지`} />
+        <div style={{position: "relative"}}>
+          <img src={imgSrc} alt={`${nickname}의 프로필 이미지`} />
+          {unread && <UnreadIndicator />}
+        </div>
         <ChatListTxt>
           <h2>{nickname}</h2>
           <ChatContents>
