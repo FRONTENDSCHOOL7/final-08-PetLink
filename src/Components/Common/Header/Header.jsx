@@ -53,29 +53,3 @@ export default function HeaderLayouts(props){
         </S.HeaderLayout>
       );
     }
-
-
-  // export function DetailHeader(props){
-  //   return(
-  //       <S.HeaderLayout>
-  //           <S.HeaderButton onClick={props.goBack}><img src={backIcon} alt='뒤로가기' />
-  //           </S.HeaderButton>
-  //           <S.HeaderButton ><img src={searchIcon} aria-label='검색하기' />
-  //           </S.HeaderButton>
-  //       </S.HeaderLayout>
-  //   )
-  // }
-
-  // export function LogoHeader(){
-  //   return(
-  
-  //       <S.HeaderLayout>
-  //          <img src={logoTxt} alt='반결고리 로고' width={75} height={21} />
-  //           <S.HeaderButton ><img src={searchIcon} aria-label='검색하기' />
-  //           </S.HeaderButton>
-  //       </S.HeaderLayout>
-  
-  //   )
-  // }
-
-

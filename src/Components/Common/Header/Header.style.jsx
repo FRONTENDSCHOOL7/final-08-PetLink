@@ -61,7 +61,7 @@ export const SearchInput = styled.input`
   font-size: 14px;
   cursor: pointer;
     
-  &:focus{
+  &:focus {
     border: 1px solid #004e98 ;
   }
 `
