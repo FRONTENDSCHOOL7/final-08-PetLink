@@ -81,7 +81,7 @@ export default function ChatRoom() {
                       <img 
                         src={message.img} 
                         alt="첨부 이미지" 
-                        style={{ maxWidth: '100%', maxHeight: '240px', display: 'block', marginTop: '10px', objectFit: 'contain'}}
+                        style={{ maxWidth: '240px', maxHeight: '240px', display: 'block', marginTop: '10px', objectFit: 'contain'}}
                       />
                     )}
                   </ChatMessage>
@@ -98,7 +98,7 @@ export default function ChatRoom() {
                       <img 
                         src={message.img} 
                         alt="첨부 이미지" 
-                        style={{ maxWidth: '100%', maxHeight: '240px', display: 'block', marginTop: '10px', objectFit: 'contain'}}
+                        style={{ maxWidth: '240px', maxHeight: '240px', display: 'block', marginTop: '10px', objectFit: 'contain'}}
                       />
                     )}
                 </>
