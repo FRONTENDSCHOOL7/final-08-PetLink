@@ -22,25 +22,28 @@ export default function TabMenu() {
   ];
 
   const shouldShowNavbar = !hideNavBarPaths.includes(location.pathname);
+  const getNavLinkClass = path => {
+    return location.pathname === path ? 'active' : "";
+  }
 
   return (
     <>
       <GlobalStyle/>
       {shouldShowNavbar && (
         <Nav >
-          <NavLink to='/home' >
+          <NavLink to='/home' className={getNavLinkClass('/home')}>
             <NavImg src={HomeIcon} />
             <NavText >홈</NavText>
           </NavLink>
-          <NavLink to="/community" >
+          <NavLink to="/community" className={getNavLinkClass('/community')}>
             <NavImg src={CommunityIcon} />
             <NavText>커뮤니티</NavText>
           </NavLink>
-          <NavLink to="/market" >
+          <NavLink to="/market" className={getNavLinkClass('/market')}>
             <NavImg src={MarketIcon} />
             <NavText >반결장터</NavText>
           </NavLink>
-          <NavLink to="/chat" >
+          <NavLink to="/chat" className={getNavLinkClass('/chat')}>
             <NavImg src={ChatIcon} />
             <NavText >채팅</NavText>
           </NavLink>

@@ -2,6 +2,7 @@ import React from 'react'
 import *as S from './Header.style'
 import backIcon from '../../../assets/image/icon-arrow-left.png'
 import searchIcon from '../../../assets/image/icon-search.png'
+import moreBtn from '../../../assets/image/icon-more-vertical.png'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 
@@ -22,9 +23,9 @@ export default function HeaderLayouts(props){
             </S.HeaderButton>
           )}
           {props.search && (
-            <Link to='/search' >
-              <S.SearchImg src={searchIcon} alt="검색하기" />
-            </Link>
+            <S.StyledLink to='/search'>
+              <img src={searchIcon} alt="검색하기" />
+            </S.StyledLink>
           )}
             {props.searchInput && (
             <>
@@ -33,14 +34,22 @@ export default function HeaderLayouts(props){
             </>
           )}
             {props.backTxt && (
-            <S.HeaderFollowButton onClick={handleBack}>
-              <img src={backIcon} alt="뒤로가기" />
-              <h3>{props.txt}</h3>
-            </S.HeaderFollowButton>
+            <S.HeaderBackTxtContainer>
+              <S.HeaderBackTxt>
+                <S.HeaderBackBtn onClick={handleBack}>
+                  <img src={backIcon} alt="뒤로가기" />
+                </S.HeaderBackBtn>
+                <S.HeaderTxt>
+                  <h3>{props.txt}</h3>
+                </S.HeaderTxt>
+              </S.HeaderBackTxt>
+              {props.onModalToggle && (
+              <S.HeaderMoreBtn onClick={props.onModalToggle}>
+                <img src={moreBtn} alt="모달 열기" />
+              </S.HeaderMoreBtn>
               )}
+            </S.HeaderBackTxtContainer>
+            )}
         </S.HeaderLayout>
       );
     }
-
-
-
