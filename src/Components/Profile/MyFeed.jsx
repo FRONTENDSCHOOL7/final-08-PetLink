@@ -5,62 +5,101 @@ import BottomModal from '../Common/Modal/BottomModal';
 import moreIcon from '../../assets/image/icon-more-vertical.png';
 import HeartIcon from '../../assets/image/icon-heart.png';
 import userImg from '../../assets/image/icon-basic-profile.png';
-import allbumIcon from '../../assets/image/icon-post-album-on.png';
-import listIcon from '../../assets/image/icon-post-list-off.png';
+import onAllbumIcon from '../../assets/image/icon-post-album-on.png';
+import offAllbumIcon from '../../assets/image/icon-post-album-off.png';
+import onListIcon from '../../assets/image/icon-post-list-on.png';
+import offListIcon from '../../assets/image/icon-post-list-off.png';
 import commentIcon from '../../assets/image/icon-comment.png';
 import { Container } from '../../Styles/reset.style';
 
 const MyFeed = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isAlbumActive, setIsAlbumActive] = useState(true);
+    const [isListActive, setIsListActive] = useState(false);
+
+    const toggleAlbum = () => {
+        setIsAlbumActive(true);
+        setIsListActive(false);
+      };
+
+      const toggleList = () => {
+        setIsAlbumActive(false);
+        setIsListActive(true);
+      };
   return (
     <Container>
         <Layer>
-        <viewBtn><BtnImg src={allbumIcon} alt="" /></viewBtn>
-        <viewBtn><BtnImg src={listIcon} alt="" /></viewBtn>
+        <viewBtn  active={isAlbumActive} onClick={toggleAlbum}><BtnImg src={isAlbumActive ? onAllbumIcon : offAllbumIcon} alt="" /></viewBtn>
+        <viewBtn active={isListActive} onClick={toggleList}><BtnImg src={isListActive ? onListIcon : offListIcon} alt="" /></viewBtn>
         </Layer>
-         <UserInfo>
-        <UserProfile>
-            <UserImg src={userImg} alt='사용자 프로필 이미지' />
-          <UserName>
-            <NameTxt>username</NameTxt>
-            <UserId>accountname</UserId>
-          </UserName>
-        </UserProfile>
-        <MoreBtn >
-          <IconMore src={moreIcon} alt='수정/삭제' />
-        </MoreBtn>
-      </UserInfo>
 
-      {/* 컨텐츠 내용 */}
-      <ContentBox>
-          <ContentTxt className='text'>content</ContentTxt>
-          <ContentImg src="https://via.placeholder.com/304x228 " alt="포스팅 이미지" />
-        <IconBox>
-          <IconBtn >
-            <IconBtnImg src={HeartIcon} alt='하트 아이콘' />
-            <IconCount>0</IconCount>
-          </IconBtn>
-          <IconBtn >
-            <IconBtnImg src={commentIcon} alt='댓글 개수' />
-            <IconCount>1</IconCount>
-            </IconBtn >
-         </IconBox>
-        <PostDate>date</PostDate>
-      </ContentBox>
+        {isAlbumActive &&
+        <>
+             <UserInfo>
+            <UserProfile>
+                <UserImg src={userImg} alt='사용자 프로필 이미지' />
+              <UserName>
+                <NameTxt>username</NameTxt>
+                <UserId>accountname</UserId>
+              </UserName>
+            </UserProfile>
+            <MoreBtn >
+              <IconMore src={moreIcon} onClick={()=>setIsModalOpen(true)} />
+            </MoreBtn>
+          </UserInfo>
+    
+          <ContentBox>
+              <ContentTxt className='text'>content</ContentTxt>
+              <ContentImg src="https://via.placeholder.com/304x228 " alt="포스팅 이미지" />
+            <IconBox>
+              <IconBtn >
+                <IconBtnImg src={HeartIcon} alt='하트 아이콘' />
+                <IconCount>0</IconCount>
+              </IconBtn>
+              <IconBtn >
+                <IconBtnImg src={commentIcon} alt='댓글 개수' />
+                <IconCount>1</IconCount>
+                </IconBtn >
+             </IconBox>
+            <PostDate>date</PostDate>
+          </ContentBox>
+        </>
+      }
+
+{/* 앨범형 리스트로 보기 */}
+
+ {isListActive && (
+        <ListImages>
+          {Array(15).fill().map((_, index) => (
+            <ListImage
+              key={index}
+              src={`https://via.placeholder.com/114x114?text=Image ${index + 1}`}
+              alt={`Image ${index + 1}`}
+            />
+          ))}
+        </ListImages>
+      )}
 
       {/* 신고하기 모달 창 */}
       {isModalOpen && (
         <>
           <Overlay onClick={() => setIsModalOpen(false)} />
-          <BottomModal reportTxt={["신고"]} setIsModalOpen={setIsModalOpen} />
+          <BottomModal setIsModalOpen={setIsModalOpen} reportTxt={["수정", "삭제"]} />
         </>
       )}
     </Container>
   )
 }
 
+
 export default MyFeed
 
+
+//앨범형
+
+
+
+// 스타일 컴포넌트
 export const Layer = styled.div`
     height: 44px;
     margin-top:27px ;
@@ -151,6 +190,7 @@ export const IconBox = styled.div`
     display: flex;
     align-items: center;
     justify-content: start; 
+    margin-top: 10px;
     gap: 17px;
 `
 export const IconBtn = styled.button`
@@ -173,5 +213,17 @@ export const PostDate = styled.div`
   margin-top: 16px;
 `;
 
+// 앨범형 스타일
 
+const ListImages = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin:16px;
+`;
 
+const ListImage = styled.img`
+  width: 114px;
+  height: 114px;
+  object-fit: cover;
+`;
