@@ -29,13 +29,14 @@ const MyFeed = () => {
   return (
     <Container>
         <Layer>
-        <viewBtn  active={isAlbumActive} onClick={toggleAlbum}><BtnImg src={isAlbumActive ? onAllbumIcon : offAllbumIcon} alt="" /></viewBtn>
-        <viewBtn active={isListActive} onClick={toggleList}><BtnImg src={isListActive ? onListIcon : offListIcon} alt="" /></viewBtn>
+            <viewBtn  active={isAlbumActive} onClick={toggleAlbum}><BtnImg src={isAlbumActive ? onAllbumIcon : offAllbumIcon} alt="" /></viewBtn>
+            <viewBtn active={isListActive} onClick={toggleList}><BtnImg src={isListActive ? onListIcon : offListIcon} alt="" /></viewBtn>
         </Layer>
 
+{/* 리스트형 */}
         {isAlbumActive &&
         <>
-             <UserInfo>
+          <UserInfo>
             <UserProfile>
                 <UserImg src={userImg} alt='사용자 프로필 이미지' />
               <UserName>
@@ -80,7 +81,7 @@ const MyFeed = () => {
         </ListImages>
       )}
 
-      {/* 신고하기 모달 창 */}
+{/* 신고하기 모달 창 */}
       {isModalOpen && (
         <>
           <Overlay onClick={() => setIsModalOpen(false)} />
