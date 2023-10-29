@@ -12,6 +12,7 @@ import MarketPage from '../Pages/MarketPage/Market';
 import ProductDetail from '../Components/Product/ProductDetail';
 import ProfilePage from '../Pages/ProfilePage/Profile';
 import FollowPage from '../Pages/FollowPage/FollowList';
+import FollowingPage from '../Pages/FollowPage/FollowingList';
 import ErrorPage from '../Pages/ErrorPage/Error404';
 import SplashPage from '../Pages/Splashpage/Splash';
 import PostDetail from '../Components/Home/PostDetail';
@@ -41,6 +42,7 @@ export default function Router() {
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/profile/edit" element={<ProfileEdit />} />
         <Route path="/follow" element={<FollowPage />} />
+        <Route path="/following" element={<FollowingPage />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>
     </BrowserRouter>

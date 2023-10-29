@@ -1,186 +1,287 @@
-import { useState } from "react"
-import { useNavigate } from 'react-router-dom';
-import { Modal, Wrapper, FormWrapper, Logo, Input, Button } from '../../Components/Join/JoinPage.style';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { GlobalStyle, Container } from "../../Styles/reset.style"
+import {
+    FormWrapper,
+    Button,
+    Modal,
+    ModalContent,
+    CloseButton,
+    TitleWrap,
+    SubmitButton,
+    PetInfo,
+    Styledpetinfo
+} from "../../Components/Join/JoinPage.style";
+import { LoginTitleWrap, SubmitButton as LoginSubmitButton, InputField, StyledInput, FieldLabel } from "../../Components/Login/LoginForm.style"
+import * as DropdownComponents from "../../Components/Profile/Dropdown";
 
 
-const JoinPage = ()=>{
-    const navigate = useNavigate();
-    const [username, setUsername] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [accountname, setAccountname] = useState("");
-    const [imgSrc, setImgSrc] = useState("https://api.mandarin.weniv.co.kr/Ellipse.png")
-    const [info, setInfo] = useState("");
-    const [currentPage, setCurrentPage] = useState("join");
-    const [showModal, setShowModal] = useState(false);
+const JoinPage = () => {
+  const navigate = useNavigate();
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [accountname, setAccountname] = useState("");
+  const [intro, setIntro] = useState("");
+  const [imgSrc, setImgSrc] = useState(
+    "https://api.mandarin.weniv.co.kr/Ellipse.png"
+  );
+  const [info, setInfo] = useState("");
+  const [currentPage, setCurrentPage] = useState("join");
+  const [showModal, setShowModal] = useState(false);
+//   const [intro, setIntro] = useState("");
+  const [pet, setPet] = useState("");
+  const [gender, setGender] = useState("");
+  const [birthdate, setBirthdate] = useState("");
+  const [location, setLocation] = useState("");
 
-    const goToProfilePage = () => {
-        setCurrentPage("profile");
+  const goToProfilePage = () => {
+    setCurrentPage("profile");
+  };
+
+  const join = async (joinData) => {
+    const reqUrl = "https://api.mandarin.weniv.co.kr/user/";
+    const res = await fetch(reqUrl, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(joinData),
+    });
+    const json = await res.json();
+
+    if (res.status === 422) {
+      alert(json.message);
+    } else {
+      console.log(json);
+    }
+
+    return res;
+  };
+
+  const inputUsername = (e) => {
+    setUsername(e.target.value);
+  };
+  const inputEmail = (e) => {
+    setEmail(e.target.value);
+  };
+  const inputPassword = (e) => {
+    setPassword(e.target.value);
+  };
+  const inputAccountname = (e) => {
+    setAccountname(e.target.value);
+  };
+  const inputInfo = (e) => {
+    setInfo(e.target.value);
+  };
+
+
+  const uploadImage = async (imageFile) => {
+    const baseUrl = "https://api.mandarin.weniv.co.kr/";
+    const reqUrl = baseUrl + "image/uploadfile";
+    const form = new FormData();
+    form.append("image", imageFile);
+    const res = await fetch(reqUrl, {
+      method: "POST",
+      body: form,
+    });
+    const json = await res.json();
+    const imageUrl = baseUrl + json.filename;
+    setImgSrc(imageUrl);
+  };
+  const handleChangeImage = (e) => {
+    const imageFile = e.target.files[0];
+    uploadImage(imageFile);
+  };
+
+  const handleIntroChange = () => {
+    const hashtags = [
+      `#intro:${intro}`,
+      `#pet:${pet}`,
+      `#gender:${gender}`,
+      `#birthdate:${birthdate}`,
+      `#location:${location}`,
+    ];
+    setInfo(hashtags.join(" "));
+  };
+
+  const submitJoin = () => {
+    if (!isValidProfile()) {
+      return;
+    }
+
+    const joinData = {
+      user: {
+        username: username,
+        email: email,
+        password: password,
+        accountname: accountname,
+        intro: info,
+        image: imgSrc,
+      },
     };
 
-    const join = async (joinData) => {
-        const reqUrl = "https://api.mandarin.weniv.co.kr/user/";
-        const res = await fetch(reqUrl, {
-            method: "POST",
-            headers: {
-                "Content-type": "application/json"
-            },
-            body: JSON.stringify(joinData)
-        });
-        const json = await res.json();
-    
-        if (res.status === 422) { // 상태 코드가 422인 경우
-            alert(json.message); // 오류 메시지를 알림
-        } else {
-            console.log(json);
-        }
+    join(joinData).then((response) => {
+      if (response && response.status !== 422) {
+        setShowModal(true);
+      }
+    });
+  };
 
-        return res;
-    };
-    
-    const inputUsername = (e)=>{
-        setUsername(e.target.value);
-    }
-    const inputEmail = (e)=>{
-        setEmail(e.target.value);
-    }
-    const inputPassword = (e)=>{
-        setPassword(e.target.value);
-    }
-    const inputAccountname = (e)=>{
-        setAccountname(e.target.value);
-    }
-    const inputInfo = (e) =>{
-        setInfo(e.target.value);
-    }
+  const isValidEmailAndPassword = () => {
+    return email.includes("@") && password.length >= 8;
+  };
 
-    const uploadImage = async (imageFile)=>{
-        const baseUrl = "https://api.mandarin.weniv.co.kr/"
-        const reqUrl = baseUrl+"image/uploadfile";
-        // 폼데이터 만들기
-        const form = new FormData();
-        // 폼데이터에 값 추가하기
-        // 폼데이터.append("키","값")
-        form.append("image", imageFile);
-        // 폼바디에 넣어서 요청하기
-        const res = await fetch(reqUrl,{
-            method:"POST",
-            body:form
-        });
-        const json = await res.json();
-        console.log(baseUrl+json.filename);
-        const imageUrl = baseUrl+json.filename;
-        setImgSrc(imageUrl);
-    }
-    const handleChangeImage = (e)=>{
-        // 파일 가져오기
-        const imageFile = e.target.files[0];
-        uploadImage(imageFile);        
-    }
+  const isValidProfile = () => {
+    return username.length >= 2 && accountname.length >= 2;
+  };
 
-    const submitJoin = () => {
-        if (!isValidProfile()) {
-            return;
-        }
-    
-        const joinData = {
-            user: {
-                username: username,
-                email: email,
-                password: password,
-                accountname: accountname,
-                intro: info,
-                image: imgSrc
-            }
-        };
-    
-        join(joinData).then((response) => {
-            if (response && response.status !== 422) { // 상태 코드가 422가 아닌 경우
-                setShowModal(true); // 환영 메시지를 표시
-            }
-        });
-    };
-    
+  return (
+    <>
+    <Container>
+    <GlobalStyle/>
 
-    const isValidEmailAndPassword = () => {
-        // Add your email and password validation logic here
-        return email.includes('@') && password.length >= 8;
-    };
-
-    const isValidProfile = () => {
-        // Add your username and accountname validation logic here
-        return username.length >= 2 && accountname.length >= 2;
-    };
-
-    return (
-        <>
-            {/* <button type="button" onClick={handlePage}>로그인페이지로 돌아가기</button> */}
-    
-            <Wrapper>
         <FormWrapper>
-            <Logo>이메일 회원가입</Logo>
+          <TitleWrap>이메일 회원가입</TitleWrap>
+
+          {currentPage === "join" && (
+            <>
+                      <InputField>
+            <FieldLabel>이메일</FieldLabel>
+            <StyledInput
+              type="email"
+              placeholder="이메일 주소를 입력해 주세요."
+              value={email}
+              onChange={inputEmail}
+            />
+          </InputField>
+          <InputField>
+            <FieldLabel>비밀번호</FieldLabel>
+            <StyledInput
+              type="password"
+              placeholder="비밀번호 입력해주세요."
+              value={password}
+              onChange={inputPassword }
+            />
+          </InputField> 
+              <SubmitButton
+                type="button"
+                onClick={goToProfilePage}
+                disabled={!isValidEmailAndPassword()}
+              >
+                다음
+              </SubmitButton>
+            </>
+          )}
+
+          {currentPage === "profile" && (
+            <>
+            <InputField>
+            <FieldLabel>활동명</FieldLabel>
+            <StyledInput
+            type="text"
+            placeholder="2 ~ 10자 이내여야 합니다."
+            value={username}
+            onChange={inputUsername}
+            />
+            </InputField>
             
-            {/* Email and Password Section */}
-            {currentPage === "join" && (
-                <>
-                    <Input 
-                        type="email" 
-                        placeholder="Email" 
-                        value={email} 
-                        onChange={inputEmail} 
-                    />
-                    <Input 
-                        type="password" 
-                        placeholder="Password" 
-                        value={password} 
-                        onChange={inputPassword} 
-                    />
-                    <Button type="button" onClick={goToProfilePage} disabled={!isValidEmailAndPassword()}>
-                        Next
-                    </Button>
-                </>
-            )}
+            <InputField>
+            <FieldLabel>계정 ID</FieldLabel>
+            <StyledInput
+            type="text"
+            placeholder="영문, 숫자, 특수문자(.),(_)만 사용 가능합니다."
+            value={accountname}
+            onChange={inputAccountname}
+            />
+            </InputField>
 
-            {/* Profile Information Section */}
-            {currentPage === "profile" && (
-                <>
-                    <Input 
-                        type="text" 
-                        placeholder="Username" 
-                        value={username} 
-                        onChange={inputUsername} 
-                    />
-                    <Input 
-                        type="text" 
-                        placeholder="Account Name" 
-                        value={accountname} 
-                        onChange={inputAccountname} 
-                    />
-                    <Input 
-                        type="text" 
-                        placeholder="Introduction" 
-                        value={info} 
-                        onChange={inputInfo} 
-                    />
-                    <Button type="button" onClick={submitJoin} disabled={!isValidProfile()}>
-                        Join
-                    </Button>
-                </>
-            )}
+            <InputField>
+            <FieldLabel>상태메시지</FieldLabel>
+            <StyledInput
+            type="text"
+            placeholder="자신의 반려동물에 대해 소개해 주세요!"
+            value={info}
+            onChange={inputInfo}
+            />
+            </InputField>
 
-            {/* Conditional Modal Display */}
-            {showModal && (
-                <Modal>
-                    <h2>반결고리에 오신것을 환영합니다!</h2>
-                    <Button type="button" onClick={() => navigate('/login')}> 
-                        Login
-                    </Button>
-                </Modal>
-            )}
+            <PetInfo>
+            <Styledpetinfo>반려동물 정보등록</Styledpetinfo>
+            <div>
+              <label>반려동물</label>
+              <DropdownComponents.DropdownSelect
+                value={pet}
+                onChange={(e) => {
+                  setPet(e.target.value);
+                  handleIntroChange();
+                }}
+                options={DropdownComponents.petOptions}
+              />
+            </div>
+
+            <div>
+              <label>성별</label>
+              <DropdownComponents.DropdownSelect
+                value={gender}
+                onChange={(e) => {
+                  setGender(e.target.value);
+                  handleIntroChange();
+                }}
+                options={DropdownComponents.genderOptions}
+              />
+            </div>
+
+            <div>
+              <label>생일</label>
+              <input
+                type="date"
+                value={birthdate}
+                onChange={(e) => {
+                  setBirthdate(e.target.value);
+                  handleIntroChange();
+                }}
+              />
+            </div>
+
+            <div>
+              <label>위치</label>
+              <DropdownComponents.DropdownSelect
+                value={location}
+                onChange={(e) => {
+                  setLocation(e.target.value);
+                  handleIntroChange();
+                }}
+                options={DropdownComponents.locationOptions}
+              />
+            </div>
+          </PetInfo>
+
+            <SubmitButton
+                type="button"
+                onClick={submitJoin}
+                disabled={!isValidProfile()}
+            >
+                반결고리 시작하기
+            </SubmitButton>
+            </>
+        )}
+
+          {showModal && (
+            <Modal>
+              <ModalContent>
+                <TitleWrap>반결고리에 오신것을 환영합니다!</TitleWrap>
+                <Button type="button" onClick={() => navigate("/login")}>
+                  로그인
+                </Button>
+                <CloseButton>&times;</CloseButton>
+              </ModalContent>
+            </Modal>
+          )}
         </FormWrapper>
-    </Wrapper>
+    </Container>
     </>
-    );
-}
+  );
+};
 
-export default JoinPage
+export default JoinPage;

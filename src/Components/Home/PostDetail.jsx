@@ -34,7 +34,7 @@ export default function PostDetail(props) {
           {isModalOpen && (
             <>
               <Overlay onClick={() => setIsModalOpen(false)} />
-              <BottomModal />
+              <BottomModal reportTxt={["신고"]} setIsModalOpen={setIsModalOpen} />
             </>
       )}
       </Container>
