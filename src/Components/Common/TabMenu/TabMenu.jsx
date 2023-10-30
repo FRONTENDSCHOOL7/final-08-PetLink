@@ -47,8 +47,8 @@ export default function TabMenu() {
             <NavImg src={ChatIcon} />
             <NavText >채팅</NavText>
           </NavLink>
-          <NavLink to="/profile" >
-            <NavImg src={UserIcon} />
+          <NavLink to="/profile" className={getNavLinkClass('/profile')}>
+            <NavImg src={UserIcon}/>
             <NavText >프로필</NavText>
           </NavLink>
         </Nav>
