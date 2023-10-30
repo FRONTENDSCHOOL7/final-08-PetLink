@@ -214,23 +214,23 @@ function Community() {
             </MyLocation>
             <IconShareInfoMap src={currentMapImage} alt="지도 이미지" />
           </ShareInfoMap>
-          {combinedFilteredPosts.map((post, index) => (
-            <ShareInfoPost key={index}>
-              <Link to="/community/detail">
-              <IconUserProfile src={post.profileImage} alt="user-profile" />
-                <PostTitle>
-                  <h2>{JSON.parse(post.content).title}</h2>
-                  <PostSubTxt>
-                    <p>{post.author.username}</p>
-                    <PostReaction>
-                      <p>좋아요 {post.heartCount}</p>
-                      <p>댓글 {post.comments.length}</p>
-                    </PostReaction>
-                  </PostSubTxt>
-                </PostTitle>
-              </Link>
-            </ShareInfoPost>
-          ))}
+          {posts.map((post, index) => (
+              <ShareInfoPost key={index}>
+                <Link to="/community/detail">
+                  <IconUserProfile src={post.author.image} alt="user-profile" />
+                  <PostTitle>
+                    <h2>{JSON.parse(post.content).title}</h2>
+                    <PostSubTxt>
+                      <p>{post.author.username}</p>
+                      <PostReaction>
+                        <p>좋아요 {post.heartCount}</p>
+                        <p>댓글 {post.comments.length}</p>
+                      </PostReaction>
+                    </PostSubTxt>
+                  </PostTitle>
+                </Link>
+              </ShareInfoPost>
+            ))}
           <BtnAdd onClick={handleBtnAddClick}>
             <img src={addBtn} alt="추가버튼" />
           </BtnAdd>
