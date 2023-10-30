@@ -14,20 +14,19 @@ export default function Market() {
   const [activeBtn, setActiveBtn] = useState('강아지');
   const [products, setProducts] = useState([]);
   const {accountname} = useParams(); // Url에서 accountname 파라미터 추출
-
+  console.log("render")
   useEffect(() => {
     const fetchProducts = async () => {
       const token = localStorage.getItem('token');
       try {
-        const res = await axios.get(`https://api.mandarin.weniv.co.kr/products/${accountname}`, {
+        const res = await axios.get(`https://api.mandarin.weniv.co.kr/product/${accountname}`, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
           },
         });
 
-        const productsData = res.data.product || []
-        
+        const productsData = res.data.product;
         const productsWithCategory = productsData.map(product => ({
           ...product,
           category: determineCategory(product)
@@ -36,10 +35,10 @@ export default function Market() {
       } catch(error) {
         console.error(error);
       }
+
     }
-    if(accountname) {
-      fetchProducts();
-    }
+    fetchProducts();
+    
   },[accountname]);
 
   const determineCategory = (product) => {
