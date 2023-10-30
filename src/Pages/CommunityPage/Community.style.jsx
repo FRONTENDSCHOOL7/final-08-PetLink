@@ -90,6 +90,7 @@ export const ShareInfoPost = styled.article`
 
 export const IconUserProfile = styled.img`
   margin-right: 12px;
+  border-radius: 42px;
   width: 42px;
   height: 42px;
 `;
