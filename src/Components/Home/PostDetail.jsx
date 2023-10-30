@@ -10,11 +10,10 @@ import BottomModal from '../Common/Modal/BottomModal';
 import redHeartIcon from '../../assets/image/icon-heart-red.png';
 import commentIcon from '../../assets/image/icon-comment.png';
 
-export default function PostDetail() {
+export default function PostDetail(props) {
   const [likeNum, setLikeNum] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [comment, setComment] = useState(''); 
-
   const location = useLocation();
   const { selectedPost } = location.state;
 
@@ -22,22 +21,56 @@ export default function PostDetail() {
     return <div>게시글을 불러오는 중...</div>;
   }
 
+  // 게시글 작성 함수
+  const postComment = async () => {
+    try {
+      const response = await fetch('https://api.mandarin.weniv.co.kr/post', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          post: {
+            content: comment,
+            image: '',  // 이미지 URL을 이곳에 추가 (이미지가 없다면 빈 문자열)
+          },
+        }),
+      });
+      
+      if (response.status === 200) {
+        // 게시 성공
+        const data = await response.json();
+        // 새로운 게시물 정보를 사용하거나 처리할 수 있습니다.
+        console.log('게시 성공:', data);
+      } else {
+        // 게시 실패
+        console.error('게시 실패');
+      }
+    } catch (error) {
+      console.error('에러:', error);
+    }
+  };
+  const onChangeModal = () => {
+    setIsModalOpen(true);
+  };
+
   return (
     <Container>
       <HeaderLayouts back search />
       <S.UserInfo>
         <S.UserProfile>
-          <img src={profileIcon} alt='사용자 프로필 이미지' />
+          <img src={selectedPost.author?.image} alt='사용자 프로필 이미지' />
           <S.UserName>
             <p>{selectedPost.author?.username}</p>
             <p>{selectedPost.author?.accountname}</p>
           </S.UserName>
         </S.UserProfile>
+          <button onClick={onChangeModal}><S.IconMore src={moreIcon}/></button>
       </S.UserInfo>
       <S.Content>
         <p className='text'>{selectedPost.content}</p>
         {selectedPost.image && <img src={selectedPost.image} alt="포스팅 이미지" />}
-      </S.Content>
       <S.PostIcons>
         <button onClick={() => setLikeNum(prev => prev + 1)}>
           <img src={redHeartIcon} alt='좋아요 버튼' />
@@ -45,20 +78,23 @@ export default function PostDetail() {
         </button>
         <button onClick={() => setIsModalOpen(true)}>
           <img src={commentIcon} alt='댓글 개수' />
+          <span>0</span>
         </button>
       </S.PostIcons>
+      </S.Content>
       {isModalOpen && (
         <>
           <Overlay onClick={() => setIsModalOpen(false)} />
           <BottomModal reportTxt={["신고"]} setIsModalOpen={setIsModalOpen} />
         </>
       )}
+      <CommentList  onChangeModal={onChangeModal}/>
       <WriteComment comment={comment} setComment={setComment} />
     </Container>
   );
 }
 
-export function CommentList({ onChangeModal }) {
+export function CommentList(props) {
   return (
     <S.CommentBox>
       <S.UserInfo>
@@ -68,7 +104,7 @@ export function CommentList({ onChangeModal }) {
           </a>
           <p>서귀포시 무슨 농장 <span>· 5분 전</span></p>
         </div>
-        <button onClick={onChangeModal}>
+        <button onClick={props.onChangeModal}>
           <img src={moreIcon} alt='신고하기 모달창 불러오기' />
         </button>
       </S.UserInfo>

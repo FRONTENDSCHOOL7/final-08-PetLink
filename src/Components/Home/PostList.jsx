@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import * as S from "./PostList.style";
 import moreIcon from "../../assets/image/icon-more-vertical.png";
 import redHeartIcon from "../../assets/image/icon-heart-red.png";
+import heartIcon from "../../assets/image/icon-heart.png";
 import commentIcon from "../../assets/image/icon-comment.png";
 import TabMenu from "../Common/TabMenu/TabMenu";
 import { Container } from "../../Styles/reset.style";
@@ -59,7 +60,7 @@ export default function PostList(props) {
             <PostListItem
               post={post}
               onProfileClick={() => navigate(`/profile/${post.author._id}`)}
-            />
+              onChangeModal={props.onChangeModal} />
           </div>
         ))}
       </Container>
@@ -77,6 +78,7 @@ export function PostListItem({ post }) {
   const [content, setContent] = useState("");
   const [likeNum, setLikeNum] = useState(0);
   const [date, setDate] = useState("");
+  const [liked, setLiked] = useState(false);
   const navigate = useNavigate();
 
   const handlePostClick = (post) => {
@@ -93,11 +95,20 @@ export function PostListItem({ post }) {
       setContentImgUrl(post.image || "");
       setContent(post.content || "");
       setDate(post.createdAt || "");
+      setLikeNum(post.likes || 0); // 초기 좋아요 수 설정
+      setLiked(post.liked || false); // 사용자의 좋아요 상태 설정
     }
   }, [post]);
-  console.log();
-  const onChangeNum = () => {
-    setLikeNum(likeNum + 1);
+
+  const handleLikeClick = async () => {
+    // API 호출 또는 데이터 업데이트를 수행하도록 변경해야 합니다.
+    // 이 예제에서는 liked 상태만 토글하여 시뮬레이션합니다.
+    if (liked) {
+      setLikeNum(likeNum - 1);
+    } else {
+      setLikeNum(likeNum + 1);
+    }
+    setLiked(!liked);
   };
 
   const onChangeModal = () => {
@@ -130,8 +141,8 @@ export function PostListItem({ post }) {
           {contentImgUrl && <img src={contentImgUrl} alt="포스팅 이미지" />}
         </Link>
         <S.PostIcons>
-          <button onClick={onChangeNum}>
-            <img src={redHeartIcon} alt="하트 아이콘" />
+          <button onClick={handleLikeClick}>
+            <img  src={liked ? redHeartIcon : heartIcon} alt="하트 아이콘" />
             <span>{likeNum}</span>
           </button>
           <Link to={`/post/detail/${post._id}`} state={{ selectedPost: post }}>
