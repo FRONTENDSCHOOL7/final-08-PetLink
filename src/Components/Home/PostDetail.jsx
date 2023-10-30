@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import * as S from '../Home/PostList.style';
 import moreIcon from '../../assets/image/icon-more-vertical.png';
@@ -17,6 +17,11 @@ export default function PostDetail(props) {
   const location = useLocation();
   const { selectedPost } = location.state;
 
+  const onChangeModal = () => {
+    setIsModalOpen(true);
+  };
+
+
   if (!selectedPost) {
     return <div>게시글을 불러오는 중...</div>;
   }
@@ -33,16 +38,17 @@ export default function PostDetail(props) {
         body: JSON.stringify({
           post: {
             content: comment,
-            image: '',  // 이미지 URL을 이곳에 추가 (이미지가 없다면 빈 문자열)
+            image:selectedPost.author?.image || '',  // 이미지 URL을 이곳에 추가 (이미지가 없다면 빈 문자열)
           },
         }),
       });
-      
+
       if (response.status === 200) {
         // 게시 성공
         const data = await response.json();
         // 새로운 게시물 정보를 사용하거나 처리할 수 있습니다.
         console.log('게시 성공:', data);
+        setComment('')
       } else {
         // 게시 실패
         console.error('게시 실패');
@@ -50,9 +56,6 @@ export default function PostDetail(props) {
     } catch (error) {
       console.error('에러:', error);
     }
-  };
-  const onChangeModal = () => {
-    setIsModalOpen(true);
   };
 
   return (
@@ -88,36 +91,107 @@ export default function PostDetail(props) {
           <BottomModal reportTxt={["신고"]} setIsModalOpen={setIsModalOpen} />
         </>
       )}
-      <CommentList  onChangeModal={onChangeModal}/>
-      <WriteComment comment={comment} setComment={setComment} />
+      <CommentList  
+        onChangeModal={onChangeModal}
+        userImage={selectedPost.author?.image}
+        username={selectedPost.author?.username}
+        date={selectedPost.date}
+        comment={comment}
+      />
+      <WriteComment 
+      comment={comment} 
+      setComment={setComment}
+       postComment={postComment} />
     </Container>
   );
 }
 
 export function CommentList(props) {
+  if (!props.comment) {
+    return null; // Do not render if there's no comment
+  }
   return (
     <S.CommentBox>
       <S.UserInfo>
         <div>
           <a href='#'>
-            <img src={profileIcon} alt='사용자 프로필 이미지' />
+            <img src={props.userImage || profileIcon} alt='사용자 프로필 이미지' />
           </a>
-          <p>서귀포시 무슨 농장 <span>· 5분 전</span></p>
+          <p>{props.username} <span>· {props.date}</span></p>
         </div>
         <button onClick={props.onChangeModal}>
           <img src={moreIcon} alt='신고하기 모달창 불러오기' />
         </button>
       </S.UserInfo>
-      <S.CommentTxt>게시글 답글 ~~ !! 최고최고</S.CommentTxt>
+      <S.CommentTxt>{props.comment}</S.CommentTxt>
     </S.CommentBox>
   );
 }
 
-export function WriteComment({ comment, setComment }) {
+export function WriteComment({ comment, setComment,postComment  }) {
+  const [accountname, setAccountName] = useState("");
+  const [username, setUserName] = useState("");
+  const [userImg, setUserImg] = useState(null);
+useEffect(()=>{
+  fetchMyProfile()
+},[])
+
+
+  const fetchMyProfile = async () => {
+    try {
+      const response = await fetch(`https://api.mandarin.weniv.co.kr/user/myinfo`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-type": "application/json",
+        },
+      });
+      const data = await response.json();
+console.log(data)
+      if (data) {
+        setAccountName(data.user.accountname || "");
+        setUserName(data.user.username || "");
+        setUserImg(
+          data.user.image || "https://api.mandarin.weniv.co.kr/Ellipse.png"
+        );
+      } 
+    } catch (error) {
+      console.error("에러:", error);
+    }
+  };
+
+
+const handlePostComment = async ()=>{
+  try{
+    const response = await fetch("https://api.mandarin.weniv.co.kr/post",{
+      method: "POST",
+      headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-type": "application/json",
+      },
+      body:JSON.stringify({
+        post: {
+          content: comment,
+          image: userImg, // 사용자 이미지
+        },
+      })
+    })
+
+    if(response.status === 200){
+      const data = await response.json()
+      console.log('게시성공:', data)
+    }else{
+      console.log('게시 실패')
+    }
+  }catch(error){
+    console.log('에러', error)
+  }
+}
+
   return (
     <S.InputForm>
       <div>
-        <img src={profileIcon} alt="사용자 프로필" />
+        <img src={userImg} alt="사용자 프로필" />
         <input 
           type="text" 
           id="comment-input" 
@@ -126,7 +200,12 @@ export function WriteComment({ comment, setComment }) {
           value={comment || ''} 
         />
       </div>
-      <button type="submit" disabled={!comment || comment.trim().length === 0}>게시</button>
+      <button
+      type="submit" 
+      disabled={!comment || comment.trim().length === 0}
+      onClick={postComment}
+      >게시</button>
     </S.InputForm>
   );
 }
+

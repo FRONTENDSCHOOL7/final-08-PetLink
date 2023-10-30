@@ -137,7 +137,7 @@ export function PostListItem({ post }) {
 
       <S.Content>
         <Link to={`/post/${post._id}`} state={{ selectedPost: post }}>
-          <p className="text">{content}</p>
+          <p>{content}</p>
           {contentImgUrl && <img src={contentImgUrl} alt="포스팅 이미지" />}
         </Link>
         <S.PostIcons>
