@@ -49,6 +49,11 @@ export const InputTitle = styled.p`
   font-size: 12px;
 `
 
+export const Required = styled.span`
+  color: red;
+  font-size: 12px;
+`
+
 export const InputImg = styled.div`
   width: 100%;
   height: 204px; // 사이즈 고려
@@ -91,7 +96,7 @@ export const AddImgBtn = styled.button`
   }
 `
 
-export const AddTxtForm = styled.form`
+export const AddTxtForm = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
