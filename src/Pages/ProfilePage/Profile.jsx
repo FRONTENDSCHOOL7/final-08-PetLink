@@ -17,6 +17,7 @@ import {
     BtnGrop,
     ProfileContainer
 } from '../../Components/Profile/Profile.style';
+import MyFeed from '../../Components/Profile/MyFeed';
 
 const ProfilePage = () => {
     const [profileData, setProfileData] = useState(null);
