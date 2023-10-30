@@ -95,7 +95,6 @@ const ProfilePage = () => {
                     <Button>상품 등록</Button>
             </BtnGrop>
         </ProfileContainer>
-        <MyFeed/>
         </Container>
         <TabMenu/>
         </>

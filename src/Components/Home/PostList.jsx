@@ -1,20 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
+import { Link, useNavigate } from 'react-router-dom';
 import * as S from './PostList.style';
 import moreIcon from '../../assets/image/icon-more-vertical.png';
 import redHeartIcon from '../../assets/image/icon-heart-red.png';
 import commentIcon from '../../assets/image/icon-comment.png';
-import { Link, useNavigate } from 'react-router-dom';
 import TabMenu from '../Common/TabMenu/TabMenu';
 import { Container } from '../../Styles/reset.style';
 import HeaderLayouts from '../Common/Header/Header';
 import { Overlay } from '../Product/ProductDetail.style';
 import BottomModal from '../Common/Modal/BottomModal';
 
+function formatDate(dateString) {
+  const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+  return new Date(dateString).toLocaleDateString(undefined, options);
+}
+
 export default function PostList(props) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [posts, setPosts] = useState([]);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchPostList();
@@ -26,32 +30,32 @@ export default function PostList(props) {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
-          "Content-type": "application/json"
+          'Content-type': 'application/json',
         },
       });
       const data = await response.json();
-console.log(data)
+
       if (data.posts) {
         setPosts(data.posts);
-      }else{
-        setPosts([])
+      } else {
+        setPosts([]);
       }
     } catch (error) {
       console.error('에러:', error);
     }
   };
-const handlePostClick = (post)=>{
-  // setSelectedPost(post)
-  navigate(`/post/${post._id}`);
-}
+
+  const handlePostClick = (post) => {
+    navigate(`/post/${post._id}`);
+  };
 
   return (
     <>
       <Container>
         <HeaderLayouts title="반결고리" logo={true} search />
         {posts.map((post, index) => (
-          <div key={index} onClick={() => handlePostClick(post)}>
-            <PostListItem post={post} />
+          <div key={index} >
+            <PostListItem post={post} onProfileClick={() => navigate(`/profile/${post.author._id}`)} />
           </div>
         ))}
       </Container>
@@ -69,22 +73,23 @@ export function PostListItem({ post }) {
   const [content, setContent] = useState('');
   const [likeNum, setLikeNum] = useState(0);
   const [date, setDate] = useState('');
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const handlePostClick = (post)=>{
-    navigate(`/post/${post._id}`);
-  }
+  // const handlePostClick = (post) => {
+  //   navigate(`/post/${post._id}`);
+  // };
+
   useEffect(() => {
-    if(post){
-    setAccountName(post.author.accountname || '');
-    setUserName(post.author.username || '');
-    setUserImg(post.author.image || 'https://api.mandarin.weniv.co.kr/Ellipse.png');
-    setContentImgUrl(post.image || '');
-    setContent(post.content || '');
-    setDate(post.createdAt || '');
-  }
+    if (post) {
+      setAccountName(post.author.accountname || '');
+      setUserName(post.author.username || '');
+      setUserImg(post.author.image || 'https://api.mandarin.weniv.co.kr/Ellipse.png');
+      setContentImgUrl(post.image || '');
+      setContent(post.content || '');
+      setDate(post.createdAt || '');
+    }
   }, [post]);
-
+console.log()
   const onChangeNum = () => {
     setLikeNum(likeNum + 1);
   };
@@ -97,8 +102,8 @@ export function PostListItem({ post }) {
     <>
       <S.UserInfo>
         <S.UserProfile>
-        <Link to={`/post/detail`} state={{ selectedPost: post }}>
-            <img src={userImg} alt='사용자 프로필 이미지' />
+          <Link to={`/profile/${post.author.accountname}`} state={{ selectedPost: post }}>
+            <img src={userImg} alt="사용자 프로필 이미지" />
           </Link>
           <S.UserName>
             <p>{username}</p>
@@ -106,30 +111,28 @@ export function PostListItem({ post }) {
           </S.UserName>
         </S.UserProfile>
         <button onClick={onChangeModal}>
-          <S.IconMore src={moreIcon} alt='신고하기 모달창 불러오기' />
+          <S.IconMore src={moreIcon} alt="신고하기 모달창 불러오기" />
         </button>
       </S.UserInfo>
 
-      {/* 컨텐츠 내용 */}
       <S.Content>
-      <Link to={`/post/detail`} state={{ selectedPost: post }}>
-          <p className='text'>{content}</p>
+        <Link to={`/post/detail/${post._id}`}  state={{ selectedPost: post }}>
+          <p className="text">{content}</p>
           {contentImgUrl && <img src={contentImgUrl} alt="포스팅 이미지" />}
         </Link>
         <S.PostIcons>
-          <button onClick={()=>setLikeNum(likeNum+1)}>
-            <img src={redHeartIcon} alt='하트 아이콘' />
+          <button onClick={onChangeNum}>
+            <img src={redHeartIcon} alt="하트 아이콘" />
             <span>{likeNum}</span>
           </button>
-          <Link to={`/post/detail`} state={{ selectedPost: post }}>
-            <img src={commentIcon} alt='댓글 개수' />
+          <Link to={`/post/detail/${post._id}`}   state={{ selectedPost: post }}>
+            <img src={commentIcon} alt="댓글 개수" />
             <span>1</span>
           </Link>
         </S.PostIcons>
-        <S.PostDate>{date}</S.PostDate>
+        <S.PostDate>{formatDate(date)}</S.PostDate>
       </S.Content>
 
-      {/* 신고하기 모달 창 */}
       {isModalOpen && (
         <>
           <Overlay onClick={() => setIsModalOpen(false)} />
@@ -139,4 +142,3 @@ export function PostListItem({ post }) {
     </>
   );
 }
-

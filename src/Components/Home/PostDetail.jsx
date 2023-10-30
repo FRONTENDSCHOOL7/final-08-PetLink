@@ -16,7 +16,7 @@ import axios from 'axios';
 export default function PostDetail() {
   const [likeNum, setLikeNum] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [comment, setComment] = useState('');
+  const [comment, setComment] = useState(''); 
    // useLocation을 사용하여 현재 위치 정보를 가져옵니다.
    const location = useLocation();
    const selectedPost = location.state.selectedPost;
@@ -27,38 +27,35 @@ export default function PostDetail() {
   };
 
 
-  const sendCommentToServer = async (commentContent, token) => {
-    try {
-      const apiUrl = `https://api.mandarin.weniv.co.kr/post/${selectedPost.id}/comments`;
-      const headers = {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json; charset=utf-8', // 문자 인코딩 지정
-      };
-      const commentData = {
-        comment: {
-          content: commentContent,
-        },
-      };
+  // const sendCommentToServer = async (commentContent, token) => {
+  //   try {
+  //     const apiUrl = `https://api.mandarin.weniv.co.kr/post/${selectedPost.id}/comments`;
+  //     const headers = {
+  //       'Authorization': `Bearer ${localStorage.getItem('token')}`,
+  //       'Content-Type': 'application/json; charset=utf-8', // 문자 인코딩 지정
+  //     };
+  //     const commentData = {
+  //       comment: {
+  //         content: commentContent,
+  //       },
+  //     };
 
-      const response = await axios.post(apiUrl, JSON.stringify(commentData), { headers });
+  //     const response = await axios.post(apiUrl, JSON.stringify(commentData), { headers });
 
-      if (response.status === 200) {
-        console.log('댓글이 성공적으로 서버로 전송되었습니다.');
-      } else {
-        console.error('댓글 서버로 전송 중 오류:', response.data);
-      }
-    } catch (error) {
-      console.error('댓글 서버로 전송 중 오류:', error);
-    }
-  };
+  //     if (response.status === 200) {
+  //       console.log('댓글이 성공적으로 서버로 전송되었습니다.');
+  //     } else {
+  //       console.error('댓글 서버로 전송 중 오류:', response.data);
+  //     }
+  //   } catch (error) {
+  //     console.error('댓글 서버로 전송 중 오류:', error);
+  //   }
+  // };
 
-  const submitComment = (e) => {
-    e.preventDefault();
-    sendCommentToServer(comment, '여기에 토큰'); // 토큰을 적절히 제공해야 합니다.
-  };
-
-
-
+  // const submitComment = (e) => {
+  //   e.preventDefault();
+  //   sendCommentToServer(comment, `Bearer ${localStorage.getItem('token')}`); // 토큰을 적절히 제공해야 합니다.
+  // };
 
 
 
@@ -97,7 +94,7 @@ export default function PostDetail() {
               <BottomModal reportTxt={["신고"]} setIsModalOpen={setIsModalOpen} />
             </>
       )}
-      <WriteComment comment={comment} setComment={setComment} submitComment={submitComment} />
+      <WriteComment  comment={comment} setComment={setComment}/>
       </Container>
     )
   }
