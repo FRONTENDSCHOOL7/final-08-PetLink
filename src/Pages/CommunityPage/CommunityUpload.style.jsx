@@ -93,7 +93,7 @@ export const CategoryContainer = styled.div`
   flex-direction: row;
   align-items: center;
   gap: 10px;
-  margin-bottom: 43px;
+  margin-bottom: 30px;
   color:#767676;
 `;
 
