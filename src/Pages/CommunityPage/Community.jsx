@@ -1,25 +1,47 @@
-import React from 'react';
-import { useState } from 'react'
-import { GlobalStyle, Container } from '../../Styles/reset.style'
-import { CommunityCategory, IconMapMark, IconShareInfoMap, IconUserProfile, MyLocation, PostReaction, PostSubTxt, PostTitle, ShareInfoMap, ShareInfoPost, BtnAdd } from './Community.style';
+import React, { useState, useEffect } from 'react';
+import { GlobalStyle, Container } from '../../Styles/reset.style';
+import { 
+  CommunityCategory, IconMapMark, IconShareInfoMap, IconUserProfile,
+  MyLocation, PostReaction, PostSubTxt, PostTitle, ShareInfoMap, ShareInfoPost,
+  BtnAdd 
+} from './Community.style';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import TabMenu from '../../Components/Common/TabMenu/TabMenu';
 import HeaderLayouts from '../../Components/Common/Header/Header';
+import axios from 'axios';
 
-
-import iconMap from '../../assets/image/icon-map.png'
+import iconMap from '../../assets/image/icon-map.png';
 import shareInfoMap from '../../assets/image/img-share-info-map.png';
 import walkingCrewMap from '../../assets/image/img-walking-crew-map.png';
 import missingReportMap from '../../assets/image/img-missing-report-map.png';
 import userProfile from '../../assets/image/icon-basic-profile.png';
 import userProfile2 from '../../assets/image/icon-test-user-profile.png';
 import userProfile3 from '../../assets/image/icon-test-user-profile2.png';
-import addBtn from '../../assets/image/icon-add.png'
+import addBtn from '../../assets/image/icon-add.png';
 
-export default function CommunityPage() {
+function Community() {
   const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState('정보 공유');
+  const [posts, setPosts] = useState([]);
+  useEffect(() => {
+    const fetchPosts = async () => {
+      const token = localStorage.getItem('token');
+      try {
+        const res = await axios.get('https://api.mandarin.weniv.co.kr/post', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+        setPosts(res.data.posts);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    
+    fetchPosts();
+  }, []);
 
   const handleBtnAddClick = () => {
     navigate('/community/upload');
@@ -129,13 +151,13 @@ export default function CommunityPage() {
   };
 
   const currentContent = contentData[activeCategory];
+  const filteredPosts = posts.filter(post => post.category === activeCategory);
 
   return (
     <>
       <GlobalStyle />
       <Container>
-      <HeaderLayouts title="커뮤니티" logo={true} search />
-
+        <HeaderLayouts title="커뮤니티" logo={true} search />
         <main>
           <CommunityCategory>
           <button className={activeCategory === '정보 공유' ? 'active' : ''} 
@@ -149,10 +171,7 @@ export default function CommunityPage() {
           
           <button className={activeCategory === '실종 신고' ? 'active' : ''}
           onClick={() => setActiveCategory('실종 신고')}>실종 신고</button>
-
-
           </CommunityCategory>
-
           <ShareInfoMap>
             <MyLocation>
               <IconMapMark src={iconMap} alt="위치표시" />
@@ -160,11 +179,10 @@ export default function CommunityPage() {
             </MyLocation>
             <IconShareInfoMap src={currentContent.mapImage} alt="지도 이미지" />
           </ShareInfoMap>
-
-          {currentContent.posts.map((post, index) => (
+          {filteredPosts.map((post, index) => (
             <ShareInfoPost key={index}>
               <Link to="/community/detail">
-                <IconUserProfile src={post.profileImage} alt="user-profile" />
+              <IconUserProfile src={post.profileImage} alt="user-profile" />
                 <PostTitle>
                   <h2>{post.title}</h2>
                   <PostSubTxt>
@@ -177,14 +195,15 @@ export default function CommunityPage() {
                 </PostTitle>
               </Link>
             </ShareInfoPost>
-            
           ))}
-            <BtnAdd onClick={handleBtnAddClick}>
-              <img src={addBtn} alt="추가버튼" />
-            </BtnAdd>
+          <BtnAdd onClick={handleBtnAddClick}>
+            <img src={addBtn} alt="추가버튼" />
+          </BtnAdd>
         </main>
       </Container>
       <TabMenu />
     </>
   );
 }
+
+export default Community;
