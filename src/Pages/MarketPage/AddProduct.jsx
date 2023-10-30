@@ -1,19 +1,45 @@
-import React, { useEffect, useState } from 'react'
-import { Header, HeaderButton, DetailContainer, SaveButton, AddImg, InputTitle, InputImg, AddImgBtn, ProductInfo, AddTxtForm, Required } from './AddProduct.style'
-import { GlobalStyle, Container } from '../../Styles/reset.style'
-import { useNavigate } from 'react-router-dom'
-import backBtn from '../../assets/image/icon-arrow-left.png'
-import imgBtn from '../../assets/image/icon-img-button.png'
-import axios from 'axios'
-import { CategoryContainer } from '../CommunityPage/CommunityUpload.style'
+import React, { useEffect, useState } from "react";
+import {
+  Header,
+  HeaderButton,
+  DetailContainer,
+  SaveButton,
+  AddImg,
+  InputTitle,
+  InputImg,
+  AddImgBtn,
+  ProductInfo,
+  AddTxtForm,
+  Required,
+} from "./AddProduct.style";
+import { GlobalStyle, Container } from "../../Styles/reset.style";
+import { useNavigate } from "react-router-dom";
+import backBtn from "../../assets/image/icon-arrow-left.png";
+import imgBtn from "../../assets/image/icon-img-button.png";
+import axios from "axios";
+import { CategoryContainer } from "../CommunityPage/CommunityUpload.style";
 
-function ProductInput({title, isRequired, placeholder, type = "text", value, onChange}) {
+function ProductInput({
+  title,
+  isRequired,
+  placeholder,
+  type = "text",
+  value,
+  onChange,
+}) {
   return (
     <ProductInfo>
-      <InputTitle>{title} {isRequired && <Required>*</Required>}</InputTitle>
-      <input type={type} placeholder={placeholder} value={value} onChange={onChange}/>
+      <InputTitle>
+        {title} {isRequired && <Required>*</Required>}
+      </InputTitle>
+      <input
+        type={type}
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+      />
     </ProductInfo>
-  )
+  );
 }
 
 export default function AddProduct() {
@@ -24,10 +50,12 @@ export default function AddProduct() {
   const [category, setCategory] = useState("");
   const [isActive, setIsActive] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
-  
-  useEffect(()=> {
-    setIsActive(!!(imageUrl && isValidProductName(productName) && price && productLink))
-  }, [imageUrl, productName, price, productLink])
+
+  useEffect(() => {
+    setIsActive(
+      !!(imageUrl && isValidProductName(productName) && price && productLink)
+    );
+  }, [imageUrl, productName, price, productLink]);
 
   const handleImgChange = async (e) => {
     const file = e.target.files[0];
@@ -35,24 +63,29 @@ export default function AddProduct() {
     formData.append("image", file);
 
     try {
-      const res = await axios.post('https://api.mandarin.weniv.co.kr/image/uploadfile', formData, {
-        headers: {
-          "Content-type" : "multipart/form-data"
+      const res = await axios.post(
+        "https://api.mandarin.weniv.co.kr/image/uploadfile",
+        formData,
+        {
+          headers: {
+            "Content-type": "multipart/form-data",
+          },
         }
-      })
+      );
 
       let filename = res.data.filename;
-      const baseUrl = 'https://api.mandarin.weniv.co.kr/';
+      const baseUrl = "https://api.mandarin.weniv.co.kr/";
       const fullPath = baseUrl + filename;
-      setImageUrl(fullPath)
-    } catch(err) {
+      setImageUrl(fullPath);
+    } catch (err) {
       console.error(err);
     }
   };
 
-  const isValidProductName = (name) => { // 상품명 2~15자 이내 조건
-    return name.length >=2 && name.length <= 15;
-  }
+  const isValidProductName = (name) => {
+    // 상품명 2~15자 이내 조건
+    return name.length >= 2 && name.length <= 15;
+  };
 
   const handleSaveProduct = async () => {
     if (!isActive) {
@@ -65,45 +98,64 @@ export default function AddProduct() {
     }
 
     const token = localStorage.getItem("token");
-    const productData = {
+
+    // itemName과 category를 결합하여 JSON 문자열로 만듭니다.
+    const itemNameData = {
       itemName: productName,
+      category: category,
+    };
+
+    const productData = {
+      itemName: JSON.stringify(itemNameData),
       price: Number(price),
       link: productLink,
       itemImage: imageUrl,
-      category: category
-    }
+    };
 
     try {
-      const res = await axios.post('https://api.mandarin.weniv.co.kr/product', {
-        product: productData,
-      }, {
-        headers: {
-          Authorization : `Bearer ${token}`,
-          "Content-type" : "application/json"
+      const res = await axios.post(
+        "https://api.mandarin.weniv.co.kr/product",
+        {
+          product: productData,
         },
-      });
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-type": "application/json",
+          },
+        }
+      );
 
       console.log(res.data);
-      navigate('/market');
+      navigate("/market");
     } catch (error) {
       console.error(error);
-      alert("상품 등록에 실패했습니다.")
+      alert("상품 등록에 실패했습니다.");
     }
   };
 
   return (
     <>
-      <GlobalStyle/>
+      <GlobalStyle />
       <Container>
         <Header>
-          <HeaderButton onClick={()=>navigate(-1)}><img src={backBtn} alt="" /></HeaderButton>
-          <SaveButton $active={isActive} onClick={handleSaveProduct}>저장</SaveButton>
+          <HeaderButton onClick={() => navigate(-1)}>
+            <img src={backBtn} alt="" />
+          </HeaderButton>
+          <SaveButton $active={isActive} onClick={handleSaveProduct}>
+            저장
+          </SaveButton>
           {/* '$' 접두사 사용 이유 => "이 속성은 HTML 태그에 존재하지 않지만 스타일을 위해 임시로만 사용하겠다"는 의미 */}
         </Header>
         <DetailContainer>
           <CategoryContainer>
-            <InputTitle>카테고리 <Required>*</Required></InputTitle>
-            <select value={category} onChange={e => setCategory(e.target.value)}>
+            <InputTitle>
+              카테고리 <Required>*</Required>
+            </InputTitle>
+            <select
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+            >
               <option value="">선택</option>
               <option value="dogs">강아지</option>
               <option value="cats">고양이</option>
@@ -111,13 +163,11 @@ export default function AddProduct() {
             </select>
           </CategoryContainer>
           <AddImg>
-            <InputTitle>이미지 등록 <Required>*</Required></InputTitle>
+            <InputTitle>
+              이미지 등록 <Required>*</Required>
+            </InputTitle>
             <InputImg img={imageUrl}>
-              <input 
-                type="file" 
-                id='imgUpload'
-                onChange={handleImgChange}
-              />
+              <input type="file" id="imgUpload" onChange={handleImgChange} />
               <AddImgBtn>
                 <label htmlFor="imgUpload">
                   <img src={imgBtn} alt="사진 추가 버튼" />
@@ -126,31 +176,31 @@ export default function AddProduct() {
             </InputImg>
           </AddImg>
           <AddTxtForm>
-            <ProductInput 
-              title="상품명" 
+            <ProductInput
+              title="상품명"
               isRequired={true}
               placeholder="2~15자 이내여야 합니다."
               value={productName}
-              onChange={e=>setProductName(e.target.value)}
+              onChange={(e) => setProductName(e.target.value)}
             />
-            <ProductInput 
-              title="가격" 
+            <ProductInput
+              title="가격"
               isRequired={true}
-              placeholder="숫자만 입력 가능합니다." 
+              placeholder="숫자만 입력 가능합니다."
               type="number"
               value={price}
-              onChange={e=>setPrice(e.target.value)}
+              onChange={(e) => setPrice(e.target.value)}
             />
-            <ProductInput 
-              title="판매 링크" 
+            <ProductInput
+              title="판매 링크"
               isRequired={true}
               placeholder="URL을 입력해 주세요."
               value={productLink}
-              onChange={e=>setProductLink(e.target.value)}
+              onChange={(e) => setProductLink(e.target.value)}
             />
           </AddTxtForm>
         </DetailContainer>
       </Container>
     </>
-  )
+  );
 }
