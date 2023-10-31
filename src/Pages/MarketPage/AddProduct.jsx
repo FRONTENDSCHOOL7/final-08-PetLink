@@ -70,7 +70,7 @@ export default function AddProduct() {
 
     const token = localStorage.getItem("token"); // 로컬스토리지에서 사용자 토큰 가져오기
     const productData = {
-      itemName: productName,
+      itemName: productName ,
       price: Number(price),
       link: productLink,
       itemImage: imageUrl,
