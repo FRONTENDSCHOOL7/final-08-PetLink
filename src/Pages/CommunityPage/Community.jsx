@@ -25,6 +25,15 @@ function Community() {
   const [activeCategory, setActiveCategory] = useState('정보 공유');
   const [posts, setPosts] = useState([]);
 
+  const isValidJSON = (str) => {
+    try {
+        JSON.parse(str);
+        return true;
+    } catch (e) {
+        return false;
+    }
+};
+
   useEffect(() => {
     const fetchPosts = async () => {
       const token = localStorage.getItem('token');
@@ -35,15 +44,30 @@ function Community() {
             'Content-Type': 'application/json',
           },
         });
-        console.log(res.data.posts)
-        setPosts(res.data.posts);
+
+        console.log("All fetched posts:", res.data.posts);
+
+        const filteredPosts = res.data.posts.filter(post => {
+          // JSON 유효성 검사
+          if (!isValidJSON(post.content)) {
+            console.warn("Invalid JSON detected:", post.content);
+            return false;
+          }
+        
+          const postContent = JSON.parse(post.content); 
+          // 필터링 조건을 명확하게
+          return post.author.intro.includes('intro:반결고리') && postContent.category === activeCategory;
+        });
+
+        console.log("Filtered posts:", filteredPosts);
+        setPosts(filteredPosts);
       } catch (err) {
         console.error(err);
       }
     };
-    
+
     fetchPosts();
-  }, []);
+  }, [activeCategory]);
 
   const handleBtnAddClick = () => {
     navigate('/community/upload');
@@ -161,9 +185,9 @@ function Community() {
 
   const currentMapImage = mapImages[activeCategory];
   const filteredPostsFromAPI = posts.filter(post => post.category === activeCategory);
-
   const combinedFilteredPosts = filteredPostsFromAPI;
 
+  
   return (
     <>
       <GlobalStyle />
@@ -190,23 +214,23 @@ function Community() {
             </MyLocation>
             <IconShareInfoMap src={currentMapImage} alt="지도 이미지" />
           </ShareInfoMap>
-          {combinedFilteredPosts.map((post, index) => (
-            <ShareInfoPost key={index}>
-              <Link to="/community/detail">
-              <IconUserProfile src={post.profileImage} alt="user-profile" />
-                <PostTitle>
-                  <h2>{post.title}</h2>
-                  <PostSubTxt>
-                    <p>{post.author}</p>
-                    <PostReaction>
-                      <p>좋아요 {post.likes}</p>
-                      <p>댓글 {post.comments}</p>
-                    </PostReaction>
-                  </PostSubTxt>
-                </PostTitle>
-              </Link>
-            </ShareInfoPost>
-          ))}
+          {posts.map((post, index) => (
+              <ShareInfoPost key={index}>
+                <Link to="/community/detail">
+                  <IconUserProfile src={post.author.image} alt="user-profile" />
+                  <PostTitle>
+                    <h2>{JSON.parse(post.content).title}</h2>
+                    <PostSubTxt>
+                      <p>{post.author.username}</p>
+                      <PostReaction>
+                        <p>좋아요 {post.heartCount}</p>
+                        <p>댓글 {post.comments.length}</p>
+                      </PostReaction>
+                    </PostSubTxt>
+                  </PostTitle>
+                </Link>
+              </ShareInfoPost>
+            ))}
           <BtnAdd onClick={handleBtnAddClick}>
             <img src={addBtn} alt="추가버튼" />
           </BtnAdd>
