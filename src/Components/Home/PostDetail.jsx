@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import * as S from '../Home/PostList.style';
 import moreIcon from '../../assets/image/icon-more-vertical.png';
-import profileIcon from '../../assets/image/icon-basic-profile.png';
 import { Container } from '../../Styles/reset.style';
 import HeaderLayouts from '../Common/Header/Header';
 import { Overlay } from '../Product/ProductDetail.style';
@@ -12,6 +11,7 @@ import commentIcon from '../../assets/image/icon-comment.png';
 import CommentList, { WriteComment } from './CommentList';
 
 export default function PostDetail(props) {
+  const defaultUserImg = "https://api.mandarin.weniv.co.kr/1698653743844.jpg";
   const [likeNum, setLikeNum] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [comment, setComment] = useState(''); 
@@ -19,6 +19,10 @@ export default function PostDetail(props) {
   const location = useLocation();
   const { selectedPost } = location.state;
 
+  const reportOptions = [
+    {action: "신고하기", alertText: "신고하시겠습니까?"},
+  ]
+  
   const onChangeModal = () => {
     setIsModalOpen(true);
   };
@@ -40,7 +44,7 @@ export default function PostDetail(props) {
       <HeaderLayouts back search />
       <S.UserInfo>
         <S.UserProfile>
-          <img src={selectedPost.author?.image || "https://api.mandarin.weniv.co.kr/Ellipse.png"} alt='사용자 프로필 이미지' />
+          <img src={selectedPost.author?.image || defaultUserImg} alt='사용자 프로필 이미지' />
           <S.UserName>
             <p>{selectedPost.author?.username}</p>
             <p>{selectedPost.author?.accountname}</p>
@@ -65,7 +69,7 @@ export default function PostDetail(props) {
       {isModalOpen && (
         <>
           <Overlay onClick={() => setIsModalOpen(false)} />
-          <BottomModal reportTxt={["신고"]} setIsModalOpen={setIsModalOpen} />
+          <BottomModal reportOptions={["신고하기"]} setIsModalOpen={setIsModalOpen} />
         </>
       )}
       <CommentList
@@ -83,75 +87,3 @@ export default function PostDetail(props) {
     </Container>
   );
 }
-
-// export function CommentList(props) {
-//   if (!props.comment) {
-//     return null; // Do not render if there's no comment
-//   }
-//   return (
-//     <S.CommentBox>
-//       <S.UserInfo>
-//         <div>
-//           <a href='#'>
-//             <img src={props.userImage || profileIcon} alt='사용자 프로필 이미지' />
-//           </a>
-//           <p>{props.username} <span>· {props.date}</span></p>
-//         </div>
-//         <button onClick={props.onChangeModal}>
-//           <img src={moreIcon} alt='신고하기 모달창 불러오기' />
-//         </button>
-//       </S.UserInfo>
-//       <S.CommentTxt>{props.comment}</S.CommentTxt>
-//     </S.CommentBox>
-//   );
-// }
-
-// export function WriteComment({ comment, setComment, handlePostComment }) {
-//   const [userImg, setUserImg] = useState(null);
-
-//   useEffect(() => {
-//     fetchMyProfile();
-//   }, []);
-
-//   const fetchMyProfile = async () => {
-//     try {
-//       const response = await fetch(`https://api.mandarin.weniv.co.kr/user/myinfo`, {
-//         method: "GET",
-//         headers: {
-//           Authorization: `Bearer ${localStorage.getItem("token")}`,
-//           "Content-type": "application/json",
-//         },
-//       });
-//       const data = await response.json();
-
-//       if (data) {
-//         setUserImg(
-//           data.user.image || "https://api.mandarin.weniv.co.kr/Ellipse.png"
-//         );
-//       }
-//     } catch (error) {
-//       console.error("에러:", error);
-//     }
-//   };
-
-//   return (
-//     <S.InputForm>
-//       <div>
-//         <img src={userImg} alt="사용자 프로필" />
-//         <input
-//           type="text"
-//           placeholder="댓글 입력하기..."
-//           onChange={(e) => setComment(e.target.value)}
-//           value={comment || ''}
-//         />
-//       </div>
-//       <button
-//         type="submit"
-//         disabled={!comment || comment.trim().length === 0}
-//         onClick={handlePostComment} // 게시 버튼을 클릭할 때만 handlePostComment 함수 호출
-//       >
-//         게시
-//       </button>
-//     </S.InputForm>
-//   );
-// }

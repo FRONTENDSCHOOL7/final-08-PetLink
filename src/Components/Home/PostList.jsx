@@ -20,7 +20,7 @@ export default function PostList(props) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [posts, setPosts] = useState([]);
   const navigate = useNavigate();
-
+  
   useEffect(() => {
     fetchPostList();
   }, []);
@@ -70,6 +70,7 @@ export default function PostList(props) {
 }
 
 export function PostListItem({ post }) {
+  const defaultUserImg = "https://api.mandarin.weniv.co.kr/1698653743844.jpg";
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [accountname, setAccountName] = useState("");
   const [username, setUserName] = useState("");
@@ -79,19 +80,25 @@ export function PostListItem({ post }) {
   const [likeNum, setLikeNum] = useState(0);
   const [date, setDate] = useState("");
   const [liked, setLiked] = useState(false);
+  const reportOptions = [
+    {action: "신고하기", alertText: "신고하시겠습니까?"},
+  ]
+  
+  
   const navigate = useNavigate();
+
 
   const handlePostClick = (post) => {
     navigate(`/post/${post._id}`);
   };
 
   useEffect(() => {
-    if (post) {
+    console.log(post);
+    if (post.author.intro && post.author.intro.includes("#bangyeolgori")) {
       setAccountName(post.author.accountname || "");
       setUserName(post.author.username || "");
       setUserImg(
-        post.author.image || "https://api.mandarin.weniv.co.kr/Ellipse.png"
-      );
+        post.author.image);
       setContentImgUrl(post.image || "");
       setContent(post.content || "");
       setDate(post.createdAt || "");
@@ -101,8 +108,6 @@ export function PostListItem({ post }) {
   }, [post]);
 
   const handleLikeClick = async () => {
-    // API 호출 또는 데이터 업데이트를 수행하도록 변경해야 합니다.
-    // 이 예제에서는 liked 상태만 토글하여 시뮬레이션합니다.
     if (liked) {
       setLikeNum(likeNum - 1);
     } else {
@@ -123,7 +128,7 @@ export function PostListItem({ post }) {
             to={`/profile/${post.author.accountname}`}
             state={{ selectedPost: post }}
           >
-            <img src={userImg} alt="사용자 프로필 이미지" />
+            <img src={userImg || defaultUserImg} alt="사용자 프로필 이미지" />
           </Link>
           <S.UserName>
             <p>{username}</p>
@@ -156,7 +161,7 @@ export function PostListItem({ post }) {
       {isModalOpen && (
         <>
           <Overlay onClick={() => setIsModalOpen(false)} />
-          <BottomModal reportTxt={["신고"]} setIsModalOpen={setIsModalOpen} />
+          <BottomModal reportOptions={["신고하기"]} setIsModalOpen={setIsModalOpen} />
         </>
       )}
     </>
