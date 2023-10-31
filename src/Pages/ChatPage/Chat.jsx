@@ -40,9 +40,9 @@ export default function Chat() {
           {chatData.map(chat => (
             <Link to={{
               pathname: `/chatroom/${chat.id}`,
-              state: {imgSrc: chat.imgSrc, nickname: chat.nickname, content: chat.content}
-            }} key={chat.id}
-            >
+              state: {chat: chatData}
+            }} key={chat.id}>
+              {console.log("Link data", chat)}
               <ChatItem {...chat} onRead={()=>handleReadMsg(chat.id)}/>
             </Link>
           ))}
