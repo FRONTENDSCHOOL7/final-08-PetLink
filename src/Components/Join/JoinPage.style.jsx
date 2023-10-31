@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import uploadIcon from '../../assets/image/icon-img-button.png';
 
 export const Wrapper = styled.div`
     display: flex;
@@ -70,10 +71,11 @@ export const CloseButton = styled.span`
 `;
 
 export const TitleWrap = styled.div`
-  font-size: 30px;
-  margin-bottom: 20px;
-  text-align: center;
-  padding-top: 50px;
+  display: flex;
+  justify-content: center;
+  font-size: 24px;
+  color: black;
+  padding-top: 20px
 `;
 
 export const SubmitButton = styled.button`
@@ -121,9 +123,44 @@ export const FieldLabel = styled.label`
 `;
 
 export const PetInfo = styled.div`
-font-size: 14px;
+  font-size: 14px;
+  margin: 20px;
+  gap: 30px;
 `;
 
 export const Styledpetinfo = styled.h2`
 font-size: 14px;
+`;
+
+export const ImageWrap = styled.label`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+`;
+
+export const ImageUpbtn = styled.label`
+    position: absolute;
+    bottom: 18px;
+    right: 140px;
+    width: 30px;
+    height: 30px;
+    background-image: url(${uploadIcon});
+    background-size: cover;
+    cursor: pointer;
+    
+    input[type="file"] {
+        display: none;
+    }
+`;
+
+export const ProfileImage = styled.img`
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 20px;
+    border: 1px solid var(--DBDBDB, #DBDBDB);
+    background: url(<path-to-image>), lightgray 50% / cover no-repeat;
+
 `;
