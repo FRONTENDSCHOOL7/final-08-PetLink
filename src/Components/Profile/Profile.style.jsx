@@ -62,7 +62,7 @@ export const FollowGroup = styled.div`
 export const FollowCount = styled.span`
     font-size: 30px;
     font-weight: bold;
-    disply: fexld;
+    display: flex;
 `;
 
 export const FollowLabel = styled.span`
@@ -84,7 +84,7 @@ export const ProfileImageContainer = styled.div`
     align-items: center;
 `;
 
-export const BtnGrop = styled.div`
+export const BtnGroup = styled.div`
     display: flex;
     align-items: center;
     margin-right: 30px;
