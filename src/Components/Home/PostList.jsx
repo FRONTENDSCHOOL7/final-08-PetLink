@@ -9,6 +9,7 @@ import { Container } from "../../Styles/reset.style";
 import HeaderLayouts from "../Common/Header/Header";
 import { Overlay } from "../Product/ProductDetail.style";
 import BottomModal from "../Common/Modal/BottomModal";
+import Bangyeolgori from "../../API/Bangyeolgori";
 
 function formatDate(dateString) {
   const options = { year: "numeric", month: "2-digit", day: "2-digit" };
@@ -39,8 +40,8 @@ export function PostListItem({ post }) {
         author.image ||
         "https://api.mandarin.weniv.co.kr/1698653743844.jpg";
 
-      setIsModalOpen(false); // 초기화
-      setLikeNum(0); // 초기화
+      setIsModalOpen(false);
+      setLikeNum(0);
 
       setContentImgUrl(image);
       setAccountName(accountname);
@@ -104,6 +105,8 @@ export function PostListItem({ post }) {
           <BottomModal reportTxt={["신고"]} setIsModalOpen={setIsModalOpen} />
         </>
       )}
+
+      <Bangyeolgori post={post} />
     </>
   );
 }
@@ -111,12 +114,19 @@ export function PostListItem({ post }) {
 export default function PostList(props) {
   const [posts, setPosts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(5); // 페이지당 게시글 수
-  const [isLoading, setIsLoading] = useState(false);
+  const [postsPerPage] = useState(5);
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
+    // 페이지 로드 후 스크롤 이벤트를 등록합니다.
     fetchPostList();
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      // 컴포넌트가 언마운트될 때 스크롤 이벤트를 제거합니다.
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, [currentPage]);
 
   const handleScroll = () => {
@@ -125,20 +135,42 @@ export default function PostList(props) {
       document.documentElement.offsetHeight
     ) {
       if (!isLoading) {
-        setIsLoading(true);
         fetchNextPage();
       }
     }
   };
 
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-
   const fetchPostList = async () => {
+    try {
+      const response = await fetch(
+        `https://api.mandarin.weniv.co.kr/post?limit=${postsPerPage}&skip=0`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-type": "application/json",
+          },
+        }
+      );
+      const data = await response.json();
+
+      if (data.posts && data.posts.length > 0) {
+        const filteredPosts = data.posts.filter((post) =>
+          post.author.intro.includes("#bangyeolgori")
+        );
+        setPosts(filteredPosts);
+        setCurrentPage(2);
+      }
+
+      setIsLoading(false);
+    } catch (error) {
+      console.error("에러:", error);
+    }
+  };
+
+  const fetchNextPage = async () => {
+    setIsLoading(true);
+
     try {
       const skip = (currentPage - 1) * postsPerPage;
       const response = await fetch(
@@ -153,33 +185,12 @@ export default function PostList(props) {
       );
       const data = await response.json();
 
-      if (data.posts) {
-        setPosts((prevPosts) => [...prevPosts, ...data.posts]);
-        setCurrentPage((prevPage) => prevPage + 1);
-      }
-    } catch (error) {
-      console.error("에러:", error);
-    }
-  };
-
-  const fetchNextPage = async () => {
-    try {
-      const skip = currentPage * postsPerPage;
-      const response = await fetch(
-        `https://api.mandarin.weniv.co.kr/post?limit=${postsPerPage}&skip=${skip}`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-            "Content-type": "application/json",
-          },
-        }
-      );
-      const data = await response.json();
-
-      if (data.posts) {
-        setPosts((prevPosts) => [...prevPosts, ...data.posts]);
-        setCurrentPage((prevPage) => prevPage + 1);
+      if (data.posts && data.posts.length > 0) {
+        const filteredPosts = data.posts.filter((post) =>
+          post.author.intro.includes("#bangyeolgori")
+        );
+        setPosts((prevPosts) => [...prevPosts, ...filteredPosts]);
+        setCurrentPage(currentPage + 1);
       }
     } catch (error) {
       console.error("에러:", error);
