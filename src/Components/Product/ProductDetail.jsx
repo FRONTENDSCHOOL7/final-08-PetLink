@@ -13,6 +13,11 @@ export default function MarketDetail() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
+  const reportOptions = [
+    {action: "신고하기", alertText: "신고하시겠습니까?"},
+    {action: "차단하기", alertText: "차단하시겠습니까?"}
+  ]
+
   return (
     <>
       <GlobalStyle/>
@@ -49,7 +54,7 @@ export default function MarketDetail() {
         {isModalOpen &&(
           <>
             <Overlay onClick={()=> setIsModalOpen(false)}/>
-            <BottomModal setIsModalOpen={setIsModalOpen} reportTxt={["신고", "차단"]}/>
+            <BottomModal setIsModalOpen={setIsModalOpen} reports={reportOptions}/>
           </>
         )}
         <TabMenu/>
