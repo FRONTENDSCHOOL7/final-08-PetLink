@@ -26,6 +26,7 @@ export default function Search() {
   };
 
   //  API 통신
+  const [userData, setUserData] = useState(null);
   const [data, setData] = useState(null); 
    const [accountname, setAccountName] = useState('');
    const [username, setUserName] = useState('');
@@ -33,7 +34,9 @@ export default function Search() {
    const url = `https://api.mandarin.weniv.co.kr/user/searchuser/?keyword=${keyword}`
 
    useEffect(() => {
-    performSearch();
+    if (keyword) {
+      performSearch();
+    }
   }, [keyword]);
 
 
@@ -46,13 +49,18 @@ const res = await fetch(url,{
     "Content-type" : "application/json"
   }
 })
+
 const apidata = await res.json()
 console.log("API 응답" , apidata)
 
-if (apidata.user) {
+if (apidata.length > 0) {
+  setUserData(apidata);
   setUserName(apidata.user.username || '');
   setAccountName(apidata.user.accountname || '');
   setImgUrl(apidata.user.image || 'https://api.mandarin.weniv.co.kr/Ellipse.png'); 
+}else {
+  // 검색 결과가 없는 경우
+  setUserData(null);
 }
     }
     catch(error){
@@ -62,26 +70,37 @@ if (apidata.user) {
 
 
   return (
-
     <Container>
     <HeaderLayout>
       <HeaderButton onClick={handleBack}><img src={backIcon} alt="'뒤로가기'" /></HeaderButton>
-      <SearchInput type="keyword" placeholder='계정 검색'value={keyword} onChange={(e)=>setKeyword(e.target.value)} onKeyUp={handleKeyPress}/>
+      <SearchInput 
+      type="text" 
+      placeholder='계정 검색' 
+      value={keyword} 
+      onChange={(e)=>setKeyword(e.target.value)} 
+      onKeyUp={handleKeyPress}
+      />
     </HeaderLayout>
         <SearchResultBox>
-          <UserInfo>
-            {data&&data.user &&<UserProfile>
-              <Link to="#"><img src={imgUrl} alt='프로필 이미지'/></Link>
+          {userData ? (
+            userData.map((user)=>(
+              <UserInfo key={user._id}>
+          <UserProfile>
+              <Link to="#">
+                <img src={user.image} alt='프로필 이미지'/>
+                </Link>
               <UserName >
-                  <p >{username}</p>
-                  <span>{accountname}</span>
+                  <p >{user.username}</p>
+                  <span>{user.accountname}</span>
               </UserName> 
-          </UserProfile>}
+          </UserProfile>
             </UserInfo>
+            )) 
+          ):(
+          <p>검색 결과가 없습니다.</p>
+          )}
         </SearchResultBox>
     </Container>
-
- 
   )
 }
 
