@@ -12,7 +12,7 @@ export default function ChatRoom() {
   const {id} = useParams();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isActive, setIsActive] = useState(false);
-  const [messages, setMessages] = useState([{id:1, text:"안녕하세요", time: "12:39"}]);
+  const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState("");
 
   useEffect(()=> {
