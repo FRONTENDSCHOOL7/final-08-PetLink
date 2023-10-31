@@ -61,6 +61,11 @@ export default function ChatRoom() {
       reader.readAsDataURL(file); // 파일의 데이터 문자열로 표현
     }
   }
+
+  const reportOptions = [
+    {action: "채팅방 나가기", alertText: "채팅방 나가시겠습니까?"}
+  ]
+  
   return (
     <>
       <GlobalStyle/>
@@ -145,7 +150,7 @@ export default function ChatRoom() {
         {isModalOpen &&(
           <>
             <Overlay onClick={()=> setIsModalOpen(false)}/>
-            <BottomModal setIsModalOpen={setIsModalOpen} reportTxt={["신고", "차단"]}/>
+            <BottomModal setIsModalOpen={setIsModalOpen} reports={reportOptions}/>
           </>
         )}
       </Container>
