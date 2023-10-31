@@ -14,7 +14,7 @@ import {
     ProfileIntro,
     ProfileImageContainer,
     Button,
-    BtnGrop,
+    BtnGroup,
     ProfileContainer
 } from '../../Components/Profile/Profile.style';
 
@@ -87,12 +87,14 @@ const ProfilePage = () => {
             </FollowInfo>
 
             <ProfileIntro>{profileData.intro}</ProfileIntro>
-            <BtnGrop>
+            <BtnGroup>
                 <Link to="/profile/edit">
                     <Button>프로필 수정</Button>
                 </Link>
+                <Link to={`/market/add-product/${profileData.accountname}`}>
                     <Button>상품 등록</Button>
-            </BtnGrop>
+                </Link>
+            </BtnGroup>
         </ProfileContainer>
         </Container>
         <TabMenu/>
