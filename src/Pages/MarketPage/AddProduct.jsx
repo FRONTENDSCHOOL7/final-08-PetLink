@@ -25,10 +25,12 @@ export default function AddProduct() {
   const [isActive, setIsActive] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
   
+  // 상품정보 유효성 검사로 저장 버튼 활성화 여부 결정
   useEffect(()=> {
     setIsActive(!!(imageUrl && isValidProductName(productName) && price && productLink))
   }, [imageUrl, productName, price, productLink])
 
+  // 이미지 파일 선택하고 서버에 업로드한 후 URL 받아오는 함수
   const handleImgChange = async (e) => {
     const file = e.target.files[0];
     const formData = new FormData();
@@ -41,19 +43,21 @@ export default function AddProduct() {
         }
       })
 
-      let filename = res.data.filename;
+      let filename = res.data.filename; // 서버로부터 반환된 파일명
       const baseUrl = 'https://api.mandarin.weniv.co.kr/';
       const fullPath = baseUrl + filename;
-      setImageUrl(fullPath)
+      setImageUrl(fullPath) // 이미지 URL 상태 업데이트
     } catch(err) {
       console.error(err);
     }
   };
 
+  // 상품명 유효성 검사
   const isValidProductName = (name) => { // 상품명 2~15자 이내 조건
     return name.length >=2 && name.length <= 15;
   }
 
+  // 상품 저장 버튼 클릭 시 실행되는 함수
   const handleSaveProduct = async () => {
     if (!isActive) {
       alert("필수 입력사항을 입력해주세요.");
@@ -64,7 +68,7 @@ export default function AddProduct() {
       return;
     }
 
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token"); // 로컬스토리지에서 사용자 토큰 가져오기
     const productData = {
       itemName: productName,
       price: Number(price),
@@ -74,8 +78,9 @@ export default function AddProduct() {
     }
 
     try {
+      // 상품 데이터를 서버에 전송
       const res = await axios.post('https://api.mandarin.weniv.co.kr/product', {
-        product: productData,
+        product: productData, // 전송할 상품 데이터
       }, {
         headers: {
           Authorization : `Bearer ${token}`,
@@ -83,10 +88,10 @@ export default function AddProduct() {
         },
       });
 
-      console.log(res.data);
-      navigate('/market');
+      console.log(res.data); // 서버 응답 콘솔에 기록
+      navigate('/market'); // 성공 시 마켓 페이지로 이동
     } catch (error) {
-      console.error(error);
+      console.error(error); // 오류 발생 시 콘솔에 기록
       alert("상품 등록에 실패했습니다.")
     }
   };

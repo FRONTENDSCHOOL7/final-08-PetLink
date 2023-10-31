@@ -13,13 +13,13 @@ export default function Market() {
   const navItems = ['강아지', '고양이', '기타']
   const [activeBtn, setActiveBtn] = useState('강아지');
   const [products, setProducts] = useState([]);
-  const {accountname} = useParams(); // Url에서 accountname 파라미터 추출
+  // const {accountname} = useParams(); // Url에서 accountname 파라미터 추출
   console.log("render")
   useEffect(() => {
     const fetchProducts = async () => {
       const token = localStorage.getItem('token');
       try {
-        const res = await axios.get(`https://api.mandarin.weniv.co.kr/product/${accountname}`, {
+        const res = await axios.get(`https://api.mandarin.weniv.co.kr/product/`, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
@@ -39,7 +39,7 @@ export default function Market() {
     }
     fetchProducts();
     
-  },[accountname]);
+  },[]);
 
   const determineCategory = (product) => {
     if(product.itemName.includes('강아지')) {
