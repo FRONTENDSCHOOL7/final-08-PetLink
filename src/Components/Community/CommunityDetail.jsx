@@ -54,7 +54,7 @@ export default function PostDetail(props) {
       </S.UserInfo>
       <S.Content>
         {/* 게시글 상세페이지에서 제목 보여줄지 논의필요 */}
-        <h4>{JSON.parse(selectedPost.content).title}</h4>
+        {/* <h4>{JSON.parse(selectedPost.content).title}</h4> */}
         <p className='text'>{JSON.parse(selectedPost.content).contentText}</p>
         {selectedPost.image && <img src={selectedPost.image} alt="포스팅 이미지" />}
         <S.PostIcons>
