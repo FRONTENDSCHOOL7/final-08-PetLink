@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import productImg from '../../assets/image/marketItem1.png'
 import addBtn from '../../assets/image/icon-add.png'
 import { useState } from 'react'
@@ -6,37 +6,51 @@ import { BtnAdd, BtnNav, Item, ItemContainer, NavMenu, StyledLink } from './Mark
 import { Container, GlobalStyle} from '../../Styles/reset.style'
 import TabMenu from '../../Components/Common/TabMenu/TabMenu'
 import HeaderLayouts from '../../Components/Common/Header/Header'
+import axios from 'axios'
+import { useParams } from 'react-router-dom'
 
 export default function Market() {
   const navItems = ['강아지', '고양이', '기타']
   const [activeBtn, setActiveBtn] = useState('강아지');
+  const [products, setProducts] = useState([]);
+  // const {accountname} = useParams(); // Url에서 accountname 파라미터 추출
+  console.log("render")
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const token = localStorage.getItem('token');
+      try {
+        const res = await axios.get(`https://api.mandarin.weniv.co.kr/product/`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
 
-  const itemsData = {
-    '강아지': [
-      {img: productImg, title: '강아지 옷', price: '25,000원'},
-      {img: productImg, title: '강아지 장난감', price: '20,000원'},
-      {img: productImg, title: '강아지 모자', price: '15,000원'},
-      {img: productImg, title: '강아지 간식', price: '10,000원'},
-      {img: productImg, title: '강아지 옷', price: '25,000원'},
-      {img: productImg, title: '강아지 장난감', price: '20,000원'},
-      {img: productImg, title: '강아지 모자', price: '15,000원'},
-      {img: productImg, title: '강아지 간식', price: '10,000원'},
-    ],
-    '고양이': [
-      {img: productImg, title: '고양이 옷', price: '25,000원'},
-      {img: productImg, title: '고양이 장난감', price: '20,000원'},
-      {img: productImg, title: '고양이 모자', price: '15,000원'},
-      {img: productImg, title: '고양이 간식', price: '10,000원'},
-    ],
-    '기타': [
-      {img: productImg, title: '햄스터 옷', price: '25,000원'},
-      {img: productImg, title: '햄스터 장난감', price: '20,000원'},
-      {img: productImg, title: '햄스터 모자', price: '15,000원'},
-      {img: productImg, title: '햄스터 간식', price: '10,000원'},
-    ]
+        const productsData = res.data.product;
+        const productsWithCategory = productsData.map(product => ({
+          ...product,
+          category: determineCategory(product)
+        }));
+        setProducts(productsWithCategory || []); // 상태 업데이트
+      } catch(error) {
+        console.error(error);
+      }
+
+    }
+    fetchProducts();
+    
+  },[]);
+
+  const determineCategory = (product) => {
+    if(product.itemName.includes('bg_dogs')) {
+      return '강아지';
+    } else if (product.itemName.includes('bg_cats')) {
+      return '고양이';
+    } else if (product.itemName.includes('bg_etc.'))
+    return '기타';
   }
-  
-  const items = itemsData[activeBtn];
+
+  const filteredProducts = products.filter(product => product.category === activeBtn);
   
   return (
     <>
@@ -47,21 +61,27 @@ export default function Market() {
           <NavMenu>
             {navItems.map((navItem) => (
               <li key={navItem}>
-                <BtnNav className={activeBtn === navItem ? 'active' : ''} onClick={()=>setActiveBtn(navItem)}>{navItem}</BtnNav>
+                <BtnNav className={activeBtn === navItem ? 'active' : ''} onClick={()=>setActiveBtn(navItem)}>
+                  {navItem}
+                </BtnNav>
               </li>
             ))}
           </NavMenu>
         </nav>
         <ItemContainer>
-          {items.map((item, index)=> (
-            <StyledLink to="/market/detail" key={index}>
-              <Item>
-                <img src={item.img} alt="상품" />
-                <p className='item-title'>{item.title}</p>
-                <strong className='item-price'>{item.price}</strong>
-              </Item>
-            </StyledLink>
-          ))}
+          {filteredProducts.length > 0 ? (
+          filteredProducts.map((product, index) => (
+            <StyledLink to={`/market/detail/${product.id}`} key={index}>
+            <Item>
+              <img src={product.itemImage} alt="상품" />
+              <p className='item-title'>{product.itemName}</p>
+              <strong className='item-price'>{product.price} 원</strong>
+            </Item>
+          </StyledLink>
+          ))
+          ) : (
+            <p>상품이 없습니다.</p>
+          )}
         </ItemContainer>
         <StyledLink to="/market/add-product">
           <BtnAdd>
