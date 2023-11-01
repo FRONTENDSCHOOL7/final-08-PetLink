@@ -50,12 +50,12 @@ const Report = styled.button`
 `
 
 
-export default function BottomModal({reportTxt, setIsModalOpen}) {
+export default function BottomModal({reports, setIsModalOpen}) {
   const [isPopupVisible, setIsPopupVisible] = useState(false);
-  const [selectedReport, setSelectedReport] = useState("");
+  const [alertText,setAlertText] = useState("");
 
-  const handleReportClick = (text) => {
-    setSelectedReport(text); // report의 text 설정
+  const handleReportClick = (alertText) => {
+    setAlertText(alertText); 
     setIsPopupVisible(true); // 팝업 모달 표시
   }
 
@@ -68,15 +68,15 @@ export default function BottomModal({reportTxt, setIsModalOpen}) {
     <>
       <GlobalStyle/>
       <BottomModalContainer>
-        {reportTxt.map((text, index) => (
-          <Report key={index} $first={index === 0} onClick={()=>handleReportClick(text)}>{text}하기</Report>
+        {reports.map((report, index) => (
+          <Report key={index} $first={index === 0} onClick={()=>handleReportClick(report.alertText)}>{report.action}</Report>
         ))}
       </BottomModalContainer>
 
       <PopupModal
         isVisible={isPopupVisible}
         setIsVisible={handlePopupClose}
-        alertText={`${selectedReport} 하시겠습니까?`}
+        alertText={alertText}
         cancelText="취소"
         confirmText="확인"
         onConfirm={handlePopupClose}
