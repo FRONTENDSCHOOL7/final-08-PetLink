@@ -17,34 +17,130 @@ function formatDate(dateString) {
 }
 
 export default function PostList(props) {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  // const [isModalOpen, setIsModalOpen] = useState(false);
   const [posts, setPosts] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
+  const postsPerPage = 10;
   const navigate = useNavigate();
   
   useEffect(() => {
+    loadCachedPosts()
     fetchPostList();
-  }, []);
+    window.addEventListener("scroll", handleScroll)
+
+    return()=>{
+      window.removeEventListener("scroll", handleScroll)
+    }
+  }, [currentPage]);
+
+const loadCachedPosts = () =>{
+  const cachedPosts = localStorage.getItem("cachedPosts")
+  if(cachedPosts){
+    setPosts(JSON.parse(cachedPosts))
+  }
+}
+
+const cachePosts = (newPosts) =>{
+  localStorage.setItem("cachedPosts", JSON.stringify(newPosts))
+}
+
 
   const fetchPostList = async () => {
+    setIsLoading(true)
+    let loadedPosts = []
+    let page = 1
     try {
-      const response = await fetch(`https://api.mandarin.weniv.co.kr/post`, {
+      while(loadedPosts.length<postsPerPage){
+      const response = await fetch(`https://api.mandarin.weniv.co.kr/post?limit=${postsPerPage}&skip=${(page - 1) * postsPerPage}`, 
+      {
         method: "GET",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
           "Content-type": "application/json",
         },
       });
-      const data = await response.json();
+      if(!response.ok){
+        throw new Error ('Network response was not ok')
+      }
 
-      if (data.posts) {
-        setPosts(data.posts);
-      } else {
-        setPosts([]);
+      const data = await response.json();
+       // result.posts에서 author.intro에 #bangyeolgori가 포함된 게시글만 필터링
+const filteredPosts = data.posts.filter((post)=>
+post.author && post.author.intro && post.author.intro.includes('#bangyeolgori')
+)
+loadedPosts.push(...filteredPosts)
+if(data.posts.length< postsPerPage){
+  break; // 더 이상 로드할 데이터가 없을 경우, 루프 종료
+}     
+page ++
+      }
+
+
+// if (data.posts) {
+//         setPosts(data.posts);
+//       } 
+//       else {
+//         setPosts([]);
+//       }
+
+setPosts((prevPosts) => [...prevPosts, ...loadedPosts.slice(0, postsPerPage)]);
+setIsLoading(false);
+
+
+    } catch (error) {
+      console.error("에러:", error);
+      setIsLoading(false);
+    }
+  };
+
+
+  const handleScroll = () => {
+    if (
+      window.innerHeight + document.documentElement.scrollTop !==
+      document.documentElement.offsetHeight || isLoading
+    ) return;
+    fetchNextPage();
+  };
+  const fetchNextPage = async () => {
+    setIsLoading(true);
+    try {
+      while (true) {
+        const skip = (currentPage - 1) * postsPerPage;
+        const response = await fetch(
+          `https://api.mandarin.weniv.co.kr/post?limit=${postsPerPage}&skip=${skip}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+              "Content-type": "application/json",
+            },
+          }
+        );
+        const data = await response.json();
+        if (data.posts && data.posts.length > 0) {
+          const filteredPosts = data.posts.filter((post) =>
+            post.author.intro.includes("#bangyeolgori")
+          );
+          
+          if (filteredPosts.length > 0) {
+            setPosts((prevPosts) => [...prevPosts, ...filteredPosts]);
+            setCurrentPage(currentPage + 1);
+            break; // 충분한 게시글이 로드되면 while loop를 종료합니다.
+          } else {
+            setCurrentPage(currentPage + 1); // 충분한 게시글이 로드되지 않았다면 다음 페이지를 시도합니다.
+          }
+        } else {
+          break; // 더 이상 로드할 게시글이 없다면 while loop를 종료합니다.
+        }
       }
     } catch (error) {
       console.error("에러:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
+
 
   const handlePostClick = (post) => {
     navigate(`/post/${post._id}`);

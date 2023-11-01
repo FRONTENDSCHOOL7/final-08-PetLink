@@ -33,16 +33,12 @@ export default function Search() {
    const [imgUrl, setImgUrl] = useState(null)
    const url = `https://api.mandarin.weniv.co.kr/user/searchuser/?keyword=${keyword}`
 
-   useEffect(() => {
-    if (keyword) {
-      performSearch();
-    }
-<<<<<<< HEAD
-  }, [keyword]);
-=======
-  }, []);
->>>>>>> develop
 
+useEffect(()=>{
+  if(keyword){
+    performSearch()
+  }
+},[])
 
   const performSearch = async()=>{
     try{
@@ -61,11 +57,8 @@ if (apidata.length > 0) {
   setUserData(apidata);
   setUserName(apidata.user.username || '');
   setAccountName(apidata.user.accountname || '');
-<<<<<<< HEAD
-  setImgUrl(apidata.user.image || 'https://api.mandarin.weniv.co.kr/Ellipse.png'); 
-=======
   setImgUrl(apidata.user.image || defaultUserImg); 
->>>>>>> develop
+
 }else {
   // 검색 결과가 없는 경우
   setUserData(null);
@@ -95,11 +88,7 @@ if (apidata.length > 0) {
               <UserInfo key={user._id}>
           <UserProfile>
               <Link to="#">
-<<<<<<< HEAD
-                <img src={user.image} alt='프로필 이미지'/>
-=======
                 <img src={user.image || defaultUserImg} alt='프로필 이미지'/>
->>>>>>> develop
                 </Link>
               <UserName >
                   <p >{user.username}</p>

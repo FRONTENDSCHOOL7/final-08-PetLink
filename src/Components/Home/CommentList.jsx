@@ -11,6 +11,7 @@ export default function CommentList(props) {
 
   useEffect(() => {
     fetchMyProfile();
+    fetchComments();
   }, []);
 
   const fetchMyProfile = async () => {
@@ -32,27 +33,52 @@ export default function CommentList(props) {
     }
   };
 
-  const addComment = (newComment) => {
-    setComments((prevComments) => [...prevComments, newComment]);
+  const fetchComments = async () => {
+    try {
+      const response = await fetch(`https://api.mandarin.weniv.co.kr/post/${postId}/comments`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-type": "application/json",
+        },
+      });
+      const data = await response.json();
+
+      if (data) {
+        setComments(data.comments); // 가져온 댓글 데이터를 설정
+      }
+    } catch (error) {
+      console.error("댓글 가져오기 에러:", error);
+    }
   };
+  // const addComment = (newComment) => {
+  //   setComments((prevComments) => [newComment, ...prevComments]);
+  // };
 
     if (!props.comment) {
       return null;
     }
     return (
       <S.CommentBox>
-        <S.UserInfo>
-          <div>
-            <a href='#'>
-              <img src={userImg  || defaultUserImg} alt='사용자 프로필 이미지' />
-            </a>
-            <p>{props.username} <span>· {props.date}</span></p>
-          </div>
-          <button onClick={props.onChangeModal}>
-            <img src={moreIcon} alt='신고하기 모달창 불러오기' />
-          </button>
-        </S.UserInfo>
-        <S.CommentTxt>{props.comment}</S.CommentTxt>
+        
+       {comments.map((comment)=>(
+       <>
+           <S.UserInfo key={comment.id}>
+           <div>
+             <a href='#'>
+               <img src={comment.author.image  || defaultUserImg} alt='사용자 프로필 이미지' />
+             </a>
+             <p>{comment.author.username} <span>· {comment.createdAt}</span></p>
+           </div>
+           <button onClick={props.onChangeModal}>
+             <img src={moreIcon} alt='신고하기 모달창 불러오기' />
+           </button>
+         </S.UserInfo>
+         <S.CommentTxt>{comment.content}</S.CommentTxt>
+       </>
+       ))}
+
+        
       </S.CommentBox>
     );
   }
