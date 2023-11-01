@@ -143,7 +143,7 @@ export default function PostList(props) {
   const fetchPostList = async () => {
     try {
       const response = await fetch(
-        `https://api.mandarin.weniv.co.kr/post?limit=${postsPerPage}&skip=0`,
+        `https://api.mandarin.weniv.co.kr/post/feed/?limit=${postsPerPage}&skip=0`,
         {
           method: "GET",
           headers: {
