@@ -319,15 +319,6 @@ const JoinPage = () => {
           {currentPage === "profile" && (
             <>
             <TitleWrap>프로필 설정</TitleWrap>
-              {/* 프로필 이미지
-              <input type="file" onChange={handleChangeImage} />
-              {imgSrc && (
-                <img
-                  src={imgSrc}
-                  alt="Profile Preview"
-                  style={{ width: "100px", height: "100px", borderRadius: '50px' }}
-                />
-              )} */}
               {/* 새로운 레이아웃 */}
               <ImageWrap>
                     {previewImage ? (

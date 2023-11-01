@@ -2,16 +2,6 @@ import { useState } from "react"
 import styles from './Join.style.css';
 
 const JoinPage = ({handlePage})=>{
-//     {
-// 		"user": {
-// 				"username": String*,
-// 				"email": String*,
-// 				"password": String*,
-// 				"accountname": String*,
-// 				"intro": String,
-// 				"image": String // 예시) https://api.mandarin.weniv.co.kr/1641906557953.png
-// 		}
-// } 
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
