@@ -37,7 +37,7 @@ export default function Search() {
     if (keyword) {
       performSearch();
     }
-  }, [keyword]);
+  }, []);
 
 
   const performSearch = async()=>{
