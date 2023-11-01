@@ -51,7 +51,7 @@ function Community() {
 
         setPosts(fetchedPosts.filter(post => {
           if (!isValidJSON(post.content)) {
-            console.warn("Invalid JSON detected:", post.content);
+            // console.warn("Invalid JSON detected:", post.content);
             return false;
           }
           
