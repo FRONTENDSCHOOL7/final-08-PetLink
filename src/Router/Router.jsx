@@ -38,11 +38,13 @@ export default function Router() {
         <Route path="/community/detail" element={<CommunityDetail />} />
         <Route path="/market" element={<MarketPage />} />
         <Route path="/market/detail" element={<ProductDetail />} />
+        <Route path="/market/:accountname" element={<MarketPage />} />
+        <Route path="/market/detail/:id" element={<ProductDetail />} />
         <Route path="/market/add-product" element={<AddProduct />} />
         <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/following" element={<FollowingPage />} />
         <Route path="/profile/edit" element={<ProfileEdit />} />
         <Route path="/follow" element={<FollowPage />} />
-        <Route path="/following" element={<FollowingPage />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>
     </BrowserRouter>

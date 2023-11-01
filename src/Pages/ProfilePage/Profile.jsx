@@ -91,7 +91,9 @@ const ProfilePage = () => {
                 <Link to="/profile/edit">
                     <Button>프로필 수정</Button>
                 </Link>
+                <Link to={`/market/add-product/${profileData.accountname}`}>
                     <Button>상품 등록</Button>
+                </Link>
             </BtnGroup>
         </ProfileContainer>
         </Container>
