@@ -93,6 +93,7 @@ export const PostIcons = styled.div`
     height: 15px;
     margin-right: 6px;
     cursor: pointer;
+    object-fit: fill;
   }
 
   span{
