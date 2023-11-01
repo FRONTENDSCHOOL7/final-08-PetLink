@@ -16,7 +16,7 @@ export default function Search() {
   const handleBack = ()=>{
  navigate(-1)
    }
-
+   const defaultUserImg = "https://api.mandarin.weniv.co.kr/1698653743844.jpg";
    const [keyword, setKeyword] = useState('')
    const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
@@ -37,7 +37,7 @@ export default function Search() {
     if (keyword) {
       performSearch();
     }
-  }, [keyword]);
+  }, []);
 
 
   const performSearch = async()=>{
@@ -58,9 +58,6 @@ if (apidata.length > 0) {
   setUserName(apidata.user.username || '');
   setAccountName(apidata.user.accountname || '');
   setImgUrl(apidata.user.image || 'https://api.mandarin.weniv.co.kr/Ellipse.png'); 
-}else {
-  // 검색 결과가 없는 경우
-  setUserData(null);
 }
     }
     catch(error){
@@ -82,13 +79,9 @@ if (apidata.length > 0) {
       />
     </HeaderLayout>
         <SearchResultBox>
-          {userData ? (
-            userData.map((user)=>(
-              <UserInfo key={user._id}>
-          <UserProfile>
-              <Link to="#">
-                <img src={user.image} alt='프로필 이미지'/>
-                </Link>
+          <UserInfo>
+            {data&&data.user &&<UserProfile>
+              <Link to="#"><img src={imgUrl} alt='프로필 이미지'/></Link>
               <UserName >
                   <p >{user.username}</p>
                   <span>{user.accountname}</span>
