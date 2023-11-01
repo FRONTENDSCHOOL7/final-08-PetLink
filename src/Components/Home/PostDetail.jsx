@@ -1,89 +1,169 @@
-import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import * as S from '../Home/PostList.style';
+import React, { useEffect, useState } from 'react'
+import * as S from './PostList.style';
 import moreIcon from '../../assets/image/icon-more-vertical.png';
-import { Container } from '../../Styles/reset.style';
-import HeaderLayouts from '../Common/Header/Header';
-import { Overlay } from '../Product/ProductDetail.style';
-import BottomModal from '../Common/Modal/BottomModal';
-import redHeartIcon from '../../assets/image/icon-heart-red.png';
-import commentIcon from '../../assets/image/icon-comment.png';
-import CommentList, { WriteComment } from './CommentList';
+import { useParams } from 'react-router-dom';
 
-export default function PostDetail(props) {
+export default function CommentList(props) {
   const defaultUserImg = "https://api.mandarin.weniv.co.kr/1698653743844.jpg";
-  const [likeNum, setLikeNum] = useState(0);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [comment, setComment] = useState(''); 
-   // useLocation을 사용하여 현재 위치 정보를 가져옵니다.
-   const location = useLocation();
-   const selectedPost = location.state.selectedPost;
+  const [comments, setComments] = useState([]);
+  const [userImg, setUserImg] = useState(null);
+  const { postId } = useParams();
 
-  const reportOptions = [
-    {action: "신고하기", alertText: "신고하시겠습니까?"},
-  ]
-  
-  const onChangeModal = () => {
-    setIsModalOpen(true);
-  };
+  useEffect(() => {
+    fetchMyProfile();
+    fetchComments();
+  }, []);
 
-  // 추가: 댓글 입력 시 화면에 보이도록 처리
-  const handlePostComment = () => {
-    if (comment.trim() !== '') {
-      setCommentToShow(comment);
-      setComment('');
+  const fetchMyProfile = async () => {
+    try {
+      const response = await fetch(`https://api.mandarin.weniv.co.kr/user/myinfo`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-type": "application/json",
+        },
+      });
+      const data = await response.json();
+
+      if (data) {
+        setUserImg(data.user.image);
+      }
+    } catch (error) {
+      console.error("에러:", error);
     }
   };
 
-  if (!selectedPost) {
-    return <div>게시글을 불러오는 중...</div>;
+  const fetchComments = async () => {
+    try {
+      const response = await fetch(`https://api.mandarin.weniv.co.kr/post/${postId}/comments`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-type": "application/json",
+        },
+      });
+      const data = await response.json();
+
+      if (data) {
+        setComments(data.comments); // 가져온 댓글 데이터를 설정
+      }
+    } catch (error) {
+      console.error("댓글 가져오기 에러:", error);
+    }
+  };
+  // const addComment = (newComment) => {
+  //   setComments((prevComments) => [newComment, ...prevComments]);
+  // };
+
+    if (!props.comment) {
+      return null;
+    }
+    return (
+      <S.CommentBox>
+        
+       {comments.map((comment)=>(
+       <>
+           <S.UserInfo key={comment.id}>
+           <div>
+             <a href='#'>
+               <img src={comment.author.image  || defaultUserImg} alt='사용자 프로필 이미지' />
+             </a>
+             <p>{comment.author.username} <span>· {comment.createdAt}</span></p>
+           </div>
+           <button onClick={props.onChangeModal}>
+             <img src={moreIcon} alt='신고하기 모달창 불러오기' />
+           </button>
+         </S.UserInfo>
+         <S.CommentTxt>{comment.content}</S.CommentTxt>
+       </>
+       ))}
+
+        
+      </S.CommentBox>
+    );
   }
+  
+  export function WriteComment({ comment, setComment, handlePostComment  }) {
+  const [userImg, setUserImg] = useState(null);
+  const { postId } = useParams();
+  const defaultUserImg = "https://api.mandarin.weniv.co.kr/1698653743844.jpg";
+
+
+  useEffect(() => {
+    fetchMyProfile();
+  }, []);
+
+  const fetchMyProfile = async () => {
+    try {
+      const response = await fetch(`https://api.mandarin.weniv.co.kr/user/myinfo`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-type": "application/json",
+        },
+      });
+      const data = await response.json();
+
+      if (data) {
+        setUserImg(data.user.image);
+      }
+    } catch (error) {
+      console.error("에러:", error);
+    }
+  };
+
+  const postComment = async () => {
+    try {
+      if (typeof comment !== 'string') {
+        comment = '';
+      }
+      const response = await fetch(`https://api.mandarin.weniv.co.kr/post/${postId}/comments`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({
+          comment: {
+            content: comment, 
+          },
+        }),
+      });
+
+      const responseData = await response.json();
+console.log(responseData)
+
+      if (responseData.comment  && responseData.comment.content) {
+        setComment(responseData.comment.content);
+      }
+    } catch (error) {
+      console.error("댓글 가져오기 에러:", error);
+    }
+  };
+  console.log(comment)
 
   return (
-    <Container>
-      <HeaderLayouts back search />
-      <S.UserInfo>
-        <S.UserProfile>
-          <img src={selectedPost.author?.image || defaultUserImg} alt='사용자 프로필 이미지' />
-          <S.UserName>
-            <p>{selectedPost.author?.username}</p>
-            <p>{selectedPost.author?.accountname}</p>
-          </S.UserName>
-        </S.UserProfile>
-        <button onClick={onChangeModal}><S.IconMore src={moreIcon} /></button>
-      </S.UserInfo>
-      <S.Content>
-        <p className='text'>{selectedPost.content}</p>
-        {selectedPost.image && <img src={selectedPost.image} alt="포스팅 이미지" />}
-        <S.PostIcons>
-          <button onClick={() => setLikeNum(prev => prev + 1)}>
-            <img src={redHeartIcon} alt='좋아요 버튼' />
-            <span>{likeNum}</span>
-          </button>
-          <button onClick={() => setIsModalOpen(true)}>
-            <img src={commentIcon} alt='댓글 개수' />
-            <span>0</span>
-          </button>
-        </S.PostIcons>
-      </S.Content>
-      {isModalOpen && (
-        <>
-          <Overlay onClick={() => setIsModalOpen(false)} />
-          <BottomModal reportOptions={["신고하기"]} setIsModalOpen={setIsModalOpen} />
-        </>
-      )}
-      <CommentList
-        onChangeModal={onChangeModal}
-        userImage={selectedPost.author?.image}
-        username={selectedPost.author?.username}
-        date={selectedPost.date}
-        comment={commentToShow} // 변경: 입력된 댓글 내용을 CommentList로 전달
-      />
-      <WriteComment
-        comment={comment}
-        setComment={setComment}
-        handlePostComment={handlePostComment} // 변경: handlePostComment 함수 추가
-      />
-    </Container>
+    <S.InputForm>
+      <div>
+        <img src={userImg  || defaultUserImg} alt="사용자 프로필" />
+        <input
+          type="text"
+          placeholder="댓글 입력하기..."
+          onChange={(e) => setComment(e.target.value)}
+          value={comment || ''}
+        />
+      </div>
+      <button
+        type="submit"
+        disabled={!comment || comment.trim().length === 0}
+        onClick={()=>{
+          handlePostComment()
+          postComment()
+        
+        }} 
+      >
+        게시
+      </button>
+    </S.InputForm>
   );
 }
