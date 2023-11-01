@@ -71,7 +71,7 @@ export default function PostDetail(props) {
       {isModalOpen && (
         <>
           <Overlay onClick={() => setIsModalOpen(false)} />
-          <BottomModal reportOptions={["신고하기"]} setIsModalOpen={setIsModalOpen} />
+          <BottomModal setIsModalOpen={setIsModalOpen} reports={reportOptions}/>
         </>
       )}
       <CommentList

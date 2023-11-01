@@ -51,7 +51,7 @@ function Community() {
 
         setPosts(fetchedPosts.filter(post => {
           if (!isValidJSON(post.content)) {
-            console.warn("Invalid JSON detected:", post.content);
+            // console.warn("Invalid JSON detected:", post.content);
             return false;
           }
           
@@ -211,7 +211,7 @@ function Community() {
           </ShareInfoMap>
           {posts.map((post, index) => (
               <ShareInfoPost key={index}>
-                <Link to="/community/detail">
+                <Link to={`/community/${post._id}`} state={{ selectedPost: post }}>
                   <IconUserProfile src={post.author.image} alt="user-profile" />
                   <PostTitle>
                     <h2>{JSON.parse(post.content).title}</h2>
