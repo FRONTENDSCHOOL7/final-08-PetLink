@@ -42,11 +42,11 @@ export default function Market() {
   },[]);
 
   const determineCategory = (product) => {
-    if(product.itemName.includes('강아지')) {
+    if(product.itemName.includes('bg_dogs')) {
       return '강아지';
-    } else if (product.itemName.includes('고양이')) {
+    } else if (product.itemName.includes('bg_cats')) {
       return '고양이';
-    }
+    } else if (product.itemName.includes('bg_etc.'))
     return '기타';
   }
 
@@ -75,7 +75,7 @@ export default function Market() {
             <Item>
               <img src={product.itemImage} alt="상품" />
               <p className='item-title'>{product.itemName}</p>
-              <strong className='item-price'>{product.price}</strong>
+              <strong className='item-price'>{product.price} 원</strong>
             </Item>
           </StyledLink>
           ))
