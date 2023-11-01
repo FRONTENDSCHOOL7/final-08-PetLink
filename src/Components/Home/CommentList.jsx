@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from 'react'
 import * as S from './PostList.style';
 import moreIcon from '../../assets/image/icon-more-vertical.png';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 
 export default function CommentList(props) {
   const defaultUserImg = "https://api.mandarin.weniv.co.kr/1698653743844.jpg";
   const [comments, setComments] = useState([]);
   const [userImg, setUserImg] = useState(null);
   const { postId } = useParams();
+  const location = useLocation();
+  const selectedPost = location.state?.selectedPost;
 
   useEffect(() => {
     fetchMyProfile();
-    fetchComments();
-  }, []);
+    if (selectedPost) {
+      fetchComments(selectedPost.id);
+    }
+  }, [selectedPost]);
 
   const fetchMyProfile = async () => {
     try {
@@ -55,16 +59,17 @@ export default function CommentList(props) {
   //   setComments((prevComments) => [newComment, ...prevComments]);
   // };
 
-    if (!props.comment) {
-      return null;
-    }
+  if (!selectedPost) {
+    return null;
+  }
+
     return (
       <S.CommentBox>
         
        {comments.map((comment)=>(
        <>
-           <S.UserInfo key={comment.id}>
-           <div>
+           <S.UserInfo>
+           <div  key={comment}>
              <a href='#'>
                <img src={comment.author.image  || defaultUserImg} alt='사용자 프로필 이미지' />
              </a>
@@ -140,7 +145,7 @@ console.log(responseData)
       console.error("댓글 가져오기 에러:", error);
     }
   };
-  console.log(comment)
+  // console.log(comment)
 
   return (
     <S.InputForm>

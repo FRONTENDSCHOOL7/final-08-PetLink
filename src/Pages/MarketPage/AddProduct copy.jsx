@@ -24,7 +24,6 @@ export default function AddProduct() {
   const [category, setCategory] = useState("");
   const [isActive, setIsActive] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
-  const [description, setDescription] = useState("");
   
   // 상품정보 유효성 검사로 저장 버튼 활성화 여부 결정
   useEffect(()=> {
@@ -70,20 +69,12 @@ export default function AddProduct() {
     }
 
     const token = localStorage.getItem("token"); // 로컬스토리지에서 사용자 토큰 가져오기
-
-    // 카테고리와 상품명을 결합하여 새로운 상품명을 생성
-    const formattedProductName = `
-      productName: ${productName}
-      category: ${category} 
-      description: ${description}`;
-
     const productData = {
-      itemName: formattedProductName,
+      itemName: productName ,
       price: Number(price),
       link: productLink,
       itemImage: imageUrl,
-      category: category,
-      description: description
+      category: category
     }
 
     try {
@@ -119,9 +110,9 @@ export default function AddProduct() {
             <InputTitle>카테고리 <Required>*</Required></InputTitle>
             <select value={category} onChange={e => setCategory(e.target.value)}>
               <option value="">선택</option>
-              <option value="bg_dogs">강아지</option>
-              <option value="bg_cats">고양이</option>
-              <option value="bg_etc.">기타</option>
+              <option value="dogs">강아지</option>
+              <option value="cats">고양이</option>
+              <option value="etc.">기타</option>
             </select>
           </CategoryContainer>
           <AddImg>
@@ -161,14 +152,6 @@ export default function AddProduct() {
               placeholder="URL을 입력해 주세요."
               value={productLink}
               onChange={e=>setProductLink(e.target.value)}
-            />
-            <ProductInput 
-              title="상품 설명" 
-              isRequired={true}
-              placeholder="상품에 대한 설명을 입력하세요."
-              value={description}
-              onChange={e=>setDescription(e.target.value)}
-              type='textarea'
             />
           </AddTxtForm>
         </DetailContainer>
