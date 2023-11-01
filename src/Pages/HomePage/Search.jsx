@@ -37,7 +37,11 @@ export default function Search() {
     if (keyword) {
       performSearch();
     }
+<<<<<<< HEAD
+  }, [keyword]);
+=======
   }, []);
+>>>>>>> develop
 
 
   const performSearch = async()=>{
@@ -57,7 +61,14 @@ if (apidata.length > 0) {
   setUserData(apidata);
   setUserName(apidata.user.username || '');
   setAccountName(apidata.user.accountname || '');
+<<<<<<< HEAD
   setImgUrl(apidata.user.image || 'https://api.mandarin.weniv.co.kr/Ellipse.png'); 
+=======
+  setImgUrl(apidata.user.image || defaultUserImg); 
+>>>>>>> develop
+}else {
+  // 검색 결과가 없는 경우
+  setUserData(null);
 }
     }
     catch(error){
@@ -79,9 +90,17 @@ if (apidata.length > 0) {
       />
     </HeaderLayout>
         <SearchResultBox>
-          <UserInfo>
-            {data&&data.user &&<UserProfile>
-              <Link to="#"><img src={imgUrl} alt='프로필 이미지'/></Link>
+          {userData ? (
+            userData.map((user)=>(
+              <UserInfo key={user._id}>
+          <UserProfile>
+              <Link to="#">
+<<<<<<< HEAD
+                <img src={user.image} alt='프로필 이미지'/>
+=======
+                <img src={user.image || defaultUserImg} alt='프로필 이미지'/>
+>>>>>>> develop
+                </Link>
               <UserName >
                   <p >{user.username}</p>
                   <span>{user.accountname}</span>
