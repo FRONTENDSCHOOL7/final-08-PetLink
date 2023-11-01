@@ -6,6 +6,7 @@ import { Container, GlobalStyle} from '../../Styles/reset.style'
 import TabMenu from '../../Components/Common/TabMenu/TabMenu'
 import HeaderLayouts from '../../Components/Common/Header/Header'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 export default function Market() {
   const navItems = ['강아지', '고양이', '기타']
@@ -30,11 +31,13 @@ export default function Market() {
         },
       });
 
+      console.log("Fetched Products:", res.data.product); // API에서 가져온 상품 데이터 로깅
       // 가져온 데이터로 상태 업데이트
       const processedProducts = processProductsData(res.data.product);
+      console.log("Processed Products:", processedProducts); // 처리된 상품 데이터 로깅
       setProducts(processedProducts); // 상태 업데이트
     } catch(error) {
-      console.error(error);
+      console.error("Error", error);
     }
   }
 
@@ -44,6 +47,7 @@ export default function Market() {
       const { category, formattedProductName, pureProductName } = determineCategory(product);
       return {
         ...product,
+        id: product._id,
         category,
         formattedProductName,
         pureProductName
@@ -55,6 +59,7 @@ export default function Market() {
   const determineCategory = (product) => {
     let category;
     let formattedProductName = product.itemName;
+    let description = "";
 
     // 상품 이름에 따라 카테고리 결정
     if(product.itemName.includes('bg_dogs')) {
@@ -72,11 +77,18 @@ export default function Market() {
     let pureProductName = "";
     if (formattedProductName.includes('productName:')) {
       pureProductName = formattedProductName.split('productName:')[1].split('category:')[0].trim();
+
+      if(formattedProductName.includes('description:')) {
+        const pureDesc = formattedProductName.split('description:');
+        if (pureDesc.length > 1) {
+          description = pureDesc[1].trim();
+        }
+      }
     } else {
       pureProductName = formattedProductName;
     }
 
-    return { category, formattedProductName, pureProductName };
+    return { category, formattedProductName, pureProductName, description };
   }
 
   // 현재 선택된 카테고리에 해당하는 상품만 필터링
@@ -118,17 +130,23 @@ const NavigationMenu = ({navItems, activeBtn, setActiveBtn}) => (
 const ProductsDisplay = ({products}) => (
   <ItemContainer>
     {products.length > 0 ? (
-    products.map((product, index) => (
-      <StyledLink to={`/market/detail/${product.id}`} key={index}>
+    products.map((product) => {
+      console.log("Rendering product with ID:", product.id); // 렌더링되는 상품의 ID 로깅
+      return(
+      <StyledLink 
+        to={`/market/detail/${product._id}?pureProductName=${encodeURIComponent(product.pureProductName)}&description=${encodeURIComponent(product.description)}`} 
+        key={product._id}
+      >
       <Item>
         <img src={product.itemImage} alt="상품" />
         <p className='item-title'>{product.pureProductName}</p>
         <strong className='item-price'>{Number(product.price).toLocaleString()} 원</strong>
       </Item>
     </StyledLink>
-    ))
+    )
+    })
     ) : (
-      <p>상품이 없습니다.</p>
+      <p>등록된 상품이 없습니다.</p>
     )}
   </ItemContainer>
 )

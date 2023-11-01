@@ -1,17 +1,52 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Header, HeaderButton, DetailContainer, ProductImg, ProfileInfo, ProfileImg, ProfileContents, ProfileTxt, ChatBtn, ProfileName, ProfileId, ProductInfo, ProductDesc, Overlay} from './ProductDetail.style'
 import {GlobalStyle, Container} from '../../Styles/reset.style'
 import backBtn from '../../assets/image/icon-arrow-left.png'
 import moreBtn from '../../assets/image/icon-more-vertical.png'
-import product from '../../assets/image/marketItem1.png'
-import profile from '../../assets/image/icon-basic-profile.png'
 import BottomModal from '../Common/Modal/BottomModal'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import TabMenu from '../Common/TabMenu/TabMenu'
+import axios from 'axios'
+import HeaderLayouts from '../Common/Header/Header'
 
 export default function MarketDetail() {
+  const [productDetail, setProductDetail] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
+  const {productId} = useParams(); // URL에서 상품 Id 추출
+  const [searchParams] = useSearchParams();
+
+  const pureProductName = searchParams.get("pureProductName") || "상품이름";
+  const description = searchParams.get("description") || "";
+  console.log("Description from URL:", description);
+  console.log("Search Params:", Array.from(searchParams.entries()));
+  
+  useEffect(()=>{
+    fetchProductDetail();
+  },[productId]);
+
+  const fetchProductDetail = async () => {
+    const token = localStorage.getItem('token');
+
+    try {
+      const res = await axios.get(`https://api.mandarin.weniv.co.kr/product/detail/${productId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      console.log("Fetched product detail:", res.data.product);
+      setProductDetail(res.data.product);
+    } catch (error) {
+      console.error("Error", error);
+    }
+  }
+
+  if(!productDetail) {
+    return <div>Loading...</div>
+  }
+  
+  console.log("Final description value:", description);
 
   const reportOptions = [
     {action: "신고하기", alertText: "신고하시겠습니까?"},
@@ -22,35 +57,33 @@ export default function MarketDetail() {
     <>
       <GlobalStyle/>
       <Container>
-        <Header>
-          <HeaderButton onClick={()=>navigate(-1)}><img src={backBtn} alt="" /></HeaderButton>
-          <HeaderButton onClick={()=>setIsModalOpen(true)}><img src={moreBtn} alt="" /></HeaderButton>
-        </Header>
+        <HeaderLayouts backTxt={true} onModalToggle={() => setIsModalOpen(true)} />
+
         <DetailContainer>
           <ProductImg>
-            <img src={product} alt="상품사진" />
+            <img src={productDetail.itemImage} alt="상품 사진" />
           </ProductImg>
           <ProfileInfo>
-            <ProfileImg src={profile} alt="" />
+            <ProfileImg src={productDetail.author.image} alt="프로필 사진" />
             <ProfileContents>
               <ProfileTxt>
-                <ProfileName>쿠키의 일상</ProfileName>
-                <ProfileId>@cookie123</ProfileId>
+                <ProfileName>{productDetail.author.username}</ProfileName>
+                <ProfileId>@{productDetail.author.accountname}</ProfileId>
               </ProfileTxt>
               <ChatBtn>채팅하기</ChatBtn>
             </ProfileContents>
           </ProfileInfo>
           <ProductInfo>
-            <h4>강아지 옷</h4>
-            <strong>25,000원</strong>
+            <h4>{pureProductName}</h4>
+            <strong>{Number(productDetail.price).toLocaleString()}  원</strong>
           </ProductInfo>
           <ProductDesc>
             <h4>상품 설명</h4>
-            <p>새 상품이고 사이즈는 라지입니다.<br/>
-            옷이 많아서 판매합니다. <br/>
-            택배도 가능하니 연락주세요!</p>
+            <p>{description}</p>
           </ProductDesc>
         </DetailContainer>
+
+        {/* 모달창 */}
         {isModalOpen &&(
           <>
             <Overlay onClick={()=> setIsModalOpen(false)}/>

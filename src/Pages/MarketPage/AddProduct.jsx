@@ -41,9 +41,9 @@ export default function AddProduct() {
   
   // 상품정보 유효성 검사로 저장 버튼 활성화 여부 결정
   useEffect(()=> {
-    const isValid = imageUrl && isValidProductName(productName) && price && productLink;
+    const isValid = imageUrl && isValidProductName(productName) && price && productLink && description;
     setIsActive(!!isValid)
-  }, [imageUrl, productName, price, productLink])
+  }, [imageUrl, productName, price, productLink, description])
 
   // 이미지 파일 선택하고 서버에 업로드한 후 URL 받아오는 함수
   const handleImgChange = async (e) => {
@@ -73,10 +73,6 @@ export default function AddProduct() {
 
   // 상품 저장 버튼 클릭 시 실행되는 함수
   const handleSaveProduct = async () => {
-    if (!isActive) {
-      alert("필수 입력사항을 입력해주세요.");
-      return;
-    }
     if(!isValidProductName(productName)) {
       alert("상품명은 2~15자 이내로 입력해주세요.");
       return;
@@ -85,6 +81,11 @@ export default function AddProduct() {
       alert("가격은 1원 이상의 숫자로 입력하셔야 합니다.");
       return;
     }
+    if (!isActive) {
+      alert("필수 입력사항을 입력해주세요.");
+      return;
+    }
+    
 
     const token = localStorage.getItem("token"); // 로컬스토리지에서 사용자 토큰 가져오기
 
