@@ -26,7 +26,7 @@ export default function Router() {
       <Routes>
         <Route path="/" element={<SplashPage />} />
         <Route path="/home" element={<HomePage />} />
-        <Route path="/post/detail" element={<PostDetail />} />
+        <Route path="/post/:postId" element={<PostDetail />} />
         <Route path="/search" element={<Search />} />
         <Route path="/chat" element={<ChatPage />} />
         <Route path="/chatroom/:id" element={<ChatRoom />} />
