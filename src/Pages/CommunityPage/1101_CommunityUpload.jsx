@@ -79,8 +79,7 @@ export default function CommunityUploadPage() {
         content: JSON.stringify({
             title: title,
             category: category,
-            contentText: content,
-            petlink: 'petlink'
+            contentText: content
         }),
         image: imgUrl
     }

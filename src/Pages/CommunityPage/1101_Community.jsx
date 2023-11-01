@@ -53,10 +53,9 @@ function Community() {
             console.warn("Invalid JSON detected:", post.content);
             return false;
           }
-        
+          
           const postContent = JSON.parse(post.content); 
-          // 필터링 조건을 명확하게
-          return post.author.intro.includes('intro:반결고리') && postContent.category === activeCategory;
+          return postContent.category === activeCategory;
         });
 
         console.log("Filtered posts:", filteredPosts);
