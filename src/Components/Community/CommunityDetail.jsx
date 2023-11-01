@@ -53,7 +53,9 @@ export default function PostDetail(props) {
         <button onClick={onChangeModal}><S.IconMore src={moreIcon} /></button>
       </S.UserInfo>
       <S.Content>
-        <p className='text'>{selectedPost.content}</p>
+        {/* 게시글 상세페이지에서 제목 보여줄지 논의필요 */}
+        <h4>{JSON.parse(selectedPost.content).title}</h4>
+        <p className='text'>{JSON.parse(selectedPost.content).contentText}</p>
         {selectedPost.image && <img src={selectedPost.image} alt="포스팅 이미지" />}
         <S.PostIcons>
           <button onClick={() => setLikeNum(prev => prev + 1)}>
