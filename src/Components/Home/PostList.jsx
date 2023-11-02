@@ -174,6 +174,8 @@ setIsLoading(false);
 export function PostListItem({ post }) {
   const defaultUserImg = "https://api.mandarin.weniv.co.kr/1698653743844.jpg";
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false); // 수정 모달 상태
+  const [reportOptions, setReportOptions] = useState([]);
   const [accountname, setAccountName] = useState("");
   const [username, setUserName] = useState("");
   const [userImg, setUserImg] = useState(null);
@@ -182,12 +184,35 @@ export function PostListItem({ post }) {
   const [likeNum, setLikeNum] = useState(0);
   const [date, setDate] = useState("");
   const [liked, setLiked] = useState(false);
+  const [userId, setUserID] = useState(false);
+  const currentUser = { _id: "currentUserId" }; // 현재 사용자의 정보로 대체
 
-  const reportOptions = [
-    {action: "신고하기", alertText: "신고하시겠습니까?"},
-  ]
+  // const reportOptions = [
+  //   {action: "신고하기", alertText: "신고하시겠습니까?"},
+  // ]
   
-  
+  const fetchMyProfile = async () => {
+    try {
+      const response = await fetch(`https://api.mandarin.weniv.co.kr/user/myinfo`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-type": "application/json",
+        },
+      });
+      const data = await response.json();
+
+      if (data) {
+        const userId = data.user._id;
+        setUserID(userId);
+        console.log(userId)
+      }
+    } catch (error) {
+      console.error("에러:", error);
+    }
+  };
+
+
   const navigate = useNavigate();
 
 
@@ -208,6 +233,7 @@ export function PostListItem({ post }) {
       setLikeNum(post.likes || 0); // 초기 좋아요 수 설정
       setLiked(post.liked || false); // 사용자의 좋아요 상태 설정
     }
+    fetchMyProfile()
   }, [post]);
 
   const handleLikeClick = async () => {
@@ -220,7 +246,28 @@ export function PostListItem({ post }) {
   };
 
   const onChangeModal = () => {
+    const authorId = post.author_id ? post.author.id.toString() : "";
+    const currentUserId = userId ? userId.toString() : "";
+    const isMyPost =  post.author._id === currentUserId;
+    // console.log("post.author.id:", post.author._id);
+    // console.log("userId:", userId);
+    // console.log("authorId:", authorId);
+    // console.log("currentUserId:", currentUserId);
+    // console.log(isMyPost)
+    let modalOptions = []
+    if(isMyPost){
+      modalOptions = [
+        { action: "수정하기", alertText: "수정하시겠습니까?" },
+        { action: "삭제하기", alertText: "삭제하시겠습니까?" },
+      ];
+
+    }else {
+      modalOptions = [
+        { action: "신고하기", alertText: "신고하시겠습니까?" },
+      ];
+    }
     setIsModalOpen(true);
+    setReportOptions(modalOptions); // modalOptions 배열을 state로 설정
   };
 
   return (
@@ -263,7 +310,7 @@ export function PostListItem({ post }) {
 
       {isModalOpen && (
         <>
-             <Overlay onClick={() => setIsModalOpen(false)} />
+          <Overlay onClick={() => setIsModalOpen(false)} />
           <BottomModal setIsModalOpen={setIsModalOpen} reports={reportOptions}/>
         </>
       )}
