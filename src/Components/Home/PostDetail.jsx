@@ -27,6 +27,8 @@ export default function PostDetail(props) {
     setIsModalOpen(true);
   };
 
+
+  
   // 추가: 댓글 입력 시 화면에 보이도록 처리
   const handlePostComment = () => {
     if (comment.trim() !== '') {
@@ -69,7 +71,7 @@ export default function PostDetail(props) {
       {isModalOpen && (
         <>
           <Overlay onClick={() => setIsModalOpen(false)} />
-          <BottomModal reportOptions={["신고하기"]} setIsModalOpen={setIsModalOpen} />
+          <BottomModal setIsModalOpen={setIsModalOpen} reports={reportOptions}/>
         </>
       )}
       <CommentList
