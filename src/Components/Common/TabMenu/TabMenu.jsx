@@ -23,7 +23,7 @@ export default function TabMenu() {
 
   const shouldShowNavbar = !hideNavBarPaths.includes(location.pathname);
   const getNavLinkClass = path => {
-    return location.pathname === path ? 'active' : "";
+    return location.pathname === path || location.pathname.startsWith(path) ? 'active' : "";
   }
 
   return (
