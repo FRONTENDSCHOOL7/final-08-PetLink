@@ -108,15 +108,28 @@ export const ProductInfo = styled.div`
   gap: 10px;
 
   input {
-    border: none;
     border-bottom: 1px solid #DBDBDB;
+  }
+
+  textarea {
+    height: 90px;
+    resize: none;
+    border: 1px solid #DBDBDB;
+    line-height: 1.5;
   }
 
   input:focus {
     outline: none;
+    border-bottom: 1px solid #004E98;
   }
 
-  input::placeholder {
+  textarea:focus {
+    outline: none;
+    border: 1px solid #004E98;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
     color: #DBDBDB;
   }
 `
