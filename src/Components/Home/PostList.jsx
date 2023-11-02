@@ -226,18 +226,18 @@ export function PostListItem({ post }) {
   return (
     <>
       <S.UserInfo>
-        <S.UserProfile>
           <Link
             to={`/profile/${post.author.accountname}`}
             state={{ selectedPost: post }}
           >
+        <S.UserProfile>
             <img src={userImg || defaultUserImg} alt="사용자 프로필 이미지" />
-          </Link>
           <S.UserName>
             <p>{username}</p>
             <span>{accountname}</span>
           </S.UserName>
         </S.UserProfile>
+          </Link>
         <button onClick={onChangeModal}>
           <S.IconMore src={moreIcon} alt="신고하기 모달창 불러오기" />
         </button>

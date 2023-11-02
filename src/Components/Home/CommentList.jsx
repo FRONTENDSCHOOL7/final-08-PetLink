@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import * as S from './PostList.style';
 import moreIcon from '../../assets/image/icon-more-vertical.png';
-import { useLocation, useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 
 export default function CommentList(props) {
   const defaultUserImg = "https://api.mandarin.weniv.co.kr/1698653743844.jpg";
@@ -65,14 +65,13 @@ export default function CommentList(props) {
 
     return (
       <S.CommentBox>
-        
        {comments.map((comment)=>(
        <>
            <S.UserInfo  key={comment.id}>
            <div >
-             <a href='#'>
+             <Link to={`/profile/${comment.author.accountname}`}>
                <img src={comment.author.image  || defaultUserImg} alt='사용자 프로필 이미지' />
-             </a>
+             </Link>
              <p>{comment.author.username} <span>· {comment.createdAt}</span></p>
            </div>
            <button onClick={props.onChangeModal}>
@@ -82,13 +81,11 @@ export default function CommentList(props) {
          <S.CommentTxt>{comment.content}</S.CommentTxt>
        </>
        ))}
-
-
       </S.CommentBox>
     );
   }
   
-  export function WriteComment({ comment, setComment, handlePostComment  }) {
+  export function WriteComment({ comment, setComment, handlePostComment ,addComment }) {
   const [userImg, setUserImg] = useState(null);
   const { postId } = useParams();
   const defaultUserImg = "https://api.mandarin.weniv.co.kr/1698653743844.jpg";
@@ -122,8 +119,6 @@ export default function CommentList(props) {
       if (typeof comment !== 'string') {
         comment = '';
       }
-
-
 
       const response = await fetch(`https://api.mandarin.weniv.co.kr/post/${postId}/comments`, {
         method: "POST",
@@ -167,7 +162,7 @@ console.log(responseData)
         onClick={()=>{
           handlePostComment()
           postComment()
-        
+      
         }} 
       >
         게시

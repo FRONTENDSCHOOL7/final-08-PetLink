@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import * as S from '../Home/PostList.style';
 import moreIcon from '../../assets/image/icon-more-vertical.png';
 import { Container } from '../../Styles/reset.style';
@@ -43,13 +43,15 @@ export default function PostDetail(props) {
     <Container>
       <HeaderLayouts back search />
       <S.UserInfo>
-        <S.UserProfile>
-          <img src={selectedPost.author?.image || defaultUserImg} alt='사용자 프로필 이미지' />
-          <S.UserName>
-            <p>{selectedPost.author?.username}</p>
-            <p>{selectedPost.author?.accountname}</p>
-          </S.UserName>
-        </S.UserProfile>
+      <Link to={`/profile/${selectedPost.author.accountname}`}>
+          <S.UserProfile>
+            <img src={selectedPost.author?.image || defaultUserImg} alt='사용자 프로필 이미지' />
+            <S.UserName>
+              <p>{selectedPost.author?.username}</p>
+              <p>{selectedPost.author?.accountname}</p>
+            </S.UserName>
+          </S.UserProfile>
+      </Link>
         <button onClick={onChangeModal}><S.IconMore src={moreIcon} /></button>
       </S.UserInfo>
       <S.Content>
