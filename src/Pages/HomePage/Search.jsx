@@ -85,17 +85,17 @@ if (apidata.length > 0) {
         <SearchResultBox>
           {userData ? (
             userData.map((user)=>(
-              <UserInfo key={user._id}>
+              <Link to={`/profile/${user.accountname}`} key={user._id}>
+              <UserInfo>
           <UserProfile>
-              <Link to="#">
                 <img src={user.image || defaultUserImg} alt='프로필 이미지'/>
-                </Link>
               <UserName >
                   <p >{user.username}</p>
                   <span>{user.accountname}</span>
               </UserName> 
           </UserProfile>
             </UserInfo>
+                </Link>
             )) 
           ):(
           <p>검색 결과가 없습니다.</p>
