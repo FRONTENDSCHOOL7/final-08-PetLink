@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Header, HeaderButton, DetailContainer, ProductImg, ProfileInfo, ProfileImg, ProfileContents, ProfileTxt, ChatBtn, ProfileName, ProfileId, ProductInfo, ProductDesc, Overlay} from './ProductDetail.style'
 import {GlobalStyle, Container} from '../../Styles/reset.style'
-import backBtn from '../../assets/image/icon-arrow-left.png'
-import moreBtn from '../../assets/image/icon-more-vertical.png'
 import BottomModal from '../Common/Modal/BottomModal'
 import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import TabMenu from '../Common/TabMenu/TabMenu'
@@ -12,15 +10,14 @@ import HeaderLayouts from '../Common/Header/Header'
 export default function MarketDetail() {
   const [productDetail, setProductDetail] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const navigate = useNavigate();
   const {productId} = useParams(); // URL에서 상품 Id 추출
-  const [searchParams] = useSearchParams();
+  const location = useLocation();
 
-  const pureProductName = searchParams.get("pureProductName") || "상품이름";
-  const description = searchParams.get("description") || "";
-  console.log("Description from URL:", description);
-  console.log("Search Params:", Array.from(searchParams.entries()));
-  
+  // 상품 세부 정보 받아오기
+  const { pureProductName, description } = location.state || { pureProductName: "상품이름", description: "" };
+
+  console.log("Received State:", location.state); 
+
   useEffect(()=>{
     fetchProductDetail();
   },[productId]);

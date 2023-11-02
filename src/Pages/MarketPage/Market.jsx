@@ -6,7 +6,6 @@ import { Container, GlobalStyle} from '../../Styles/reset.style'
 import TabMenu from '../../Components/Common/TabMenu/TabMenu'
 import HeaderLayouts from '../../Components/Common/Header/Header'
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
 
 export default function Market() {
   const navItems = ['강아지', '고양이', '기타']
@@ -44,13 +43,14 @@ export default function Market() {
   // 상품 데이터 처리하는 함수
   const processProductsData = (productsData) => {
     return productsData.map(product => {
-      const { category, formattedProductName, pureProductName } = determineCategory(product);
+      const { category, formattedProductName, pureProductName, description } = determineCategory(product);
       return {
         ...product,
         id: product._id,
         category,
         formattedProductName,
-        pureProductName
+        pureProductName,
+        description
       };
     })
   }
@@ -78,10 +78,10 @@ export default function Market() {
     if (formattedProductName.includes('productName:')) {
       pureProductName = formattedProductName.split('productName:')[1].split('category:')[0].trim();
 
-      if(formattedProductName.includes('description:')) {
-        const pureDesc = formattedProductName.split('description:');
-        if (pureDesc.length > 1) {
-          description = pureDesc[1].trim();
+      if (formattedProductName.includes('description:')) {
+        const descParts = formattedProductName.split('description:');
+        if (descParts.length > 1) {
+          description = descParts[1].trim(); // description: 이후의 문자열을 description으로 설정
         }
       }
     } else {
@@ -131,10 +131,11 @@ const ProductsDisplay = ({products}) => (
   <ItemContainer>
     {products.length > 0 ? (
     products.map((product) => {
-      console.log("Rendering product with ID:", product.id); // 렌더링되는 상품의 ID 로깅
+      console.log("Product State:", { pureProductName: product.pureProductName, description: product.description });
       return(
-      <StyledLink 
-        to={`/market/detail/${product._id}?pureProductName=${encodeURIComponent(product.pureProductName)}&description=${encodeURIComponent(product.description)}`} 
+        <StyledLink 
+        to={`/market/detail/${product._id}`}
+        state={{ pureProductName: product.pureProductName, description: product.description }}
         key={product._id}
       >
       <Item>
