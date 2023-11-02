@@ -29,6 +29,18 @@ export const ProfileAccountname = styled.h3`
     color: #767676;
 `;
 
+export const ProfilePet = styled.div`
+    margin: 5px 0;
+    font-size: 15px;
+    color: #767676;
+`;
+
+export const GenderIcon = styled.span`
+    font-size: 17px;
+    font-weight: bold;
+    color: ${props => props.gender === '남아' ? 'blue' : props.gender === '여아' ? 'red' : 'black'};
+`;
+
 export const ProfileEmail = styled.p`
     margin: 10px 0;
     font-size: 18px;
@@ -203,3 +215,4 @@ margin: 20px;
 export const PetInfo = styled.div`
 margin: 20px;
 `
+

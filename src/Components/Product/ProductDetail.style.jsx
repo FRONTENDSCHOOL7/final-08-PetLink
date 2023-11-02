@@ -41,6 +41,7 @@ export const ProfileInfo = styled.div`
 
 export const ProfileImg = styled.img`
   margin-right: 12px;
+  border-radius: 50%;
 `
 
 export const ProfileTxt = styled.div`

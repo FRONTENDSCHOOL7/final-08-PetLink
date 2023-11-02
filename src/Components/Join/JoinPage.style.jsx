@@ -142,7 +142,7 @@ export const ImageWrap = styled.label`
 export const ImageUpbtn = styled.label`
     position: absolute;
     bottom: 18px;
-    right: 140px;
+    right: 125px;
     width: 30px;
     height: 30px;
     background-image: url(${uploadIcon});

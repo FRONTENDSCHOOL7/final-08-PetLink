@@ -49,6 +49,11 @@ export const InputTitle = styled.p`
   font-size: 12px;
 `
 
+export const Required = styled.span`
+  color: red;
+  font-size: 12px;
+`
+
 export const InputImg = styled.div`
   width: 100%;
   height: 204px; // 사이즈 고려
@@ -91,7 +96,7 @@ export const AddImgBtn = styled.button`
   }
 `
 
-export const AddTxtForm = styled.form`
+export const AddTxtForm = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -103,15 +108,28 @@ export const ProductInfo = styled.div`
   gap: 10px;
 
   input {
-    border: none;
     border-bottom: 1px solid #DBDBDB;
+  }
+
+  textarea {
+    height: 90px;
+    resize: none;
+    border: 1px solid #DBDBDB;
+    line-height: 1.5;
   }
 
   input:focus {
     outline: none;
+    border-bottom: 1px solid #004E98;
   }
 
-  input::placeholder {
+  textarea:focus {
+    outline: none;
+    border: 1px solid #004E98;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
     color: #DBDBDB;
   }
 `
