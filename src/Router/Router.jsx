@@ -35,14 +35,17 @@ export default function Router() {
         <Route path="/join" element={<JoinPage />} />
         <Route path="/community" element={<CommunityPage />} />
         <Route path="/community/upload" element={<CommunityUpload />} />
-        <Route path="/community/detail" element={<CommunityDetail />} />
+        <Route path="/community/:postId" element={<CommunityDetail />} />
         <Route path="/market" element={<MarketPage />} />
         <Route path="/market/detail" element={<ProductDetail />} />
+        <Route path="/market/:accountname" element={<MarketPage />} />
+        <Route path="/market/detail/:productId" element={<ProductDetail />} />
         <Route path="/market/add-product" element={<AddProduct />} />
-        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/profile/" element={<ProfilePage />} />
+        <Route path="/profile/:accountname" element={<ProfilePage />} />
+        <Route path="/following" element={<FollowingPage />} />
         <Route path="/profile/edit" element={<ProfileEdit />} />
         <Route path="/follow" element={<FollowPage />} />
-        <Route path="/following" element={<FollowingPage />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>
     </BrowserRouter>

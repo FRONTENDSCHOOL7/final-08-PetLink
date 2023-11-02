@@ -38,28 +38,26 @@ function Community() {
     const fetchPosts = async () => {
       const token = localStorage.getItem('token');
       try {
-        const res = await axios.get('https://api.mandarin.weniv.co.kr/post', {
+        const res = await axios.get('https://api.mandarin.weniv.co.kr/post/?limit=999&skip=0', {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
           },
         });
+        
+        console.log("API Response:", res.data);
 
-        console.log("All fetched posts:", res.data.posts);
+        const fetchedPosts = Array.isArray(res.data.posts) ? res.data.posts : [];
 
-        const filteredPosts = res.data.posts.filter(post => {
-          // JSON 유효성 검사
+        setPosts(fetchedPosts.filter(post => {
           if (!isValidJSON(post.content)) {
-            console.warn("Invalid JSON detected:", post.content);
+            // console.warn("Invalid JSON detected:", post.content);
             return false;
           }
           
-          const postContent = JSON.parse(post.content); 
+          const postContent = JSON.parse(post.content);
           return postContent.category === activeCategory;
-        });
-
-        console.log("Filtered posts:", filteredPosts);
-        setPosts(filteredPosts);
+        }));
       } catch (err) {
         console.error(err);
       }
@@ -183,8 +181,6 @@ function Community() {
   // };
 
   const currentMapImage = mapImages[activeCategory];
-  const filteredPostsFromAPI = posts.filter(post => post.category === activeCategory);
-  const combinedFilteredPosts = filteredPostsFromAPI;
 
   
   return (
@@ -215,7 +211,7 @@ function Community() {
           </ShareInfoMap>
           {posts.map((post, index) => (
               <ShareInfoPost key={index}>
-                <Link to="/community/detail">
+                <Link to={`/community/${post._id}`} state={{ selectedPost: post }}>
                   <IconUserProfile src={post.author.image} alt="user-profile" />
                   <PostTitle>
                     <h2>{JSON.parse(post.content).title}</h2>
