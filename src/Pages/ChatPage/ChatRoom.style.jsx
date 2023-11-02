@@ -4,7 +4,8 @@ import styled from "styled-components"
 export const ChatRoomContents = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: flex-start;
+  padding-top: 16px;
   overflow-y: auto;
   height: calc(100vh - 108px);
 `

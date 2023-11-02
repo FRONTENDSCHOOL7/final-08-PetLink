@@ -19,9 +19,9 @@ const ChatListContainer = styled.div`
 
 export default function Chat() {
   const [chatData, setChatData] = useState([
-    {id: 1, imgSrc: profile1, nickname: "뭉치의 일상", content: "혹시 강아지 옷 팔렸나요?", date: "2023.11.10", unread: true},
-    {id: 2, imgSrc: profile2, nickname: "쿠키의 일상", content: "혹시 고양이 옷 팔렸나요?", date: "2023.11.09", unread: true},
-    {id: 3, imgSrc: profile3, nickname: "아지의 일상", content: "안녕하세요~", date: "2023.11.08", unread: false}
+    {id: 1, imgSrc: profile1, nickname: "시루", content: "혹시 팔렸나요?", date: "2023.11.10", unread: true},
+    {id: 2, imgSrc: profile2, nickname: "바람돌이", content: "구매 가능할까요?", date: "2023.11.09", unread: true},
+    {id: 3, imgSrc: profile3, nickname: "흰둥이", content: "안녕하세요~", date: "2023.11.08", unread: false}
   ])
 
   const handleReadMsg = (id) => {
@@ -40,9 +40,9 @@ export default function Chat() {
           {chatData.map(chat => (
             <Link to={{
               pathname: `/chatroom/${chat.id}`,
-              state: {chat: chatData}
-            }} key={chat.id}>
-              {console.log("Link data", chat)}
+              state: {...chat}
+            }} key={chat.id}
+            >
               <ChatItem {...chat} onRead={()=>handleReadMsg(chat.id)}/>
             </Link>
           ))}
