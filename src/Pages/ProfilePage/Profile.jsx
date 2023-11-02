@@ -71,6 +71,40 @@ const ProfilePage = () => {
         return <div>로딩...</div>;
     }
 
+    // 팔로우 언팔 기능
+
+    const handleFollow = async () => {
+        try {
+            const response = await axios.post(`https://api.mandarin.weniv.co.kr/profile/${profileData.accountname}/follow`, {}, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    'Content-type': 'application/json',
+                },
+            });
+            if (response.data.profile) {
+                setProfileData(response.data.profile);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const handleUnfollow = async () => {
+        try {
+            const response = await axios.delete(`https://api.mandarin.weniv.co.kr/profile/${profileData.accountname}/unfollow`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    'Content-type': 'application/json',
+                },
+            });
+            if (response.data.profile) {
+                setProfileData(response.data.profile);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     return (
         <>
         <GlobalStyle/>
@@ -95,6 +129,17 @@ const ProfilePage = () => {
             </FollowInfo>
 
             <ProfileIntro>{profileData.intro}</ProfileIntro>
+            {accountname ? (
+            profileData.isfollow ? (
+                <BtnGroup>
+                    <Button onClick={handleUnfollow}>언팔로우</Button>
+                </BtnGroup>
+            ) : (
+                <BtnGroup>
+                    <Button onClick={handleFollow}>팔로우</Button>
+                </BtnGroup>
+            )
+        ) : (
             <BtnGroup>
                 <Link to="/profile/edit">
                     <Button>프로필 수정</Button>
@@ -103,6 +148,7 @@ const ProfilePage = () => {
                     <Button>상품 등록</Button>
                 </Link>
             </BtnGroup>
+        )}
         </ProfileContainer>
         </Container>
         <TabMenu/>
