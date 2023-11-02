@@ -38,7 +38,7 @@ function Community() {
     const fetchPosts = async () => {
       const token = localStorage.getItem('token');
       try {
-        const res = await axios.get('https://api.mandarin.weniv.co.kr/post/?limit=999&skip=5', {
+        const res = await axios.get('https://api.mandarin.weniv.co.kr/post/?limit=999&skip=0', {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
