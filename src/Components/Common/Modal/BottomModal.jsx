@@ -50,7 +50,6 @@ const Report = styled.button`
   }
 `
 
-
 export default function BottomModal({reports, setIsModalOpen}) {
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [alertText,setAlertText] = useState("");
