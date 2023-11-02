@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import * as S from '../Home/PostList.style';
 import moreIcon from '../../assets/image/icon-more-vertical.png';
 import { Container } from '../../Styles/reset.style';
@@ -27,8 +27,6 @@ export default function PostDetail(props) {
     setIsModalOpen(true);
   };
 
-
-  
   // 추가: 댓글 입력 시 화면에 보이도록 처리
   const handlePostComment = () => {
     if (comment.trim() !== '') {
@@ -45,17 +43,19 @@ export default function PostDetail(props) {
     <Container>
       <HeaderLayouts back search />
       <S.UserInfo>
-        <S.UserProfile>
-          <img src={selectedPost.author?.image || defaultUserImg} alt='사용자 프로필 이미지' />
-          <S.UserName>
-            <p>{selectedPost.author?.username}</p>
-            <p>{selectedPost.author?.accountname}</p>
-          </S.UserName>
-        </S.UserProfile>
+      <Link to={`/profile/${selectedPost.author.accountname}`}>
+          <S.UserProfile>
+            <img src={selectedPost.author?.image || defaultUserImg} alt='사용자 프로필 이미지' />
+            <S.UserName>
+              <p>{selectedPost.author?.username}</p>
+              <p>{selectedPost.author?.accountname}</p>
+            </S.UserName>
+          </S.UserProfile>
+      </Link>
         <button onClick={onChangeModal}><S.IconMore src={moreIcon} /></button>
       </S.UserInfo>
       <S.Content>
-        <p className='text'>{selectedPost.content}</p>
+        <p className='text'>{JSON.parse(selectedPost.content).contentText}</p>
         {selectedPost.image && <img src={selectedPost.image} alt="포스팅 이미지" />}
         <S.PostIcons>
           <button onClick={() => setLikeNum(prev => prev + 1)}>
