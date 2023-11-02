@@ -41,6 +41,7 @@ export default function Router() {
         <Route path="/market/:accountname" element={<MarketPage />} />
         <Route path="/market/detail/:id" element={<ProductDetail />} />
         <Route path="/market/add-product" element={<AddProduct />} />
+        <Route path="/profile/" element={<ProfilePage />} />
         <Route path="/profile/:accountname" element={<ProfilePage />} />
         <Route path="/following" element={<FollowingPage />} />
         <Route path="/profile/edit" element={<ProfileEdit />} />
