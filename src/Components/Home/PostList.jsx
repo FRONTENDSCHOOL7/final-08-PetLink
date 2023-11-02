@@ -17,12 +17,16 @@ function formatDate(dateString) {
 }
 
 export default function PostList(props) {
-  // const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [posts, setPosts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const postsPerPage = 10;
   const navigate = useNavigate();
+  const reportOptions = [
+    {action: "신고하기", alertText: "신고하시겠습니까?"},
+  ]
+  
   
   useEffect(() => {
     loadCachedPosts()
@@ -141,9 +145,11 @@ setIsLoading(false);
     }
   };
 
-
   const handlePostClick = (post) => {
     navigate(`/post/${post._id}`);
+  };
+  const onChangeModal = () => {
+    setIsModalOpen(true);
   };
 
 
@@ -176,6 +182,7 @@ export function PostListItem({ post }) {
   const [likeNum, setLikeNum] = useState(0);
   const [date, setDate] = useState("");
   const [liked, setLiked] = useState(false);
+
   const reportOptions = [
     {action: "신고하기", alertText: "신고하시겠습니까?"},
   ]
@@ -196,7 +203,7 @@ export function PostListItem({ post }) {
       setUserImg(
         post.author.image);
       setContentImgUrl(post.image || "");
-      setContent(post.content || "");
+      setContent(JSON.parse(post.content).contentText || "");
       setDate(post.createdAt || "");
       setLikeNum(post.likes || 0); // 초기 좋아요 수 설정
       setLiked(post.liked || false); // 사용자의 좋아요 상태 설정
@@ -256,8 +263,8 @@ export function PostListItem({ post }) {
 
       {isModalOpen && (
         <>
-          <Overlay onClick={() => setIsModalOpen(false)} />
-          <BottomModal reportOptions={["신고하기"]} setIsModalOpen={setIsModalOpen} />
+             <Overlay onClick={() => setIsModalOpen(false)} />
+          <BottomModal setIsModalOpen={setIsModalOpen} reports={reportOptions}/>
         </>
       )}
     </>

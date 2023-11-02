@@ -27,8 +27,6 @@ export default function PostDetail(props) {
     setIsModalOpen(true);
   };
 
-
-  
   // 추가: 댓글 입력 시 화면에 보이도록 처리
   const handlePostComment = () => {
     if (comment.trim() !== '') {
@@ -55,7 +53,7 @@ export default function PostDetail(props) {
         <button onClick={onChangeModal}><S.IconMore src={moreIcon} /></button>
       </S.UserInfo>
       <S.Content>
-        <p className='text'>{selectedPost.content}</p>
+        <p className='text'>{JSON.parse(selectedPost.content).contentText}</p>
         {selectedPost.image && <img src={selectedPost.image} alt="포스팅 이미지" />}
         <S.PostIcons>
           <button onClick={() => setLikeNum(prev => prev + 1)}>

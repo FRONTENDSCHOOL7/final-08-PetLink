@@ -55,9 +55,9 @@ export default function CommentList(props) {
       console.error("댓글 가져오기 에러:", error);
     }
   };
-  // const addComment = (newComment) => {
-  //   setComments((prevComments) => [newComment, ...prevComments]);
-  // };
+  const addComment = (newComment) => {
+    setComments((prevComments) => [newComment, ...prevComments]);
+  };
 
   if (!selectedPost) {
     return null;
@@ -68,8 +68,8 @@ export default function CommentList(props) {
         
        {comments.map((comment)=>(
        <>
-           <S.UserInfo>
-           <div  key={comment}>
+           <S.UserInfo  key={comment.id}>
+           <div >
              <a href='#'>
                <img src={comment.author.image  || defaultUserImg} alt='사용자 프로필 이미지' />
              </a>
@@ -83,7 +83,7 @@ export default function CommentList(props) {
        </>
        ))}
 
-        
+
       </S.CommentBox>
     );
   }
@@ -122,6 +122,9 @@ export default function CommentList(props) {
       if (typeof comment !== 'string') {
         comment = '';
       }
+
+
+
       const response = await fetch(`https://api.mandarin.weniv.co.kr/post/${postId}/comments`, {
         method: "POST",
         headers: {
@@ -145,7 +148,7 @@ console.log(responseData)
       console.error("댓글 가져오기 에러:", error);
     }
   };
-  // console.log(comment)
+  console.log(comment)
 
   return (
     <S.InputForm>
