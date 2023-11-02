@@ -35,7 +35,7 @@ export default function Router() {
         <Route path="/join" element={<JoinPage />} />
         <Route path="/community" element={<CommunityPage />} />
         <Route path="/community/upload" element={<CommunityUpload />} />
-        <Route path="/community/detail" element={<CommunityDetail />} />
+        <Route path="/community/:postId" element={<CommunityDetail />} />
         <Route path="/market" element={<MarketPage />} />
         <Route path="/market/detail" element={<ProductDetail />} />
         <Route path="/market/:accountname" element={<MarketPage />} />
