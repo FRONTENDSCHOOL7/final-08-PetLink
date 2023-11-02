@@ -15,53 +15,15 @@ import {
     ProfileImageContainer,
     Button,
     BtnGroup,
-    ProfileContainer
+    ProfileContainer,
+    ProfilePet,
+    GenderIcon,
 } from '../../Components/Profile/Profile.style';
 
 const ProfilePage = () => {
     const [profileData, setProfileData] = useState(null);
     const [error, setError] = useState(null);
     const { accountname } = useParams(); 
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         try {
-    //             const token = localStorage.getItem('token');
-    //             let url = 'https://api.mandarin.weniv.co.kr/user/myinfo';
-                
-    //             if (accountname) { 
-    //                 url = `https://api.mandarin.weniv.co.kr/profile/${accountname}`;
-    //             }
-    
-    //             const response = await axios.get(url, {
-    //                 headers: {
-    //                     Authorization: token ? `Bearer ${token}` : null,
-    //                     'Content-type': 'application/json',
-    //                 },
-    //             });
-            
-    //             let profile;
-    //             if (response.data.user) { // API에서 user가 있으면 (나의 프로필)
-    //                 profile = response.data.user;
-    //             } else if (response.data.profile) { // API에서 profile가 있으면 (사용자프로필)
-    //                 profile = response.data.profile;
-    //             } else {
-    //                 throw new Error('Unexpected response format');
-    //             }
-                
-    //             const introMatch = profile.intro.match(/#intro:(.*?)(?=#|$)/);
-    //             const introContent = introMatch ? introMatch[1].trim() : profile.intro;
-                
-    //             setProfileData({
-    //                 ...profile,
-    //                 intro: introContent
-    //             });
-    //         } catch (error) {
-    //             setError(error);
-    //         }
-    //     };
-    
-    //     fetchData();    
-    // }, [accountname]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -219,7 +181,11 @@ const ProfilePage = () => {
         
         return `${months}개월`;
     }
-    
+    // gender 아이콘 변경
+    function genderUnicode(gender) {
+        return gender === '남아' ? '♂' : gender === '여아' ? '♀' : null;
+    }
+
     return (
         <>
         <GlobalStyle/>
@@ -235,12 +201,15 @@ const ProfilePage = () => {
                 <ProfileImage src={profileData.image} alt="Profile" />
                 <ProfileUsername>{profileData.username} </ProfileUsername>
                 <ProfileAccountname>@{profileData.accountname}</ProfileAccountname>
-                <ProfileAccountname>
-                    {profileData.gender && `${profileData.gender} `}
-                    {profileData.pet && `${profileData.pet} `}
-                    {profileData.birthdate && `${calculateAge(profileData.birthdate)} `}
-                    {profileData.location && `${profileData.location}`}
-                </ProfileAccountname>
+                <ProfilePet>
+                {profileData.gender && (
+                <GenderIcon gender={profileData.gender}>
+                    {genderUnicode(profileData.gender)} 
+                </GenderIcon>)}
+                {profileData.pet && <span>{`${profileData.pet} `}</span>}
+                {profileData.birthdate && <span>{`${calculateAge(profileData.birthdate)} `}</span>}
+                {profileData.location && <span>{`${profileData.location} `}</span>}
+                </ProfilePet>
 
             </ProfileImageContainer>
                 
