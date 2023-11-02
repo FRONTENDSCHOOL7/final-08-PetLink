@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { Container } from '../../Styles/reset.style'
-import { IconMore, UserInfo, UserName, UserProfile } from '../../Components/Home/PostList.style'
-import profileIcon from '../../assets/image/icon-basic-profile.png'
+import { UserInfo, UserName, UserProfile } from '../../Components/Home/PostList.style'
 import backIcon from '../../assets/image/icon-arrow-left.png'
-import moreIcon from '../../assets/image/icon- more-vertical.png'
 import { Link, useNavigate } from 'react-router-dom'
-import HeaderLayouts from '../../Components/Common/Header/Header'
 import styled from 'styled-components'
-import { PostUserInfo } from '../../Components/Home/PostList'
 import { HeaderButton, HeaderLayout, SearchInput } from '../../Components/Common/Header/Header.style'
 
 
@@ -27,18 +23,18 @@ export default function Search() {
 
   //  API 통신
   const [userData, setUserData] = useState(null);
-  const [data, setData] = useState(null); 
+  // const [data, setData] = useState(null); 
    const [accountname, setAccountName] = useState('');
    const [username, setUserName] = useState('');
    const [imgUrl, setImgUrl] = useState(null)
    const url = `https://api.mandarin.weniv.co.kr/user/searchuser/?keyword=${keyword}`
 
+   useEffect(() => {
+    if (keyword) {
+      performSearch();
+    }
+  }, []);
 
-useEffect(()=>{
-  if(keyword){
-    performSearch()
-  }
-},[])
 
   const performSearch = async()=>{
     try{
@@ -57,8 +53,7 @@ if (apidata.length > 0) {
   setUserData(apidata);
   setUserName(apidata.user.username || '');
   setAccountName(apidata.user.accountname || '');
-  setImgUrl(apidata.user.image || defaultUserImg); 
-
+  setImgUrl(apidata.user.image || 'https://api.mandarin.weniv.co.kr/Ellipse.png'); 
 }else {
   // 검색 결과가 없는 경우
   setUserData(null);
@@ -85,17 +80,17 @@ if (apidata.length > 0) {
         <SearchResultBox>
           {userData ? (
             userData.map((user)=>(
-              <UserInfo key={user._id}>
+              <Link to={`/profile/${user.accountname}`} key={user._id}>
+              <UserInfo>
           <UserProfile>
-              <Link to="#">
                 <img src={user.image || defaultUserImg} alt='프로필 이미지'/>
-                </Link>
               <UserName >
                   <p >{user.username}</p>
                   <span>{user.accountname}</span>
               </UserName> 
           </UserProfile>
             </UserInfo>
+                </Link>
             )) 
           ):(
           <p>검색 결과가 없습니다.</p>
