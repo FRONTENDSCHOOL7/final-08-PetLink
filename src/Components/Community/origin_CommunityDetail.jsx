@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import * as S from '../Home/PostList.style';
 import moreIcon from '../../assets/image/icon-more-vertical.png';
 import { Container } from '../../Styles/reset.style';
@@ -11,70 +10,24 @@ import redHeartIcon from '../../assets/image/icon-heart-red.png';
 import commentIcon from '../../assets/image/icon-comment.png';
 import CommentList, { WriteComment } from '../Home/CommentList';
 
-export default function CommunityDetail() {
+export default function PostDetail(props) {
   const defaultUserImg = "https://api.mandarin.weniv.co.kr/1698653743844.jpg";
   const [likeNum, setLikeNum] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [comment, setComment] = useState('');
-  const [commentToShow, setCommentToShow] = useState('');
-  const [userId, setUserId] = useState(null);
+  const [comment, setComment] = useState(''); 
+  const [commentToShow, setCommentToShow] = useState(''); // 추가: 화면에 보이는 댓글 상태
   const location = useLocation();
   const { selectedPost } = location.state || {};
 
-  const navigate = useNavigate();
-
-  // 게시물 삭제 함수
-  const deletePost = async (postId) => {
-    console.log('deletePost is called with id:', postId)
-    try {
-      await axios.delete(`https://api.mandarin.weniv.co.kr/post/${postId}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-          'Content-Type': 'application/json'
-        }
-      });
-      alert('삭제되었습니다.');
-      navigate('/community');
-    } catch (error) {
-      // 에러 처리
-    }
-  };
-
-  useEffect(() => {
-    // 사용자 ID를 불러오는 함수
-    const fetchMyProfile = async () => {
-      try {
-        const response = await axios.get('https://api.mandarin.weniv.co.kr/user/myinfo', {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-          },
-        });
-        setUserId(response.data.user._id);
-      } catch (error) {
-        console.error('There was an error fetching the user info!', error);
-      }
-    };
-
-    fetchMyProfile();
-  }, []);
-
   const reportOptions = [
-    {action: "신고하기", alertText: "게시글을 신고하시겠습니까?"},
-  ];
-
-  // 게시글 작성자와 로그인한 사용자가 동일한지 여부
-  const isPostOwner = userId === selectedPost.author?._id;
-
-  // 수정/삭제 모달 옵션
-  const postOwnerOptions = [
-    {action: "수정하기", alertText: "게시글을 수정하시겠습니까?"},
-    {action: "삭제하기", alertText: "게시글을 삭제하시겠습니까?"},
-  ];
-
+    {action: "신고하기", alertText: "신고하시겠습니까?"},
+  ]
+  
   const onChangeModal = () => {
-    setIsModalOpen(!isModalOpen);
+    setIsModalOpen(true);
   };
 
+  // 추가: 댓글 입력 시 화면에 보이도록 처리
   const handlePostComment = () => {
     if (comment.trim() !== '') {
       setCommentToShow(comment);
@@ -100,6 +53,7 @@ export default function CommunityDetail() {
         <button onClick={onChangeModal}><S.IconMore src={moreIcon} /></button>
       </S.UserInfo>
       <S.Content>
+        {/* 게시글 상세페이지에서 제목 보여줄지 논의필요 */}
         <h4 style={{ marginBottom: '15px' }}>
           {JSON.parse(selectedPost.content).title}
         </h4>
@@ -112,32 +66,27 @@ export default function CommunityDetail() {
           </button>
           <button onClick={() => setIsModalOpen(true)}>
             <img src={commentIcon} alt='댓글 개수' />
-            <span>0</span> {/* 댓글 개수를 상태로 관리하려면 해당 로직도 추가해야 합니다. */}
+            <span>0</span>
           </button>
         </S.PostIcons>
       </S.Content>
       {isModalOpen && (
-          <>
-            <Overlay onClick={() => setIsModalOpen(false)} />
-            <BottomModal
-              setIsModalOpen={setIsModalOpen}
-              reports={isPostOwner ? postOwnerOptions : reportOptions}
-              onDelete={() => deletePost(selectedPost._id)}
-            />
-          </>
-        )}
+        <>
+          <Overlay onClick={() => setIsModalOpen(false)} />
+          <BottomModal setIsModalOpen={setIsModalOpen} reports={reportOptions}/>
+        </>
+      )}
       <CommentList
         onChangeModal={onChangeModal}
         userImage={selectedPost.author?.image}
         username={selectedPost.author?.username}
         date={selectedPost.date}
-        comment={commentToShow}
-        currentUserId={userId} 
+        comment={commentToShow} // 변경: 입력된 댓글 내용을 CommentList로 전달
       />
       <WriteComment
         comment={comment}
         setComment={setComment}
-        handlePostComment={handlePostComment}
+        handlePostComment={handlePostComment} // 변경: handlePostComment 함수 추가
       />
     </Container>
   );
