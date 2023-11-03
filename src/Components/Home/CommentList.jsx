@@ -8,8 +8,6 @@ function formatDate(dateString) {
   return new Date(dateString).toLocaleDateString(undefined, options);
 }
 
-
-
 export default function CommentList(props) {
   const defaultUserImg = "https://api.mandarin.weniv.co.kr/1698653743844.jpg";
   const [comments, setComments] = useState([]);
@@ -19,8 +17,7 @@ export default function CommentList(props) {
   const selectedPost = location.state?.selectedPost;
   const [userAccountName, setUserAccountName] = useState(false);
   const [isMyPost, setIsMyPost] = useState(false); // 추가: 현재 사용자의 게시물 여부
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [reportOptions, setReportOptions] = useState([]);
+  
   useEffect(() => {
     fetchMyProfile();
     if (selectedPost) {
@@ -72,31 +69,6 @@ export default function CommentList(props) {
     setComments((prevComments) => [newComment, ...prevComments]);
   };
 
-
-  // const isMyComment = (commentAuthorAccountName) => {
-  //   return userAccountName === commentAuthorAccountName;
-  // };
-
-  // const onChangeModal = (comment, isMyComment) => {
-  //   let modalOptions = [];
-
-  //   if (isMyComment) {
-  //     modalOptions = [
-  //       { action: "수정하기", alertText: "수정하시겠습니까?" },
-  //       { action: "삭제하기", alertText: "삭제하시겠습니까?" },
-  //     ];
-  //   } else {
-  //     modalOptions = [
-  //       { action: "신고하기", alertText: "신고하시겠습니까?" },
-  //     ];
-  //   }
-
-  //   setIsModalOpen(true);
-  //   setReportOptions(modalOptions);
-  // };
-
-
-
   if (!selectedPost) {
     return null;
   }
@@ -105,7 +77,7 @@ export default function CommentList(props) {
       <S.CommentBox>
        {comments.map((comment)=>(
        <>
-           <S.UserInfo  key={comment.id}>
+           <S.UserInfo  key={comment}>
            <div >
              <Link to={`/profile/${comment.author.accountname}`}>
                <img src={comment.author.image  || defaultUserImg} alt='사용자 프로필 이미지' />
@@ -181,7 +153,7 @@ console.log(responseData)
       console.error("댓글 가져오기 에러:", error);
     }
   };
-  console.log(comment)
+  // console.log(comment)
 
   return (
     <S.InputForm>

@@ -189,7 +189,7 @@ export function PostListItem({ post }) {
       if (data) {
           const userAccountName = data.user.accountname
         setUserAccountName(userAccountName)
-        console.log(userAccountName)
+        // console.log(userAccountName)
       }
     } catch (error) {
       console.error("에러:", error);
