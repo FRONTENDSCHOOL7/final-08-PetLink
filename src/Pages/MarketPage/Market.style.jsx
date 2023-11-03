@@ -72,16 +72,16 @@ export const PriceLikesWrap = styled.div`
 `
 
 export const LikeBtn = styled.button`
-  width: 23px;
-  height: 23px;
+  width: 25px;
+  height: 25px;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 4px;
 
   img {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 15px;
     display: block; // 주변 요소와 간격 설정
   }
 
