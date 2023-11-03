@@ -109,6 +109,7 @@ export default function CommunityDetail() {
         username={selectedPost.author?.username}
         date={selectedPost.date}
         comment={commentToShow}
+        currentUserId={userId} 
       />
       <WriteComment
         comment={comment}
