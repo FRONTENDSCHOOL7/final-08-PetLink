@@ -54,11 +54,42 @@ export const Item = styled.li`
 
   p {
     font-size: 14px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   strong {
     color: #004E98;
     font-size: 14px;
+  }
+`
+
+export const PriceLikesWrap = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
+
+export const LikeBtn = styled.button`
+  width: 23px;
+  height: 23px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+
+  img {
+    width: 18px;
+    height: 18px;
+    display: block; // 주변 요소와 간격 설정
+  }
+
+  span {
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 `
 
