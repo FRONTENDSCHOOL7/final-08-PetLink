@@ -12,7 +12,7 @@ import offAllbumIcon from '../../assets/image/icon-post-album-off.png';
 import onListIcon from '../../assets/image/icon-post-list-on.png';
 import offListIcon from '../../assets/image/icon-post-list-off.png';
 import commentIcon from '../../assets/image/icon-comment.png';
-import { Container } from '../../Styles/reset.style';
+import { Container, GlobalStyle } from '../../Styles/reset.style';
 
 const MyFeed = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -24,12 +24,12 @@ const MyFeed = () => {
   const postsPerPage = 10; // Set the posts per page as needed
   const { accountname } = useParams();
 
-  // Toggle between album and list views
+  // 토글버튼 리스트 엘범형
   const toggleAlbum = () => {
     setIsAlbumActive(true);
     setIsListActive(false);
   };
-
+  
   const toggleList = () => {
     setIsAlbumActive(false);
     setIsListActive(true);
@@ -66,6 +66,7 @@ const MyFeed = () => {
 
   return (
     <Container>
+      <GlobalStyle/>
       <Layer>
       <ViewBtn active={isAlbumActive} onClick={toggleAlbum}>
         <BtnImg src={isAlbumActive ? onAllbumIcon : offAllbumIcon} alt="" />
@@ -137,6 +138,7 @@ const MyFeed = () => {
         </>
       )}
     </Container>
+
   );  
 }
 
@@ -227,13 +229,11 @@ export const ContentTxt = styled.p`
     -webkit-line-clamp: 4;
     overflow: hidden;
 `
-export const ContentImg = styled.img`
-  border-radius: 10px;
-  width: 100%;
-  max-width: 304px;
+export const ContentImg = styled(Container)`
+img {
+  max-width: 100%;
   height: auto;
-  margin-top: 16px;
-  object-fit: cover;
+}
 `;
 
 export const IconBox = styled.div`
@@ -270,9 +270,10 @@ const ListImages = styled.div`
   flex-wrap: wrap;
   gap: 8px;
   margin:16px;
-`;
-
-const ListImage = styled.img`
+  max-width: 100%;
+  `;
+  
+  const ListImage = styled.img`
   width: 114px;
   height: 114px;
   object-fit: cover;
@@ -281,5 +282,5 @@ const ListImage = styled.img`
 const PostContent = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 16px; // 간격을 추가
+  gap: 16px;
 `;
