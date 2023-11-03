@@ -6,12 +6,11 @@ import { GlobalStyle, Container } from "../../Styles/reset.style";
 import { Title, ProfileImage, ImageUpbtn, ImageWrap, InputGroup, EditWrap, StyledInput, Styledlabel, Styledpetinfo, SubBtn, PetInfo } from "./Profile.style";
 
 function convertInfoToTags(intro, pet, gender, birthdate, location) {
-    // intro = intro === undefined ? '' : `#intro:${intro}`;
-    intro = intro.replace(/^(#intro:)+/, '#intro:');
-    pet = pet === undefined ? '' : `#pet:${pet}`;
-    gender = gender === undefined ? '' : `#gender:${gender}`;
-    birthdate = birthdate === undefined ? '' : `#birthdate:${birthdate}`;
-    location = location === undefined ? '' : `#location:${location}`;
+    intro = intro ? `#intro:${intro.replace(/^(#intro:)+/, '')}` : '';
+    pet = pet ? `#pet:${pet}` : '';
+    gender = gender ? `#gender:${gender}` : '';
+    birthdate = birthdate ? `#birthdate:${birthdate}` : '';
+    location = location ? `#location:${location}` : '';
     return [intro, pet, gender, birthdate, location, '#bangyeolgori'].filter(Boolean).join(' ');
 }
 
