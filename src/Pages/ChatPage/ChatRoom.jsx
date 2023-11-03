@@ -2,10 +2,9 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Container, GlobalStyle } from '../../Styles/reset.style'
 import { ChatContent, ChatInput, ChatInputBar, ChatMessage, ChatRoomContents, ChatTime, Overlay, SendBtn, UserImg, AddImgBtn } from './ChatRoom.style'
 import BottomModal from '../../Components/Common/Modal/BottomModal';
-import userImg from '../../assets/image/icon-basic-profile.png' 
-import profile1 from '../../assets/image/icon-basic-profile.png'
-import profile2 from '../../assets/image/icon-test-user-profile.png'
-import profile3 from '../../assets/image/icon-test-user-profile2.png'
+import profile1 from '../../assets/image/img-user-siroo.jpg'
+import profile2 from '../../assets/image/img-user-windy.png'
+import profile3 from '../../assets/image/img-user-whiteDog.jpg'
 import addImgBtn from '../../assets/image/icon-img-button.png'
 import { useParams } from 'react-router-dom';
 import HeaderLayouts from '../../Components/Common/Header/Header';
