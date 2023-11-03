@@ -28,7 +28,7 @@ function extractInfoFromTags(tagString) {
         }
     });
 
-    return info;s
+    return info;
 }
 
 function ProfileEdit() {
