@@ -49,6 +49,19 @@ export const LogoText = styled.span`
   font-size: 60px;
   font-family: 'Yeongdo-Rg';
   color: white;
+  display: flex;
+  justify-content: center;
+
+  & > span {
+    display: inline-block;
+    animation: ${bounce} 1s infinite;
+  }
+
+  & > span:nth-child(1) { animation-delay: 0.1s; }
+  & > span:nth-child(2) { animation-delay: 0.2s; }
+  & > span:nth-child(3) { animation-delay: 0.3s; }
+  & > span:nth-child(4) { animation-delay: 0.4s; }
+  // ... 나머지 글자에 대해서도 animation-delay를 설정합니다.
 `;
 
 export const SubText = styled.span`
