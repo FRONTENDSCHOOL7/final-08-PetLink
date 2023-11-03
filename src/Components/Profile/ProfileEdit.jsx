@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import * as DropdownComponents from "./Dropdown";
 import TabMenu from "../Common/TabMenu/TabMenu";
@@ -28,138 +28,150 @@ function extractInfoFromTags(tagString) {
         }
     });
 
-    return info;
-  }, {});
+    return info;s
+}
 
-const ProfileEdit = () => {
-  const [profile, setProfile] = useState({
-    username: "",
-    accountname: "",
-    intro: "",
-    pet: "",
-    gender: "",
-    birthdate: "",
-    location: "",
-    image: null,
-  });
-  const [previewImage, setPreviewImage] = useState(null);
+function ProfileEdit() {
+    const [username, setUsername] = useState("");
+    const [accountname, setAccountname] = useState("");
+    const [intro, setIntro] = useState("");
+    const [pet, setPet] = useState("");
+    const [gender, setGender] = useState("");
+    const [birthdate, setBirthdate] = useState("");
+    const [location, setLocation] = useState("");
+    const [image, setImage] = useState(null);
+    const [previewImage, setPreviewImage] = useState(null);
 
-  const fetchProfileData = useCallback(async () => {
-    try {
-      const token = localStorage.getItem("token");
-      const response = await axios.get(`${apiBaseURL}/user/myinfo`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-type": "application/json",
-        },
-      });
+    useEffect(() => {
+        const fetchData = async () => {
+        try {
+            const token = localStorage.getItem("token");
+            const response = await axios.get(
+            "https://api.mandarin.weniv.co.kr/user/myinfo",
+            {
+                headers: {
+                Authorization: token ? `Bearer ${token}` : null,
+                "Content-type": "application/json",
+                },
+            }
+            );
 
-      if (response.data && response.data.user) {
-        const user = response.data.user;
-        const extractedInfo = extractInfoFromTags(user.intro);
-        setProfile({
-          ...user,
-          intro: extractedInfo.intro || '',
-          ...extractedInfo,
-        });
-        setPreviewImage(user.image);
-      }
-    } catch (error) {
-      console.error("Error fetching profile data:", error);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchProfileData();
-  }, [fetchProfileData]);
-
-  const handleImageChange = useCallback((e) => {
-    const file = e.target.files[0];
-    setProfile((prevState) => ({ ...prevState, image: file }));
-    const reader = new FileReader();
-    reader.onload = () => setPreviewImage(reader.result);
-    reader.readAsDataURL(file);
-  }, []);
-
-  const imageUpload = useCallback(async (file) => {
-    const formData = new FormData();
-    formData.append("image", file);
-
-    try {
-      const response = await fetch(`${apiBaseURL}/image/uploadfile`, {
-        method: "POST",
-        body: formData,
-      });
-      const data = await response.json();
-      return data.filename ? `${apiBaseURL}/${data.filename}` : null;
-    } catch (err) {
-      console.error("Image upload failed:", err);
-      return null;
-    }
-  }, []);
-
-  const handleSubmit = useCallback(
-    async (event) => {
-      event.preventDefault();
-      const token = localStorage.getItem("token");
-      let imageUrl = profile.image;
-      if (profile.image && !(typeof profile.image === "string")) {
-        imageUrl = await imageUpload(profile.image);
-        if (!imageUrl) {
-          console.error("Failed to upload image.");
-          return;
+            if (response.data && response.data.user) {
+            const user = response.data.user;
+            setUsername(user.username);
+            setAccountname(user.accountname);
+            const extractedInfo = extractInfoFromTags(user.intro);
+            setIntro(extractedInfo.intro);
+            setPet(extractedInfo.pet);
+            setGender(extractedInfo.gender);
+            setBirthdate(extractedInfo.birthdate);
+            setLocation(extractedInfo.location);
+            setImage(user.image);
+            setPreviewImage(user.image);
+            }
+        } catch (error) {
+            console.error("Error fetching profile data:", error);
         }
-      }
+        };
 
-      const taggedIntro = convertInfoToTags(
-        profile.intro,
-        profile.pet,
-        profile.gender,
-        profile.birthdate,
-        profile.location
-      );
+        fetchData();
+    }, []);
 
-      const userData = {
-        username: profile.username,
-        accountname: profile.accountname,
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        setImage(file);
+
+        const reader = new FileReader();
+        reader.onload = () => {
+        setPreviewImage(reader.result);
+        };
+        reader.readAsDataURL(file);
+    };
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        const token = localStorage.getItem("token");
+        let imageUrl = image;
+        if (image && typeof image !== "string") {
+        imageUrl = await imageUpload(image);
+        if (!imageUrl) {
+            console.error("Failed to upload image.");
+            return;
+        }
+        }
+
+        const taggedIntro = convertInfoToTags(
+        intro,
+        pet,
+        gender,
+        birthdate,
+        location
+        );
+
+        const userData = {
+        username,
+        accountname,
         intro: taggedIntro,
         image: imageUrl,
-      };
+        };
 
-      try {
+        try {
         const response = await axios.put(
-          `${apiBaseURL}/user`,
-          { user: userData },
-          {
+            "https://api.mandarin.weniv.co.kr/user",
+            { user: userData },
+            {
             headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
             },
-          }
+            }
         );
 
         if (response.data && response.data.user) {
-          console.log("Profile updated successfully:", response.data.user);
+            console.log("Profile updated successfully:", response.data.user);
+        } else {
+            console.error(
+            "Update error:",
+            response.data.message || "Unknown error"
+            );
         }
-      } catch (error) {
+        } catch (error) {
         console.error(
-          "Update error:",
-          error.response ? error.response.data : error.message
+            "Update error:",
+            error.response ? error.response.data : error.message
         );
-      }
-    },
-    [profile, imageUpload]
-  );
+        }
+    };
 
-  const handleChange = useCallback((e) => {
-    const { name, value } = e.target;
-    setProfile((prevState) => ({ ...prevState, [name]: value }));
-  }, []);
+    async function imageUpload(file) {
+        const url = "https://api.mandarin.weniv.co.kr";
+        const formData = new FormData();
+        formData.append("image", file);
 
-  return (
+        try {
+        const response = await fetch(url + "/image/uploadfile", {
+            method: "POST",
+            body: formData,
+        });
+
+        const data = await response.json();
+        if (data.filename) {
+            return url + "/" + data.filename;
+        } else {
+            console.error("Image upload failed:", data);
+            return null;
+        }
+        } catch (err) {
+        console.error(err);
+        return null;
+        }
+    }
+
+    return (
     <>
-      <GlobalStyle />
-      <Container>
+    <GlobalStyle/>
+    <Container>
         <Title>프로필 수정</Title>
         {/* <HeaderLayouts title="반결장터" logo={true} /> */}
             <form onSubmit={handleSubmit}>
@@ -242,9 +254,9 @@ const ProfileEdit = () => {
             </EditWrap>
             </form>
         <TabMenu />
-      </Container>
+    </Container>
     </>
-  );
-};
+    );
+}
 
 export default ProfileEdit;

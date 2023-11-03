@@ -10,32 +10,30 @@ import styled from 'styled-components';
 const imgUrl = 'path_to_your_default_image.png'; // 기본 이미지 경로로 변경해야 합니다.
 
 const FollowingList = () => {
-  const [followingList, setFollowingList] = useState([]);
-  const { accountname } = useParams(); // use useParams to get the accountname
+const [followingList, setFollowingList] = useState([]);
+const { accountname } = useParams(); // use useParams to get the accountname
+const token = localStorage.getItem('token');
 
-  const token = localStorage.getItem('token');
+useEffect(() => {
+    if (accountname) {
+        fetch(`https://api.mandarin.weniv.co.kr/profile/${accountname}/following`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            setFollowingList(data);
+        })
+        .catch(error => {
+                console.error('Error fetching following data:', error);
+            });
+        }
+}, [token, accountname]);
 
-  useEffect(() => {
-      // Check if accountname exists before making the call
-      if (accountname) {
-          fetch(`https://api.mandarin.weniv.co.kr/profile/${accountname}/following`, { // Use template literal to insert the accountname
-              method: 'GET',
-              headers: {
-                  'Authorization': `Bearer ${token}`,
-                  'Content-type': 'application/json'
-              }
-          })
-          .then(response => response.json())
-          .then(data => {
-              setFollowingList(data);
-          })
-          .catch(error => {
-              console.error('Error fetching following data:', error);
-          });
-      }
-  }, [token, accountname]);
-
-  const toggleFollow = async (userId) => {
+const toggleFollow = async (userId) => {
     try {
         const user = followingList.find(u => u._id === userId); // 사용자 검색
         if (!user) {
@@ -77,17 +75,17 @@ const FollowingList = () => {
 
 // 인트로 추출
 function parseIntro(intro) {
-  const tags = ['intro', 'pet', 'gender', 'birthdate', 'location'];
-  const info = {};
+const tags = ['intro', 'pet', 'gender', 'birthdate', 'location'];
+const info = {};
 
-  tags.forEach(tag => {
-      const match = intro.match(new RegExp(`#${tag}:(.*?)(?=#|$)`));
-      if (match && match[1]) {
-          info[tag] = match[1].trim();
-      }
-  });
+tags.forEach(tag => {
+    const match = intro.match(new RegExp(`#${tag}:(.*?)(?=#|$)`));
+    if (match && match[1]) {
+        info[tag] = match[1].trim();
+    }
+});
 
-  return info;
+return info;
 }
 
     return (
@@ -116,15 +114,15 @@ function parseIntro(intro) {
 export default FollowingList;
 
 const FollowBtn = styled.button`
-  background-color: ${(props) => (props.isFollowing ? '#004E98' : '#fff')};
-  color: ${(props) => (props.isFollowing ? '#fff' : '#767676')};
-  border: ${(props) => (props.isFollowing ? 'none' : '1px solid #DBDBDB')};
-  border-radius: 26px;
-  transition: background-color 0.3s;
-  width: 56px;
-  height: 28px;
-  cursor: pointer;
-  &:hover {
+    background-color: ${(props) => (props.isFollowing ? '#004E98' : '#fff')};
+    color: ${(props) => (props.isFollowing ? '#fff' : '#767676')};
+    border: ${(props) => (props.isFollowing ? 'none' : '1px solid #DBDBDB')};
+    border-radius: 26px;
+    transition: background-color 0.3s;
+    width: 56px;
+    height: 28px;
+    cursor: pointer;
+    &:hover {
     opacity: 0.8;
-  }
+}
 `;
