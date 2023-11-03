@@ -33,9 +33,10 @@ const Report = styled.button`
   font-size: 14px;
   text-align: left;
   position: relative;
-  padding-top: 20px;
+  padding: 20px 0;
   display: inline-block;
   width: 100%;
+  height: 50px;
 
   &::before {
     content: ${props => props.$first ? '""' : 'none'};
@@ -48,7 +49,6 @@ const Report = styled.button`
     background-color: #cccccc;
   }
 `
-
 
 export default function BottomModal({reports, setIsModalOpen}) {
   const [isPopupVisible, setIsPopupVisible] = useState(false);

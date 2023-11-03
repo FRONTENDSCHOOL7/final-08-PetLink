@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react'
 import addBtn from '../../assets/image/icon-add.png'
 import { useState } from 'react'
-import { BtnAdd, BtnNav, Item, ItemContainer, NavMenu, StyledLink } from './Market.style'
+import { BtnAdd, BtnNav, Item, ItemContainer, LikeBtn, NavMenu, PriceLikesWrap, StyledLink } from './Market.style'
 import { Container, GlobalStyle} from '../../Styles/reset.style'
+import heartIcon from '../../assets/image/icon-heart.png'
+import redHeartIcon from '../../assets/image/icon-heart-red.png'
 import TabMenu from '../../Components/Common/TabMenu/TabMenu'
 import HeaderLayouts from '../../Components/Common/Header/Header'
 import axios from 'axios'
@@ -11,6 +13,7 @@ export default function Market() {
   const navItems = ['강아지', '고양이', '기타']
   const [activeBtn, setActiveBtn] = useState('강아지');
   const [products, setProducts] = useState([]);
+  const [likes, setLikes] = useState({});
 
   console.log("render")
 
@@ -23,18 +26,23 @@ export default function Market() {
     const token = localStorage.getItem('token');
 
     try {
-      const res = await axios.get(`https://api.mandarin.weniv.co.kr/product/`, {
+      const res = await axios.get(`https://api.mandarin.weniv.co.kr/product/?limit=999&skip=0`, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
       });
+      setProducts(processProductsData(res.data.product));
+      setLikes(res.data.product.reduce((acc, product) => {
+        acc[product._id] = false;
+        return acc;
+      }, {}));
 
-      console.log("Fetched Products:", res.data.product); // API에서 가져온 상품 데이터 로깅
-      // 가져온 데이터로 상태 업데이트
-      const processedProducts = processProductsData(res.data.product);
-      console.log("Processed Products:", processedProducts); // 처리된 상품 데이터 로깅
-      setProducts(processedProducts); // 상태 업데이트
+      // console.log("Fetched Products:", res.data.product); // API에서 가져온 상품 데이터 로깅
+      // // 가져온 데이터로 상태 업데이트
+      // const processedProducts = processProductsData(res.data.product);
+      // console.log("Processed Products:", processedProducts); // 처리된 상품 데이터 로깅
+      // setProducts(processedProducts); // 상태 업데이트
     } catch(error) {
       console.error("Error", error);
     }
@@ -50,7 +58,7 @@ export default function Market() {
         category,
         formattedProductName,
         pureProductName,
-        description
+        description,
       };
     })
   }
@@ -90,10 +98,21 @@ export default function Market() {
 
     return { category, formattedProductName, pureProductName, description };
   }
+  
+  const handleLike = (productId) => {
+    setLikes((prevLikes) => {
+      const newLikes = {
+        ...prevLikes,
+        [productId]: !prevLikes[productId],
+      };
+      console.log(newLikes); // 상태 변화를 로깅
+      return newLikes;
+    });
+  }
 
   // 현재 선택된 카테고리에 해당하는 상품만 필터링
   const filteredProducts = products.filter(product => product.category === activeBtn);
-  
+
   return (
     <>
       <GlobalStyle/>
@@ -101,7 +120,7 @@ export default function Market() {
         <HeaderLayouts title="반결장터" logo />
 
         <NavigationMenu navItems={navItems} activeBtn={activeBtn} setActiveBtn={setActiveBtn}/>
-        <ProductsDisplay products={filteredProducts} />
+        <ProductsDisplay products={filteredProducts} handleLike={handleLike} likes={likes} />
         <StyledLink to="/market/add-product">
           <BtnAdd>
             <img src={addBtn} alt="추가버튼" />
@@ -127,11 +146,13 @@ const NavigationMenu = ({navItems, activeBtn, setActiveBtn}) => (
   </nav>
 )
 
-const ProductsDisplay = ({products}) => (
+const ProductsDisplay = ({products, handleLike, likes}) => (
   <ItemContainer>
     {products.length > 0 ? (
     products.map((product) => {
       console.log("Product State:", { pureProductName: product.pureProductName, description: product.description });
+      const isLiked = likes[product._id];
+      const likeIcon = isLiked ? redHeartIcon : heartIcon;
       return(
         <StyledLink 
         to={`/market/detail/${product._id}`}
@@ -141,7 +162,12 @@ const ProductsDisplay = ({products}) => (
       <Item>
         <img src={product.itemImage} alt="상품" />
         <p className='item-title'>{product.pureProductName}</p>
-        <strong className='item-price'>{Number(product.price).toLocaleString()} 원</strong>
+        <PriceLikesWrap>
+          <strong className='item-price'>{Number(product.price).toLocaleString()} 원</strong>
+          <LikeBtn onClick={(e) => {e.preventDefault(); handleLike(product._id); }}>
+            <img src={likeIcon} alt="좋아요 버튼" />
+          </LikeBtn>
+        </PriceLikesWrap>
       </Item>
     </StyledLink>
     )

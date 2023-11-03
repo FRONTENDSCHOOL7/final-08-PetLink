@@ -17,12 +17,16 @@ function formatDate(dateString) {
 }
 
 export default function PostList(props) {
-  // const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [posts, setPosts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const postsPerPage = 10;
   const navigate = useNavigate();
+  // const reportOptions = [
+  //   {action: "신고하기", alertText: "신고하시겠습니까?"},
+  // ]
+  
   
   useEffect(() => {
     loadCachedPosts()
@@ -76,13 +80,6 @@ if(data.posts.length< postsPerPage){
 page ++
       }
 
-
-// if (data.posts) {
-//         setPosts(data.posts);
-//       } 
-//       else {
-//         setPosts([]);
-//       }
 
 setPosts((prevPosts) => [...prevPosts, ...loadedPosts.slice(0, postsPerPage)]);
 setIsLoading(false);
@@ -141,9 +138,11 @@ setIsLoading(false);
     }
   };
 
-
   const handlePostClick = (post) => {
     navigate(`/post/${post._id}`);
+  };
+  const onChangeModal = () => {
+    setIsModalOpen(true);
   };
 
 
@@ -168,6 +167,8 @@ setIsLoading(false);
 export function PostListItem({ post }) {
   const defaultUserImg = "https://api.mandarin.weniv.co.kr/1698653743844.jpg";
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false); // 수정 모달 상태
+  const [reportOptions, setReportOptions] = useState([]);
   const [accountname, setAccountName] = useState("");
   const [username, setUserName] = useState("");
   const [userImg, setUserImg] = useState(null);
@@ -176,11 +177,31 @@ export function PostListItem({ post }) {
   const [likeNum, setLikeNum] = useState(0);
   const [date, setDate] = useState("");
   const [liked, setLiked] = useState(false);
-  const reportOptions = [
-    {action: "신고하기", alertText: "신고하시겠습니까?"},
-  ]
+  const [userId, setUserID] = useState(false);
+
   
-  
+  const fetchMyProfile = async () => {
+    try {
+      const response = await fetch(`https://api.mandarin.weniv.co.kr/user/myinfo`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-type": "application/json",
+        },
+      });
+      const data = await response.json();
+
+      if (data) {
+        const userId = data.user._id;
+        setUserID(userId);
+        console.log(userId)
+      }
+    } catch (error) {
+      console.error("에러:", error);
+    }
+  };
+
+
   const navigate = useNavigate();
 
 
@@ -196,11 +217,21 @@ export function PostListItem({ post }) {
       setUserImg(
         post.author.image);
       setContentImgUrl(post.image || "");
-      setContent(post.content || "");
+      
+      let contentText = "";
+    try {
+      const contentData = JSON.parse(post.content || "{}");
+      contentText = contentData.contentText || "";
+    } catch (error) {
+      console.error("Error parsing content JSON:", error);
+    }
+
+    setContent(contentText);
       setDate(post.createdAt || "");
       setLikeNum(post.likes || 0); // 초기 좋아요 수 설정
       setLiked(post.liked || false); // 사용자의 좋아요 상태 설정
     }
+    fetchMyProfile()
   }, [post]);
 
   const handleLikeClick = async () => {
@@ -213,24 +244,45 @@ export function PostListItem({ post }) {
   };
 
   const onChangeModal = () => {
+    const authorId = post.author_id ? post.author.id.toString() : "";
+    const currentUserId = userId ? userId.toString() : "";
+    const isMyPost =  post.author._id === currentUserId;
+    // console.log("post.author.id:", post.author._id);
+    // console.log("userId:", userId);
+    // console.log("authorId:", authorId);
+    // console.log("currentUserId:", currentUserId);
+    // console.log(isMyPost)
+    let modalOptions = []
+    if(isMyPost){
+      modalOptions = [
+        { action: "수정하기", alertText: "수정하시겠습니까?" },
+        { action: "삭제하기", alertText: "삭제하시겠습니까?" },
+      ];
+
+    }else {
+      modalOptions = [
+        { action: "신고하기", alertText: "신고하시겠습니까?" },
+      ];
+    }
     setIsModalOpen(true);
+    setReportOptions(modalOptions); // modalOptions 배열을 state로 설정
   };
 
   return (
     <>
       <S.UserInfo>
-        <S.UserProfile>
           <Link
             to={`/profile/${post.author.accountname}`}
             state={{ selectedPost: post }}
           >
+        <S.UserProfile>
             <img src={userImg || defaultUserImg} alt="사용자 프로필 이미지" />
-          </Link>
           <S.UserName>
             <p>{username}</p>
             <span>{accountname}</span>
           </S.UserName>
         </S.UserProfile>
+          </Link>
         <button onClick={onChangeModal}>
           <S.IconMore src={moreIcon} alt="신고하기 모달창 불러오기" />
         </button>
@@ -257,7 +309,7 @@ export function PostListItem({ post }) {
       {isModalOpen && (
         <>
           <Overlay onClick={() => setIsModalOpen(false)} />
-          <BottomModal reportOptions={["신고하기"]} setIsModalOpen={setIsModalOpen} />
+          <BottomModal setIsModalOpen={setIsModalOpen} reports={reportOptions}/>
         </>
       )}
     </>
