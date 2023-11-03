@@ -16,7 +16,7 @@ export const ChatContent = styled.div`
   margin-bottom: 10px;
   display: flex;
   gap: 12px;
-  justify-content: ${props => props.isFirst ? "flex-start" : "flex-end"};
+  justify-content: flex-end;
 `
 
 export const UserImg = styled.img`
@@ -29,9 +29,9 @@ export const ChatMessage = styled.p`
   max-width: 240px;
   padding: 12px;
   border: ${ props => props.hasImage ? "none" : "1px solid #C4C4C4"};
-  border-radius: ${props => props.radius || "0"};
-  background-color: ${props => props.hasImage ? "#transparent" : (props.isFirst ? "#transparent" : "#004E98")};
-  color: ${props => props.isFirst && !props.hasImage ? "initial" : "white"};
+  border-radius: 22px 0 22px 22px;
+  background-color:${props => props.hasImage ? "#transparent" : (props.isFirst ? "#transparent" : "#004E98")};
+  color: white;
 `
 
 export const ChatTime = styled.span`

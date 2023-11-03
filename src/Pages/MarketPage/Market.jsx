@@ -23,7 +23,7 @@ export default function Market() {
     const token = localStorage.getItem('token');
 
     try {
-      const res = await axios.get(`https://api.mandarin.weniv.co.kr/product/`, {
+      const res = await axios.get(`https://api.mandarin.weniv.co.kr/product/?limit=999&skip=0`, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
