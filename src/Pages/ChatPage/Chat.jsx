@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import profile1 from '../../assets/image/icon-basic-profile.png'
-import profile2 from '../../assets/image/icon-test-user-profile.png'
-import profile3 from '../../assets/image/icon-test-user-profile2.png'
+import profile1 from '../../assets/image/img-user-siroo.jpg'
+import profile2 from '../../assets/image/img-user-windy.png'
+import profile3 from '../../assets/image/img-user-whiteDog.jpg'
 import { GlobalStyle, Container } from '../../Styles/reset.style'
 import {ChatItem} from '../../Components/Chat/ChatList'
 
