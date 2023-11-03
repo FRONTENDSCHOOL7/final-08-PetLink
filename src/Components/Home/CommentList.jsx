@@ -3,6 +3,13 @@ import * as S from './PostList.style';
 import moreIcon from '../../assets/image/icon-more-vertical.png';
 import { Link, useLocation, useParams } from 'react-router-dom';
 
+function formatDate(dateString) {
+  const options = { year: "numeric", month: "2-digit", day: "2-digit" };
+  return new Date(dateString).toLocaleDateString(undefined, options);
+}
+
+
+
 export default function CommentList(props) {
   const defaultUserImg = "https://api.mandarin.weniv.co.kr/1698653743844.jpg";
   const [comments, setComments] = useState([]);
@@ -10,7 +17,10 @@ export default function CommentList(props) {
   const { postId } = useParams();
   const location = useLocation();
   const selectedPost = location.state?.selectedPost;
-
+  const [userAccountName, setUserAccountName] = useState(false);
+  const [isMyPost, setIsMyPost] = useState(false); // 추가: 현재 사용자의 게시물 여부
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [reportOptions, setReportOptions] = useState([]);
   useEffect(() => {
     fetchMyProfile();
     if (selectedPost) {
@@ -31,6 +41,9 @@ export default function CommentList(props) {
 
       if (data) {
         setUserImg(data.user.image);
+        const userAccountName = data.user.accountname
+        setUserAccountName(userAccountName)
+        setIsMyPost(userAccountName === selectedPost.author?.accountname);
       }
     } catch (error) {
       console.error("에러:", error);
@@ -59,6 +72,31 @@ export default function CommentList(props) {
     setComments((prevComments) => [newComment, ...prevComments]);
   };
 
+
+  // const isMyComment = (commentAuthorAccountName) => {
+  //   return userAccountName === commentAuthorAccountName;
+  // };
+
+  // const onChangeModal = (comment, isMyComment) => {
+  //   let modalOptions = [];
+
+  //   if (isMyComment) {
+  //     modalOptions = [
+  //       { action: "수정하기", alertText: "수정하시겠습니까?" },
+  //       { action: "삭제하기", alertText: "삭제하시겠습니까?" },
+  //     ];
+  //   } else {
+  //     modalOptions = [
+  //       { action: "신고하기", alertText: "신고하시겠습니까?" },
+  //     ];
+  //   }
+
+  //   setIsModalOpen(true);
+  //   setReportOptions(modalOptions);
+  // };
+
+
+
   if (!selectedPost) {
     return null;
   }
@@ -72,9 +110,9 @@ export default function CommentList(props) {
              <Link to={`/profile/${comment.author.accountname}`}>
                <img src={comment.author.image  || defaultUserImg} alt='사용자 프로필 이미지' />
              </Link>
-             <p>{comment.author.username} <span>· {comment.createdAt}</span></p>
+             <p>{comment.author.username} <span>· {formatDate(comment.createdAt)}</span></p>
            </div>
-           <button onClick={props.onChangeModal}>
+           <button onClick={() => props.onChangeModal(comment, props.isMyComment(comment.author.accountname))}>
              <img src={moreIcon} alt='신고하기 모달창 불러오기' />
            </button>
          </S.UserInfo>
