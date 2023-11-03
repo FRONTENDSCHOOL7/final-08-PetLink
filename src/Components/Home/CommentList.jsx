@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'
 import * as S from './PostList.style';
 import moreIcon from '../../assets/image/icon-more-vertical.png';
-import { Link, useParams, useLocation } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 
 export default function CommentList(props) {
   const defaultUserImg = "https://api.mandarin.weniv.co.kr/1698653743844.jpg";
@@ -10,110 +10,80 @@ export default function CommentList(props) {
   const { postId } = useParams();
   const location = useLocation();
   const selectedPost = location.state?.selectedPost;
-  const currentUserId = props.currentUserId;
 
   useEffect(() => {
-    const fetchMyProfile = async () => {
-      try {
-        const response = await fetch(`https://api.mandarin.weniv.co.kr/user/myinfo`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-            "Content-type": "application/json",
-          },
-        });
-        const data = await response.json();
-
-        // if (data) {
-        //   setUserImg(data.user.image);
-        //   setCurrentUserId(data.user._id);
-        // }
-      } catch (error) {
-        console.error("에러:", error);
-      }
-    };
-
-    const fetchComments = async (id) => {
-      try {
-        const response = await fetch(`https://api.mandarin.weniv.co.kr/post/${id}/comments`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-            "Content-Type": "application/json",
-          },
-        });
-        const data = await response.json();
-
-        if (data) {
-          setComments(data.comments);
-        }
-      } catch (error) {
-        console.error("댓글 가져오기 에러:", error);
-      }
-    };
-
     fetchMyProfile();
-
-    const validPostId = postId || selectedPost?.id;
-    if (validPostId) {
-      fetchComments(validPostId);
-    } else {
-      console.log('postId is undefined!');
+    if (selectedPost) {
+      fetchComments(selectedPost.id);
     }
+  }, [selectedPost]);
 
-  }, [postId, selectedPost]);
+  const fetchMyProfile = async () => {
+    try {
+      const response = await fetch(`https://api.mandarin.weniv.co.kr/user/myinfo`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-type": "application/json",
+        },
+      });
+      const data = await response.json();
 
-  useEffect(() => {
-    console.log('Comments:', comments);
-  }, [comments]);
-
-  const handleCommentOptionClick = (comment) => {
-    console.log('Current User ID:', currentUserId); // 현재 사용자 ID를 확인
-    console.log('Comment Author ID:', comment.author._id); 
-
-    const reportOptions = [
-      { action: "신고하기", alertText: "댓글을 신고하시겠습니까?" },
-    ];
-  
-    const commentOwnerOptions = [
-      { action: "수정하기", alertText: "댓글을 수정하시겠습니까?" },
-      { action: "삭제하기", alertText: "댓글을 삭제하시겠습니까?" },
-    ];
-  
-    // === 연산자를 사용하여 형 변환 없이 엄격한 비교를 합니다.
-    if (currentUserId === comment.author._id) {
-      props.onChangeModal(commentOwnerOptions, comment);
-    } else {
-      props.onChangeModal(reportOptions, comment);
+      if (data) {
+        setUserImg(data.user.image);
+      }
+    } catch (error) {
+      console.error("에러:", error);
     }
+  };
+
+  const fetchComments = async () => {
+    try {
+      const response = await fetch(`https://api.mandarin.weniv.co.kr/post/${postId}/comments`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-type": "application/json",
+        },
+      });
+      const data = await response.json();
+
+      if (data) {
+        setComments(data.comments); // 가져온 댓글 데이터를 설정
+      }
+    } catch (error) {
+      console.error("댓글 가져오기 에러:", error);
+    }
+  };
+  const addComment = (newComment) => {
+    setComments((prevComments) => [newComment, ...prevComments]);
   };
 
   if (!selectedPost) {
     return null;
   }
 
-  return (
-    <S.CommentBox>
-      {Array.isArray(comments) ? comments.map((comment) => (
-        <React.Fragment key={comment.id}>
-          <S.UserInfo>
-            <div>
-              <Link to={`/profile/${comment.author.accountname}`}>
-                <img src={comment.author.image || defaultUserImg} alt='사용자 프로필 이미지' />
-              </Link>
-              <p>{comment.author.username} <span>· {comment.createdAt}</span></p>
-            </div>
-            <button onClick={() => handleCommentOptionClick(comment)}>
-              <img src={moreIcon} alt='더보기' />
-            </button>
-          </S.UserInfo>
-          <S.CommentTxt>{comment.content}</S.CommentTxt>
-        </React.Fragment>
-      )) : <p>댓글이 없습니다.</p>}
-    </S.CommentBox>
-  );
-}
-
+    return (
+      <S.CommentBox>
+       {comments.map((comment)=>(
+       <>
+           <S.UserInfo  key={comment.id}>
+           <div >
+             <Link to={`/profile/${comment.author.accountname}`}>
+               <img src={comment.author.image  || defaultUserImg} alt='사용자 프로필 이미지' />
+             </Link>
+             <p>{comment.author.username} <span>· {comment.createdAt}</span></p>
+           </div>
+           <button onClick={props.onChangeModal}>
+             <img src={moreIcon} alt='신고하기 모달창 불러오기' />
+           </button>
+         </S.UserInfo>
+         <S.CommentTxt>{comment.content}</S.CommentTxt>
+       </>
+       ))}
+      </S.CommentBox>
+    );
+  }
   
   export function WriteComment({ comment, setComment, handlePostComment ,addComment }) {
   const [userImg, setUserImg] = useState(null);

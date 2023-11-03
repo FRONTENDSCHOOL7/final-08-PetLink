@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import * as S from '../Home/PostList.style';
 import moreIcon from '../../assets/image/icon-more-vertical.png';
@@ -20,6 +20,25 @@ export default function CommunityDetail() {
   const [userId, setUserId] = useState(null);
   const location = useLocation();
   const { selectedPost } = location.state || {};
+
+  const navigate = useNavigate();
+
+  // 게시물 삭제 함수
+  const deletePost = async (postId) => {
+    console.log('deletePost is called with id:', postId)
+    try {
+      await axios.delete(`https://api.mandarin.weniv.co.kr/post/${postId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      alert('삭제되었습니다.');
+      navigate('/community');
+    } catch (error) {
+      // 에러 처리
+    }
+  };
 
   useEffect(() => {
     // 사용자 ID를 불러오는 함수
@@ -100,7 +119,11 @@ export default function CommunityDetail() {
       {isModalOpen && (
           <>
             <Overlay onClick={() => setIsModalOpen(false)} />
-            <BottomModal setIsModalOpen={setIsModalOpen} reports={isPostOwner ? postOwnerOptions : reportOptions}/>
+            <BottomModal
+              setIsModalOpen={setIsModalOpen}
+              reports={isPostOwner ? postOwnerOptions : reportOptions}
+              onDelete={() => deletePost(selectedPost._id)}
+            />
           </>
         )}
       <CommentList
