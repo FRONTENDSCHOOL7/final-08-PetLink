@@ -49,10 +49,16 @@ const Report = styled.button`
   }
 `
 
-
-export default function BottomModal({reports, setIsModalOpen}) {
+export default function BottomModal({reports, setIsModalOpen, onDelete}) {
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [alertText,setAlertText] = useState("");
+
+  const handlePopupDelete = () => {
+    if (onDelete) {
+      onDelete(); // 삭제 함수 호출
+    }
+    handlePopupClose(); // 팝업 모달 닫기
+  };
 
   const handleReportClick = (alertText) => {
     setAlertText(alertText); 
@@ -81,6 +87,7 @@ export default function BottomModal({reports, setIsModalOpen}) {
         confirmText="확인"
         onConfirm={handlePopupClose}
         onCancel={handlePopupClose}
+        onDelete={handlePopupDelete} // 삭제 기능 추가
       />
     </>
   )
