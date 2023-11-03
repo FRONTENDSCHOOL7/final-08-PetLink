@@ -19,11 +19,9 @@ export default function PostDetail(props) {
   const [commentToShow, setCommentToShow] = useState(''); // 추가: 화면에 보이는 댓글 상태
   const location = useLocation();
   const { selectedPost } = location.state;
-  const [userId, setUserID] = useState(false);
+  const [userAccountName, setUserAccountName] = useState(false);
 
-  // const reportOptions = [
-  //   {action: "신고하기", alertText: "신고하시겠습니까?"},
-  // ]
+
   useEffect(()=>{
     fetchMyProfile()
   })
@@ -39,9 +37,9 @@ export default function PostDetail(props) {
       const data = await response.json();
 
       if (data) {
-        const userId = data.user._id;
-        setUserID(userId);
-        console.log(userId)
+        const userAccountName = data.user.accountname
+        setUserAccountName(userAccountName)
+        console.log(userAccountName)
       }
     } catch (error) {
       console.error("에러:", error);
@@ -50,9 +48,8 @@ export default function PostDetail(props) {
 
 
   const onChangeModal = () => {
-    const authorId = selectedPost.author_id ? selectedPost.author.id.toString() : "";
-    const currentUserId = userId ? userId.toString() : "";
-    const isMyPost =  selectedPost.author._id === currentUserId;
+    const accountname = selectedPost.author?.accountname
+    const isMyPost =  accountname === userAccountName;
     let modalOptions = []
     if(isMyPost){
       modalOptions = [
