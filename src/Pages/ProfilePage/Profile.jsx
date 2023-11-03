@@ -21,6 +21,7 @@ import {
     ProfilePet,
     GenderIcon,
 } from '../../Components/Profile/Profile.style';
+import MyFeed from '../../Components/Profile/MyFeed';
 
 const ProfilePage = () => {
     const [profileData, setProfileData] = useState(null);
@@ -283,6 +284,7 @@ const ProfilePage = () => {
                         </BtnGroup>
                     )}
                 </ProfileContainer>
+                <MyFeed accountname={profileData.accountname}/>
             </Container>
             <TabMenu />
         </>
