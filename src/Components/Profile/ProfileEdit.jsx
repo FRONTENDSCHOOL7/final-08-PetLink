@@ -5,17 +5,29 @@ import TabMenu from "../Common/TabMenu/TabMenu";
 import { GlobalStyle, Container } from "../../Styles/reset.style";
 import { Title, ProfileImage, ImageUpbtn, ImageWrap, InputGroup, EditWrap, StyledInput, Styledlabel, Styledpetinfo, SubBtn, PetInfo } from "./Profile.style";
 
-const apiBaseURL = "https://api.mandarin.weniv.co.kr";
+function convertInfoToTags(intro, pet, gender, birthdate, location) {
+    intro = intro ? `#intro:${intro.replace(/^(#intro:)+/, '')}` : '';
+    pet = pet ? `#pet:${pet}` : '';
+    gender = gender ? `#gender:${gender}` : '';
+    birthdate = birthdate ? `#birthdate:${birthdate}` : '';
+    location = location ? `#location:${location}` : '';
+    return [intro, pet, gender, birthdate, location, '#bangyeolgori'].filter(Boolean).join(' ');
+}
 
-// Refactored function for readability
-const convertInfoToTags = (intro, pet, gender, birthdate, location) =>
-  `#intro:${intro} #pet:${pet} #gender:${gender} #birthdate:${birthdate} #location:${location}`;
+function extractInfoFromTags(tagString) {
+    const info = {};
+    const cleanedTagString = tagString.replace(/ undefined/g, '');
+    const tags = cleanedTagString.split(" #");
 
-const extractInfoFromTags = (tagString) =>
-  tagString.split(" #").reduce((info, tag) => {
-    const [key, value] = tag.split(":");
-    // info[key] = value;
-    info[key.replace('intro', '').trim()] = value;
+    tags.forEach((tag) => {
+        const [key, value] = tag.includes(':') ? tag.split(":") : [tag, ''];
+        if (key && value) {
+            info[key.trim()] = value.trim();
+        } else if (key) {
+            info[key.trim()] = true;
+        }
+    });
+
     return info;
   }, {});
 
@@ -150,85 +162,85 @@ const ProfileEdit = () => {
       <Container>
         <Title>프로필 수정</Title>
         {/* <HeaderLayouts title="반결장터" logo={true} /> */}
-        <form onSubmit={handleSubmit}>
-          <ImageWrap>
-            <ProfileImage src={previewImage || profile.image} alt="Profile Preview" />
-            <ImageUpbtn uploaded={!!previewImage}>
-              <input type="file" onChange={handleImageChange} />
-            </ImageUpbtn>
-          </ImageWrap>
-          <EditWrap>
-            <InputGroup>
-              <Styledlabel>활동명*</Styledlabel>
-              <StyledInput
-                type="text"
-                value={profile.username}
-                onChange={handleChange}
-                name="username"
-                required
-              />
-            </InputGroup>
-            <InputGroup>
-              <Styledlabel>계정 ID*</Styledlabel>
-              <StyledInput
-                type="text"
-                value={profile.accountname}
-                onChange={handleChange}
-                name="accountname"
-                required
-              />
-            </InputGroup>
-            <InputGroup>
-              <Styledlabel>상태메시지</Styledlabel>
-              <StyledInput
-                type="text"
-                value={profile.intro.replace('#intro:','').trim()} // 이 부분을 수정합니다.
-                onChange={handleChange}
-                name="intro"
-              />
-            </InputGroup>
-            <PetInfo>
-              <Styledpetinfo>반려동물 정보등록</Styledpetinfo>
-              <div>
-                <label>반려동물</label>
-                <DropdownComponents.DropdownSelect
-                  value={profile.pet}
-                  onChange={handleChange}
-                  options={DropdownComponents.petOptions}
-                  name="pet"
-                />
-              </div>
-              <div>
-                <label>성별</label>
-                <DropdownComponents.DropdownSelect
-                  value={profile.gender}
-                  onChange={handleChange}
-                  options={DropdownComponents.genderOptions}
-                  name="gender"
-                />
-              </div>
-              <div>
-                <label>생일</label>
-                <input
-                  type="date"
-                  value={profile.birthdate}
-                  onChange={handleChange}
-                  name="birthdate"
-                />
-              </div>
-              <div>
-                <label>위치</label>
-                <DropdownComponents.DropdownSelect
-                  value={profile.location}
-                  onChange={handleChange}
-                  options={DropdownComponents.locationOptions}
-                  name="location"
-                />
-              </div>
-            </PetInfo>
-            <SubBtn type="submit">프로필 수정</SubBtn>
-          </EditWrap>
-        </form>
+            <form onSubmit={handleSubmit}>
+                <ImageWrap>
+                    {previewImage ? (
+                    <ProfileImage src={previewImage} alt="Profile Preview" />
+                    ) : (
+                    <ProfileImage src={image} alt="Profile" />
+                    )}
+                    <ImageUpbtn uploaded={!!previewImage}>
+                    <input type="file" onChange={handleImageChange} />
+                    </ImageUpbtn>
+                </ImageWrap>
+                <EditWrap>
+                <InputGroup>
+                    <Styledlabel>활동명*</Styledlabel>
+                    <StyledInput
+                    type="text"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    required
+                    />
+                </InputGroup>
+                <InputGroup>
+                    <Styledlabel>계정 ID*</Styledlabel>
+                    <StyledInput
+                    type="text"
+                    value={accountname}
+                    onChange={(e) => setAccountname(e.target.value)}
+                    required
+                    />
+                </InputGroup>
+                <InputGroup>
+                    <Styledlabel>상태메시지</Styledlabel>
+                    <StyledInput
+                    value={intro}
+                    onChange={(e) => {
+                    // 사용자가 입력한 값에서 #intro: 태그를 제거하고 상태를 업데이트합니다.
+                        const newValue = e.target.value.replace(/^#intro:/, '');
+                        setIntro(newValue);
+                    }}
+                    />
+                </InputGroup>
+                <PetInfo>
+                    <Styledpetinfo>반려동물 정보등록</Styledpetinfo>
+                    <div>
+                        <label>반려동물</label>
+                        <DropdownComponents.DropdownSelect
+                        value={pet}
+                        onChange={(e) => setPet(e.target.value)}
+                        options={DropdownComponents.petOptions}
+                        />
+                    </div>
+                    <div>
+                        <label>성별</label>
+                        <DropdownComponents.DropdownSelect
+                        value={gender}
+                        onChange={(e) => setGender(e.target.value)}
+                        options={DropdownComponents.genderOptions}
+                        />
+                    </div>
+                    <div>
+                        <label>생일</label>
+                        <input
+                        type="date"
+                        value={birthdate}
+                        onChange={(e) => setBirthdate(e.target.value)}
+                        />
+                    </div>
+                    <div>
+                        <label>위치</label>
+                        <DropdownComponents.DropdownSelect
+                        value={location}
+                        onChange={(e) => setLocation(e.target.value)}
+                        options={DropdownComponents.locationOptions}
+                        />
+                    </div>
+                </PetInfo>
+                <SubBtn type="submit">프로필 수정</SubBtn>
+            </EditWrap>
+            </form>
         <TabMenu />
       </Container>
     </>

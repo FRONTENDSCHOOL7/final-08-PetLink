@@ -3,6 +3,8 @@ import axios from 'axios';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { Container, GlobalStyle } from '../../Styles/reset.style'
 import TabMenu from '../../Components/Common/TabMenu/TabMenu'
+import PostList from '../../Components/Profile/PostList';
+import ImageGrid from '../../Components/Profile/ImageGrid';
 import {
     ProfileImage,
     ProfileUsername,
@@ -27,7 +29,9 @@ const ProfilePage = () => {
     const [followers, setFollowers] = useState([]);
     const [following, setFollowing] = useState([]);
     const [showFollowList, setShowFollowList] = useState(null);
+    const [viewMode, setViewMode] = useState('list');
     const navigate = useNavigate();
+    
     const handleFollowClick = (type) => {
         if (profileData && profileData.accountname) {
             navigate(`/profile/${profileData.accountname}/${type}`);
@@ -36,6 +40,9 @@ const ProfilePage = () => {
         }
     };
 
+    const toggleViewMode = () => {
+        setViewMode(viewMode === 'list' ? 'grid' : 'list');
+    };
 
     useEffect(() => {
         const fetchData = async () => {

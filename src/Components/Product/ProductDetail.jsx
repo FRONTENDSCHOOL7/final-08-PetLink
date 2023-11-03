@@ -12,6 +12,7 @@ export default function MarketDetail() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const {productId} = useParams(); // URL에서 상품 Id 추출
   const location = useLocation();
+  const navigate = useNavigate();
 
   // 상품 세부 정보 받아오기
   const { pureProductName, description } = location.state || { pureProductName: "상품이름", description: "" };
@@ -50,6 +51,10 @@ export default function MarketDetail() {
     {action: "차단하기", alertText: "차단하시겠습니까?"}
   ]
 
+  const handleChatButtonClick = () => {
+    navigate(`/chatroom/newChat`, { state: { username: productDetail.author.username } });
+  };
+
   return (
     <>
       <GlobalStyle/>
@@ -67,12 +72,12 @@ export default function MarketDetail() {
                 <ProfileName>{productDetail.author.username}</ProfileName>
                 <ProfileId>@{productDetail.author.accountname}</ProfileId>
               </ProfileTxt>
-              <ChatBtn>채팅하기</ChatBtn>
+              <ChatBtn onClick={handleChatButtonClick}>채팅하기</ChatBtn>
             </ProfileContents>
           </ProfileInfo>
           <ProductInfo>
             <h4>{pureProductName}</h4>
-            <strong>{Number(productDetail.price).toLocaleString()}  원</strong>
+            <strong>{Number(productDetail.price).toLocaleString()}원</strong>
           </ProductInfo>
           <ProductDesc>
             <h4>상품 설명</h4>

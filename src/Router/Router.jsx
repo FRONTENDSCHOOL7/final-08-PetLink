@@ -20,6 +20,7 @@ import ProfileEdit from '../Components/Profile/ProfileEdit'
 import AddProduct from '../Pages/MarketPage/AddProduct';
 import ChatRoom from '../Pages/ChatPage/ChatRoom';
 import Search from '../Pages/HomePage/Search';
+import NewChatRoom from '../Pages/ChatPage/NewChatRoom';
 
 export default function Router() {
   return (
@@ -31,6 +32,7 @@ export default function Router() {
         <Route path="/search" element={<Search />} />
         <Route path="/chat" element={<ChatPage />} />
         <Route path="/chatroom/:id" element={<ChatRoom />} />
+        <Route path="/chatroom/newChat" element={<NewChatRoom />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/join" element={<JoinPage />} />
         <Route path="/community" element={<CommunityPage />} />

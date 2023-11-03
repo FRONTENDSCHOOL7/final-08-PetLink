@@ -23,9 +23,9 @@ export default function PostList(props) {
   const [isLoading, setIsLoading] = useState(true);
   const postsPerPage = 10;
   const navigate = useNavigate();
-  const reportOptions = [
-    {action: "신고하기", alertText: "신고하시겠습니까?"},
-  ]
+  // const reportOptions = [
+  //   {action: "신고하기", alertText: "신고하시겠습니까?"},
+  // ]
   
   
   useEffect(() => {
@@ -80,13 +80,6 @@ if(data.posts.length< postsPerPage){
 page ++
       }
 
-
-// if (data.posts) {
-//         setPosts(data.posts);
-//       } 
-//       else {
-//         setPosts([]);
-//       }
 
 setPosts((prevPosts) => [...prevPosts, ...loadedPosts.slice(0, postsPerPage)]);
 setIsLoading(false);
@@ -185,11 +178,7 @@ export function PostListItem({ post }) {
   const [date, setDate] = useState("");
   const [liked, setLiked] = useState(false);
   const [userId, setUserID] = useState(false);
-  const currentUser = { _id: "currentUserId" }; // 현재 사용자의 정보로 대체
 
-  // const reportOptions = [
-  //   {action: "신고하기", alertText: "신고하시겠습니까?"},
-  // ]
   
   const fetchMyProfile = async () => {
     try {
@@ -228,7 +217,16 @@ export function PostListItem({ post }) {
       setUserImg(
         post.author.image);
       setContentImgUrl(post.image || "");
-      setContent(JSON.parse(post.content).contentText || "");
+      
+      let contentText = "";
+    try {
+      const contentData = JSON.parse(post.content || "{}");
+      contentText = contentData.contentText || "";
+    } catch (error) {
+      console.error("Error parsing content JSON:", error);
+    }
+
+    setContent(contentText);
       setDate(post.createdAt || "");
       setLikeNum(post.likes || 0); // 초기 좋아요 수 설정
       setLiked(post.liked || false); // 사용자의 좋아요 상태 설정
