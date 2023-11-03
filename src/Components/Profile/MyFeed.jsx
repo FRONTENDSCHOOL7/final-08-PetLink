@@ -12,7 +12,7 @@ import offAllbumIcon from '../../assets/image/icon-post-album-off.png';
 import onListIcon from '../../assets/image/icon-post-list-on.png';
 import offListIcon from '../../assets/image/icon-post-list-off.png';
 import commentIcon from '../../assets/image/icon-comment.png';
-import { Container, GlobalStyle } from '../../Styles/reset.style';
+import { Container } from '../../Styles/reset.style';
 
 const MyFeed = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -66,7 +66,6 @@ const MyFeed = () => {
 
   return (
     <Container>
-      <GlobalStyle/>
       <Layer>
       <ViewBtn active={isAlbumActive} onClick={toggleAlbum}>
         <BtnImg src={isAlbumActive ? onAllbumIcon : offAllbumIcon} alt="" />
@@ -86,21 +85,19 @@ const MyFeed = () => {
                 <UserName>
                   <NameTxt>{post.author.username}</NameTxt>
                   <UserId>{post.author.accountname}</UserId>
-                  {post.image && <img src={post.image} alt="Post" />}
                 </UserName>
               </UserProfile>
               <MoreBtn onClick={() => setIsModalOpen(true)}>
                 <IconMore src={moreIcon} />
               </MoreBtn>
             </UserInfo>
-            <PostContent>
+            <ContentBox>
+                  {post.image && <ContentImg src={post.image} alt="Post" />}
               <ContentTxt className='text'>{post.content}</ContentTxt>
               {post.images && post.images.map((image, index) => (<ContentImg key={index} src={image.url} alt={`포스팅 이미지 ${index}`} />
               ))}
-            </PostContent>
-
+            </ContentBox>
             <ContentBox>
-
               <IconBox>
                 <IconBtn>
                   <IconBtnImg src={HeartIcon} alt='하트 아이콘' />
@@ -229,11 +226,11 @@ export const ContentTxt = styled.p`
     -webkit-line-clamp: 4;
     overflow: hidden;
 `
-export const ContentImg = styled(Container)`
-img {
-  max-width: 100%;
-  height: auto;
-}
+export const ContentImg = styled.img`
+    border-radius: 10px;
+    width: 304px;
+    object-fit: cover;
+    margin-top: 16px;
 `;
 
 export const IconBox = styled.div`
