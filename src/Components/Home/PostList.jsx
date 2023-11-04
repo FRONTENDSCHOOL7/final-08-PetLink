@@ -23,10 +23,6 @@ export default function PostList(props) {
   const [isLoading, setIsLoading] = useState(true);
   const postsPerPage = 10;
   const navigate = useNavigate();
-  // const reportOptions = [
-  //   {action: "신고하기", alertText: "신고하시겠습니까?"},
-  // ]
-  
   
   useEffect(() => {
     loadCachedPosts()
@@ -167,7 +163,6 @@ setIsLoading(false);
 export function PostListItem({ post }) {
   const defaultUserImg = "https://api.mandarin.weniv.co.kr/1698653743844.jpg";
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false); // 수정 모달 상태
   const [reportOptions, setReportOptions] = useState([]);
   const [accountname, setAccountName] = useState("");
   const [username, setUserName] = useState("");
@@ -177,7 +172,7 @@ export function PostListItem({ post }) {
   const [likeNum, setLikeNum] = useState(0);
   const [date, setDate] = useState("");
   const [liked, setLiked] = useState(false);
-  const [userId, setUserID] = useState(false);
+  const [userAccountName, setUserAccountName] = useState(false);
 
   
   const fetchMyProfile = async () => {
@@ -192,9 +187,9 @@ export function PostListItem({ post }) {
       const data = await response.json();
 
       if (data) {
-        const userId = data.user._id;
-        setUserID(userId);
-        console.log(userId)
+          const userAccountName = data.user.accountname
+        setUserAccountName(userAccountName)
+        // console.log(userAccountName)
       }
     } catch (error) {
       console.error("에러:", error);
@@ -244,15 +239,10 @@ export function PostListItem({ post }) {
   };
 
   const onChangeModal = () => {
-    const authorId = post.author_id ? post.author.id.toString() : "";
-    const currentUserId = userId ? userId.toString() : "";
-    const isMyPost =  post.author._id === currentUserId;
-    // console.log("post.author.id:", post.author._id);
-    // console.log("userId:", userId);
-    // console.log("authorId:", authorId);
-    // console.log("currentUserId:", currentUserId);
-    // console.log(isMyPost)
+
+    const isMyPost = accountname === userAccountName
     let modalOptions = []
+
     if(isMyPost){
       modalOptions = [
         { action: "수정하기", alertText: "수정하시겠습니까?" },
@@ -298,7 +288,7 @@ export function PostListItem({ post }) {
             <img  src={liked ? redHeartIcon : heartIcon} alt="하트 아이콘" />
             <span>{likeNum}</span>
           </button>
-          <Link to={`/post/detail/${post._id}`} state={{ selectedPost: post }}>
+          <Link to={`/post/${post._id}`} state={{ selectedPost: post }}>
             <img src={commentIcon} alt="댓글 개수" />
             <span>1</span>
           </Link>

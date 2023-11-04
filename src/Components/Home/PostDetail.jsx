@@ -4,6 +4,7 @@ import * as S from '../Home/PostList.style';
 import moreIcon from '../../assets/image/icon-more-vertical.png';
 import { Container } from '../../Styles/reset.style';
 import HeaderLayouts from '../Common/Header/Header';
+import heartIcon from "../../assets/image/icon-heart.png";
 import { Overlay } from '../Product/ProductDetail.style';
 import BottomModal from '../Common/Modal/BottomModal';
 import redHeartIcon from '../../assets/image/icon-heart-red.png';
@@ -12,6 +13,7 @@ import CommentList, { WriteComment } from './CommentList';
 
 export default function PostDetail(props) {
   const defaultUserImg = "https://api.mandarin.weniv.co.kr/1698653743844.jpg";
+  const [liked, setLiked] = useState(false);
   const [likeNum, setLikeNum] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [reportOptions, setReportOptions] = useState([]);
@@ -19,11 +21,9 @@ export default function PostDetail(props) {
   const [commentToShow, setCommentToShow] = useState(''); // 추가: 화면에 보이는 댓글 상태
   const location = useLocation();
   const { selectedPost } = location.state;
-  const [userId, setUserID] = useState(false);
+  const [userAccountName, setUserAccountName] = useState(false);
+  const [isMyPost, setIsMyPost] = useState(false); // 추가: 현재 사용자의 게시물 여부
 
-  // const reportOptions = [
-  //   {action: "신고하기", alertText: "신고하시겠습니까?"},
-  // ]
   useEffect(()=>{
     fetchMyProfile()
   })
@@ -39,35 +39,40 @@ export default function PostDetail(props) {
       const data = await response.json();
 
       if (data) {
-        const userId = data.user._id;
-        setUserID(userId);
-        console.log(userId)
+        const userAccountName = data.user.accountname
+        setUserAccountName(userAccountName)
+        setIsMyPost(userAccountName === selectedPost.author?.accountname);
+        // console.log(userAccountName)
       }
     } catch (error) {
       console.error("에러:", error);
     }
   };
 
+  const isMyComment = (commentAuthorAccountName) => {
+    return userAccountName === commentAuthorAccountName;
+  };
 
-  const onChangeModal = () => {
-    const authorId = selectedPost.author_id ? selectedPost.author.id.toString() : "";
-    const currentUserId = userId ? userId.toString() : "";
-    const isMyPost =  selectedPost.author._id === currentUserId;
-    let modalOptions = []
-    if(isMyPost){
+  const onChangeModal = (comment, isMyComment) => {
+    let modalOptions = [];
+
+    if (isMyComment) {
       modalOptions = [
         { action: "수정하기", alertText: "수정하시겠습니까?" },
         { action: "삭제하기", alertText: "삭제하시겠습니까?" },
       ];
-
-    }else {
+    } else {
       modalOptions = [
         { action: "신고하기", alertText: "신고하시겠습니까?" },
       ];
     }
+
     setIsModalOpen(true);
-    setReportOptions(modalOptions); // modalOptions 배열을 state로 설정
+    setReportOptions(modalOptions);
   };
+
+
+
 
   // 추가: 댓글 입력 시 화면에 보이도록 처리
   const handlePostComment = () => {
@@ -75,6 +80,15 @@ export default function PostDetail(props) {
       setCommentToShow(comment);
       setComment('');
     }
+  };
+
+  const handleLikeClick = async () => {
+    if (liked) {
+      setLikeNum(likeNum - 1);
+    } else {
+      setLikeNum(likeNum + 1);
+    }
+    setLiked(!liked);
   };
 
   if (!selectedPost) {
@@ -94,14 +108,14 @@ export default function PostDetail(props) {
             </S.UserName>
           </S.UserProfile>
       </Link>
-        <button onClick={onChangeModal}><S.IconMore src={moreIcon} /></button>
+        <button onClick={() => onChangeModal(selectedPost.author?.accountname, isMyComment(selectedPost.author?.accountname))}><S.IconMore src={moreIcon} /></button>
       </S.UserInfo>
       <S.Content>
         <p className='text'>{JSON.parse(selectedPost.content).contentText}</p>
         {selectedPost.image && <img src={selectedPost.image} alt="포스팅 이미지" />}
         <S.PostIcons>
-          <button onClick={() => setLikeNum(prev => prev + 1)}>
-            <img src={redHeartIcon} alt='좋아요 버튼' />
+          <button onClick={handleLikeClick}>
+            <img src={liked ? redHeartIcon : heartIcon} alt='좋아요 버튼' />
             <span>{likeNum}</span>
           </button>
           <button onClick={() => setIsModalOpen(true)}>
@@ -122,6 +136,7 @@ export default function PostDetail(props) {
         username={selectedPost.author?.username}
         date={selectedPost.date}
         comment={commentToShow} // 변경: 입력된 댓글 내용을 CommentList로 전달
+        isMyComment={isMyComment}
       />
       <WriteComment
         comment={comment}
