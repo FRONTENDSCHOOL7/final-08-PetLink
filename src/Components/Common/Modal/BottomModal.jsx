@@ -25,6 +25,14 @@ const BottomModalContainer = styled.div`
   z-index: 20;
 
   animation: ${slideUp} 0.2s ease-out forwards;
+
+  @media (min-width: 768px) {
+    max-width: none;
+    width: 766px; 
+    right: 0;
+    left: 0; 
+    margin: auto; 
+  }
 `
 
 // 버튼 스타일링
@@ -33,9 +41,10 @@ const Report = styled.button`
   font-size: 14px;
   text-align: left;
   position: relative;
-  padding-top: 20px;
+  padding: 20px 0;
   display: inline-block;
   width: 100%;
+  height: 50px;
 
   &::before {
     content: ${props => props.$first ? '""' : 'none'};
@@ -49,10 +58,16 @@ const Report = styled.button`
   }
 `
 
-
-export default function BottomModal({reports, setIsModalOpen}) {
+export default function BottomModal({reports, setIsModalOpen, onDelete}) {
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [alertText,setAlertText] = useState("");
+
+  const handlePopupDelete = () => {
+    if (onDelete) {
+      onDelete(); // 삭제 함수 호출
+    }
+    handlePopupClose(); // 팝업 모달 닫기
+  };
 
   const handleReportClick = (alertText) => {
     setAlertText(alertText); 
@@ -81,6 +96,7 @@ export default function BottomModal({reports, setIsModalOpen}) {
         confirmText="확인"
         onConfirm={handlePopupClose}
         onCancel={handlePopupClose}
+        onDelete={handlePopupDelete} // 삭제 기능 추가
       />
     </>
   )

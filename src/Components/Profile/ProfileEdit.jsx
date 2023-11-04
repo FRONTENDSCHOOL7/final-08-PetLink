@@ -6,16 +6,26 @@ import { GlobalStyle, Container } from "../../Styles/reset.style";
 import { Title, ProfileImage, ImageUpbtn, ImageWrap, InputGroup, EditWrap, StyledInput, Styledlabel, Styledpetinfo, SubBtn, PetInfo } from "./Profile.style";
 
 function convertInfoToTags(intro, pet, gender, birthdate, location) {
-    return `#intro:${intro} #pet:${pet} #gender:${gender} #birthdate:${birthdate} #location:${location}`;
+    intro = intro ? `#intro:${intro.replace(/^(#intro:)+/, '')}` : '';
+    pet = pet ? `#pet:${pet}` : '';
+    gender = gender ? `#gender:${gender}` : '';
+    birthdate = birthdate ? `#birthdate:${birthdate}` : '';
+    location = location ? `#location:${location}` : '';
+    return [intro, pet, gender, birthdate, location, '#bangyeolgori'].filter(Boolean).join(' ');
 }
 
 function extractInfoFromTags(tagString) {
     const info = {};
-    const tags = tagString.split(" #");
+    const cleanedTagString = tagString.replace(/ undefined/g, '');
+    const tags = cleanedTagString.split(" #");
 
     tags.forEach((tag) => {
-        const [key, value] = tag.split(":");
-        info[key] = value;
+        const [key, value] = tag.includes(':') ? tag.split(":") : [tag, ''];
+        if (key && value) {
+            info[key.trim()] = value.trim();
+        } else if (key) {
+            info[key.trim()] = true;
+        }
     });
 
     return info;
@@ -198,7 +208,11 @@ function ProfileEdit() {
                     <Styledlabel>상태메시지</Styledlabel>
                     <StyledInput
                     value={intro}
-                    onChange={(e) => setIntro(e.target.value)}
+                    onChange={(e) => {
+                    // 사용자가 입력한 값에서 #intro: 태그를 제거하고 상태를 업데이트합니다.
+                        const newValue = e.target.value.replace(/^#intro:/, '');
+                        setIntro(newValue);
+                    }}
                     />
                 </InputGroup>
                 <PetInfo>
