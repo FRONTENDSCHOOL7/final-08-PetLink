@@ -80,7 +80,7 @@ export default function CommentList(props) {
            <S.UserInfo  key={comment}>
            <div >
              <Link to={`/profile/${comment.author.accountname}`}>
-               <img src={comment.author.image  || defaultUserImg} alt='사용자 프로필 이미지' />
+               <S.CommentImg src={comment.author.image  || defaultUserImg} alt='사용자 프로필 이미지' />
              </Link>
              <p>{comment.author.username} <span>· {formatDate(comment.createdAt)}</span></p>
            </div>
@@ -160,7 +160,7 @@ console.log(responseData)
       <S.InputForm>
         <div>
           <S.InputImg src={userImg  || defaultUserImg} alt="사용자 프로필" />
-          <input
+          <S.CommentInput
             type="text"
             placeholder="댓글 입력하기..."
             onChange={(e) => setComment(e.target.value)}

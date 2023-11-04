@@ -141,9 +141,9 @@ img{
 
 `
 export const CommentTxt =styled.div`
-overflow: auto;
-max-height: calc(100vh - 120px);
-padding-bottom:60px;
+  overflow: auto;
+  max-height: calc(100vh - 120px);
+  padding-bottom:10px;
   font-size: 14px;
   margin:4px 0 15px 48px ;
   display: -webkit-box;
@@ -152,23 +152,56 @@ padding-bottom:60px;
     overflow: hidden;
 
 `
+export const CommentImg =styled.img`
+border-radius: 50%;
+`
+
+
 // 댓글 입력창 컴포넌트
 export const InputForm = styled.form`
-  border-top: 1px solid #dbdbdb;
-   display: flex;
-    justify-content: space-between;
-    align-items: center;
-    /* width: 390px; */
-    bottom: 0;
-    position: fixed;
     padding: 12px 16px;
     background-color: #fff;
-    border-top: 1px solid #DBDBDB ;
-    z-index: 1;
+    border-top: 1px solid #DBDBDB ; 
+  width: 100%;
+  max-width: 390px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: fixed;
+  bottom: 0;
+  background-color: #fff;
+  border-top: 1px solid #DBDBDB;
+
+  @media (min-width: 768px) {
+    width: 100%;
+    min-width: 768px;
+    height: 80px;
+  }
+
+`
+export const CommentInput = styled.input`
+  flex-grow: 1;
+  height: 100%;
+  border: none;
+  padding: 16px 0;
+  font-size: 14px;
+
+  &::placeholder {
+    color: #C4C4C4;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  @media (min-width: 768px) {
+    font-size: 16px;
+  }
 `
 
 export const InputImg = styled.img`
-  vertical-align: top;
+    vertical-align: middle; 
       width:36px ;
       height: 36px;
       margin-right: 18px;
@@ -176,6 +209,9 @@ export const InputImg = styled.img`
 
 export const InputBtn = styled.button`
      color: #004E98;
+     width: 65px;
+     flex-shrink: 0;
+     font-size: 16px;
 
  &:disabled{
       color: #C4C4C4;

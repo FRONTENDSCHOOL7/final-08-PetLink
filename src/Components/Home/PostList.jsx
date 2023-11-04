@@ -6,7 +6,7 @@ import redHeartIcon from "../../assets/image/icon-heart-red.png";
 import heartIcon from "../../assets/image/icon-heart.png";
 import commentIcon from "../../assets/image/icon-comment.png";
 import TabMenu from "../Common/TabMenu/TabMenu";
-import { Container } from "../../Styles/reset.style";
+import { Container, SubContainer } from "../../Styles/reset.style";
 import HeaderLayouts from "../Common/Header/Header";
 import { Overlay } from "../Product/ProductDetail.style";
 import BottomModal from "../Common/Modal/BottomModal";
@@ -146,14 +146,16 @@ setIsLoading(false);
     <>
       <Container>
         <HeaderLayouts title="반결고리" logo={true} search />
-        {posts.map((post, index) => (
-          <div key={index}>
-            <PostListItem
-              post={post}
-              onProfileClick={() => navigate(`/profile/${post.author._id}`)}
-              onChangeModal={props.onChangeModal} />
-          </div>
-        ))}
+      <SubContainer>
+          {posts.map((post, index) => (
+            <div key={index}>
+              <PostListItem
+                post={post}
+                onProfileClick={() => navigate(`/profile/${post.author._id}`)}
+                onChangeModal={props.onChangeModal} />
+            </div>
+          ))}
+      </SubContainer>
       <TabMenu />
       </Container>
     </>
