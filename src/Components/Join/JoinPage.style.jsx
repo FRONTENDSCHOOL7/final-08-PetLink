@@ -191,3 +191,14 @@ export const ProfileImage = styled.img`
     background: url(<path-to-image>), lightgray 50% / cover no-repeat;
 
 `;
+
+// 모달창 클릭 시 배경 흐리게
+export const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 10;
+`
