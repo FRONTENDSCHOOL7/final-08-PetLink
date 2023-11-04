@@ -9,7 +9,7 @@ function PopupModal({
     confirmText,  // 기본 확인 텍스트
     onConfirm,  // 확인 버튼 클릭 시 호출될 함수
     onCancel,  // 취소 버튼 클릭 시 호출될 함수
-    onDelete // 여기에 새로운 prop으로 onDelete를 추가합니다.
+    onDelete // 여기에 새로운 prop으로 onDelete를 추가
 }) {
   const handleConfirm = () => {
     if(onConfirm) onConfirm();
