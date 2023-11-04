@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { Header, HeaderButton, DetailContainer, ProductImg, ProfileInfo, ProfileImg, ProfileContents, ProfileTxt, ChatBtn, ProfileName, ProfileId, ProductInfo, ProductDesc, Overlay} from './ProductDetail.style'
-import {GlobalStyle, Container} from '../../Styles/reset.style'
+import { ProductImg, ProfileInfo, ProfileImg, ProfileContents, ProfileTxt, ChatBtn, ProfileName, ProfileId, ProductInfo, ProductDesc, Overlay } from './ProductDetail.style'
+import { GlobalStyle, Container, SubContainer } from '../../Styles/reset.style'
 import BottomModal from '../Common/Modal/BottomModal'
-import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import TabMenu from '../Common/TabMenu/TabMenu'
 import axios from 'axios'
 import HeaderLayouts from '../Common/Header/Header'
@@ -61,29 +61,28 @@ export default function MarketDetail() {
       <Container>
         <HeaderLayouts backTxt={true} onModalToggle={() => setIsModalOpen(true)} />
 
-        <DetailContainer>
-          <ProductImg>
-            <img src={productDetail.itemImage} alt="상품 사진" />
-          </ProductImg>
-          <ProfileInfo>
-            <ProfileImg src={productDetail.author.image} alt="프로필 사진" />
-            <ProfileContents>
-              <ProfileTxt>
-                <ProfileName>{productDetail.author.username}</ProfileName>
-                <ProfileId>@{productDetail.author.accountname}</ProfileId>
-              </ProfileTxt>
-              <ChatBtn onClick={handleChatButtonClick}>채팅하기</ChatBtn>
-            </ProfileContents>
-          </ProfileInfo>
-          <ProductInfo>
-            <h4>{pureProductName}</h4>
-            <strong>{Number(productDetail.price).toLocaleString()}원</strong>
-          </ProductInfo>
-          <ProductDesc>
-            <h4>상품 설명</h4>
-            <p>{description}</p>
-          </ProductDesc>
-        </DetailContainer>
+        <SubContainer>
+            <ProductImg>
+              <img src={productDetail.itemImage} alt="상품 사진" />
+            </ProductImg>
+            <ProfileInfo>
+              <ProfileImg src={productDetail.author.image} alt="프로필 사진" />
+              <ProfileContents>
+                <ProfileTxt>
+                  <ProfileName>{productDetail.author.username}</ProfileName>
+                  <ProfileId>@{productDetail.author.accountname}</ProfileId>
+                </ProfileTxt>
+                <ChatBtn onClick={handleChatButtonClick}>채팅하기</ChatBtn>
+              </ProfileContents>
+            </ProfileInfo>
+            <ProductInfo>
+              <h4>{pureProductName}</h4>
+              <strong>{Number(productDetail.price).toLocaleString()}원</strong>
+            </ProductInfo>
+            <ProductDesc>
+              <p>{description}</p>
+            </ProductDesc>
+        </SubContainer>
 
         {/* 모달창 */}
         {isModalOpen &&(
