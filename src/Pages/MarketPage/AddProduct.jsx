@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { Header, HeaderButton, DetailContainer, SaveButton, AddImg, InputTitle, InputImg, AddImgBtn, ProductInfo, AddTxtForm, Required } from './AddProduct.style'
-import { GlobalStyle, Container } from '../../Styles/reset.style'
+import { Header, HeaderButton, SaveButton, InputTitle, InputImg, AddImgBtn, ProductInfo, AddTxtForm, Required, CategoryContainer, DropdownSelect, AddImgWrap } from './AddProduct.style'
+import { GlobalStyle, Container, SubContainer } from '../../Styles/reset.style'
 import { useNavigate } from 'react-router-dom'
 import backBtn from '../../assets/image/icon-arrow-left.png'
 import imgBtn from '../../assets/image/icon-img-button.png'
 import axios from 'axios'
-import { CategoryContainer } from '../CommunityPage/CommunityUpload.style'
 
 // 공통으로 사용되는 input 컴포넌트
 function ProductInput({title, isRequired, placeholder, type = "text", value, onChange}) {
@@ -135,16 +134,31 @@ export default function AddProduct() {
           {/* '$' 접두사 사용 이유 => "이 속성은 HTML 태그에 존재하지 않지만 스타일을 위해 임시로만 사용하겠다"는 의미 */}
         </Header>
 
-        <DetailContainer>
+        <SubContainer>
           <CategorySection category={category} setCategory={setCategory}/>
-          <ImageUploadSection imageUrl={imageUrl} handleImgChange={handleImgChange}/>
+          <AddImgWrap>
+            <InputTitle>이미지 등록 <Required>*</Required></InputTitle>
+            <InputImg img={imageUrl}>
+              <input 
+                type="file" 
+                id='imgUpload'
+                onChange={handleImgChange}
+              />
+              <AddImgBtn>
+                <label htmlFor="imgUpload">
+                  <img src={imgBtn} alt="사진 추가 버튼" />
+                </label>
+              </AddImgBtn>
+            </InputImg>
+          </AddImgWrap>
+
           <ProductDetails 
             productName={productName} setProductName={setProductName}
             price={price} setPrice={setPrice}
             productLink={productLink} setProductLink={setProductLink}
             description={description} setDescription={setDescription}
           />
-        </DetailContainer>
+        </SubContainer>
       </Container>
     </>
   )
@@ -154,33 +168,13 @@ function CategorySection({category, setCategory}) {
   return (
     <CategoryContainer>
       <InputTitle>카테고리 <Required>*</Required></InputTitle>
-      <select value={category} onChange={e => setCategory(e.target.value)}>
+      <DropdownSelect value={category} onChange={e => setCategory(e.target.value)}>
         <option value="">선택</option>
         <option value="bg_dogs">강아지</option>
         <option value="bg_cats">고양이</option>
         <option value="bg_etc.">기타</option>
-      </select>
+      </DropdownSelect>
     </CategoryContainer>
-  )
-}
-
-function ImageUploadSection({imageUrl, handleImgChange}) {
-  return(
-    <AddImg>
-      <InputTitle>이미지 등록 <Required>*</Required></InputTitle>
-      <InputImg img={imageUrl}>
-        <input 
-          type="file" 
-          id='imgUpload'
-          onChange={handleImgChange}
-        />
-        <AddImgBtn>
-          <label htmlFor="imgUpload">
-            <img src={imgBtn} alt="사진 추가 버튼" />
-          </label>
-        </AddImgBtn>
-      </InputImg>
-    </AddImg>
   )
 }
 
