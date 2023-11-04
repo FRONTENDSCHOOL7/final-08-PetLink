@@ -44,6 +44,40 @@ export default function CommunityDetail() {
     }
   };
 
+  // 게시물 수정 함수
+const editPost = async (postId) => {
+  // 수정할 내용과 이미지를 어떻게 받을 것인지에 따라 이 부분은 변경될 수 있음
+  const newContent = '수정할 새로운 내용';
+  const newImage = '수정할 새로운 이미지 URL';
+
+  try {
+    const response = await axios.put(`https://api.mandarin.weniv.co.kr/post/${postId}`, {
+      post: {
+        content: newContent,
+        image: newImage,
+      },
+    }, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json'
+      },
+    });
+
+    if (response.data) {
+      alert('수정되었습니다.');
+      // 수정된 게시물 데이터로 상태 업데이트 또는 페이지 새로고침 등의 처리
+    }
+  } catch (error) {
+    if (error.response && error.response.data) {
+      // API로부터의 에러 메시지 사용
+      alert(error.response.data.message);
+    } else {
+      // 일반 에러 메시지 사용
+      alert('수정에 실패하였습니다.');
+    }
+  }
+};
+
   useEffect(()=>{
     fetchMyProfile()
   })
