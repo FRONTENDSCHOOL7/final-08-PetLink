@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link, useParams, useNavigate } from 'react-router-dom';
-import { Container, GlobalStyle } from '../../Styles/reset.style'
+import { Container, GlobalStyle, SubContainer } from '../../Styles/reset.style'
 import TabMenu from '../../Components/Common/TabMenu/TabMenu'
 import PostList from '../../Components/Profile/PostList';
 import ImageGrid from '../../Components/Profile/ImageGrid';
@@ -285,8 +285,8 @@ const ProfilePage = () => {
                     )}
                 </ProfileContainer>
                 <MyFeed accountname={profileData.accountname}/>
-            </Container>
             <TabMenu />
+            </Container>
         </>
     );
 };
