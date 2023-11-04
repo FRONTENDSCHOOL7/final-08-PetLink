@@ -6,7 +6,7 @@ export const Logo = styled.div`
   align-items: center;
   justify-content: center;
   background-color: #6C9BD1;
-  height: 70vh;
+  height: 60vh;
 
   img {
     max-width: 100%;
