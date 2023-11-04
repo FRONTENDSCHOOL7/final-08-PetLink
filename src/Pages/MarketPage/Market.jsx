@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import addBtn from '../../assets/image/icon-add.png'
 import { useState } from 'react'
 import { BtnAdd, BtnNav, Item, ItemContainer, LikeBtn, NavMenu, PriceLikesWrap, StyledLink } from './Market.style'
-import { Container, GlobalStyle} from '../../Styles/reset.style'
+import { Container, GlobalStyle, SubContainer} from '../../Styles/reset.style'
 import heartIcon from '../../assets/image/icon-heart.png'
 import redHeartIcon from '../../assets/image/icon-heart-red.png'
 import TabMenu from '../../Components/Common/TabMenu/TabMenu'
@@ -119,13 +119,15 @@ export default function Market() {
       <Container>
         <HeaderLayouts title="반결장터" logo />
 
-        <NavigationMenu navItems={navItems} activeBtn={activeBtn} setActiveBtn={setActiveBtn}/>
-        <ProductsDisplay products={filteredProducts} handleLike={handleLike} likes={likes} />
-        <StyledLink to="/market/add-product">
-          <BtnAdd>
-            <img src={addBtn} alt="추가버튼" />
-          </BtnAdd>
-        </StyledLink>
+        <SubContainer>
+          <NavigationMenu navItems={navItems} activeBtn={activeBtn} setActiveBtn={setActiveBtn}/>
+          <ProductsDisplay products={filteredProducts} handleLike={handleLike} likes={likes} />
+          <StyledLink to="/market/add-product">
+            <BtnAdd>
+              <img src={addBtn} alt="추가버튼" />
+            </BtnAdd>
+          </StyledLink>
+        </SubContainer>
         <TabMenu/>
       </Container>
     </>
