@@ -21,6 +21,11 @@ export const SplashContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  // 태블릿 화면
+  @media (min-width: 768px) {
+    max-width: 768px;
+  }
 `;
 
 export const SplashContent = styled.div`
@@ -61,7 +66,6 @@ export const LogoText = styled.span`
   & > span:nth-child(2) { animation-delay: 0.2s; }
   & > span:nth-child(3) { animation-delay: 0.3s; }
   & > span:nth-child(4) { animation-delay: 0.4s; }
-  // ... 나머지 글자에 대해서도 animation-delay를 설정합니다.
 `;
 
 export const SubText = styled.span`
