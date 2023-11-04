@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { GlobalStyle, Container } from '../../Styles/reset.style'
+import { GlobalStyle, Container, SubContainer } from '../../Styles/reset.style'
 import { TitleWrap, SubmitButton, InputField, StyledInput, FieldLabel } from './LoginForm.style'
 import { LoginButton } from "../../Components/Login/Login.styles";
 import { useNavigate } from "react-router-dom";
@@ -90,7 +90,7 @@ function LoginForm({ handlePage }) {
       <GlobalStyle />
       <Container>
         <TitleWrap>로그인</TitleWrap>
-        <>
+        <SubContainer>
         <form onSubmit={submitLogin}>
           
           <InputField>
@@ -121,7 +121,7 @@ function LoginForm({ handlePage }) {
       이메일로 회원가입
     </LoginButton>
         </form>
-        </>
+        </SubContainer>
       </Container>
     </>
   );
