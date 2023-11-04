@@ -25,6 +25,14 @@ const BottomModalContainer = styled.div`
   z-index: 20;
 
   animation: ${slideUp} 0.2s ease-out forwards;
+
+  @media (min-width: 768px) {
+    max-width: none;
+    width: 766px; 
+    right: 0;
+    left: 0; 
+    margin: auto; 
+  }
 `
 
 // 버튼 스타일링
