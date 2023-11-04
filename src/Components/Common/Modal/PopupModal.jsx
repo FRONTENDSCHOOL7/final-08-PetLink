@@ -27,8 +27,12 @@ function PopupModal({
       <ModalContainer>
         <ModalAlertText>{alertText}</ModalAlertText>
         <ModalButtonContainer>
-          <ModalButton onClick={handleCancel}>{cancelText}</ModalButton>
-          <ModalButton $isConfirm onClick={handleConfirm}>{confirmText}</ModalButton>
+          {cancelText && (
+            <ModalButton onClick={handleCancel}>{cancelText}</ModalButton>
+          )}
+          {confirmText && (
+            <ModalButton $isConfirm onClick={handleConfirm}>{confirmText}</ModalButton>
+          )}
         </ModalButtonContainer>
       </ModalContainer>
     </ModalOverlay>
