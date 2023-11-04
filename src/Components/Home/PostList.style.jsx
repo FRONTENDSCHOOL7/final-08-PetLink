@@ -158,33 +158,27 @@ export const InputForm = styled.form`
    display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 390px;
+    /* width: 390px; */
     bottom: 0;
     position: fixed;
     padding: 12px 16px;
     background-color: #fff;
     border-top: 1px solid #DBDBDB ;
     z-index: 1;
- 
-    img{
-      vertical-align: top;
+`
+
+export const InputImg = styled.img`
+  vertical-align: top;
       width:36px ;
       height: 36px;
       margin-right: 18px;
-    }
+`
 
-    input{
-      border: none;
-    outline: none;
-    font-size: 14px;
-    margin-top: 10px;
-    }
+export const InputBtn = styled.button`
+     color: #004E98;
 
-    button:disabled{
+ &:disabled{
       color: #C4C4C4;
     }
 
-button{
-  color: #004E98;
-}
 `
