@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import * as S from './PostList.style';
 import moreIcon from '../../assets/image/icon-more-vertical.png';
 import { Link, useLocation, useParams } from 'react-router-dom';
+import { Container } from '../../Styles/reset.style';
 
 function formatDate(dateString) {
   const options = { year: "numeric", month: "2-digit", day: "2-digit" };
@@ -72,7 +73,6 @@ export default function CommentList(props) {
   if (!selectedPost) {
     return null;
   }
-
     return (
       <S.CommentBox>
        {comments.map((comment)=>(
@@ -156,27 +156,29 @@ console.log(responseData)
   // console.log(comment)
 
   return (
-    <S.InputForm>
-      <div>
-        <img src={userImg  || defaultUserImg} alt="사용자 프로필" />
-        <input
-          type="text"
-          placeholder="댓글 입력하기..."
-          onChange={(e) => setComment(e.target.value)}
-          value={comment || ''}
-        />
-      </div>
-      <button
-        type="submit"
-        disabled={!comment || comment.trim().length === 0}
-        onClick={()=>{
-          handlePostComment()
-          postComment()
-      
-        }} 
-      >
-        게시
-      </button>
-    </S.InputForm>
+   <Container>
+      <S.InputForm>
+        <div>
+          <S.InputImg src={userImg  || defaultUserImg} alt="사용자 프로필" />
+          <input
+            type="text"
+            placeholder="댓글 입력하기..."
+            onChange={(e) => setComment(e.target.value)}
+            value={comment || ''}
+          />
+        </div>
+        <S.InputBtn
+          type="submit"
+          disabled={!comment || comment.trim().length === 0}
+          onClick={()=>{
+            handlePostComment()
+            postComment()
+        
+          }} 
+        >
+          게시
+        </S.InputBtn>
+      </S.InputForm>
+   </Container>
   );
 }
