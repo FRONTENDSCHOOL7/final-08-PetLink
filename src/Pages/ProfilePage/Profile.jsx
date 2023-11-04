@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link, useParams, useNavigate } from 'react-router-dom';
-import { Container, GlobalStyle, SubContainer } from '../../Styles/reset.style'
+import { Container, GlobalStyle } from '../../Styles/reset.style'
 import TabMenu from '../../Components/Common/TabMenu/TabMenu'
-import PostList from '../../Components/Profile/PostList';
-import ImageGrid from '../../Components/Profile/ImageGrid';
 import {
     ProfileImage,
     ProfileUsername,
@@ -13,7 +11,6 @@ import {
     FollowGroup,
     FollowCount,
     FollowLabel,
-    ProfileIntro,
     ProfileImageContainer,
     Button,
     BtnGroup,
@@ -30,67 +27,63 @@ const ProfilePage = () => {
     const [followers, setFollowers] = useState([]);
     const [following, setFollowing] = useState([]);
     const [showFollowList, setShowFollowList] = useState(null);
-    const [viewMode, setViewMode] = useState('list');
     const navigate = useNavigate();
     
     const handleFollowClick = (type) => {
-        if (profileData && profileData.accountname) {
-            navigate(`/profile/${profileData.accountname}/${type}`);
+        const targetAccountname = accountname || accountnameFromMyInfo;
+        if (targetAccountname) {
+            navigate(`/profile/${targetAccountname}/${type === 'follower' ? 'following' :'follower '}`);
         } else {
-            console.error('Account name is undefined.');
+            console.error('Account name is undefined');
         }
     };
-
-    const toggleViewMode = () => {
-        setViewMode(viewMode === 'list' ? 'grid' : 'list');
-    };
-
+    
     useEffect(() => {
+        console.log('Account Name:', accountname);
         const fetchData = async () => {
             try {
                 const token = localStorage.getItem('token');
-                let url = 'https://api.mandarin.weniv.co.kr/user/myinfo';
-                
-                if (accountname) { 
-                    url = `https://api.mandarin.weniv.co.kr/profile/${accountname}`;
-                }
+                let url = 'https://api.mandarin.weniv.co.kr/';
+                let profileEndPoint = accountname ? `profile/${accountname}` : 'user/myinfo';
     
-                const response = await axios.get(url, {
+                const response = await axios.get(url + profileEndPoint, {
                     headers: {
-                        Authorization: token ? `Bearer ${token}` : null,
+                        Authorization: `Bearer ${token}`,
                         'Content-type': 'application/json',
                     },
                 });
     
-                console.log('API Response:', response);
-    
                 let profile;
-                if (response.data.user) { // API에서 user가 있으면 (나의 프로필)
+                if (response.data.user) { // 나의 프로필 데이터
                     profile = response.data.user;
-                } else if (response.data.profile) { // API에서 profile이 있으면 (사용자 프로필)
+                    // Since it's "myinfo", the accountname should be taken from user data
+                    setAccountname(profile.accountname);
+                } else if (response.data.profile) { // 다른 사용자의 프로필 데이터
                     profile = response.data.profile;
                 } else {
                     throw new Error('Unexpected response format');
                 }
-                
-                if (!profile.accountname) {
-                    throw new Error('Account name is missing in the response');
-                }
-    
+            
+                // intro 정보를 파싱합니다.
                 const parsedIntro = parseIntro(profile.intro);
-                
+
+                // state를 업데이트합니다.
                 setProfileData({
                     ...profile,
                     ...parsedIntro
                 });
             } catch (error) {
-                console.error('Error fetching data:', error);
                 setError(error);
             }
         };
     
         fetchData();
-    }, [accountname]);
+    }, [accountname]); // accountname이 변경될 때마다 이 함수를 재실행합니다.
+    
+    // State for accountname from myinfo when no useParams accountname is provided
+    const [accountnameFromMyInfo, setAccountname] = useState(null);
+    
+    
     
     function parseIntro(intro) {
         const tags = ['intro', 'pet', 'gender', 'birthdate', 'location'];
@@ -148,6 +141,7 @@ const ProfilePage = () => {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
     
+
     // 팔로우 언팔 기능
 
     const handleFollow = async () => {
@@ -191,7 +185,7 @@ const ProfilePage = () => {
     };
 
     // 팔로우 팔로잉 리스트 이동
-const fetchFollowList = async (type) => {
+    const fetchFollowList = async (type) => { // type: 'followers' or 'following'
         try {
             const token = localStorage.getItem('token');
             const url = `https://api.mandarin.weniv.co.kr/profile/${accountname}/${type}`;
@@ -201,24 +195,13 @@ const fetchFollowList = async (type) => {
                     'Content-type': 'application/json',
                 },
             });
-
-            // Assuming the API returns an object with a property that is an array
-            const list = response.data[type];
-            if (Array.isArray(list)) { // Check if it's an array
-                if (type === 'followers') {
-                    setFollowers(list);
-                } else {
-                    setFollowing(list);
-                }
+            
+            if (type === 'followers') {
+                setFollowers(response.data);
             } else {
-                // If not an array, set it to an empty array
-                if (type === 'followers') {
-                    setFollowers([]);
-                } else {
-                    setFollowing([]);
-                }
+                setFollowing(response.data);
             }
-
+            
             setShowFollowList(type);
         } catch (error) {
             console.error(error);
@@ -253,10 +236,10 @@ const fetchFollowList = async (type) => {
             <Container>
                 <ProfileContainer>
                     <FollowInfo>
-                    <FollowGroup onClick={() => handleFollowClick('following')}>
-                    <FollowCount>{profileData.followingCount}</FollowCount>
-                    <FollowLabel>Following</FollowLabel>
-                </FollowGroup>
+                        <FollowGroup onClick={() => handleFollowClick('follower')}>
+                            <FollowCount>{profileData.followingCount}</FollowCount>
+                            <FollowLabel>Following</FollowLabel>
+                        </FollowGroup>
                         
                         <ProfileImageContainer>
                             <ProfileImage src={profileData.image} alt="Profile" />
@@ -273,7 +256,7 @@ const fetchFollowList = async (type) => {
                             </ProfilePet>
                         </ProfileImageContainer>
                         
-                        <FollowGroup onClick={() => handleFollowClick('follower')}>
+                        <FollowGroup onClick={() => handleFollowClick('following')}>
                             <FollowCount>{profileData.followerCount}</FollowCount>
                             <FollowLabel>Followers</FollowLabel>
                         </FollowGroup>
@@ -305,9 +288,9 @@ const fetchFollowList = async (type) => {
                         </BtnGroup>
                     )}
                 </ProfileContainer>
-                <MyFeed accountname={profileData.accountname}/>
+                <MyFeed accountname={accountname || accountnameFromMyInfo} />
             <TabMenu />
-            </Container>
+        </Container>
         </>
     );
 };

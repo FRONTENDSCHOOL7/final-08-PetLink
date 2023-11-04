@@ -14,7 +14,7 @@ import offListIcon from '../../assets/image/icon-post-list-off.png';
 import commentIcon from '../../assets/image/icon-comment.png';
 import { Container } from '../../Styles/reset.style';
 
-const MyFeed = () => {
+const MyFeed = (props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAlbumActive, setIsAlbumActive] = useState(true);
   const [isListActive, setIsListActive] = useState(false);
@@ -22,7 +22,9 @@ const MyFeed = () => {
   const [posts, setPosts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 10; // Set the posts per page as needed
-  const { accountname } = useParams();
+  const { accountname: urlAccountname } = useParams();
+  const [accountname, setAccountname] = useState(props.accountname || urlAccountname || localStorage.getItem('loggedInAccountname'));
+
 
   // 토글버튼 리스트 엘범형
   const toggleAlbum = () => {
@@ -38,10 +40,11 @@ const MyFeed = () => {
   const fetchPosts = async () => {
     setIsLoading(true);
     try {
+      const token = localStorage.getItem('token');
       const response = await axios.get(
         `https://api.mandarin.weniv.co.kr/post/${accountname}/userpost`, {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            Authorization: `Bearer ${token}`,
             'Content-type': 'application/json',
           },
         }
@@ -55,6 +58,14 @@ const MyFeed = () => {
   };
 
   useEffect(() => {
+    // URL에서 accountname이 변경되었을 때 처리
+    if (urlAccountname) {
+      setAccountname(urlAccountname);
+    }
+  }, [urlAccountname]);
+
+  useEffect(() => {
+    // accountname이 결정되면 피드를 가져옵니다.
     if (accountname) {
       fetchPosts();
     }
@@ -113,26 +124,11 @@ const MyFeed = () => {
           </React.Fragment>
         ))
       }
-      {/* 엘범형
-
+      
       {isListActive && (
       <ListImages>
-            {posts.map((post) => (
-              <ListImage
-                key={post.id}
-                src={post.image}
-                alt={`Post by ${post.author.username}`}
-              />
-            ))}
-          </ListImages>
-      )} */}
-
-            {/* 엘범형 */}
-
-            {isListActive && (
-      <ListImages>
             {posts
-            .filter(post => post.image || (post.images && post.images.length > 0)) // 이미지가 있는 포스트만 필터링
+            .filter(post => post.image || (post.images && post.images.length > 0)) // 이미지있는 포스팅만 필터링
             .map((post) => (
               <ListImage
                 key={post.id}
