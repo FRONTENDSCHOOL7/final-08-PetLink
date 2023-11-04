@@ -9,9 +9,9 @@ function SplashPage() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setIsVisible(false); // 상태를 false로 설정하여 스플래시 화면을 숨깁니다.
+      setIsVisible(false); // 상태를 false로 설정하여 스플래시 화면 숨김
       navigate('/login'); // 홈 페이지로 리디렉션
-    }, 2000); // 2초 후
+    }, 3000); // 3초 후
 
     return () => {
       clearTimeout(timer);
@@ -23,7 +23,11 @@ function SplashPage() {
       <SplashContainer>
         <SplashContent>
           <LogoIcon src={logoPetlink} alt="반결고리 로고" />
-          <LogoText>반결고리</LogoText>
+          <LogoText>
+            {"반결고리".split("").map((char, index) => (
+              <span key={index}>{char}</span>
+            ))}
+          </LogoText>
           <SubText>반려동물 연결고리 </SubText>
         </SplashContent>
       </SplashContainer>

@@ -2,19 +2,11 @@ import React, { useState } from 'react'
 import profile1 from '../../assets/image/img-user-siroo.jpg'
 import profile2 from '../../assets/image/img-user-windy.png'
 import profile3 from '../../assets/image/img-user-whiteDog.jpg'
-import { GlobalStyle, Container } from '../../Styles/reset.style'
+import { GlobalStyle, Container, SubContainer } from '../../Styles/reset.style'
 import {ChatItem} from '../../Components/Chat/ChatList'
-
-import styled from 'styled-components';
 import TabMenu from '../../Components/Common/TabMenu/TabMenu'
 import HeaderLayouts from '../../Components/Common/Header/Header'
 import { Link } from 'react-router-dom'
-
-
-const ChatListContainer = styled.div`
-  width: 100%;
-  padding: 24px 16px;
-`
 
 
 export default function Chat() {
@@ -36,7 +28,7 @@ export default function Chat() {
       <GlobalStyle/>
       <Container> 
       <HeaderLayouts title="채팅" />
-        <ChatListContainer>
+        <SubContainer>
           {chatData.map(chat => (
             <Link to={{
               pathname: `/chatroom/${chat.id}`,
@@ -46,7 +38,7 @@ export default function Chat() {
               <ChatItem {...chat} onRead={()=>handleReadMsg(chat.id)}/>
             </Link>
           ))}
-        </ChatListContainer>
+        </SubContainer>
         <TabMenu/>
       </Container>
     </>
