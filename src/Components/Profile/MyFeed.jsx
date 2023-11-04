@@ -104,11 +104,14 @@ const MyFeed = (props) => {
             </UserInfo>
             <ContentBox>
               {post.image && <ContentImg src={post.image} alt="Post" />}
-              {post.content && (
+              
+              {/* 파싱오류 코드 */}
+              {/* {post.content && (
                 <ContentTxt className='text'>
                   {JSON.parse(post.content).contentText}
                 </ContentTxt>
-              )}
+              )} */}
+
               {post.images && post.images.map((image, index) => (
                 <ContentImg key={index} src={image.url} alt={`포스팅 이미지 ${index}`} />
               ))}

@@ -122,27 +122,36 @@ export const Button = styled.button`
     }
 `;
 
-export const ImageWrap = styled.label`
+export const ImageWrap = styled.div`
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
-    position: relative;
-`;
+    height: 200px;
+    margin-top: 50px;
+    `;
 
-export const ImageUpbtn = styled.label`
+    export const ImageUpbtn = styled.label`
     position: absolute;
-    bottom: 18px;
-    right: 140px;
+    bottom: 45px;
+    right: 138px;
     width: 30px;
     height: 30px;
     background-image: url(${uploadIcon});
     background-size: cover;
     cursor: pointer;
-    
+    z-index: 10;
+
     input[type="file"] {
         display: none;
     }
-`;
+
+    @media (min-width: 768px) {
+        bottom: 45px;
+        right: 326px;
+    }
+    `;
+
 
 export const Title = styled.label`
     display: flex;

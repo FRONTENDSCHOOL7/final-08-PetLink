@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import * as DropdownComponents from "./Dropdown";
 import TabMenu from "../Common/TabMenu/TabMenu";
+import HeaderLayouts from '../../Components/Common/Header/Header'
 import { GlobalStyle, Container } from "../../Styles/reset.style";
 import { Title, ProfileImage, ImageUpbtn, ImageWrap, InputGroup, EditWrap, StyledInput, Styledlabel, Styledpetinfo, SubBtn, PetInfo } from "./Profile.style";
 
@@ -41,6 +42,8 @@ function ProfileEdit() {
     const [location, setLocation] = useState("");
     const [image, setImage] = useState(null);
     const [previewImage, setPreviewImage] = useState(null);
+    const [usernameError, setUsernameError] = useState("");
+    const [accountnameError, setAccountnameError] = useState("");
 
     useEffect(() => {
         const fetchData = async () => {
@@ -90,6 +93,25 @@ function ProfileEdit() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+
+        setUsernameError("");
+        setAccountnameError("");
+
+    let formIsValid = true;
+
+    if (!username.trim()) {
+        setUsernameError("활동명을 입력하세요");
+    } else {
+        setUsernameError("");
+    }
+    if (!accountname.trim()) {
+        setAccountnameError("계정 ID를 입력하세요");
+        formIsValid = false;
+    }
+
+    if (!formIsValid) {
+        return;
+    }
 
         const token = localStorage.getItem("token");
         let imageUrl = image;
@@ -172,6 +194,7 @@ function ProfileEdit() {
     <>
     <GlobalStyle/>
     <Container>
+    <HeaderLayouts backTxt={true}/>
         <Title>프로필 수정</Title>
         {/* <HeaderLayouts title="반결장터" logo={true} /> */}
             <form onSubmit={handleSubmit}>
@@ -194,6 +217,7 @@ function ProfileEdit() {
                     onChange={(e) => setUsername(e.target.value)}
                     required
                     />
+                    {usernameError && <div style={{ color: 'red' }}>{usernameError}</div>}
                 </InputGroup>
                 <InputGroup>
                     <Styledlabel>계정 ID*</Styledlabel>
@@ -203,6 +227,7 @@ function ProfileEdit() {
                     onChange={(e) => setAccountname(e.target.value)}
                     required
                     />
+                    {accountnameError && <div style={{ color: 'red' }}>{accountnameError}</div>}
                 </InputGroup>
                 <InputGroup>
                     <Styledlabel>상태메시지</Styledlabel>

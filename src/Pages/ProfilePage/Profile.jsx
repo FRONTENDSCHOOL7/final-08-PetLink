@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link, useParams, useNavigate } from 'react-router-dom';
+import HeaderLayouts from '../../Components/Common/Header/Header'
 import { Container, GlobalStyle } from '../../Styles/reset.style'
 import TabMenu from '../../Components/Common/TabMenu/TabMenu'
 import {
@@ -19,6 +20,7 @@ import {
     GenderIcon,
 } from '../../Components/Profile/Profile.style';
 import MyFeed from '../../Components/Profile/MyFeed';
+import MyMarket from '../../Components/Profile/MyMarket';
 
 const ProfilePage = () => {
     const [profileData, setProfileData] = useState(null);
@@ -224,6 +226,7 @@ const ProfilePage = () => {
         <>
             <GlobalStyle />
             <Container>
+            <HeaderLayouts title="프로필" logo />
                 <ProfileContainer>
                     <FollowInfo>
                         <FollowGroup onClick={() => handleFollowClick('follower')}>
@@ -278,6 +281,7 @@ const ProfilePage = () => {
                         </BtnGroup>
                     )}
                 </ProfileContainer>
+                <MyMarket accountname={accountname || accountnameFromMyInfo} />
                 <MyFeed accountname={accountname || accountnameFromMyInfo} />
             <TabMenu />
         </Container>
