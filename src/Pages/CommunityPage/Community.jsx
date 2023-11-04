@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { GlobalStyle, Container } from '../../Styles/reset.style';
+import { GlobalStyle, Container, SubContainer } from '../../Styles/reset.style';
 import { 
   CommunityCategory, IconMapMark, IconShareInfoMap, IconUserProfile,
   MyLocation, PostReaction, PostSubTxt, PostTitle, ShareInfoMap, ShareInfoPost,
@@ -188,7 +188,7 @@ function Community() {
       <GlobalStyle />
       <Container>
         <HeaderLayouts title="커뮤니티" logo={true} search />
-        <main>
+        <SubContainer>
           <CommunityCategory>
           <button className={activeCategory === '정보 공유' ? 'active' : ''} 
           onClick={() => setActiveCategory('정보 공유')}>정보 공유</button>
@@ -229,9 +229,9 @@ function Community() {
           <BtnAdd onClick={handleBtnAddClick}>
             <img src={addBtn} alt="추가버튼" />
           </BtnAdd>
-        </main>
+        </SubContainer>
+        <TabMenu />
       </Container>
-      <TabMenu />
     </>
   );
 }
