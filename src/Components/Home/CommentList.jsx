@@ -59,14 +59,14 @@ export default function CommentList(props) {
       const data = await response.json();
 
       if (data) {
-        setComments(data.comments); // 가져온 댓글 데이터를 설정
+        setComments(data.comments.reverse()); // 가져온 댓글 데이터를 설정
       }
     } catch (error) {
       console.error("댓글 가져오기 에러:", error);
     }
   };
   const addComment = (newComment) => {
-    setComments((prevComments) => [newComment, ...prevComments]);
+    setComments((prevComments) => [...prevComments, newComment]);
   };
 
   if (!selectedPost) {
