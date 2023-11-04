@@ -11,9 +11,9 @@ import HeaderLayouts from '../../Components/Common/Header/Header';
 
 
 const chatUserData = [
-  {id: 1, imgSrc: profile1, nickname: "시루", content: "혹시 팔렸나요?", date: "2023.11.10", unread: true, sender: 'other'},
-  {id: 2, imgSrc: profile2, nickname: "바람돌이", content: "구매 가능할까요?", date: "2023.11.09", unread: true, sender: 'other'},
-  {id: 3, imgSrc: profile3, nickname: "흰둥이", content: "안녕하세요~", date: "2023.11.08", unread: false, sender: 'other'}
+  {id: 1, imgSrc: profile1, nickname: "시루", content: "혹시 팔렸나요?", time: "08:04", sender: 'other'},
+  {id: 2, imgSrc: profile2, nickname: "바람돌이", content: "구매 가능할까요?", time: "10:25", sender: 'other'},
+  {id: 3, imgSrc: profile3, nickname: "흰둥이", content: "안녕하세요~", time: "21:39", sender: 'other'}
 ]
 
 export default function ChatRoom() {
@@ -22,7 +22,7 @@ export default function ChatRoom() {
   const [isActive, setIsActive] = useState(false);
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState("");
-  const [chatData, setChatData] = useState({})
+  const [chatData, setChatData] = useState({});
   const chatRoomRef = useRef(null);
 
   useEffect(() => {
@@ -92,9 +92,6 @@ export default function ChatRoom() {
   const reportOptions = [
     {action: "채팅방 나가기", alertText: "채팅방 나가시겠습니까?"}
   ]
-
-  // 첫 번째 메시지만 현재 채팅방 id와 일치하는 경우 필터링
-  const firstMessage = chatUserData.find((message, index) => index === 0 && message.id === parseInt(id));
   
   return (
     <>

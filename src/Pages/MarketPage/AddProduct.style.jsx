@@ -1,5 +1,7 @@
 import styled from 'styled-components';
+import dropdownIcon from '../../assets/image/icon-dropdown.png'
 
+// 헤더
 export const Header = styled.div`
   width: 100%;
   height: 48px;
@@ -9,6 +11,10 @@ export const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @media (min-width: 768px) {
+    height: 60px;
+  }
 `
 
 export const HeaderButton = styled.button`
@@ -20,6 +26,13 @@ export const HeaderButton = styled.button`
     height: 22px;
     object-fit: cover;
   }
+
+  @media (min-width: 768px) {
+    img {
+      width: 28px;
+      height: 28px;
+    }
+  }
 `
 
 export const SaveButton = styled(HeaderButton)`
@@ -29,37 +42,92 @@ export const SaveButton = styled(HeaderButton)`
   border-radius: 32px;
   background-color: ${props => props.$active ? "#004E98" : "#7299BE"};
   color: white;
+
+  @media (min-width: 768px) {
+    font-size: 16px;
+  }
 `
 
-export const DetailContainer = styled.main`
-  width: 100%;
-  padding: 17px 34px;
-  box-sizing: border-box;
-`
-
-export const AddImg = styled.div`
-  width: 100%;
+// 카테고리
+export const CategoryContainer = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: center;
   gap: 10px;
-`
+  margin-bottom: 30px;
+  color:#767676;
 
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+`;
+
+export const DropdownSelect = styled.select`
+  width: 100%; 
+  border: 1px solid #707070;  
+  border-radius: 4px;
+  background-color: white;
+  padding: 5px 8px;
+  appearance: none;
+  background-image: url(${dropdownIcon});  // 화살표 모양 SVG 추가
+  background-size: 11px 7px;
+  background-repeat: no-repeat;
+  background-position: right 15px center; 
+  padding-right: 30px;
+  color: #707070;
+  font-size: 0.9rem;  
+
+  &:focus {
+    outline: none;
+    border-color: #004E98;
+  }
+
+  option {
+    padding: 5px;
+    font-size: 0.9rem; 
+  }
+
+  @media (min-width: 768px) {
+    width: 50%;
+  }
+`;
+
+
+// 항목 이름
 export const InputTitle = styled.p`
   color: #767676;
   font-size: 12px;
+
+  @media (min-width: 768px) {
+    font-size: 14px;
+  }
 `
 
+// 필수 입력 표시
 export const Required = styled.span`
   color: red;
   font-size: 12px;
+
+  @media (min-width: 768px) {
+    font-size: 14px;
+  }
+`
+
+// 이미지 등록
+export const AddImgWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 `
 
 export const InputImg = styled.div`
-  width: 100%;
-  height: 204px; // 사이즈 고려
+  width: 100%; // 모바일 화면 기준 너비
+  max-height: 204px; // 최대 높이 설정
+  padding-top: calc(204 / 375 * 100%); // 비율 조정
   background-color: #F2F2F2;
   background-image: url(${props => props.img || "none"});
-  background-size: cover; 
+  background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
   position: relative;
@@ -68,8 +136,14 @@ export const InputImg = styled.div`
   input[type="file"] {
     display: none;
   }
-`
 
+  @media (min-width: 768px) {
+    width: 90%;
+    margin: 0 auto 30px;
+  }
+`;
+
+// 이미지 추가 버튼
 export const AddImgBtn = styled.button`
   width: 60px;
   height: 60px;
@@ -94,12 +168,27 @@ export const AddImgBtn = styled.button`
     width: 36px;
     height: 36px;
   }
+  
+  @media (min-width: 768px) {
+    width: 80px;
+    height: 80px;
+
+    img {
+    width: 50px;
+    height: 50px;
+  }
+  }
 `
 
+// 상품명, 가격, 판매링크, 상품설명
 export const AddTxtForm = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 18px;
+
+  @media (min-width: 768px) {
+    gap: 25px;
+  }
 `
 
 export const ProductInfo = styled.div`
@@ -116,6 +205,10 @@ export const ProductInfo = styled.div`
     resize: none;
     border: 1px solid #DBDBDB;
     line-height: 1.5;
+
+    @media (min-width: 768px) {
+      height: 120px;
+    }
   }
 
   input:focus {
@@ -131,5 +224,14 @@ export const ProductInfo = styled.div`
   input::placeholder,
   textarea::placeholder {
     color: #DBDBDB;
+  }
+
+  @media (min-width: 768px) {
+    gap: 15px;
+
+    input,
+    textarea {
+      font-size: 14px;
+    }
   }
 `
