@@ -223,7 +223,7 @@ export function PostListItem({ post }) {
       console.error("Error parsing content JSON:", error);
     }
 
-    setContent(contentText);
+      setContent(contentText);
       setDate(post.createdAt || "");
       setLikeNum(post.likes || 0); // 초기 좋아요 수 설정
       setLiked(post.liked || false); // 사용자의 좋아요 상태 설정
@@ -268,10 +268,10 @@ export function PostListItem({ post }) {
             state={{ selectedPost: post }}
           >
         <S.UserProfile>
-            <img src={userImg || defaultUserImg} alt="사용자 프로필 이미지" />
+            <S.UserImg src={userImg || defaultUserImg} alt="사용자 프로필 이미지" />
           <S.UserName>
-            <p>{username}</p>
-            <span>{accountname}</span>
+            <S.NameTxt>{username}</S.NameTxt>
+            <S.Account>{accountname}</S.Account>
           </S.UserName>
         </S.UserProfile>
           </Link>
@@ -282,17 +282,19 @@ export function PostListItem({ post }) {
 
       <S.Content>
         <Link to={`/post/${post._id}`} state={{ selectedPost: post }}>
-          <p>{content}</p>
-          {contentImgUrl && <img src={contentImgUrl} alt="포스팅 이미지" />}
+          <S.ContentTxt>{content}</S.ContentTxt>
+          {contentImgUrl && <S.ContentImg src={contentImgUrl} alt="포스팅 이미지" />}
         </Link>
         <S.PostIcons>
-          <button onClick={handleLikeClick}>
-            <img  src={liked ? redHeartIcon : heartIcon} alt="하트 아이콘" />
-            <span>{likeNum}</span>
-          </button>
+          <S.IconBtn onClick={handleLikeClick}>
+            <S.IconImg  src={liked ? redHeartIcon : heartIcon} alt="하트 아이콘" />
+            <S.Count>{likeNum}</S.Count>
+          </S.IconBtn>
           <Link to={`/post/${post._id}`} state={{ selectedPost: post }}>
-            <img src={commentIcon} alt="댓글 개수" />
-            <span>1</span>
+            <S.IconBtn>
+              <S.IconImg src={commentIcon} alt="댓글 개수" />
+              <S.Count>1</S.Count>
+            </S.IconBtn>
           </Link>
         </S.PostIcons>
         <S.PostDate>{formatDate(date)}</S.PostDate>

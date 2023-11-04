@@ -78,14 +78,17 @@ export default function CommentList(props) {
        {comments.map((comment)=>(
        <>
            <S.UserInfo  key={comment}>
-           <div >
+     
              <Link to={`/profile/${comment.author.accountname}`}>
-               <S.CommentImg src={comment.author.image  || defaultUserImg} alt='사용자 프로필 이미지' />
+          <S.UserProfile>
+                 <S.CommentImg src={comment.author.image  || defaultUserImg} alt='사용자 프로필 이미지' />
+               <S.NameTxt>{comment.author.username} </S.NameTxt>
+               <S.Account>· {formatDate(comment.createdAt)}</S.Account>
+          </S.UserProfile>
              </Link>
-             <p>{comment.author.username} <span>· {formatDate(comment.createdAt)}</span></p>
-           </div>
+    
            <button onClick={() => props.onChangeModal(comment, props.isMyComment(comment.author.accountname))}>
-             <img src={moreIcon} alt='신고하기 모달창 불러오기' />
+             <S.IconMore src={moreIcon} alt='신고하기 모달창 불러오기' />
            </button>
          </S.UserInfo>
          <S.CommentTxt>{comment.content}</S.CommentTxt>
