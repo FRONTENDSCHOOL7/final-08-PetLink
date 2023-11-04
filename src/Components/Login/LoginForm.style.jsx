@@ -18,7 +18,6 @@ export const SubmitButton = styled.button`
   background-color: ${(props) => (props.disabled ? "#7299BE" : "#004e98")};
   color: white;
   font-size: 14px;
-  cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
   border: none;
   margin: 30px auto 20px;
   display: block;
@@ -26,6 +25,7 @@ export const SubmitButton = styled.button`
 
   @media (min-width: 768px) {
     font-size: 16px;
+    height: 50px;
   }
 `;
 
@@ -37,11 +37,11 @@ export const InputField = styled.div`
 `;
 
 export const StyledInput = styled.input`
-  padding: 10px 0;
+  padding: 10px 0 5px;
   border: none;
   border-bottom: 1px solid #DBDBDB;
   font-size: 14px;
-  margin-top: 5px;
+  margin-bottom: 5px;
   width: 100%;
 
   @media (min-width: 768px) {
@@ -66,3 +66,9 @@ export const FieldLabel = styled.label`
     font-size: 16px;
   }
 `;
+
+export const ErrorMsg = styled.p`
+  color: red;
+  font-size: 12px;
+  
+`
