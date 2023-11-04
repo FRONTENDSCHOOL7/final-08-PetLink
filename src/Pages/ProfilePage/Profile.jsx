@@ -56,7 +56,6 @@ const ProfilePage = () => {
                 let profile;
                 if (response.data.user) { // 나의 프로필 데이터
                     profile = response.data.user;
-                    // Since it's "myinfo", the accountname should be taken from user data
                     setAccountname(profile.accountname);
                 } else if (response.data.profile) { // 다른 사용자의 프로필 데이터
                     profile = response.data.profile;
@@ -64,10 +63,8 @@ const ProfilePage = () => {
                     throw new Error('Unexpected response format');
                 }
             
-                // intro 정보를 파싱합니다.
                 const parsedIntro = parseIntro(profile.intro);
 
-                // state를 업데이트합니다.
                 setProfileData({
                     ...profile,
                     ...parsedIntro
@@ -78,12 +75,9 @@ const ProfilePage = () => {
         };
     
         fetchData();
-    }, [accountname]); // accountname이 변경될 때마다 이 함수를 재실행합니다.
-    
-    // State for accountname from myinfo when no useParams accountname is provided
+    }, [accountname]);
+
     const [accountnameFromMyInfo, setAccountname] = useState(null);
-    
-    
     
     function parseIntro(intro) {
         const tags = ['intro', 'pet', 'gender', 'birthdate', 'location'];
@@ -99,7 +93,6 @@ const ProfilePage = () => {
         return info;
     }
     
-
     if (error) {
         return <div>Error occurred: {error.message}</div>;
     }
@@ -140,8 +133,6 @@ const ProfilePage = () => {
     function capitalizeFirstLetter(string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
-    
-
     // 팔로우 언팔 기능
 
     const handleFollow = async () => {
@@ -183,7 +174,6 @@ const ProfilePage = () => {
             console.error(error);
         }
     };
-
     // 팔로우 팔로잉 리스트 이동
     const fetchFollowList = async (type) => { // type: 'followers' or 'following'
         try {
