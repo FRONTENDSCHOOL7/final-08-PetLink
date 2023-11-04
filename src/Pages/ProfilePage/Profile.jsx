@@ -3,8 +3,6 @@ import axios from 'axios';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { Container, GlobalStyle } from '../../Styles/reset.style'
 import TabMenu from '../../Components/Common/TabMenu/TabMenu'
-import PostList from '../../Components/Profile/PostList';
-import ImageGrid from '../../Components/Profile/ImageGrid';
 import {
     ProfileImage,
     ProfileUsername,
@@ -13,7 +11,6 @@ import {
     FollowGroup,
     FollowCount,
     FollowLabel,
-    ProfileIntro,
     ProfileImageContainer,
     Button,
     BtnGroup,
@@ -21,6 +18,7 @@ import {
     ProfilePet,
     GenderIcon,
 } from '../../Components/Profile/Profile.style';
+import MyFeed from '../../Components/Profile/MyFeed';
 
 const ProfilePage = () => {
     const [profileData, setProfileData] = useState(null);
@@ -29,45 +27,44 @@ const ProfilePage = () => {
     const [followers, setFollowers] = useState([]);
     const [following, setFollowing] = useState([]);
     const [showFollowList, setShowFollowList] = useState(null);
-    const [viewMode, setViewMode] = useState('list');
     const navigate = useNavigate();
     
     const handleFollowClick = (type) => {
-        navigate(`/${type}`);
+        const targetAccountname = accountname || accountnameFromMyInfo;
+        if (targetAccountname) {
+            navigate(`/profile/${targetAccountname}/${type === 'follower' ? 'following' :'follower '}`);
+        } else {
+            console.error('Account name is undefined');
+        }
     };
-
-    const toggleViewMode = () => {
-        setViewMode(viewMode === 'list' ? 'grid' : 'list');
-    };
-
+    
     useEffect(() => {
+        console.log('Account Name:', accountname);
         const fetchData = async () => {
             try {
                 const token = localStorage.getItem('token');
-                let url = 'https://api.mandarin.weniv.co.kr/user/myinfo';
-                
-                if (accountname) { 
-                    url = `https://api.mandarin.weniv.co.kr/profile/${accountname}`;
-                }
+                let url = 'https://api.mandarin.weniv.co.kr/';
+                let profileEndPoint = accountname ? `profile/${accountname}` : 'user/myinfo';
     
-                const response = await axios.get(url, {
+                const response = await axios.get(url + profileEndPoint, {
                     headers: {
-                        Authorization: token ? `Bearer ${token}` : null,
+                        Authorization: `Bearer ${token}`,
                         'Content-type': 'application/json',
                     },
                 });
-            
+    
                 let profile;
-                if (response.data.user) { // API에서 user가 있으면 (나의 프로필)
+                if (response.data.user) { // 나의 프로필 데이터
                     profile = response.data.user;
-                } else if (response.data.profile) { // API에서 profile가 있으면 (사용자프로필)
+                    setAccountname(profile.accountname);
+                } else if (response.data.profile) { // 다른 사용자의 프로필 데이터
                     profile = response.data.profile;
                 } else {
                     throw new Error('Unexpected response format');
                 }
-                
+            
                 const parsedIntro = parseIntro(profile.intro);
-                
+
                 setProfileData({
                     ...profile,
                     ...parsedIntro
@@ -79,6 +76,8 @@ const ProfilePage = () => {
     
         fetchData();
     }, [accountname]);
+
+    const [accountnameFromMyInfo, setAccountname] = useState(null);
     
     function parseIntro(intro) {
         const tags = ['intro', 'pet', 'gender', 'birthdate', 'location'];
@@ -94,7 +93,6 @@ const ProfilePage = () => {
         return info;
     }
     
-
     if (error) {
         return <div>Error occurred: {error.message}</div>;
     }
@@ -135,8 +133,6 @@ const ProfilePage = () => {
     function capitalizeFirstLetter(string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
-    
-
     // 팔로우 언팔 기능
 
     const handleFollow = async () => {
@@ -178,7 +174,6 @@ const ProfilePage = () => {
             console.error(error);
         }
     };
-
     // 팔로우 팔로잉 리스트 이동
     const fetchFollowList = async (type) => { // type: 'followers' or 'following'
         try {
@@ -231,7 +226,7 @@ const ProfilePage = () => {
             <Container>
                 <ProfileContainer>
                     <FollowInfo>
-                        <FollowGroup onClick={() => handleFollowClick('follow')}>
+                        <FollowGroup onClick={() => handleFollowClick('follower')}>
                             <FollowCount>{profileData.followingCount}</FollowCount>
                             <FollowLabel>Following</FollowLabel>
                         </FollowGroup>
@@ -283,8 +278,9 @@ const ProfilePage = () => {
                         </BtnGroup>
                     )}
                 </ProfileContainer>
-            </Container>
+                <MyFeed accountname={accountname || accountnameFromMyInfo} />
             <TabMenu />
+        </Container>
         </>
     );
 };
