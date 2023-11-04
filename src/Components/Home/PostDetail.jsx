@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import * as S from '../Home/PostList.style';
 import moreIcon from '../../assets/image/icon-more-vertical.png';
 import { Container, SubContainer } from '../../Styles/reset.style';
@@ -10,6 +10,7 @@ import BottomModal from '../Common/Modal/BottomModal';
 import redHeartIcon from '../../assets/image/icon-heart-red.png';
 import commentIcon from '../../assets/image/icon-comment.png';
 import CommentList, { WriteComment } from './CommentList';
+import axios from 'axios';
 
 
 function formatDate(dateString) {
@@ -29,6 +30,27 @@ export default function PostDetail(props) {
   const { selectedPost } = location.state;
   const [userAccountName, setUserAccountName] = useState(false);
   const [isMyPost, setIsMyPost] = useState(false); // 추가: 현재 사용자의 게시물 여부
+
+  const { postId } = useParams();
+  const navigate = useNavigate();
+
+  // 게시물 삭제 함수
+  const deletePost = async (postId) => {
+    console.log('deletePost is called with id:', postId)
+    try {
+      await axios.delete(`https://api.mandarin.weniv.co.kr/post/${postId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      alert('삭제되었습니다.');
+      navigate('/home');
+    } catch (error) {
+      // 에러 처리
+    }
+  };
+
 
   useEffect(()=>{
     fetchMyProfile()
@@ -64,8 +86,8 @@ export default function PostDetail(props) {
 
     if (isMyComment) {
       modalOptions = [
-        { action: "수정하기", alertText: "수정하시겠습니까?" },
-        { action: "삭제하기", alertText: "삭제하시겠습니까?" },
+        { action: "수정하기", alertText: "수정하시겠습니까?" , onSelect: () => navigate(`/community/edit/${postId}`)},
+        { action: "삭제하기", alertText: "삭제하시겠습니까?" , onSelect: () => deletePost(selectedPost._id)},
       ];
     } else {
       modalOptions = [
@@ -135,7 +157,11 @@ export default function PostDetail(props) {
         {isModalOpen && (
           <>
             <Overlay onClick={() => setIsModalOpen(false)} />
-            <BottomModal setIsModalOpen={setIsModalOpen} reports={reportOptions}/>
+            <BottomModal 
+            setIsModalOpen={setIsModalOpen} 
+            reports={reportOptions}
+            onDelete={() => deletePost(selectedPost._id)}
+            />
           </>
         )}
           </SubContainer>
