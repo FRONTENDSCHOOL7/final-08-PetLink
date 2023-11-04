@@ -92,7 +92,7 @@ const MyFeed = (props) => {
           <React.Fragment key={post.id}>
             <UserInfo>
               <UserProfile>
-                <UserImg src={post.author.profileImage || userImg} alt='사용자 프로필 이미지' />
+                <UserImg src={post.author.image || userImg} alt='사용자 프로필 이미지' />
                 <UserName>
                   <NameTxt>{post.author.username}</NameTxt>
                   <UserId>{post.author.accountname}</UserId>
@@ -103,9 +103,14 @@ const MyFeed = (props) => {
               </MoreBtn>
             </UserInfo>
             <ContentBox>
-                  {post.image && <ContentImg src={post.image} alt="Post" />}
-              <ContentTxt className='text'>{post.content}</ContentTxt>
-              {post.images && post.images.map((image, index) => (<ContentImg key={index} src={image.url} alt={`포스팅 이미지 ${index}`} />
+              {post.image && <ContentImg src={post.image} alt="Post" />}
+              {post.content && (
+                <ContentTxt className='text'>
+                  {JSON.parse(post.content).contentText}
+                </ContentTxt>
+              )}
+              {post.images && post.images.map((image, index) => (
+                <ContentImg key={index} src={image.url} alt={`포스팅 이미지 ${index}`} />
               ))}
             </ContentBox>
             <ContentBox>
