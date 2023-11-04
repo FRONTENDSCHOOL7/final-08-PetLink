@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation, Link, useNavigate } from 'react-router-dom';
+import { useLocation, Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import * as S from '../Home/PostList.style';
 import moreIcon from '../../assets/image/icon-more-vertical.png';
@@ -24,7 +24,7 @@ export default function CommunityDetail() {
   const { selectedPost } = location.state;
   const [userAccountName, setUserAccountName] = useState(false);
   const [isMyPost, setIsMyPost] = useState(false); // 추가: 현재 사용자의 게시물 여부
-
+  const { postId } = useParams();
   const navigate = useNavigate();
 
   // 게시물 삭제 함수
@@ -91,6 +91,27 @@ export default function CommunityDetail() {
     setReportOptions(modalOptions);
   };
 
+  const myPost = ( postAuthorAccountName) => {
+    return userAccountName === postAuthorAccountName;
+  };
+
+  const postOpenModal = (myPost) => {
+    let modalOptions = [];
+
+    if (myPost) {
+      modalOptions = [
+        { action: "수정하기", alertText: "수정 하시겠습니까?", onSelect: () => navigate(`/community/edit/${postId}`)},
+        { action: "삭제하기", alertText: "삭제 하시겠습니까?", onSelect: () => deletePost(selectedPost._id) },
+      ];
+    } else {
+      modalOptions = [
+        { action: "신고하기", alertText: "신고 하시겠습니까?" },
+      ];
+    }
+
+    setIsModalOpen(true);
+    setReportOptions(modalOptions);
+  };
 
 
 
@@ -128,7 +149,7 @@ export default function CommunityDetail() {
             </S.UserName>
           </S.UserProfile>
       </Link>
-        <button onClick={() => onChangeModal(selectedPost.author?.accountname, isMyComment(selectedPost.author?.accountname))}><S.IconMore src={moreIcon} /></button>
+        <button onClick={() => postOpenModal(myPost(selectedPost.author?.accountname))}><S.IconMore src={moreIcon} /></button>
       </S.UserInfo>
       <S.Content>
         <h4 style={{ marginBottom: '15px' }}>
