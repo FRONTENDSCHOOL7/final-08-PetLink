@@ -34,7 +34,11 @@ const ProfilePage = () => {
     const navigate = useNavigate();
     
     const handleFollowClick = (type) => {
-        navigate(`/${type}`);
+        if (profileData && profileData.accountname) {
+            navigate(`/profile/${profileData.accountname}/${type}`);
+        } else {
+            console.error('Account name is undefined.');
+        }
     };
 
     const toggleViewMode = () => {
@@ -57,16 +61,22 @@ const ProfilePage = () => {
                         'Content-type': 'application/json',
                     },
                 });
-            
+    
+                console.log('API Response:', response);
+    
                 let profile;
                 if (response.data.user) { // API에서 user가 있으면 (나의 프로필)
                     profile = response.data.user;
-                } else if (response.data.profile) { // API에서 profile가 있으면 (사용자프로필)
+                } else if (response.data.profile) { // API에서 profile이 있으면 (사용자 프로필)
                     profile = response.data.profile;
                 } else {
                     throw new Error('Unexpected response format');
                 }
                 
+                if (!profile.accountname) {
+                    throw new Error('Account name is missing in the response');
+                }
+    
                 const parsedIntro = parseIntro(profile.intro);
                 
                 setProfileData({
@@ -74,6 +84,7 @@ const ProfilePage = () => {
                     ...parsedIntro
                 });
             } catch (error) {
+                console.error('Error fetching data:', error);
                 setError(error);
             }
         };
@@ -137,7 +148,6 @@ const ProfilePage = () => {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
     
-
     // 팔로우 언팔 기능
 
     const handleFollow = async () => {
@@ -181,7 +191,7 @@ const ProfilePage = () => {
     };
 
     // 팔로우 팔로잉 리스트 이동
-    const fetchFollowList = async (type) => { // type: 'followers' or 'following'
+const fetchFollowList = async (type) => {
         try {
             const token = localStorage.getItem('token');
             const url = `https://api.mandarin.weniv.co.kr/profile/${accountname}/${type}`;
@@ -191,13 +201,24 @@ const ProfilePage = () => {
                     'Content-type': 'application/json',
                 },
             });
-            
-            if (type === 'followers') {
-                setFollowers(response.data);
+
+            // Assuming the API returns an object with a property that is an array
+            const list = response.data[type];
+            if (Array.isArray(list)) { // Check if it's an array
+                if (type === 'followers') {
+                    setFollowers(list);
+                } else {
+                    setFollowing(list);
+                }
             } else {
-                setFollowing(response.data);
+                // If not an array, set it to an empty array
+                if (type === 'followers') {
+                    setFollowers([]);
+                } else {
+                    setFollowing([]);
+                }
             }
-            
+
             setShowFollowList(type);
         } catch (error) {
             console.error(error);
@@ -232,10 +253,10 @@ const ProfilePage = () => {
             <Container>
                 <ProfileContainer>
                     <FollowInfo>
-                        <FollowGroup onClick={() => handleFollowClick('follow')}>
-                            <FollowCount>{profileData.followingCount}</FollowCount>
-                            <FollowLabel>Following</FollowLabel>
-                        </FollowGroup>
+                    <FollowGroup onClick={() => handleFollowClick('following')}>
+                    <FollowCount>{profileData.followingCount}</FollowCount>
+                    <FollowLabel>Following</FollowLabel>
+                </FollowGroup>
                         
                         <ProfileImageContainer>
                             <ProfileImage src={profileData.image} alt="Profile" />
@@ -252,7 +273,7 @@ const ProfilePage = () => {
                             </ProfilePet>
                         </ProfileImageContainer>
                         
-                        <FollowGroup onClick={() => handleFollowClick('following')}>
+                        <FollowGroup onClick={() => handleFollowClick('follower')}>
                             <FollowCount>{profileData.followerCount}</FollowCount>
                             <FollowLabel>Followers</FollowLabel>
                         </FollowGroup>
