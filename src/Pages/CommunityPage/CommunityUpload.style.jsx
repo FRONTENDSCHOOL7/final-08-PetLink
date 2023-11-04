@@ -1,95 +1,181 @@
 import styled from 'styled-components';
-import imgUploadBtn from '../../assets/image/icon-img-button.png'
+import dropdownIcon from '../../assets/image/icon-dropdown.png'
 
-export const Container = styled.div`
-  position: relative;
-  background-color: white;
-  width: 390px;
-  height: 100%;
-  margin: auto;
-`;
-
-// Header
 export const Header = styled.header`
+  width: 100%;
+  height: 48px;
+  /* padding: 0 16px; */
+  box-sizing: border-box;
+  border-bottom: 1px solid #DBDBDB;
   display: flex;
-  padding: 16px 13px 12px 19px;
-  align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid #dbdbdb;
+  align-items: center;
 `;
 
-export const BackBtn = styled.img`
-  width: 22px;
-  height: 22px;
-  cursor: pointer;
-`;
+export const HeaderButton = styled.button`
+  width: 48px;
+  height: 48px;
 
-export const UploadBtn = styled.button`
-  width: 90px;
-  height: 32px;
-  border-radius: 32px;
-  background-color: #7299BE;
-  color: white;
-`
-
-export const InputField = styled.input`
-  display: block;
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #dbdbdb;
-  border-radius: 5px;
-  font-size: 16px;
-`;
-
-export const TextArea = styled.textarea`
-  display: block;
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #dbdbdb;
-  border-radius: 5px;
-  font-size: 16px;
-  resize: vertical; // 사용자가 세로로만 크기 조절 가능하도록 설정
-  height: 150px;
-`;
-
-export const ImageUpload = styled.input`
-  display: none; // 기본 input 스타일 숨김
-`;
-
-export const ImageUploadLabel = styled.div`
-  position: absolute;  // 절대 위치 지정
-  right: 20px;         // 오른쪽에서 20px 떨어진 위치
-  bottom: 20px;        // 하단에서 20px 떨어진 위치
-  display: inline-block;
-  width: 42px;  // 이미지 크기에 맞게 조절
-  height: 42px; // 이미지 크기에 맞게 조절
-  background-image: url(${imgUploadBtn});
-  background-size: cover;
-  cursor: pointer;
-
-  label {
-    display: block;
-    width: 100%;
-    height: 100%;
-    cursor: pointer;
+  img {
+    width: 22px;
+    height: 22px;
+    object-fit: cover;
   }
 `;
 
-export const ImagePreviewBox = styled.div`
-  width: 100%; // 원하는 너비로 조정
-  height: 200px; // 원하는 높이로 조정
-  background-color: #D3D3D3; // 회색 배경
+export const SaveButton = styled.button`
+  width: 90px;
+  height: 32px;
+  margin-right: 16px;
+  border-radius: 32px;
+  background-color: ${({ isActive }) => (isActive ? '#004E98' : '#7299BE')};
+  color: white;
+`;
+
+export const DetailContainer = styled.div`
+  width: 100%;
+  padding: 17px 34px;
+  box-sizing: border-box;
+`;
+
+export const CustomInput = styled.form`
   display: flex;
+  flex-direction: column;
+  gap: 16px;
+`
+
+export const PostInfo = styled.div` 
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 40px;
+
+  textarea {
+    width: 100%;
+    height: auto;
+    border: none;
+    resize: none;  // textarea 크기 조절을 사용자가 못하게 함
+    overflow-y: auto;  // 내용이 많아질 때 스크롤 생성
+    white-space: pre-wrap;  // 줄바꿈 및 공백 유지
+    word-wrap: break-word;  // 단어 내에서 줄바꿈
+  }
+
+  input {
+    border: none;
+    border-bottom: 1px solid #DBDBDB;
+  }
+
+  input, textarea {
+    color: #535353;
+    font-family: 'Nanum Gothic', sans-serif;
+    font-size: 14px;
+    font-weight: 400; 
+  }
+
+  input:focus,
+  textarea:focus {
+    outline: none;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: #DBDBDB;
+    font-family: 'Nanum Gothic', sans-serif;
+    font-size: 14px;
+    font-weight: 400; 
+  }
+
+  
+`;
+
+export const CategoryContainer = styled.div`
+  display: flex;
+  flex-direction: row;
   align-items: center;
-  justify-content: center;
-  overflow: hidden; // 이미지가 박스를 벗어나지 않게 함
-  margin-top: 20px; // 상단 여백
+  gap: 10px;
+  margin-bottom: 30px;
+  color:#767676;
+`;
+
+export const DropdownSelect = styled.select`
+  width: 125px; 
+  border: 1px solid #707070;  
+  border-radius: 4px;
+  margin-left: 49px;
+  background-color: white;
+  padding: 5px 8px;
+  appearance: none;
+  background-image: url(${dropdownIcon});  // 화살표 모양 SVG 추가
+  background-size: 11px 7px;
+  background-repeat: no-repeat;
+  background-position: right 15px center; 
+  padding-right: 30px;
+  color: #707070;
+  font-size: 0.9rem;  
+
+  &:focus {
+    outline: none;
+    border-color: #DBDBDB;
+  }
+
+  option {
+    padding: 5px;
+    font-size: 0.9rem; 
+  }
+`;
+
+export const InputTitle = styled.div`
+  color: #767676;
+  font-size: 12px;
+`;
+
+export const AddImg = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
+
+export const InputImg = styled.div`
+  width: 100%;
+  height: 204px;
+  border-radius: 10px;
+  border: 0.5px solid #DBDBDB;
+  background-color: #F2F2F2;
+  background-image: url(${props => props.img || "none"});
+  background-size: cover; 
+  background-repeat: no-repeat;
+  background-position: center center;
+  position: relative;
+  margin-bottom: 30px;
+
+  input[type="file"] {
+    display: none;
+  }
+`;
+
+export const AddImgBtn = styled.button`
+  width: 60px;
+  height: 60px;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+
+  label {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
   img {
-    max-width: 100%; // 이미지가 박스 너비를 넘지 않게 함
-    max-height: 100%; // 이미지가 박스 높이를 넘지 않게 함
-    object-fit: cover; 
+    width: 36px;
+    height: 36px;
   }
 `;

@@ -90,6 +90,7 @@ export const ShareInfoPost = styled.article`
 
 export const IconUserProfile = styled.img`
   margin-right: 12px;
+  border-radius: 42px;
   width: 42px;
   height: 42px;
 `;
@@ -117,13 +118,14 @@ export const PostReaction = styled.div`
 `;
 
 export const BtnAdd = styled.button`
-  position: absolute;
-  right: 20px;
-  bottom: 20px;
-  z-index: 1000;
+  display: inline-block;
+  position: fixed;
+  bottom: 70px;
+  right: calc(50% - 175px); // Container의 max-width: 390px; 고려한 오른쪽 여백 계산
+  z-index: 100;
 
   img {
     width: 51px;
     height: 51px;
   }
-`;
+`

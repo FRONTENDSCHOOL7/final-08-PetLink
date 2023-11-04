@@ -1,120 +1,144 @@
-import React, { useEffect, useState } from 'react'
-import *as S from './CommunityDetail.style'
-import moreIcon from '../../assets/image/icon- more-vertical.png'
-import profileIcon from '../../assets/image/icon-basic-profile.png'
-import searchIcon from '../../assets/image/icon-search.png'
-import BackIcon from '../../assets/image/icon-arrow-left.png'
-// Community페이지에서 게시글 클릭 후, 상세페이지의 컴포넌트?레이아웃은 PostDetail과 동일하나, 불러오는 정보는 다르기 때문에 어떻게 해야할지 팀원분들과 논의 필요(우선 화면만 이동되도록 구현함)
-import { PostContents } from '../Home/PostList'
-import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
+import React, { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import * as S from '../Home/PostList.style';
+import moreIcon from '../../assets/image/icon-more-vertical.png';
+import { Container } from '../../Styles/reset.style';
+import HeaderLayouts from '../Common/Header/Header';
+import { Overlay } from '../Product/ProductDetail.style';
+import BottomModal from '../Common/Modal/BottomModal';
+import redHeartIcon from '../../assets/image/icon-heart-red.png';
+import commentIcon from '../../assets/image/icon-comment.png';
+import CommentList, { WriteComment } from '../Home/CommentList';
 
+export default function CommunityDetail() {
+  const defaultUserImg = "https://api.mandarin.weniv.co.kr/1698653743844.jpg";
+  const [likeNum, setLikeNum] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [comment, setComment] = useState('');
+  const [commentToShow, setCommentToShow] = useState('');
+  const [userId, setUserId] = useState(null);
+  const location = useLocation();
+  const { selectedPost } = location.state || {};
 
+  const navigate = useNavigate();
 
-export default function PostDetail(props) {
-  const navigate = useNavigate()
-  const GotoPrev = ()=>{
-navigate(-1)
-  }
-    return (
-      <S.PostLayout>
-          <PostDetailHeader GotoPrev={GotoPrev}/>
-          <PostContents />
-          <CommentList/>
-          <WriteComment/>
-      </S.PostLayout>
-    )
-  }
-
-
-export function PostDetailHeader(props){
-    return(
-
-        <S.HomeHeader>
-            <button onClick={props.GotoPrev}><img src={BackIcon} alt='뒤로가기' width={22} height={22}/></button>
-            <a href="#"><img src={searchIcon} aria-label='검색하기'/></a>
-          </S.HomeHeader>
-
-    )
-  }
-
-export const CommentList = () => {
-    return (
-      <S.CommentBox>
-        <S.UserInfo>
-          <div>
-            <a href='#'><img src={profileIcon} alt='사용자 프로필 이미지' /></a>
-              <p>서귀포시 무슨 농장 <span>· 5분 전</span></p>
-              
-          </div>
-        <button ><img src={moreIcon} alt='신고하기 모달창 불러오기'/></button>
-        </S.UserInfo>
-        <S.CommentTxt>게시글 답글 ~~ !! 최고최고</S.CommentTxt>
-      </S.CommentBox>
-    );
+  // 게시물 삭제 함수
+  const deletePost = async (postId) => {
+    console.log('deletePost is called with id:', postId)
+    try {
+      await axios.delete(`https://api.mandarin.weniv.co.kr/post/${postId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      alert('삭제되었습니다.');
+      navigate('/community');
+    } catch (error) {
+      // 에러 처리
+    }
   };
 
-function WriteComment(){
-  const [comment, setComment] = useState('')
-
-
-  const reqUrl = "https://api.mandarin.weniv.co.kr/user/myinfo";
-  const postData = {
-    "Authorization" : "Bearer {token}"
-  }
-
-useEffect(()=>{
-  const userInfo = () =>{
-    return (
-      axios.get('reqUrl',postData).then((결과)=>{
-        console.log(결과.postData)
-      })
-      .catch(()=>{
-        console.log('22')
-      })
-    )
+  useEffect(() => {
+    // 사용자 ID를 불러오는 함수
+    const fetchMyProfile = async () => {
+      try {
+        const response = await axios.get('https://api.mandarin.weniv.co.kr/user/myinfo', {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        });
+        setUserId(response.data.user._id);
+      } catch (error) {
+        console.error('There was an error fetching the user info!', error);
       }
-}, [])
+    };
 
-  // const SendComment = async()=>{
-  //   const baseUrl = "https://api.mandarin.weniv.co.kr"
-  //   const reqPath ="/post/:post_id/comments"
-  //   const reqUrl = baseUrl+reqPath
-  //   const PostData ={
-  //     "comment":{
-  //         "content":String
-  //     }
-  // }
-  // fetch( reqUrl, {
-  //   method:"POST",
-  //   headers:{
-  //       "Authorization" : "Bearer {token}",
-  //       "Content-type" : "application/json"
-  //   },
-  //   body:JSON.stringify(PostData)
-  // })
-  // }
+    fetchMyProfile();
+  }, []);
 
+  const reportOptions = [
+    {action: "신고하기", alertText: "게시글을 신고하시겠습니까?"},
+  ];
 
+  // 게시글 작성자와 로그인한 사용자가 동일한지 여부
+  const isPostOwner = userId === selectedPost.author?._id;
 
+  // 수정/삭제 모달 옵션
+  const postOwnerOptions = [
+    {action: "수정하기", alertText: "게시글을 수정하시겠습니까?"},
+    {action: "삭제하기", alertText: "게시글을 삭제하시겠습니까?"},
+  ];
 
-  const inputComment= (e)=>{
-    setComment(e.target.value)
+  const onChangeModal = () => {
+    setIsModalOpen(!isModalOpen);
+  };
+
+  const handlePostComment = () => {
+    if (comment.trim() !== '') {
+      setCommentToShow(comment);
+      setComment('');
+    }
+  };
+
+  if (!selectedPost) {
+    return <div>게시글을 불러오는 중...</div>;
   }
-  const submitComment= (e)=>{
-e.preventDefault()
-// SendComment()
-  }
-    return(
-      <S.InputForm onSubmit={submitComment}>
-              <div >
-                <img src={profileIcon} alt="사용자 프로필"/>
-                  <input type="text" id="commemt-input" placeholder="댓글 입력하기..." onChange={inputComment}/>
-              </div>
-              <button type="submit" disabled={comment.length === 0}>게시</button>
-      </S.InputForm>
-    )
-  }
-  
 
-
+  return (
+    <Container>
+      <HeaderLayouts back search />
+      <S.UserInfo>
+        <S.UserProfile>
+          <img src={selectedPost.author?.image || defaultUserImg} alt='사용자 프로필 이미지' />
+          <S.UserName>
+            <p>{selectedPost.author?.username}</p>
+            <p>{selectedPost.author?.accountname}</p>
+          </S.UserName>
+        </S.UserProfile>
+        <button onClick={onChangeModal}><S.IconMore src={moreIcon} /></button>
+      </S.UserInfo>
+      <S.Content>
+        <h4 style={{ marginBottom: '15px' }}>
+          {JSON.parse(selectedPost.content).title}
+        </h4>
+        <p className='text'>{JSON.parse(selectedPost.content).contentText}</p>
+        {selectedPost.image && <img src={selectedPost.image} alt="포스팅 이미지" />}
+        <S.PostIcons>
+          <button onClick={() => setLikeNum(prev => prev + 1)}>
+            <img src={redHeartIcon} alt='좋아요 버튼' />
+            <span>{likeNum}</span>
+          </button>
+          <button onClick={() => setIsModalOpen(true)}>
+            <img src={commentIcon} alt='댓글 개수' />
+            <span>0</span> {/* 댓글 개수를 상태로 관리하려면 해당 로직도 추가해야 합니다. */}
+          </button>
+        </S.PostIcons>
+      </S.Content>
+      {isModalOpen && (
+          <>
+            <Overlay onClick={() => setIsModalOpen(false)} />
+            <BottomModal
+              setIsModalOpen={setIsModalOpen}
+              reports={isPostOwner ? postOwnerOptions : reportOptions}
+              onDelete={() => deletePost(selectedPost._id)}
+            />
+          </>
+        )}
+      <CommentList
+        onChangeModal={onChangeModal}
+        userImage={selectedPost.author?.image}
+        username={selectedPost.author?.username}
+        date={selectedPost.date}
+        comment={commentToShow}
+        currentUserId={userId} 
+      />
+      <WriteComment
+        comment={comment}
+        setComment={setComment}
+        handlePostComment={handlePostComment}
+      />
+    </Container>
+  );
+}

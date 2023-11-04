@@ -1,186 +1,443 @@
-import { useState } from "react"
-import { useNavigate } from 'react-router-dom';
-import { Modal, Wrapper, FormWrapper, Logo, Input, Button } from '../../Components/Join/JoinPage.style';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { GlobalStyle, Container } from "../../Styles/reset.style";
+import {
+  FormWrapper,
+  Button,
+  Modal,
+  ModalContent,
+  CloseButton,
+  TitleWrap,
+  SubmitButton,
+  PetInfo,
+  Styledpetinfo,
+  ImageWrap,
+  ImageUpbtn,
+  ProfileImage,
 
+} from "../../Components/Join/JoinPage.style";
+import {
+  LoginTitleWrap,
+  SubmitButton as LoginSubmitButton,
+  InputField,
+  StyledInput,
+  FieldLabel,
+} from "../../Components/Login/LoginForm.style";
 
-const JoinPage = ()=>{
-    const navigate = useNavigate();
-    const [username, setUsername] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [accountname, setAccountname] = useState("");
-    const [imgSrc, setImgSrc] = useState("https://api.mandarin.weniv.co.kr/Ellipse.png")
-    const [info, setInfo] = useState("");
-    const [currentPage, setCurrentPage] = useState("join");
-    const [showModal, setShowModal] = useState(false);
+import * as DropdownComponents from "../../Components/Profile/Dropdown";
 
-    const goToProfilePage = () => {
-        setCurrentPage("profile");
+const JoinPage = () => {
+  const navigate = useNavigate();
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [accountnameError, setAccountnameError] = useState("");
+  const [emailAvailable, setEmailAvailable] = useState(false); // 이메일 중복체크
+  const [password, setPassword] = useState("");
+  const [accountname, setAccountname] = useState("");
+  const [intro, setIntro] = useState("");
+  const [imgSrc, setImgSrc] = useState(
+    "https://api.mandarin.weniv.co.kr/1698644803298.jpg"
+  );
+  const [validationErrors, setValidationErrors] = useState({});
+  const [info, setInfo] = useState("");
+  const [currentPage, setCurrentPage] = useState("join");
+  const [showModal, setShowModal] = useState(false);
+  const [pet, setPet] = useState("");
+  const [gender, setGender] = useState("");
+  const [birthdate, setBirthdate] = useState("");
+  const [location, setLocation] = useState("");
+  const [previewImage, setPreviewImage] = useState(null);
+  const convertInfoToTags = (bangyeolgori) => {
+    return `#bangyeolgori `;
+  };
+
+  const validateForm = () => {
+    const errors = {};
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const accountNameRegex = /^[a-zA-Z0-9_.]+$/;
+
+    if (!email || !emailRegex.test(email))
+      errors.email = "잘못된 이메일 형식입니다.";
+    if (!password || password.length < 6)
+      errors.password = "비밀번호는 6자 이상이어야 합니다.";
+    if (!accountname || !accountNameRegex.test(accountname))
+      errors.accountname = "영문, 숫자, 밑줄, 마침표만 사용할 수 있습니다.";
+
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setEmailError("유효한 이메일이 아닙니다.");
+    } else {
+      setEmailError("");
+    }
+  };
+
+  const goToProfilePage = () => {
+    setCurrentPage("profile");
+  };
+
+  const validateAccountname = (accountname) => {
+    const accountNameRegex = /^[a-zA-Z0-9_.]+$/;
+    if (!accountNameRegex.test(accountname)) {
+      setAccountnameError("영문, 숫자, 밑줄, 마침표만 사용할 수 있습니다.");
+    } else {
+      setAccountnameError("");
+    }
+  };
+
+  // 이메일 중복체크
+  const checkEmailAvailability = async (email) => {
+    setEmailError(""); // 이메일 에러 메시지 초기화
+
+    if (!email) {
+      return;
+    }
+
+    const reqUrl = "https://api.mandarin.weniv.co.kr/user/emailvalid";
+    const res = await fetch(reqUrl, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({ user: { email } }),
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      setEmailError(data.message); // API 응답 메시지를 에러 메시지로 설정
+    } else {
+      setEmailError("이메일 검증 중 오류가 발생했습니다.");
+    }
+  };
+
+  // 비밀번호 입력 필드에 포커스가 이동하면 이메일 검증
+  const handlePasswordFocus = async () => {
+    await checkEmailAvailability(email);
+  };
+
+  const join = async (joinData) => {
+    const reqUrl = "https://api.mandarin.weniv.co.kr/user/";
+    const res = await fetch(reqUrl, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(joinData),
+    });
+    const json = await res.json();
+
+    if (res.status === 422) {
+      alert(json.message);
+    } else {
+      console.log(json);
+    }
+
+    return res;
+  };
+
+  const inputUsername = (e) => {
+    setUsername(e.target.value);
+  };
+  const extractIntro = () => {
+    const match = info.match(/#intro:([^#]*)/);
+    return match ? match[1].trim() : "";
+  };
+
+  const uploadImage = async (imageFile) => {
+    const baseUrl = "https://api.mandarin.weniv.co.kr/";
+    const reqUrl = baseUrl + "image/uploadfile";
+    const form = new FormData();
+    form.append("image", imageFile);
+    const res = await fetch(reqUrl, {
+      method: "POST",
+      body: form,
+    });
+    const json = await res.json();
+    const imageUrl = baseUrl + json.filename;
+    setImgSrc(imageUrl);
+  };
+  const handleChangeImage = (e) => {
+    const imageFile = e.target.files[0];
+    uploadImage(imageFile);
+  };
+
+  // 계정 이름 중복체크
+  const checkAccountNameAvailability = async (accountname) => {
+    setAccountnameError(""); // 계정 이름 에러 메시지 초기화
+
+    if (!accountname) {
+      return;
+    }
+
+    const reqUrl = "https://api.mandarin.weniv.co.kr/user/accountnamevalid";
+    const res = await fetch(reqUrl, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({ user: { accountname } }),
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      setAccountnameError(data.message); // API 응답 메시지를 에러 메시지로 설정
+    } else {
+      setAccountnameError("계정 이름 검증 중 오류가 발생했습니다.");
+    }
+  };
+
+  // 활동명 입력 필드에 포커스가 이동하면 계정 이름 검증
+  const handleUsernameFocus = async () => {
+    await checkAccountNameAvailability(accountname);
+  };
+
+  const handleIntroChange = () => {
+    const hashtags = [
+      `#intro:${intro}`,
+      `#pet:${pet}`,
+      `#gender:${gender}`,
+      `#birthdate:${birthdate}`,
+      `#location:${location}`,
+      convertInfoToTags("bangyeolgori"),
+    ];
+    setInfo(hashtags.join(" "));
+  };
+
+  const handleSubmit = async () => {
+    const reqUrl = "https://api.mandarin.weniv.co.kr/user/";
+    const res = await fetch(reqUrl, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password,
+      }),
+    });
+
+    if (res.ok) {
+      setCurrentPage("profile");
+    } else {
+      const data = await res.json();
+      alert(data.message);
+    }
+  };
+
+  const submitJoin = () => {
+    console.log("Starting the join process"); // 회원가입 과정 시작
+
+    if (!validateForm()) {
+      console.log("Validation Error: Form is not valid."); // 유효성 검사 에러
+      return;
+    }
+
+    console.log("Form is valid. Proceeding to join."); // 유효성 검사 통과, 회원가입 진행
+
+    const joinData = {
+      user: {
+        username: username,
+        email: email,
+        password: password,
+        accountname: accountname,
+        intro: info,
+        image: imgSrc,
+      },
     };
 
-    const join = async (joinData) => {
-        const reqUrl = "https://api.mandarin.weniv.co.kr/user/";
-        const res = await fetch(reqUrl, {
-            method: "POST",
-            headers: {
-                "Content-type": "application/json"
-            },
-            body: JSON.stringify(joinData)
-        });
-        const json = await res.json();
-    
-        if (res.status === 422) { // 상태 코드가 422인 경우
-            alert(json.message); // 오류 메시지를 알림
-        } else {
-            console.log(json);
-        }
+    join(joinData).then((response) => {
+      if (response && response.status !== 422) {
+        console.log("Join successful."); // 회원가입 성공
+        setShowModal(true);
+      } else {
+        console.log("Join Error: An error occurred during the join process."); // 회원가입 중 에러 발생
+      }
+    });
+  };
 
-        return res;
-    };
-    
-    const inputUsername = (e)=>{
-        setUsername(e.target.value);
-    }
-    const inputEmail = (e)=>{
-        setEmail(e.target.value);
-    }
-    const inputPassword = (e)=>{
-        setPassword(e.target.value);
-    }
-    const inputAccountname = (e)=>{
-        setAccountname(e.target.value);
-    }
-    const inputInfo = (e) =>{
-        setInfo(e.target.value);
-    }
+  const isValidEmailAndPassword = () => {
+    return email.includes("@") && password.length >= 8;
+  };
 
-    const uploadImage = async (imageFile)=>{
-        const baseUrl = "https://api.mandarin.weniv.co.kr/"
-        const reqUrl = baseUrl+"image/uploadfile";
-        // 폼데이터 만들기
-        const form = new FormData();
-        // 폼데이터에 값 추가하기
-        // 폼데이터.append("키","값")
-        form.append("image", imageFile);
-        // 폼바디에 넣어서 요청하기
-        const res = await fetch(reqUrl,{
-            method:"POST",
-            body:form
-        });
-        const json = await res.json();
-        console.log(baseUrl+json.filename);
-        const imageUrl = baseUrl+json.filename;
-        setImgSrc(imageUrl);
-    }
-    const handleChangeImage = (e)=>{
-        // 파일 가져오기
-        const imageFile = e.target.files[0];
-        uploadImage(imageFile);        
-    }
+  const isValidProfile = () => {
+    return username.length >= 2 && accountname.length >= 2;
+  };
 
-    const submitJoin = () => {
-        if (!isValidProfile()) {
-            return;
-        }
-    
-        const joinData = {
-            user: {
-                username: username,
-                email: email,
-                password: password,
-                accountname: accountname,
-                intro: info,
-                image: imgSrc
-            }
-        };
-    
-        join(joinData).then((response) => {
-            if (response && response.status !== 422) { // 상태 코드가 422가 아닌 경우
-                setShowModal(true); // 환영 메시지를 표시
-            }
-        });
-    };
-    
+  return (
+    <>
+      <Container>
+        <GlobalStyle />
 
-    const isValidEmailAndPassword = () => {
-        // Add your email and password validation logic here
-        return email.includes('@') && password.length >= 8;
-    };
-
-    const isValidProfile = () => {
-        // Add your username and accountname validation logic here
-        return username.length >= 2 && accountname.length >= 2;
-    };
-
-    return (
-        <>
-            {/* <button type="button" onClick={handlePage}>로그인페이지로 돌아가기</button> */}
-    
-            <Wrapper>
         <FormWrapper>
-            <Logo>이메일 회원가입</Logo>
-            
-            {/* Email and Password Section */}
-            {currentPage === "join" && (
-                <>
-                    <Input 
-                        type="email" 
-                        placeholder="Email" 
-                        value={email} 
-                        onChange={inputEmail} 
-                    />
-                    <Input 
-                        type="password" 
-                        placeholder="Password" 
-                        value={password} 
-                        onChange={inputPassword} 
-                    />
-                    <Button type="button" onClick={goToProfilePage} disabled={!isValidEmailAndPassword()}>
-                        Next
-                    </Button>
-                </>
-            )}
 
-            {/* Profile Information Section */}
-            {currentPage === "profile" && (
-                <>
-                    <Input 
-                        type="text" 
-                        placeholder="Username" 
-                        value={username} 
-                        onChange={inputUsername} 
-                    />
-                    <Input 
-                        type="text" 
-                        placeholder="Account Name" 
-                        value={accountname} 
-                        onChange={inputAccountname} 
-                    />
-                    <Input 
-                        type="text" 
-                        placeholder="Introduction" 
-                        value={info} 
-                        onChange={inputInfo} 
-                    />
-                    <Button type="button" onClick={submitJoin} disabled={!isValidProfile()}>
-                        Join
-                    </Button>
-                </>
-            )}
+          {currentPage === "join" && (
+            <>
+            <TitleWrap>이메일로 회원가입</TitleWrap>
+              <InputField>
+                <FieldLabel>이메일</FieldLabel>
+                <StyledInput
+                  type="email"
+                  placeholder="이메일 입력해주세요."
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+                {emailError && (
+                  <span style={{ color: "red" }}>{emailError}</span>
+                )}
+              </InputField>
+              <InputField>
+                <FieldLabel>비밀번호</FieldLabel>
+                <StyledInput
+                  type="password"
+                  placeholder="비밀번호 입력해주세요."
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  onFocus={handlePasswordFocus} // 비밀번호 필드에 포커스가 가면 이메일 검증 실행
+                />
+                {validationErrors.password && (
+                  <span>{validationErrors.password}</span>
+                )}
+              </InputField>
 
-            {/* Conditional Modal Display */}
-            {showModal && (
-                <Modal>
-                    <h2>반결고리에 오신것을 환영합니다!</h2>
-                    <Button type="button" onClick={() => navigate('/login')}> 
-                        Login
-                    </Button>
-                </Modal>
-            )}
+              <SubmitButton
+                type="button"
+                onClick={handleSubmit}
+                disabled={!isValidEmailAndPassword()}
+              >
+                다음
+              </SubmitButton>
+            </>
+          )}
+
+          {currentPage === "profile" && (
+            <>
+            <TitleWrap>프로필 설정</TitleWrap>
+              {/* 새로운 레이아웃 */}
+              <ImageWrap>
+                    {previewImage ? (
+                    <ProfileImage src={previewImage} alt="Profile Preview" />
+                    ) : (
+                    <ProfileImage src={imgSrc} alt="Profile" />
+                    )}
+                    <ImageUpbtn uploaded={!!previewImage}>
+                    <input type="file" onChange={handleChangeImage} />
+                    </ImageUpbtn>
+                </ImageWrap>
+              <InputField>
+                <FieldLabel>활동명</FieldLabel>
+                <StyledInput
+                  type="text"
+                  placeholder="2 ~ 10자 이내여야 합니다."
+                  value={username}
+                  onChange={inputUsername}
+                />
+              </InputField>
+              <InputField>
+                <FieldLabel>계정 ID</FieldLabel>
+                <StyledInput
+                  type="text"
+                  placeholder="영문, 숫자, 특수문자(.),(_)만 사용 가능합니다."
+                  onChange={(e) => {
+                    setAccountname(e.target.value);
+                    validateAccountname(e.target.value);
+                  }}
+                  onBlur={handleUsernameFocus} // 계정 이름 필드에서 포커스가 떠나면 계정 이름 검증 실행
+                />
+                {accountnameError && (
+                  <span style={{ color: "red" }}>{accountnameError}</span>
+                )}
+              </InputField>
+              <InputField>
+                <FieldLabel>상태메시지</FieldLabel>
+                <StyledInput
+                  type="text"
+                  placeholder="자신의 반려동물에 대해 소개해 주세요!"
+                  value={intro}
+                  onChange={(e) => setIntro(e.target.value)}
+                />
+              </InputField>
+              <PetInfo>
+                <Styledpetinfo>반려동물 정보등록</Styledpetinfo>
+                <div>
+                  <label>반려동물</label>
+                  <DropdownComponents.DropdownSelect
+                    value={pet}
+                    onChange={(e) => {
+                      setPet(e.target.value);
+                      handleIntroChange();
+                    }}
+                    options={DropdownComponents.petOptions}
+                  />
+                </div>
+
+                <div>
+                  <label>성별</label>
+                  <DropdownComponents.DropdownSelect
+                    value={gender}
+                    onChange={(e) => {
+                      setGender(e.target.value);
+                      handleIntroChange();
+                    }}
+                    options={DropdownComponents.genderOptions}
+                  />
+                </div>
+
+                <div>
+                  <label>생일</label>
+                  <input
+                    type="date"
+                    value={birthdate}
+                    onChange={(e) => {
+                      setBirthdate(e.target.value);
+                      handleIntroChange();
+                    }}
+                  />
+                </div>
+
+                <div>
+                  <label>위치</label>
+                  <DropdownComponents.DropdownSelect
+                    value={location}
+                    onChange={(e) => {
+                      setLocation(e.target.value);
+                      handleIntroChange();
+                    }}
+                    options={DropdownComponents.locationOptions}
+                  />
+                </div>
+              </PetInfo>
+              <SubmitButton
+                type="button"
+                onClick={submitJoin}
+                disabled={!isValidProfile()}
+              >
+                반결고리 시작하기
+              </SubmitButton>
+            </>
+          )}
+
+          {showModal && (
+            <Modal>
+              <ModalContent>
+                <TitleWrap>반결고리에 오신것을 환영합니다!</TitleWrap>
+                <Button type="button" onClick={() => navigate("/login")}>
+                  로그인
+                </Button>
+                <CloseButton>&times;</CloseButton>
+              </ModalContent>
+            </Modal>
+          )}
         </FormWrapper>
-    </Wrapper>
+      </Container>
     </>
-    );
-}
+  );
+};
 
-export default JoinPage
+export default JoinPage;

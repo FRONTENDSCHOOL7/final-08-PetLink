@@ -5,8 +5,9 @@ export const Logo = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 100px auto;
-  
+  background-color: #6C9BD1;
+  height: 70vh;
+
   img {
     max-width: 100%;
     height: auto;

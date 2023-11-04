@@ -1,34 +1,15 @@
 import styled from 'styled-components';
 
 // 홈 화면 스타일드 컴포넌트
-export const PostLayout = styled.div`
-  width: 390px;
-  background-color: #fff;
-  margin: 0 auto;
-`
+// export const PostLayout = styled.div`
+//   width: 390px;
+//   background-color: #fff;
+//   margin: 0 auto;
+// `
 
-
-export const HomeHeader = styled.header`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 48px;
-  padding: 12px 16px;
-  border-bottom: 1px solid #DBDBDB;
-  /* box-sizing: border-box; */
-
-  img{
-    height: 21px;
-  }
-
-  a img{
-    width: 24px;
-    height: 24px;
-    cursor: pointer;
-  }
-`
 
 export const UserInfo = styled.div`
+margin:  20px 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -75,14 +56,6 @@ export const IconMore = styled.img`
   cursor: pointer;
 `
 
-export const PostList = styled.ul`
-  padding: 20px 16px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
 export const Content = styled.div`
   margin: 16px 16px 16px 54px;
 
@@ -95,10 +68,6 @@ export const Content = styled.div`
     overflow: hidden;
   }
 
-  /* a{
-    text-decoration:none;
-    color:#000000;
-  } */
 
   img {
     border-radius: 10px;
@@ -124,6 +93,7 @@ export const PostIcons = styled.div`
     height: 15px;
     margin-right: 6px;
     cursor: pointer;
+    object-fit: fill;
   }
 
   span{

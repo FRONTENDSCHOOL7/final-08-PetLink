@@ -29,6 +29,18 @@ export const ProfileAccountname = styled.h3`
     color: #767676;
 `;
 
+export const ProfilePet = styled.div`
+    margin: 5px 0;
+    font-size: 15px;
+    color: #767676;
+`;
+
+export const GenderIcon = styled.span`
+    font-size: 17px;
+    font-weight: bold;
+    color: ${props => props.gender === '남아' ? 'blue' : props.gender === '여아' ? 'red' : 'black'};
+`;
+
 export const ProfileEmail = styled.p`
     margin: 10px 0;
     font-size: 18px;
@@ -62,7 +74,7 @@ export const FollowGroup = styled.div`
 export const FollowCount = styled.span`
     font-size: 30px;
     font-weight: bold;
-    disply: fexld;
+    display: flex;
 `;
 
 export const FollowLabel = styled.span`
@@ -84,7 +96,7 @@ export const ProfileImageContainer = styled.div`
     align-items: center;
 `;
 
-export const BtnGrop = styled.div`
+export const BtnGroup = styled.div`
     display: flex;
     align-items: center;
     margin-right: 30px;
@@ -200,3 +212,7 @@ export const SubBtn = styled.button`
 export const EditWrap = styled.div`
 margin: 20px;
 `
+export const PetInfo = styled.div`
+margin: 20px;
+`
+

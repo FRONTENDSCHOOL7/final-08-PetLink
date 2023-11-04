@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import * as S from '../Home/PostList.style';
 import moreIcon from '../../assets/image/icon-more-vertical.png';
 import { Container } from '../../Styles/reset.style';
@@ -8,65 +8,23 @@ import { Overlay } from '../Product/ProductDetail.style';
 import BottomModal from '../Common/Modal/BottomModal';
 import redHeartIcon from '../../assets/image/icon-heart-red.png';
 import commentIcon from '../../assets/image/icon-comment.png';
-import CommentList, { WriteComment } from './CommentList';
+import CommentList, { WriteComment } from '../Home/CommentList';
 
 export default function PostDetail(props) {
   const defaultUserImg = "https://api.mandarin.weniv.co.kr/1698653743844.jpg";
   const [likeNum, setLikeNum] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [reportOptions, setReportOptions] = useState([]);
   const [comment, setComment] = useState(''); 
   const [commentToShow, setCommentToShow] = useState(''); // 추가: 화면에 보이는 댓글 상태
   const location = useLocation();
-  const { selectedPost } = location.state;
-  const [userId, setUserID] = useState(false);
+  const { selectedPost } = location.state || {};
 
-  // const reportOptions = [
-  //   {action: "신고하기", alertText: "신고하시겠습니까?"},
-  // ]
-  useEffect(()=>{
-    fetchMyProfile()
-  })
-  const fetchMyProfile = async () => {
-    try {
-      const response = await fetch(`https://api.mandarin.weniv.co.kr/user/myinfo`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          "Content-type": "application/json",
-        },
-      });
-      const data = await response.json();
-
-      if (data) {
-        const userId = data.user._id;
-        setUserID(userId);
-        console.log(userId)
-      }
-    } catch (error) {
-      console.error("에러:", error);
-    }
-  };
-
-
+  const reportOptions = [
+    {action: "신고하기", alertText: "신고하시겠습니까?"},
+  ]
+  
   const onChangeModal = () => {
-    const authorId = selectedPost.author_id ? selectedPost.author.id.toString() : "";
-    const currentUserId = userId ? userId.toString() : "";
-    const isMyPost =  selectedPost.author._id === currentUserId;
-    let modalOptions = []
-    if(isMyPost){
-      modalOptions = [
-        { action: "수정하기", alertText: "수정하시겠습니까?" },
-        { action: "삭제하기", alertText: "삭제하시겠습니까?" },
-      ];
-
-    }else {
-      modalOptions = [
-        { action: "신고하기", alertText: "신고하시겠습니까?" },
-      ];
-    }
     setIsModalOpen(true);
-    setReportOptions(modalOptions); // modalOptions 배열을 state로 설정
   };
 
   // 추가: 댓글 입력 시 화면에 보이도록 처리
@@ -85,18 +43,20 @@ export default function PostDetail(props) {
     <Container>
       <HeaderLayouts back search />
       <S.UserInfo>
-      <Link to={`/profile/${selectedPost.author.accountname}`}>
-          <S.UserProfile>
-            <img src={selectedPost.author?.image || defaultUserImg} alt='사용자 프로필 이미지' />
-            <S.UserName>
-              <p>{selectedPost.author?.username}</p>
-              <p>{selectedPost.author?.accountname}</p>
-            </S.UserName>
-          </S.UserProfile>
-      </Link>
+        <S.UserProfile>
+          <img src={selectedPost.author?.image || defaultUserImg} alt='사용자 프로필 이미지' />
+          <S.UserName>
+            <p>{selectedPost.author?.username}</p>
+            <p>{selectedPost.author?.accountname}</p>
+          </S.UserName>
+        </S.UserProfile>
         <button onClick={onChangeModal}><S.IconMore src={moreIcon} /></button>
       </S.UserInfo>
       <S.Content>
+        {/* 게시글 상세페이지에서 제목 보여줄지 논의필요 */}
+        <h4 style={{ marginBottom: '15px' }}>
+          {JSON.parse(selectedPost.content).title}
+        </h4>
         <p className='text'>{JSON.parse(selectedPost.content).contentText}</p>
         {selectedPost.image && <img src={selectedPost.image} alt="포스팅 이미지" />}
         <S.PostIcons>
