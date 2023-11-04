@@ -10,6 +10,10 @@ export const HeaderLayout = styled.div`
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid #DBDBDB;
+
+  @media (min-width: 768px) {
+    height: 60px;
+  }
 `
 
 export const HeaderTitle = styled.h1`
@@ -17,6 +21,10 @@ export const HeaderTitle = styled.h1`
   color: #004E98;
   font-size: 23px;
   font-family: 'Yeongdo-Rg';
+
+  @media (min-width: 768px) {
+    font-size: 30px;
+  }
 `
 
 export const HeaderButton = styled.button`
@@ -27,6 +35,13 @@ export const HeaderButton = styled.button`
     width: 22px;
     height: 22px;
     object-fit: cover;
+  }
+
+  @media (min-width: 768px) {
+    img {
+      width: 28px;
+      height: 28px;
+    }
   }
 `
 export const StyledLink = styled(Link)`
@@ -57,7 +72,6 @@ export const SearchInput = styled.input`
   height: 32px;
   border-radius: 32px;
   background-color: #F2F2F2;
-  /* color: #C4C4C4; */
   font-size: 14px;
   cursor: pointer;
     
@@ -77,7 +91,7 @@ export const HeaderBackTxtContainer = styled.div`
 export const HeaderBackTxt = styled.div`
   display: flex;
   flex-direction: row;
-  align-items: center ;
+  align-items: center;
 `
 
 export const HeaderBackBtn = styled.button`
@@ -88,6 +102,13 @@ export const HeaderBackBtn = styled.button`
     width: 22px;
     height: 22px;
     object-fit: cover;
+  }
+
+  @media (min-width: 768px) {
+    img {
+      width: 28px;
+      height: 28px;
+    }
   }
 `
 
@@ -106,5 +127,12 @@ export const HeaderMoreBtn = styled.button`
     width: 24px;
     height: 24px;
     object-fit: cover;
+  }
+
+  @media (min-width: 768px) {
+    img {
+      width: 30px;
+      height: 30px;
+    }
   }
 `
