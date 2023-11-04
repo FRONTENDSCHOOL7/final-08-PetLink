@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import * as S from '../Home/PostList.style';
 import moreIcon from '../../assets/image/icon-more-vertical.png';
 import { Container } from '../../Styles/reset.style';
 import HeaderLayouts from '../Common/Header/Header';
+import heartIcon from "../../assets/image/icon-heart.png";
 import { Overlay } from '../Product/ProductDetail.style';
 import BottomModal from '../Common/Modal/BottomModal';
 import redHeartIcon from '../../assets/image/icon-heart-red.png';
@@ -13,13 +14,16 @@ import CommentList, { WriteComment } from '../Home/CommentList';
 
 export default function CommunityDetail() {
   const defaultUserImg = "https://api.mandarin.weniv.co.kr/1698653743844.jpg";
+  const [liked, setLiked] = useState(false);
   const [likeNum, setLikeNum] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [reportOptions, setReportOptions] = useState([]);
   const [comment, setComment] = useState('');
   const [commentToShow, setCommentToShow] = useState('');
-  const [userId, setUserId] = useState(null);
   const location = useLocation();
-  const { selectedPost } = location.state || {};
+  const { selectedPost } = location.state;
+  const [userAccountName, setUserAccountName] = useState(false);
+  const [isMyPost, setIsMyPost] = useState(false); // 추가: 현재 사용자의 게시물 여부
 
   const navigate = useNavigate();
 
@@ -40,46 +44,71 @@ export default function CommunityDetail() {
     }
   };
 
-  useEffect(() => {
-    // 사용자 ID를 불러오는 함수
-    const fetchMyProfile = async () => {
-      try {
-        const response = await axios.get('https://api.mandarin.weniv.co.kr/user/myinfo', {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-          },
-        });
-        setUserId(response.data.user._id);
-      } catch (error) {
-        console.error('There was an error fetching the user info!', error);
+  useEffect(()=>{
+    fetchMyProfile()
+  })
+  const fetchMyProfile = async () => {
+    try {
+      const response = await fetch(`https://api.mandarin.weniv.co.kr/user/myinfo`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-type": "application/json",
+        },
+      });
+      const data = await response.json();
+
+      if (data) {
+        const userAccountName = data.user.accountname
+        setUserAccountName(userAccountName)
+        setIsMyPost(userAccountName === selectedPost.author?.accountname);
+        // console.log(userAccountName)
       }
-    };
-
-    fetchMyProfile();
-  }, []);
-
-  const reportOptions = [
-    {action: "신고하기", alertText: "게시글을 신고하시겠습니까?"},
-  ];
-
-  // 게시글 작성자와 로그인한 사용자가 동일한지 여부
-  const isPostOwner = userId === selectedPost.author?._id;
-
-  // 수정/삭제 모달 옵션
-  const postOwnerOptions = [
-    {action: "수정하기", alertText: "게시글을 수정하시겠습니까?"},
-    {action: "삭제하기", alertText: "게시글을 삭제하시겠습니까?"},
-  ];
-
-  const onChangeModal = () => {
-    setIsModalOpen(!isModalOpen);
+    } catch (error) {
+      console.error("에러:", error);
+    }
   };
 
+  const isMyComment = (commentAuthorAccountName) => {
+    return userAccountName === commentAuthorAccountName;
+  };
+
+  const onChangeModal = (comment, isMyComment) => {
+    let modalOptions = [];
+
+    if (isMyComment) {
+      modalOptions = [
+        { action: "수정하기", alertText: "수정하시겠습니까?" },
+        { action: "삭제하기", alertText: "삭제하시겠습니까?" },
+      ];
+    } else {
+      modalOptions = [
+        { action: "신고하기", alertText: "신고하시겠습니까?" },
+      ];
+    }
+
+    setIsModalOpen(true);
+    setReportOptions(modalOptions);
+  };
+
+
+
+
+  // 추가: 댓글 입력 시 화면에 보이도록 처리
   const handlePostComment = () => {
     if (comment.trim() !== '') {
       setCommentToShow(comment);
       setComment('');
     }
+  };
+
+  const handleLikeClick = async () => {
+    if (liked) {
+      setLikeNum(likeNum - 1);
+    } else {
+      setLikeNum(likeNum + 1);
+    }
+    setLiked(!liked);
   };
 
   if (!selectedPost) {
@@ -90,14 +119,16 @@ export default function CommunityDetail() {
     <Container>
       <HeaderLayouts back search />
       <S.UserInfo>
-        <S.UserProfile>
-          <img src={selectedPost.author?.image || defaultUserImg} alt='사용자 프로필 이미지' />
-          <S.UserName>
-            <p>{selectedPost.author?.username}</p>
-            <p>{selectedPost.author?.accountname}</p>
-          </S.UserName>
-        </S.UserProfile>
-        <button onClick={onChangeModal}><S.IconMore src={moreIcon} /></button>
+      <Link to={`/profile/${selectedPost.author.accountname}`}>
+          <S.UserProfile>
+            <img src={selectedPost.author?.image || defaultUserImg} alt='사용자 프로필 이미지' />
+            <S.UserName>
+              <p>{selectedPost.author?.username}</p>
+              <p>{selectedPost.author?.accountname}</p>
+            </S.UserName>
+          </S.UserProfile>
+      </Link>
+        <button onClick={() => onChangeModal(selectedPost.author?.accountname, isMyComment(selectedPost.author?.accountname))}><S.IconMore src={moreIcon} /></button>
       </S.UserInfo>
       <S.Content>
         <h4 style={{ marginBottom: '15px' }}>
@@ -106,13 +137,13 @@ export default function CommunityDetail() {
         <p className='text'>{JSON.parse(selectedPost.content).contentText}</p>
         {selectedPost.image && <img src={selectedPost.image} alt="포스팅 이미지" />}
         <S.PostIcons>
-          <button onClick={() => setLikeNum(prev => prev + 1)}>
-            <img src={redHeartIcon} alt='좋아요 버튼' />
-            <span>{likeNum}</span>
-          </button>
+          <button onClick={handleLikeClick}>
+              <img src={liked ? redHeartIcon : heartIcon} alt='좋아요 버튼' />
+              <span>{likeNum}</span>
+            </button>
           <button onClick={() => setIsModalOpen(true)}>
             <img src={commentIcon} alt='댓글 개수' />
-            <span>0</span> {/* 댓글 개수를 상태로 관리하려면 해당 로직도 추가해야 합니다. */}
+            <span>0</span>
           </button>
         </S.PostIcons>
       </S.Content>
@@ -121,7 +152,7 @@ export default function CommunityDetail() {
             <Overlay onClick={() => setIsModalOpen(false)} />
             <BottomModal
               setIsModalOpen={setIsModalOpen}
-              reports={isPostOwner ? postOwnerOptions : reportOptions}
+              reports={reportOptions}
               onDelete={() => deletePost(selectedPost._id)}
             />
           </>
@@ -132,7 +163,7 @@ export default function CommunityDetail() {
         username={selectedPost.author?.username}
         date={selectedPost.date}
         comment={commentToShow}
-        currentUserId={userId} 
+        isMyComment={isMyComment}
       />
       <WriteComment
         comment={comment}
