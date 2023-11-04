@@ -46,7 +46,7 @@ const MyFeed = () => {
           },
         }
       );
-      setPosts(response.data.post.map(p => ({ ...p, images: p.images || [] })));; // Assuming the data structure is { post: [] }
+      setPosts(response.data.post.map(p => ({ ...p, images: p.images || [] })));
     } catch (error) {
       console.error('Failed to fetch posts', error);
     } finally {
@@ -56,24 +56,24 @@ const MyFeed = () => {
 
   useEffect(() => {
     if (accountname) {
-      fetchPosts(); // Fetch posts when accountname is available
+      fetchPosts();
     }
   }, [accountname]);
 
   if (isLoading) {
-    return <div>Loading...</div>; // Loading state
+    return <div>Loading...</div>;
   }
 
   return (
     <Container>
-      <Layer>
-      <ViewBtn active={isAlbumActive} onClick={toggleAlbum}>
-        <BtnImg src={isAlbumActive ? onAllbumIcon : offAllbumIcon} alt="" />
-      </ViewBtn>
-      <ViewBtn active={isListActive} onClick={toggleList}>
-        <BtnImg src={isListActive ? onListIcon : offListIcon} alt="" />
-        </ViewBtn>
-      </Layer>
+  <Layer>
+    <ViewBtn active={isAlbumActive} onClick={toggleAlbum}>
+      <BtnImg src={isAlbumActive ? onListIcon : offListIcon} alt="Album" />
+    </ViewBtn>
+    <ViewBtn active={isListActive} onClick={toggleList}>
+      <BtnImg src={isListActive ? onAllbumIcon : offAllbumIcon} alt="List" />
+    </ViewBtn>
+  </Layer>
   
       {/* 리스트형 */}
       {isAlbumActive &&
@@ -113,19 +113,35 @@ const MyFeed = () => {
           </React.Fragment>
         ))
       }
-  
-      {/* 앨범형 리스트로 보기 */}
-{isListActive && (
-  <ListImages>
-    {posts.map((post, index) => (
-      <ListImage
-        key={index}
-        src={post.images && post.images[0] ? post.images[0].url : `https://via.placeholder.com/114x114?text=No+Image`}
-        alt={`Image ${index + 1}`}
-      />
-    ))}
-  </ListImages>
-)}
+      {/* 엘범형
+
+      {isListActive && (
+      <ListImages>
+            {posts.map((post) => (
+              <ListImage
+                key={post.id}
+                src={post.image}
+                alt={`Post by ${post.author.username}`}
+              />
+            ))}
+          </ListImages>
+      )} */}
+
+            {/* 엘범형 */}
+
+            {isListActive && (
+      <ListImages>
+            {posts
+            .filter(post => post.image || (post.images && post.images.length > 0)) // 이미지가 있는 포스트만 필터링
+            .map((post) => (
+              <ListImage
+                key={post.id}
+                src={post.image}
+                alt={`Post by ${post.author.username}`}
+              />
+            ))}
+          </ListImages>
+      )}
   
       {/* 신고하기 모달 창 */}
       {isModalOpen && (
@@ -140,11 +156,6 @@ const MyFeed = () => {
 }
 
 export default MyFeed
-
-
-//앨범형
-
-
 
 // 스타일 컴포넌트
 export const Layer = styled.div`
@@ -260,7 +271,7 @@ export const PostDate = styled.div`
   margin-top: 16px;
 `;
 
-// 앨범형 스타일
+// 엘범형 스타일
 
 const ListImages = styled.div`
   display: flex;
@@ -274,10 +285,4 @@ const ListImages = styled.div`
   width: 114px;
   height: 114px;
   object-fit: cover;
-`;
-
-const PostContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
 `;
