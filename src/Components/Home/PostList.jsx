@@ -288,7 +288,7 @@ export function PostListItem({ post }) {
             <img  src={liked ? redHeartIcon : heartIcon} alt="하트 아이콘" />
             <span>{likeNum}</span>
           </button>
-          <Link to={`/post/detail/${post._id}`} state={{ selectedPost: post }}>
+          <Link to={`/post/${post._id}`} state={{ selectedPost: post }}>
             <img src={commentIcon} alt="댓글 개수" />
             <span>1</span>
           </Link>
