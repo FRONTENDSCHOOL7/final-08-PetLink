@@ -29,28 +29,42 @@ export const IconSearch = styled.img`
 
 // Community Category
 export const CommunityCategory = styled.div`
-  padding: 30px 13px;
+  /* padding: 30px 13px; */
+  margin-bottom: 30px;
+  display: flex;
+  gap: 6px;
+  padding: 0 10px;
 
   button {
-    width: 87px;
+    width: 85px;
     height: 24px;
-    margin: 0 2px;
-    font-weight: bold;
     background-color: #6C9BD1;
-    color: #ffffff;
     border-radius: 30px;
-    border-style: none;
+    font-size: 12px;
+    color: white;
+    font-weight: 700;
 
     &:hover,
     &.active {
       background-color: #004E98;
+    }
+
+    @media (min-width: 480px) {
+      width: 95px; // 태블릿 크기 조정
+      font-size: 12px;
+    }
+
+    @media (min-width: 768px) {
+      width: 105px; // 데스크탑 크기 조정
+      font-size: 14px;
     }
   }
 `;
 
 // Share Info Map
 export const ShareInfoMap = styled.div`
-  margin: 0 21px 28px;
+  /* margin: 0 21px 28px; */
+  padding: 0 10px;
 `;
 
 export const MyLocation = styled.div`
@@ -71,13 +85,17 @@ export const IconMapMark = styled.img`
 `;
 
 export const IconShareInfoMap = styled.img`
-  width: 349px;
+  /* width: 349px;
+  height: 258px; */
+  width: 100%;
   height: 258px;
+  object-fit: fill; // contain이랑 고민 필요
+  margin-bottom: 30px;
 `;
 
 // Share Info Post
 export const ShareInfoPost = styled.article`
-  padding: 0 23px;
+  padding: 0 10px;
   margin-bottom: 20px;
 
   a {
@@ -121,11 +139,16 @@ export const BtnAdd = styled.button`
   display: inline-block;
   position: fixed;
   bottom: 70px;
-  right: calc(50% - 175px); // Container의 max-width: 390px; 고려한 오른쪽 여백 계산
+  right: calc((100% - 390px) / 2 + 16px);
   z-index: 100;
 
   img {
     width: 51px;
     height: 51px;
+  }
+
+    // 화면이 768px 이상일 때
+    @media (min-width: 768px) {
+    right: calc((100% - 768px) / 2 + 45px); // 화면 너비가 768px 이상일 때 가운데 정렬
   }
 `
