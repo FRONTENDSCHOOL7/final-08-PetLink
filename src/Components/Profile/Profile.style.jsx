@@ -69,17 +69,19 @@ export const FollowGroup = styled.div`
     flex-direction: column;
     align-items: center;
     height: 150px;
-`;
-
-export const FollowCount = styled.span`
+    `;
+    
+    export const FollowCount = styled.span`
     font-size: 30px;
     font-weight: bold;
     display: flex;
-`;
-
-export const FollowLabel = styled.span`
+    cursor:pointer
+    `;
+    
+    export const FollowLabel = styled.span`
     font-size: 12px;
     color: grey;
+    cursor:pointer
 `;
 
 export const FollowInfo = styled.div`
@@ -112,7 +114,7 @@ export const Button = styled.button`
     border-radius: 30px;
     cursor: pointer;
     font-size: 16px;
-    margin-top: 20px;
+    margin-top: 10px;
     margin-left: 10px;
 
 
@@ -128,7 +130,6 @@ export const ImageWrap = styled.div`
     justify-content: center;
     align-items: center;
     height: 200px;
-    margin-top: 50px;
     `;
 
     export const ImageUpbtn = styled.label`

@@ -194,9 +194,8 @@ function ProfileEdit() {
     <>
     <GlobalStyle/>
     <Container>
-    <HeaderLayouts backTxt={true}/>
+    <HeaderLayouts logo={true} backTxt={true}/>
         <Title>프로필 수정</Title>
-        {/* <HeaderLayouts title="반결장터" logo={true} /> */}
             <form onSubmit={handleSubmit}>
                 <ImageWrap>
                     {previewImage ? (
