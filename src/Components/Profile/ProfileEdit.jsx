@@ -47,44 +47,14 @@ function extractInfoFromTags(tagString) {
   return info;
 }
 
-// 계정ID 중복확인
-// async function checkAccountNameAvailability(accountname) {
-//     try {
-//       const token = localStorage.getItem('token'); //
-//         const config = {
-//             headers: {
-//             'Authorization': `Bearer ${token}`,
-//             'Content-type': 'application/json'
-//             }
-//         };
-
-//         const requestBody = {
-//             user: {
-//             accountname: accountname
-//             }
-//         };
-
-//         const response = await axios.post('https://api.mandarin.weniv.co.kr/user/accountnamevalid', requestBody, config);
-
-//         return response.data.message === "사용 가능한 계정ID 입니다.";
-
-//         } catch (error) {
-//         console.error("Error checking account name availability:", error);
-//         return false;
-//         }
-//     }
-
 async function checkAccountNameAvailability(accountname, currentAccountName) {
-  // 현재 사용자의 accountname과 입력된 accountname이 같다면, 중복 검사를 생략합니다.
+  // 현재 사용자의 accountname과 입력된 accountname이 같다면, 중복 검사 생략
   if (accountname === currentAccountName) {
-    return true; // 중복 검사를 생략하고 사용 가능하다고 가정합니다.
+    return true;
   }
 
   try {
-    // 로컬 스토리지에서 토큰을 가져옵니다.
-    const token = localStorage.getItem("your_token_key"); // 'your_token_key'는 실제 키 값으로 대체해야 합니다.
-
-    // 요청 헤더에 인증 토큰과 Content-Type을 설정합니다.
+    const token = localStorage.getItem("your_token_key");
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -92,25 +62,21 @@ async function checkAccountNameAvailability(accountname, currentAccountName) {
       },
     };
 
-    // 요청 본문을 설정합니다.
     const requestBody = {
       user: {
         accountname: accountname,
       },
     };
 
-    // POST 요청을 보냅니다.
     const response = await axios.post(
       "https://api.mandarin.weniv.co.kr/user/accountnamevalid",
       requestBody,
       config
     );
 
-    // 응답으로 받은 메시지를 확인하여 사용 가능 여부를 반환합니다.
     return response.data.message === "사용 가능한 계정ID 입니다.";
   } catch (error) {
     console.error("Error checking account name availability:", error);
-    // 에러 발생 시 사용 불가능으로 간주합니다.
     return false;
   }
 }
@@ -343,46 +309,45 @@ function ProfileEdit() {
               <StyledInput
                 value={intro}
                 onChange={(e) => {
-                  // 사용자가 입력한 값에서 #intro: 태그를 제거하고 상태를 업데이트합니다.
                   const newValue = e.target.value.replace(/^#intro:/, "");
                   setIntro(newValue);
                 }}
               />
             </InputGroup>
-            <PetInfo>
               <Styledpetinfo>반려동물 정보등록</Styledpetinfo>
-              <div>
+            <PetInfo>
+              <InputGroup>
                 <label>반려동물</label>
                 <DropdownComponents.DropdownSelect
                   value={pet}
                   onChange={(e) => setPet(e.target.value)}
                   options={DropdownComponents.petOptions}
                 />
-              </div>
-              <div>
+              </InputGroup>
+              <InputGroup>
                 <label>성별</label>
                 <DropdownComponents.DropdownSelect
                   value={gender}
                   onChange={(e) => setGender(e.target.value)}
                   options={DropdownComponents.genderOptions}
                 />
-              </div>
-              <div>
+              </InputGroup>
+              <InputGroup>
                 <label>생일</label>
                 <input
                   type="date"
                   value={birthdate}
                   onChange={(e) => setBirthdate(e.target.value)}
                 />
-              </div>
-              <div>
+              </InputGroup>
+              <InputGroup>
                 <label>위치</label>
                 <DropdownComponents.DropdownSelect
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
                   options={DropdownComponents.locationOptions}
                 />
-              </div>
+              </InputGroup>
             </PetInfo>
             <SubBtn type="submit">프로필 수정</SubBtn>
           </EditWrap>

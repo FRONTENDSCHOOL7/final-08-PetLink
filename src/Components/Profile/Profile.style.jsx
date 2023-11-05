@@ -174,28 +174,37 @@ export const InputGroup = styled.div`
     input, textarea, select {
         padding: 10px;
         font-size: 16px;
+        border: none;
+        border-bottom: 2px solid grey;
+    
+    &:focus {
+            border-bottom: 2px solid #6C9BD1;
+        }
     }
 `;
 
 export const StyledInput = styled.input`
     border: none;
-    border-bottom: 1px solid grey;
+    border-bottom: 2px solid grey;
     width: 100%;
     font-size: 16px;
 
     &:focus {
-        border-bottom: 1px solid #6C9BD1;
+        border-bottom: 2px solid #6C9BD1;
     }
 `;
 
 export const Styledlabel = styled.label`
     color: '#767676';
     font-Size: 12px;
-`
-
+    `
+    
 export const Styledpetinfo = styled.label`
+    font-weight: bold;
+    padding-bottom: 15px;
+    font-Size: 16px;
     color: black; 
-    font-Size: 15px;
+    display: inline-block;
 `
 
 export const SubBtn = styled.button`
@@ -223,7 +232,7 @@ export const EditWrap = styled.div`
 margin: 20px;
 `
 export const PetInfo = styled.div`
-margin: 20px;
+
 `
 export const Intro = styled.div`
     margin: 5px;

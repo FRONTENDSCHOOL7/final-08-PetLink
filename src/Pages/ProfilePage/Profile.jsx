@@ -35,10 +35,13 @@ const ProfilePage = () => {
     const [myAccountname, setMyAccountname] = useState(null);
     const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const handleConfirmAction = () => {
+        navigate('/login'); // 로그인 페이지로 이동
+    };
     
     const reportOptions = [
-        {action: "채팅방 나가기", alertText: "채팅방 나가시겠습니까?"}
-      ]
+        {action: "로그아웃", alertText: "로그아웃 하시겠습니까?", onSelect: () => navigate('/login')}
+    ]
     const handleFollowClick = (type) => {
         const targetAccountname = accountname || accountnameFromMyInfo;
         if (targetAccountname) {
@@ -260,7 +263,7 @@ const ProfilePage = () => {
         <>
             <GlobalStyle />
             <Container>
-            <HeaderLayouts title="프로필" onModalToggle={() => setIsModalOpen(true)} />
+            <HeaderLayouts backTxt={true} onModalToggle={() => setIsModalOpen(true)} />
                 <ProfileContainer>
                     <FollowInfo>
                         <FollowGroup onClick={() => handleFollowClick('follower')}>
@@ -320,7 +323,11 @@ const ProfilePage = () => {
                 {isModalOpen &&(
                 <>
                     <Overlay onClick={()=> setIsModalOpen(false)}/>
-                    <BottomModal setIsModalOpen={setIsModalOpen} reports={reportOptions}/>
+                    <BottomModal 
+                    setIsModalOpen={setIsModalOpen} 
+                    reports={reportOptions}
+                    onConfirm={handleConfirmAction}
+                    />
                 </>
                 )}
                 <MyMarket accountname={accountname || accountnameFromMyInfo} />
