@@ -55,7 +55,7 @@ const onChangeModal = (comment, isMyComment) => {
   if (isMyComment) {
     modalOptions = [
       { action: "수정하기", alertText: "수정하시겠습니까?" },
-      { action: "삭제하기", alertText: "삭제하시겠습니까?" , onSelect: () => deleteComment(selectedPost.id, comment._id)},
+      { action: "삭제하기", alertText: "삭제하시겠습니까?" , onSelect: () => deleteComment(selectedPost.id, comment._id) },
     ];
   } else {
     modalOptions = [

@@ -286,8 +286,7 @@ export function PostListItem({ post }) {
 
   return (
    <>
-      <SubContainer>
-  
+      <SubContainer style={{marginBottom:"0"}}>
           <S.UserInfo>
               <Link
                 to={`/profile/${post.author.accountname}`}
