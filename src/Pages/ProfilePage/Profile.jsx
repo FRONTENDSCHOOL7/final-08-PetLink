@@ -19,9 +19,11 @@ import {
     ProfilePet,
     GenderIcon,
     Intro,
+    Overlay,
 } from '../../Components/Profile/Profile.style';
 import MyFeed from '../../Components/Profile/MyFeed';
 import MyMarket from '../../Components/Profile/MyMarket';
+import BottomModal from '../../Components/Common/Modal/BottomModal';
 
 const ProfilePage = () => {
     const [profileData, setProfileData] = useState(null);
@@ -32,7 +34,11 @@ const ProfilePage = () => {
     const [showFollowList, setShowFollowList] = useState(null);
     const [myAccountname, setMyAccountname] = useState(null);
     const navigate = useNavigate();
+    const [isModalOpen, setIsModalOpen] = useState(false);
     
+    const reportOptions = [
+        {action: "채팅방 나가기", alertText: "채팅방 나가시겠습니까?"}
+      ]
     const handleFollowClick = (type) => {
         const targetAccountname = accountname || accountnameFromMyInfo;
         if (targetAccountname) {
@@ -254,7 +260,7 @@ const ProfilePage = () => {
         <>
             <GlobalStyle />
             <Container>
-            <HeaderLayouts title="프로필" logo />
+            <HeaderLayouts title="프로필" onModalToggle={() => setIsModalOpen(true)} />
                 <ProfileContainer>
                     <FollowInfo>
                         <FollowGroup onClick={() => handleFollowClick('follower')}>
@@ -310,6 +316,13 @@ const ProfilePage = () => {
                         </BtnGroup>
                     )}
                 </ProfileContainer>
+                {/* 모달창 */}
+                {isModalOpen &&(
+                <>
+                    <Overlay onClick={()=> setIsModalOpen(false)}/>
+                    <BottomModal setIsModalOpen={setIsModalOpen} reports={reportOptions}/>
+                </>
+                )}
                 <MyMarket accountname={accountname || accountnameFromMyInfo} />
                 <MyFeed accountname={accountname || accountnameFromMyInfo} />
             <TabMenu />
