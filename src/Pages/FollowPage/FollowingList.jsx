@@ -95,7 +95,7 @@ return info;
                 <S.UserInfo key={user._id}>
                     <S.UserProfile>
                         <Link to={`/profile/${user.accountname}`}>
-                            <img src={user.image || imgUrl} alt={`${user.username} 프로필 이미지`} />
+                            <S.UserImg src={user.image || imgUrl} alt={`${user.username} 프로필 이미지`} />
                         </Link>
                         <S.UserName>
                             <p>{parseIntro.intro}</p>

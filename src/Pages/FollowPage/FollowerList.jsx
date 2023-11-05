@@ -83,10 +83,10 @@ export default function FollowerList() {
         <S.UserInfo key={follower._id}>
           <S.UserProfile>
             <Link to={`/profile/${follower.accountname}`}>
-              <img src={follower.image || imgUrl} alt={`${follower.username}의 프로필 이미지`} />
+              <S.UserImg src={follower.image || imgUrl} alt={`${follower.username} 프로필 이미지`} />
             </Link>
             <S.UserName>
-            <p>{parseIntro(follower.intro).intro}</p>
+            {/* <p>{parseIntro(follower.intro).intro}</p> */}
               <span>{follower.accountname}</span>
             </S.UserName>
           </S.UserProfile>
