@@ -95,14 +95,18 @@ export const PostDate = styled.div`
 `;
 
 export const Line = styled.div`
- position:absolute;
+  position:absolute;
  /* display: flex; */
   width: 100%;
   max-width: 390px;
   transform: translateY(-40px);
   border-top: 1px solid #DBDBDB;
+margin-top: 20px;
+   // 768px 이상의 화면에서는 max-width를 100%로 설정
+    @media (min-width: 768px) {
+    max-width: 768px;
+  }
 `
-
 // CommentList 스타일 컴포넌트
 
 export const CommentBox = styled.div`

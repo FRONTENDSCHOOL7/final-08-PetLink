@@ -155,7 +155,7 @@ const [commentLoading, setCommentLoading ] = useState(false)
   return (
     <Container>
       <HeaderLayouts back search />
-      <SubContainer>
+      <SubContainer style={{marginBottom:"0"}}>
           <S.UserInfo>
           <Link to={`/profile/${selectedPost.author.accountname}`}>
               <S.UserProfile>
@@ -183,8 +183,8 @@ const [commentLoading, setCommentLoading ] = useState(false)
             </S.PostIcons>
             <S.PostDate>{formatDate(selectedPost.createdAt)}</S.PostDate>
           </S.Content>
-        
           </SubContainer>
+        <S.Line/>
           <CommentList
             onChangeModal={onChangeModal}
             userImage={selectedPost.author?.image}
