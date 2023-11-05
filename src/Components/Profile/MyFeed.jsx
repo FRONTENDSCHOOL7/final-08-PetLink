@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
 import { Overlay } from '../Product/ProductDetail.style';
@@ -24,6 +24,7 @@ const MyFeed = (props) => {
   const postsPerPage = 10; // Set the posts per page as needed
   const { accountname: urlAccountname } = useParams();
   const [accountname, setAccountname] = useState(props.accountname || urlAccountname || localStorage.getItem('loggedInAccountname'));
+
 
   // 토글버튼 리스트 엘범형
   const toggleAlbum = () => {
@@ -110,14 +111,12 @@ const MyFeed = (props) => {
                 <IconMore src={moreIcon} />
               </MoreBtn>
             </UserInfo>
-            <Link to={`/community/${post.id}`}>
             <ContentBox>
               <ContentTxt className='text'>{post.content}</ContentTxt>
               {post.images && post.images.map((image, index) => (<ContentImg key={index} src={image.url} alt={`포스팅 이미지 ${index}`} />
               ))}
               {post.image && <ContentImg src={post.image} alt="Post" />}
             </ContentBox>
-            </Link>
             <ContentBox>
               <IconBox>
                 <IconBtn>
