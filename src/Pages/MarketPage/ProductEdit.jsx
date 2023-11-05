@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Header, HeaderButton, DetailContainer, SaveButton, AddImg, InputTitle, InputImg, AddImgBtn, ProductInfo, AddTxtForm, Required, CategoryContainer, DropdownSelect, AddImgWrap } from './AddProduct.style'
-import { GlobalStyle, Container } from '../../Styles/reset.style'
+import { GlobalStyle, Container, SubContainer } from '../../Styles/reset.style'
 import { useNavigate, useParams } from 'react-router-dom'
 import backBtn from '../../assets/image/icon-arrow-left.png'
 import imgBtn from '../../assets/image/icon-img-button.png'
@@ -186,7 +186,7 @@ export default function ProductEdit() {
           {/* '$' 접두사 사용 이유 => "이 속성은 HTML 태그에 존재하지 않지만 스타일을 위해 임시로만 사용하겠다"는 의미 */}
         </Header>
 
-        <DetailContainer>
+        <SubContainer>
           <CategorySection category={category} setCategory={setCategory}/>
           <AddImgWrap>
             <InputTitle>이미지 등록 <Required>*</Required></InputTitle>
@@ -210,7 +210,7 @@ export default function ProductEdit() {
             productLink={productLink} setProductLink={setProductLink}
             description={description} setDescription={setDescription}
           />
-        </DetailContainer>
+        </SubContainer>
       </Container>
     </>
   )
