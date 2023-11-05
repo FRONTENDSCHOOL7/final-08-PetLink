@@ -78,8 +78,7 @@ export default MyMarket;
 // 스타일 컴포넌트
 
 const ContentContainer = styled(Container)`
-  min-height: auto; // Override the 100vh to auto
-  // Add more styles if needed
+  min-height: auto;
 `;
 
 const ProductsContainer = styled.div`
@@ -123,7 +122,7 @@ const Price = styled.div`
   font-weight: 700;
 `
 const SaleItem = styled.div`
-margin-left: 30px;
-font-size: 16px;
-font-weight: bold;
+  margin: 14px 0 0 20px;
+  font-size: 16px;
+  font-weight: bold;
 `

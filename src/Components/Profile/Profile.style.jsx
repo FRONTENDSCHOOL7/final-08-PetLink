@@ -225,4 +225,8 @@ margin: 20px;
 export const PetInfo = styled.div`
 margin: 20px;
 `
-
+export const Intro = styled.div`
+    margin: 5px;
+    font-size: 15px;
+    color: #767676;
+`

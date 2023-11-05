@@ -18,6 +18,7 @@ import {
     ProfileContainer,
     ProfilePet,
     GenderIcon,
+    Intro,
 } from '../../Components/Profile/Profile.style';
 import MyFeed from '../../Components/Profile/MyFeed';
 import MyMarket from '../../Components/Profile/MyMarket';
@@ -29,6 +30,7 @@ const ProfilePage = () => {
     const [followers, setFollowers] = useState([]);
     const [following, setFollowing] = useState([]);
     const [showFollowList, setShowFollowList] = useState(null);
+    const [myAccountname, setMyAccountname] = useState(null);
     const navigate = useNavigate();
     
     const handleFollowClick = (type) => {
@@ -40,44 +42,57 @@ const ProfilePage = () => {
         }
     };
     
+
     useEffect(() => {
         console.log('Account Name:', accountname);
         const fetchData = async () => {
-            try {
-                const token = localStorage.getItem('token');
-                let url = 'https://api.mandarin.weniv.co.kr/';
-                let profileEndPoint = accountname ? `profile/${accountname}` : 'user/myinfo';
-    
-                const response = await axios.get(url + profileEndPoint, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        'Content-type': 'application/json',
-                    },
-                });
-    
-                let profile;
-                if (response.data.user) { // 나의 프로필 데이터
-                    profile = response.data.user;
-                    setAccountname(profile.accountname);
-                } else if (response.data.profile) { // 다른 사용자의 프로필 데이터
-                    profile = response.data.profile;
-                } else {
-                    throw new Error('Unexpected response format');
-                }
-            
-                const parsedIntro = parseIntro(profile.intro);
-
-                setProfileData({
-                    ...profile,
-                    ...parsedIntro
-                });
-            } catch (error) {
-                setError(error);
+          try {
+            const token = localStorage.getItem('token');
+            let url = 'https://api.mandarin.weniv.co.kr/';
+            // 기본 엔드포인트를 'user/myinfo'로 설정하여 나의 정보를 가져옵니다.
+            let profileEndPoint = 'user/myinfo';
+      
+            const response = await axios.get(url + profileEndPoint, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-type': 'application/json',
+              },
+            });
+      
+            let profile;
+            if (response.data.user) { // 나의 프로필 데이터
+              profile = response.data.user;
+              setMyAccountname(profile.accountname); // 로그인한 사용자의 accountname 상태를 저장합니다.
+              if (!accountname) {
+                setAccountname(profile.accountname); // URL에 accountname이 없는 경우(즉, 내 프로필을 보는 경우)
+              }
             }
+      
+            if (accountname) { // URL에 accountname이 있는 경우, 다른 사용자의 프로필 데이터를 가져옵니다.
+              profileEndPoint = `profile/${accountname}`;
+              const profileResponse = await axios.get(url + profileEndPoint, {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                  'Content-type': 'application/json',
+                },
+              });
+      
+              profile = profileResponse.data.profile;
+            }
+      
+            const parsedIntro = parseIntro(profile.intro);
+      
+            setProfileData({
+              ...profile,
+              ...parsedIntro
+            });
+          } catch (error) {
+            setError(error);
+          }
         };
-    
+      
         fetchData();
-    }, [accountname]);
+      }, [accountname]);
 
     const [accountnameFromMyInfo, setAccountname] = useState(null);
     
@@ -222,6 +237,19 @@ const ProfilePage = () => {
         return gender === '남아' ? '♂' : gender === '여아' ? '♀' : null;
     }
 
+    // intro: #intro 없을때
+    function renderIntro(introText) {
+        console.log("introText:", introText); // 로그를 출력하여 introText 값을 확인합니다.
+    
+        const introMatch = introText.match(/#intro:(.*?)(?=#|$)/);
+        console.log("introMatch:", introMatch); // 로그를 출력하여 매치된 값을 확인합니다.
+    
+        // #intro 태그가 있으면 해당 부분만, 없으면 전체 introText를 반환합니다.
+        return introMatch ? introMatch[1].trim() : introText;
+    }
+    
+    const introContent = renderIntro(profileData.intro);
+
     return (
         <>
             <GlobalStyle />
@@ -247,6 +275,7 @@ const ProfilePage = () => {
                                 {profileData.birthdate && <span>{`${calculateAge(profileData.birthdate)} `}</span>}
                                 {profileData.location && <span>{`${profileData.location} `}</span>}
                             </ProfilePet>
+                            {introContent && (<Intro>{introContent}</Intro>)}
                         </ProfileImageContainer>
                         
                         <FollowGroup onClick={() => handleFollowClick('following')}>
@@ -255,8 +284,8 @@ const ProfilePage = () => {
                         </FollowGroup>
                     </FollowInfo>
                     
-                    {/* Button myinfo / userprofile depending on conditions */}
-                    {accountname ? (
+                    {/* accountname 구분하여 버튼 전환 */}
+                    {accountname && accountname !== myAccountname ? (
                         profileData.isfollow ? (
                             <BtnGroup style={{
                                 marginRight: "10px"
