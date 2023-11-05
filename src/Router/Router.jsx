@@ -22,7 +22,7 @@ import AddProduct from '../Pages/MarketPage/AddProduct';
 import ChatRoom from '../Pages/ChatPage/ChatRoom';
 import Search from '../Pages/HomePage/Search';
 import NewChatRoom from '../Pages/ChatPage/NewChatRoom';
-
+import PostEdit from '../Components/Home/PostEdit'
 export default function Router() {
   return (
     <BrowserRouter>
@@ -30,6 +30,7 @@ export default function Router() {
         <Route path="/" element={<SplashPage />} />
         <Route path="/home" element={<HomePage />} />
         <Route path="/post/:postId" element={<PostDetail />} />
+        <Route path="/post/edit/:postId" element={<PostEdit />} />
         <Route path="/search" element={<Search />} />
         <Route path="/chat" element={<ChatPage />} />
         <Route path="/chatroom/:id" element={<ChatRoom />} />
