@@ -49,7 +49,16 @@ const MyFeed = (props) => {
           },
         }
       );
-      setPosts(response.data.post.map(p => ({ ...p, images: p.images || [] })));
+      // 서버로부터 받은 데이터에서 contentText만 추출합니다.
+      const newPosts = response.data.post.map(p => {
+        const contentObj = JSON.parse(p.content); // JSON 형태의 문자열을 객체로 변환
+        return {
+          ...p,
+          content: contentObj.contentText, // contentText만 추출하여 저장
+          images: p.images || []
+        };
+      });
+      setPosts(newPosts);
     } catch (error) {
       console.error('Failed to fetch posts', error);
     } finally {
@@ -92,7 +101,7 @@ const MyFeed = (props) => {
           <React.Fragment key={post.id}>
             <UserInfo>
               <UserProfile>
-                <UserImg src={post.author.image || userImg} alt='사용자 프로필 이미지' />
+                <UserImg src={post.author.image} alt='사용자 프로필 이미지' />
                 <UserName>
                   <NameTxt>{post.author.username}</NameTxt>
                   <UserId>{post.author.accountname}</UserId>
@@ -103,18 +112,10 @@ const MyFeed = (props) => {
               </MoreBtn>
             </UserInfo>
             <ContentBox>
-              {post.image && <ContentImg src={post.image} alt="Post" />}
-              
-              {/* 파싱오류 코드 */}
-              {/* {post.content && (
-                <ContentTxt className='text'>
-                  {JSON.parse(post.content).contentText}
-                </ContentTxt>
-              )} */}
-
-              {post.images && post.images.map((image, index) => (
-                <ContentImg key={index} src={image.url} alt={`포스팅 이미지 ${index}`} />
+              <ContentTxt className='text'>{post.content}</ContentTxt>
+              {post.images && post.images.map((image, index) => (<ContentImg key={index} src={image.url} alt={`포스팅 이미지 ${index}`} />
               ))}
+              {post.image && <ContentImg src={post.image} alt="Post" />}
             </ContentBox>
             <ContentBox>
               <IconBox>
