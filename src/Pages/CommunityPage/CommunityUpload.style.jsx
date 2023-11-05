@@ -10,6 +10,10 @@ export const Header = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @media (min-width: 768px) {
+    height: 60px;
+  }
 `;
 
 export const HeaderButton = styled.button`
@@ -30,6 +34,10 @@ export const SaveButton = styled.button`
   border-radius: 32px;
   background-color: ${({ isActive }) => (isActive ? '#004E98' : '#7299BE')};
   color: white;
+
+    @media (min-width: 768px) {
+    font-size: 16px;
+  }
 `;
 
 export const DetailContainer = styled.div`
@@ -37,6 +45,16 @@ export const DetailContainer = styled.div`
   padding: 17px 34px;
   box-sizing: border-box;
 `;
+
+export const AddTxtForm = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+
+  @media (min-width: 768px) {
+    gap: 25px;
+  }
+`
 
 export const CustomInput = styled.form`
   display: flex;
@@ -48,44 +66,46 @@ export const PostInfo = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin-bottom: 40px;
-
-  textarea {
-    width: 100%;
-    height: auto;
-    border: none;
-    resize: none;  // textarea 크기 조절을 사용자가 못하게 함
-    overflow-y: auto;  // 내용이 많아질 때 스크롤 생성
-    white-space: pre-wrap;  // 줄바꿈 및 공백 유지
-    word-wrap: break-word;  // 단어 내에서 줄바꿈
-  }
 
   input {
-    border: none;
     border-bottom: 1px solid #DBDBDB;
   }
 
-  input, textarea {
-    color: #535353;
-    font-family: 'Nanum Gothic', sans-serif;
-    font-size: 14px;
-    font-weight: 400; 
+  textarea {
+    height: 90px;
+    resize: none;
+    border: 1px solid #DBDBDB;
+    line-height: 1.5;
+    margin-bottom: 30px;
+
+    @media (min-width: 768px) {
+      height: 120px;
+    }
   }
 
-  input:focus,
+  input:focus {
+    outline: none;
+    border-bottom: 1px solid #004E98;
+  }
+
   textarea:focus {
     outline: none;
+    border: 1px solid #004E98;
   }
 
   input::placeholder,
   textarea::placeholder {
     color: #DBDBDB;
-    font-family: 'Nanum Gothic', sans-serif;
-    font-size: 14px;
-    font-weight: 400; 
   }
 
-  
+  @media (min-width: 768px) {
+    gap: 15px;
+
+    input,
+    textarea {
+      font-size: 14px;
+    }
+  }
 `;
 
 export const CategoryContainer = styled.div`
@@ -95,13 +115,17 @@ export const CategoryContainer = styled.div`
   gap: 10px;
   margin-bottom: 30px;
   color:#767676;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 `;
 
 export const DropdownSelect = styled.select`
-  width: 125px; 
+  width: 100%; 
   border: 1px solid #707070;  
   border-radius: 4px;
-  margin-left: 49px;
   background-color: white;
   padding: 5px 8px;
   appearance: none;
@@ -115,35 +139,51 @@ export const DropdownSelect = styled.select`
 
   &:focus {
     outline: none;
-    border-color: #DBDBDB;
+    border-color: #004E98;
   }
 
   option {
     padding: 5px;
     font-size: 0.9rem; 
   }
+
+    @media (min-width: 768px) {
+    width: 50%;
+  }
 `;
 
 export const InputTitle = styled.div`
   color: #767676;
   font-size: 12px;
+
+    @media (min-width: 768px) {
+    font-size: 14px;
+  }
 `;
 
+// 필수 입력 표시
+export const Required = styled.span`
+  color: red;
+  font-size: 12px;
+
+  @media (min-width: 768px) {
+    font-size: 14px;
+  }
+`
+
 export const AddImg = styled.div`
-  width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 16px;
 `;
 
 export const InputImg = styled.div`
-  width: 100%;
-  height: 204px;
-  border-radius: 10px;
-  border: 0.5px solid #DBDBDB;
+  width: 100%; // 모바일 화면 기준 너비
+  max-height: 204px; // 최대 높이 설정
+  padding-top: calc(204 / 375 * 100%); // 비율 조정
   background-color: #F2F2F2;
   background-image: url(${props => props.img || "none"});
-  background-size: cover; 
+  background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
   position: relative;
@@ -151,6 +191,11 @@ export const InputImg = styled.div`
 
   input[type="file"] {
     display: none;
+  }
+
+  @media (min-width: 768px) {
+    width: 90%;
+    margin: 0 auto 30px;
   }
 `;
 
@@ -177,5 +222,15 @@ export const AddImgBtn = styled.button`
   img {
     width: 36px;
     height: 36px;
+  }
+
+  @media (min-width: 768px) {
+    width: 80px;
+    height: 80px;
+
+    img {
+    width: 50px;
+    height: 50px;
+  }
   }
 `;
