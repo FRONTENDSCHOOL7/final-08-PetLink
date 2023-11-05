@@ -175,7 +175,7 @@ const ProductsDisplay = ({products, handleLike, likes}) => (
     )
     })
     ) : (
-      <p>등록된 상품이 없습니다.</p>
+      <p>Loading...</p>
     )}
   </ItemContainer>
 )
