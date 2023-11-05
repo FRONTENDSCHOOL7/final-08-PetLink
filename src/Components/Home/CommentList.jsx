@@ -76,6 +76,12 @@ const onChangeModal = (comment, isMyComment) => {
     }
   }, [selectedPost]);
 
+useEffect(()=>{
+if(!props.commentLoading){
+    fetchComments(selectedPost.id);
+}
+},[props.commentLoading])
+
   const fetchMyProfile = async () => {
     try {
       const response = await fetch(`https://api.mandarin.weniv.co.kr/user/myinfo`, {
@@ -108,6 +114,8 @@ const onChangeModal = (comment, isMyComment) => {
         },
       });
       const data = await response.json();
+ 
+    
 console.log(data)
       if (data) {
         setComments(data.comments.reverse()); // 가져온 댓글 데이터를 설정
@@ -116,13 +124,16 @@ console.log(data)
       console.error("댓글 가져오기 에러:", error);
     }
   };
-  const addComment = (newComment) => {
-    setComments((prevComments) => [...prevComments, newComment]);
-  };
+
 
   if (!selectedPost) {
     return null;
   }
+
+    //  const addComment = (newComment) => {
+    //     setComments((prevComments) => [...prevComments, newComment]);
+    //   };
+
     return (
    
   <>
@@ -164,10 +175,12 @@ console.log(data)
     );
   }
   
-  export function WriteComment({ comment, setComment, handlePostComment ,addComment }) {
+  export function WriteComment({ comment, setComment, handlePostComment ,addComment , setCommentLoading}) {
   const [userImg, setUserImg] = useState(null);
   const { postId } = useParams();
   const defaultUserImg = "https://api.mandarin.weniv.co.kr/1698653743844.jpg";
+  const [isLoading, setIsLoading] = useState(false);
+ 
 
 
   useEffect(() => {
@@ -194,10 +207,12 @@ console.log(data)
   };
 
   const postComment = async () => {
+    setIsLoading(true); // 로딩 상태를 활성화
     try {
       if (typeof comment !== 'string') {
         comment = '';
       }
+setCommentLoading(true)
 
       const response = await fetch(`https://api.mandarin.weniv.co.kr/post/${postId}/comments`, {
         method: "POST",
@@ -216,11 +231,14 @@ console.log(data)
 console.log(responseData)
 
       if (responseData.comment  && responseData.comment.content) {
-        addComment(responseData.comment); // 댓글 목록에 추가
+       addComment(responseData.comment); // 댓글 목록에 추가
         setComment(''); // 입력된 댓글 초기화
       }
     } catch (error) {
       console.error("댓글 가져오기 에러:", error);
+    }finally {
+      setIsLoading(false); // 로딩 상태를 비활성화
+      setCommentLoading(false)
     }
   };
   // console.log(comment)

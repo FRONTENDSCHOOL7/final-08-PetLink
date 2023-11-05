@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import * as S from "./PostList.style";
 import moreIcon from "../../assets/image/icon-more-vertical.png";
 import redHeartIcon from "../../assets/image/icon-heart-red.png";
@@ -10,6 +10,7 @@ import { Container, GlobalStyle, SubContainer } from "../../Styles/reset.style";
 import HeaderLayouts from "../Common/Header/Header";
 import { Overlay } from "../Product/ProductDetail.style";
 import BottomModal from "../Common/Modal/BottomModal";
+import axios from 'axios';
 
 function formatDate(dateString) {
   const options = { year: "numeric", month: "2-digit", day: "2-digit" };
@@ -176,8 +177,30 @@ export function PostListItem({ post }) {
   const [date, setDate] = useState("");
   const [liked, setLiked] = useState(false);
   const [userAccountName, setUserAccountName] = useState(false);
+  // const location = useLocation();
+  // const { selectedPost } = location.state;
+  const { postId } = useParams();
+  const navigate = useNavigate();
 
-  
+  // 게시물 삭제 함수
+  const deletePost = async (postId) => {
+    console.log('deletePost is called with id:', postId)
+    try {
+      await axios.delete(`https://api.mandarin.weniv.co.kr/post/${postId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      alert('삭제되었습니다.');
+      navigate('/home');
+    } catch (error) {
+      // 에러 처리
+    }
+  };
+
+
+
   const fetchMyProfile = async () => {
     try {
       const response = await fetch(`https://api.mandarin.weniv.co.kr/user/myinfo`, {
@@ -200,7 +223,7 @@ export function PostListItem({ post }) {
   };
 
 
-  const navigate = useNavigate();
+
 
 
   const handlePostClick = (post) => {
@@ -248,8 +271,8 @@ export function PostListItem({ post }) {
 
     if(isMyPost){
       modalOptions = [
-        { action: "수정하기", alertText: "수정하시겠습니까?" },
-        { action: "삭제하기", alertText: "삭제하시겠습니까?" },
+        { action: "수정하기", alertText: "수정하시겠습니까?"  , onSelect: () => navigate(`/post/edit/${post._id}`)},
+        { action: "삭제하기", alertText: "삭제하시겠습니까?" , onSelect: () => deletePost(post._id )},
       ];
 
     }else {
@@ -307,7 +330,10 @@ export function PostListItem({ post }) {
             {isModalOpen && (
               <>
                 <Overlay onClick={() => setIsModalOpen(false)} />
-                <BottomModal setIsModalOpen={setIsModalOpen} reports={reportOptions}/>
+                <BottomModal 
+                setIsModalOpen={setIsModalOpen} 
+                reports={reportOptions}  
+                onDelete={() => deletePost(post._id)}/>
               </>
             )}
    </>
