@@ -2,13 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { GlobalStyle, Container, SubContainer } from "../../Styles/reset.style";
 import {
-  FormWrapper,
-  Button,
-  Modal,
-  ModalContent,
-  CloseButton,
-
-
   PetInfo,
   StyledPetInfo,
   ImageWrap,
@@ -16,18 +9,19 @@ import {
   ProfileImage,
   SelectInfo,
   SelectInfoItem,
+  Overlay,
 
 } from "../../Components/Join/JoinPage.style";
 import {
-  LoginTitleWrap,
   TitleWrap,
   SubmitButton,
   InputField,
   StyledInput,
   FieldLabel,
 } from "../../Components/Login/LoginForm.style";
-
+import PopupModal from '../../Components/Common/Modal/PopupModal'
 import * as DropdownComponents from "../../Components/Profile/Dropdown";
+import HeaderLayouts from "../../Components/Common/Header/Header";
 
 const JoinPage = () => {
   const navigate = useNavigate();
@@ -45,7 +39,9 @@ const JoinPage = () => {
   const [validationErrors, setValidationErrors] = useState({});
   const [info, setInfo] = useState("");
   const [currentPage, setCurrentPage] = useState("join");
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  // const [isModalVisible, setIsModalVisible] = useState(false);
   const [pet, setPet] = useState("");
   const [gender, setGender] = useState("");
   const [birthdate, setBirthdate] = useState("");
@@ -54,6 +50,15 @@ const JoinPage = () => {
   const convertInfoToTags = (bangyeolgori) => {
     return `#bangyeolgori `;
   };
+
+  
+  const handleStartBanGyeol = () => {
+    setIsModalOpen(true);
+  }
+
+  const handleLogin = () => {
+    navigate('/login');
+  }
 
   const validateForm = () => {
     const errors = {};
@@ -277,6 +282,7 @@ const JoinPage = () => {
     <>
       <GlobalStyle />
       <Container>
+        <HeaderLayouts back={true} />
         {/* <FormWrapper> */}
 
           {currentPage === "join" && (
@@ -420,10 +426,10 @@ const JoinPage = () => {
                     </SelectInfoItem>
                   </SelectInfo>
                 </PetInfo>
-                <SubmitButton
-                  type="button"
-                  onClick={submitJoin}
-                  disabled={!isValidProfile()}
+                <SubmitButton onClick={handleStartBanGyeol}
+                  // type="button"
+                  // onClick={submitJoin}
+                  // disabled={!isValidProfile()}
                 >
                   반결고리 시작하기
                 </SubmitButton>
@@ -431,18 +437,19 @@ const JoinPage = () => {
             </>
           )}
 
-          {showModal && (
-            <Modal>
-              <ModalContent>
-                <TitleWrap>반결고리에 오신것을 환영합니다!</TitleWrap>
-                <Button type="button" onClick={() => navigate("/login")}>
-                  로그인
-                </Button>
-                <CloseButton>&times;</CloseButton>
-              </ModalContent>
-            </Modal>
-          )}
-        {/* </FormWrapper> */}
+        {/* 모달창 */}
+        {isModalOpen &&(
+          <>
+            <Overlay onClick={()=> setIsModalOpen(false)}/>
+            <PopupModal 
+              isVisible={isModalOpen}
+              setIsVisible={setIsModalOpen}
+              alertText="반결고리에 오신 것을 환영합니다🎉"
+              confirmText="로그인하기"
+              onConfirm={handleLogin}
+            />
+          </>
+        )}
       </Container>
     </>
   );

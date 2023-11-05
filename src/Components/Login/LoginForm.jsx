@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { GlobalStyle, Container, SubContainer } from '../../Styles/reset.style'
-import { TitleWrap, SubmitButton, InputField, StyledInput, FieldLabel } from './LoginForm.style'
+import { TitleWrap, SubmitButton, InputField, StyledInput, FieldLabel, ErrorMsg } from './LoginForm.style'
 import { LoginButton } from "../../Components/Login/Login.styles";
 import { useNavigate } from "react-router-dom";
 import { saveToken } from '../../utils/tokenUtils';
@@ -12,6 +12,11 @@ function LoginForm({ handlePage }) {
   const [pwValid, setPwValid] = useState(false);
   const [notAllow, setNotAllow] = useState(true);
   const [error, setError] = useState(null);
+  const [isActive, setIsActive] = useState(false);
+
+  const setErrorMsg = (msg) => {
+    setError(msg);
+  }
 
   useEffect(() => {
     if (emailValid && pwValid) {
@@ -47,11 +52,11 @@ function LoginForm({ handlePage }) {
         saveToken(resJson.user.token); // 로그인 성공 시 토큰을 저장합니다.
         navigate("/home");
       } else {
-        alert(resJson.message || "로그인에 실패했습니다!");
+        alert(resJson.message || "이메일 또는 비밀번호가 일치하지 않습니다.");
       }
     } catch (err) {
       console.error(err);
-      alert("로그인에 실패했습니다!");
+      setErrorMsg("이메일 또는 비밀번호가 일치하지 않습니다.");
     }
   };
 
@@ -111,7 +116,9 @@ function LoginForm({ handlePage }) {
               value={password}
               onChange={handlePassword}
             />
+            {error && <ErrorMsg>{error}</ErrorMsg>}
           </InputField>
+          
           
           <SubmitButton type="submit" disabled={notAllow}>
             로그인

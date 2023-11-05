@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import * as S from './PostList.style';
 import moreIcon from '../../assets/image/icon-more-vertical.png';
 import { Link, useLocation, useParams } from 'react-router-dom';
-import { Container } from '../../Styles/reset.style';
+import { Container, SubContainer } from '../../Styles/reset.style';
 
 function formatDate(dateString) {
   const options = { year: "numeric", month: "2-digit", day: "2-digit" };
@@ -74,24 +74,29 @@ export default function CommentList(props) {
     return null;
   }
     return (
-      <S.CommentBox>
-       {comments.map((comment)=>(
-       <>
-           <S.UserInfo  key={comment}>
-           <div >
-             <Link to={`/profile/${comment.author.accountname}`}>
-               <img src={comment.author.image  || defaultUserImg} alt='사용자 프로필 이미지' />
-             </Link>
-             <p>{comment.author.username} <span>· {formatDate(comment.createdAt)}</span></p>
-           </div>
-           <button onClick={() => props.onChangeModal(comment, props.isMyComment(comment.author.accountname))}>
-             <img src={moreIcon} alt='신고하기 모달창 불러오기' />
-           </button>
-         </S.UserInfo>
-         <S.CommentTxt>{comment.content}</S.CommentTxt>
-       </>
-       ))}
-      </S.CommentBox>
+     
+        <S.CommentBox>
+         {comments.map((comment)=>(
+         <>
+             <S.UserInfo  key={comment}>
+       
+               <Link to={`/profile/${comment.author.accountname}`}>
+            <S.UserProfile>
+                   <S.CommentImg src={comment.author.image  || defaultUserImg} alt='사용자 프로필 이미지' />
+                 <S.NameTxt>{comment.author.username} </S.NameTxt>
+                 <S.Account>· {formatDate(comment.createdAt)}</S.Account>
+            </S.UserProfile>
+               </Link>
+      
+             <button onClick={() => props.onChangeModal(comment, props.isMyComment(comment.author.accountname))}>
+               <S.IconMore src={moreIcon} alt='신고하기 모달창 불러오기' />
+             </button>
+           </S.UserInfo>
+           <S.CommentTxt>{comment.content}</S.CommentTxt>
+         </>
+         ))}
+        </S.CommentBox>
+
     );
   }
   
@@ -147,7 +152,8 @@ export default function CommentList(props) {
 console.log(responseData)
 
       if (responseData.comment  && responseData.comment.content) {
-        setComment(responseData.comment.content);
+        addComment(responseData.comment); // 댓글 목록에 추가
+        setComment(''); // 입력된 댓글 초기화
       }
     } catch (error) {
       console.error("댓글 가져오기 에러:", error);
@@ -158,22 +164,21 @@ console.log(responseData)
   return (
    <Container>
       <S.InputForm>
-        <div>
+        <>
           <S.InputImg src={userImg  || defaultUserImg} alt="사용자 프로필" />
-          <input
+          <S.CommentInput
             type="text"
             placeholder="댓글 입력하기..."
             onChange={(e) => setComment(e.target.value)}
             value={comment || ''}
           />
-        </div>
+        </>
         <S.InputBtn
           type="submit"
           disabled={!comment || comment.trim().length === 0}
           onClick={()=>{
             handlePostComment()
             postComment()
-        
           }} 
         >
           게시

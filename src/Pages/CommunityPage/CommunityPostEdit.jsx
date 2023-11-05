@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { GlobalStyle, Container } from '../../Styles/reset.style';
 import { Header, HeaderButton, DetailContainer, SaveButton, AddImg, InputTitle, InputImg, AddImgBtn, PostInfo, CategoryContainer, DropdownSelect } from './CommunityUpload.style'
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useParams  } from 'react-router-dom';
 import backBtn from '../../assets/image/icon-arrow-left.png';
 import imgBtn from '../../assets/image/icon-img-button.png';
 import PopupModal from '../../Components/Common/Modal/PopupModal';
@@ -40,29 +40,67 @@ function CustomInput({ title, placeholder, type = "text", value, onChange }) {
   );
 }
 
-export default function CommunityUploadPage() {
+export default function CommunityEditUpload() {
     const navigate = useNavigate();
-    const location = useLocation();
 
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [category, setCategory] = useState('');
     const [imgUrl, setImgUrl] = useState('');
     const [showModal, setShowModal] = useState(false);
-    const [postId, setPostId] = useState(null); // 추가
-    const [editMode, setEditMode] = useState(false); // 추가
+    const { postId } = useParams(); // postId 가져오기
 
+    
     useEffect(() => {
-      if (location.state?.post) {
-          const { post } = location.state;
-          setTitle(post.title);
-          setContent(post.contentText);
-          setCategory(post.category);
-          setImgUrl(post.image);
-          setPostId(post.id); // post의 ID를 설정합니다.
-          setEditMode(true); // 수정 모드를 활성화합니다.
+      const fetchPostDetails = async () => {
+        const token = localStorage.getItem('token');
+        try {
+          const response = await axios.get(`https://api.mandarin.weniv.co.kr/post/${postId}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          const postData = JSON.parse(response.data.post.content);
+          setTitle(postData.title);
+          setContent(postData.contentText);
+          setCategory(postData.category);
+          setImgUrl(response.data.post.image);
+        } catch (error) {
+          console.error('Failed to fetch post details', error);
+        }
+      };
+
+      fetchPostDetails();
+    }, [postId]);
+
+    const handlePostUpdate = async (e) => {
+      e.preventDefault();
+  
+      const token = localStorage.getItem('token');
+      const updateData = {
+        post: {
+          content: JSON.stringify({
+              title: title,
+              category: category,
+              contentText: content
+          }),
+          image: imgUrl
+        }
+      };
+  
+      try {
+        await axios.put(`https://api.mandarin.weniv.co.kr/post/${postId}`, updateData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+        
+        navigate('/community'); 
+      } catch (err) {
+        console.error(err);
       }
-  }, [location]);
+    };
 
     const handleImageUpload = async (e) => {
       const file = e.target.files[0];
@@ -85,76 +123,32 @@ export default function CommunityUploadPage() {
       }
     };
     
-      // 게시물 수정 함수
-      const editPost = async () => {
-        const token = localStorage.getItem('token');
-        const postData = {
-          post: {
-            content: JSON.stringify({
-              title: title,
-              category: category,
-              contentText: content
-            }),
-            image: imgUrl
-          },
-        };
-
+    const handlePostSubmit = async (e) => {
+      e.preventDefault();
+  
+      const token = localStorage.getItem('token');
+      const postData = {
+        post: {
+        content: JSON.stringify({
+            title: title,
+            category: category,
+            contentText: content
+        }),
+        image: imgUrl
+    }
+      };
+  
       try {
-        const response = await axios.put(`https://api.mandarin.weniv.co.kr/post/${postId}`, postData, {
+        const res = await axios.post('https://api.mandarin.weniv.co.kr/post', postData, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
           },
         });
-
-        if (response.data) {
-          alert('수정되었습니다.');
-          navigate('/community');
-        }
-      } catch (error) {
-        // 오류 처리...
-        console.error(error);
-      }
-    };
-
-    const handlePostSubmit = async (e) => {
-      e.preventDefault();
-    
-      // 게시물 데이터를 JSON 문자열로 변환하고 이미지 URL을 포함하는 postData 구조를 설정합니다.
-      const postData = {
-        post: {
-          content: JSON.stringify({
-            title: title,
-            category: category,
-            contentText: content
-          }),
-          image: imgUrl
-        }
-      };
-    
-      const token = localStorage.getItem('token');
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      };
-    
-      try {
-        let response;
-    
-        // 수정 모드일 경우와 새 게시물을 작성하는 경우를 나누어 처리합니다.
-        if (editMode) {
-          // 수정 모드일 경우 PUT 요청을 실행합니다.
-          response = await axios.put(`https://api.mandarin.weniv.co.kr/post/${postId}`, postData, config);
-        } else {
-          // 새 게시물 작성 모드일 경우 POST 요청을 실행합니다.
-          response = await axios.post('https://api.mandarin.weniv.co.kr/post', postData, config);
-        }
-    
-        console.log(response.data);
-        navigate('/community');
         
+        console.log(res.data);
+        navigate('/community'); 
+
       } catch (err) {
         console.error(err);
       }
@@ -169,7 +163,7 @@ export default function CommunityUploadPage() {
         <Container>
             <Header>
                 <HeaderButton onClick={() => setShowModal(true)}><img src={backBtn} alt="" /></HeaderButton>
-                <SaveButton isActive={isAllFieldsFilled} onClick={handlePostSubmit}>업로드</SaveButton>
+                <SaveButton isActive={isAllFieldsFilled} onClick={handlePostUpdate}>업로드</SaveButton>
             </Header>
             <PopupModal 
                 isVisible={showModal}
