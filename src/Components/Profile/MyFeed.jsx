@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
 import { Overlay } from '../Product/ProductDetail.style';
@@ -16,6 +16,7 @@ import { Container } from '../../Styles/reset.style';
 
 const MyFeed = (props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [reportOptions, setReportOptions] = useState([]);
   const [isAlbumActive, setIsAlbumActive] = useState(true);
   const [isListActive, setIsListActive] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -24,6 +25,9 @@ const MyFeed = (props) => {
   const postsPerPage = 10; // Set the posts per page as needed
   const { accountname: urlAccountname } = useParams();
   const [accountname, setAccountname] = useState(props.accountname || urlAccountname || localStorage.getItem('loggedInAccountname'));
+  const navigate = useNavigate();
+  const { postId } = useParams();
+  const [modalPost, setModalPost] = useState(null);
 
 
   // 토글버튼 리스트 엘범형
@@ -59,6 +63,7 @@ const MyFeed = (props) => {
         };
       });
       setPosts(newPosts);
+      console.log("newPosts",newPosts)
     } catch (error) {
       console.error('Failed to fetch posts', error);
     } finally {
@@ -84,6 +89,47 @@ const MyFeed = (props) => {
     return <div>Loading...</div>;
   }
 
+
+
+  // 게시물 삭제 함수
+  const deletePost = async (postId) => {
+    console.log('deletePost is called with id:', postId)
+      try {
+        await axios.delete(`https://api.mandarin.weniv.co.kr/post/${postId}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        alert('삭제되었습니다.');
+        navigate('/profile');
+      } catch (error) {
+        // 에러 처리
+        console.error('Failed to delete post', error);
+      }
+  
+  };
+
+  const onChangeModal = (post) => {
+
+    let modalOptions = []
+
+    if(accountname){
+      modalOptions = [
+        { action: "수정하기", alertText: "수정하시겠습니까?"  , onSelect: () => navigate(`/profile/edit/${post._id}`)},
+        { action: "삭제하기", alertText: "삭제하시겠습니까?", onSelect: () => deletePost(post._id )},
+      ];
+
+    }else {
+      modalOptions = [
+        { action: "신고하기", alertText: "신고하시겠습니까?" },
+      ];
+    }
+    setIsModalOpen(true);
+    setReportOptions(modalOptions); // modalOptions 배열을 state로 설정
+  };
+
+
   return (
     <Container>
   <Layer>
@@ -107,8 +153,8 @@ const MyFeed = (props) => {
                   <UserId>{post.author.accountname}</UserId>
                 </UserName>
               </UserProfile>
-              <MoreBtn onClick={() => setIsModalOpen(true)}>
-                <IconMore src={moreIcon} />
+              <MoreBtn onClick={() => onChangeModal(post)}>
+                <IconMore src={moreIcon} alt="수정/삭제 모달"/>
               </MoreBtn>
             </UserInfo>
             <ContentBox>
@@ -152,7 +198,10 @@ const MyFeed = (props) => {
       {isModalOpen && (
         <>
           <Overlay onClick={() => setIsModalOpen(false)} />
-          <BottomModal setIsModalOpen={setIsModalOpen} reportTxt={["수정", "삭제"]} />
+                <BottomModal 
+                setIsModalOpen={setIsModalOpen} 
+                reports={reportOptions}  
+                onDelete={() => deletePost(modalPost._id)}/>
         </>
       )}
     </Container>

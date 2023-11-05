@@ -23,6 +23,7 @@ import ChatRoom from '../Pages/ChatPage/ChatRoom';
 import Search from '../Pages/HomePage/Search';
 import NewChatRoom from '../Pages/ChatPage/NewChatRoom';
 import PostEdit from '../Components/Home/PostEdit'
+import MyFeedEdit from '../Components/Profile/MyFeedEdit'
 export default function Router() {
   return (
     <BrowserRouter>
@@ -50,6 +51,7 @@ export default function Router() {
         <Route path="/profile/:accountname" element={<ProfilePage />} />
         <Route path="/profile/:accountname/following" element={<FollowingPage />} />
         <Route path="/profile/edit" element={<ProfileEdit />} />
+        <Route path="/profile/edit/:postId" element={<MyFeedEdit />} />
         <Route path="/profile/:accountname/follower" element={<FollowerPage />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>
