@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios'; // axios import 추가
-import { Container } from '../../Styles/reset.style';
+import { Container, SubContainer } from '../../Styles/reset.style';
 import HeaderLayouts from '../../Components/Common/Header/Header';
 import * as S from '../../Components/Home/PostList.style';
 import { Link, useParams } from 'react-router-dom';
@@ -91,8 +91,9 @@ return info;
     return (
         <Container>
             <HeaderLayouts backTxt txt='Followings' />
+            <SubContainer>
             {followingList.map((user) => (
-                <S.UserInfo key={user._id}>
+                <S.UserInfo key={user._id} style={{marginBottom:'5px'}}>
                     <S.UserProfile>
                         <Link to={`/profile/${user.accountname}`}>
                             <S.UserImg src={user.image || imgUrl} alt={`${user.username} 프로필 이미지`} />
@@ -107,6 +108,7 @@ return info;
                     </FollowBtn>
                 </S.UserInfo>
             ))}
+            </SubContainer>
         </Container>
     );
 };
