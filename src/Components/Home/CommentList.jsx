@@ -3,6 +3,9 @@ import * as S from './PostList.style';
 import moreIcon from '../../assets/image/icon-more-vertical.png';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { Container, SubContainer } from '../../Styles/reset.style';
+import axios from 'axios';
+import { Overlay } from '../Product/ProductDetail.style';
+import BottomModal from '../Common/Modal/BottomModal';
 
 function formatDate(dateString) {
   const options = { year: "numeric", month: "2-digit", day: "2-digit" };
@@ -18,7 +21,54 @@ export default function CommentList(props) {
   const selectedPost = location.state?.selectedPost;
   const [userAccountName, setUserAccountName] = useState(false);
   const [isMyPost, setIsMyPost] = useState(false); // 추가: 현재 사용자의 게시물 여부
-  
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [reportOptions, setReportOptions] = useState([]);
+// 댓글 삭제 함수
+const deleteComment = async (postId, commentId) => {
+  try {
+    console.log('Delete comment for post:', postId, 'comment:', commentId);
+
+    const deleteResponse = await axios.delete(`https://api.mandarin.weniv.co.kr/post/${postId}/comments/${commentId}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+      alert('댓글이 삭제되었습니다.');
+   
+  } catch (error) {
+    console.error('댓글 삭제 중 에러:', error);
+  }
+};
+
+
+const isMyComment = (commentAuthorAccountName) => {
+  return userAccountName === commentAuthorAccountName;
+};
+
+const onChangeModal = (comment, isMyComment) => {
+  console.log("userAccountName:", userAccountName)
+  console.log("comment", comment)
+  let modalOptions = [];
+
+  if (isMyComment) {
+    modalOptions = [
+      { action: "수정하기", alertText: "수정하시겠습니까?" },
+      { action: "삭제하기", alertText: "삭제하시겠습니까?" , onSelect: () => deleteComment(selectedPost.id, comment._id)},
+    ];
+  } else {
+    modalOptions = [
+      { action: "신고하기", alertText: "신고하시겠습니까?" },
+    ];
+  }
+
+  setIsModalOpen(true);
+  setReportOptions(modalOptions);
+};
+
+
+
   useEffect(() => {
     fetchMyProfile();
     if (selectedPost) {
@@ -58,7 +108,7 @@ export default function CommentList(props) {
         },
       });
       const data = await response.json();
-
+console.log(data)
       if (data) {
         setComments(data.comments.reverse()); // 가져온 댓글 데이터를 설정
       }
@@ -74,28 +124,42 @@ export default function CommentList(props) {
     return null;
   }
     return (
-     
-        <S.CommentBox>
-         {comments.map((comment)=>(
-         <>
-             <S.UserInfo  key={comment}>
-       
-               <Link to={`/profile/${comment.author.accountname}`}>
-            <S.UserProfile>
-                   <S.CommentImg src={comment.author.image  || defaultUserImg} alt='사용자 프로필 이미지' />
-                 <S.NameTxt>{comment.author.username} </S.NameTxt>
-                 <S.Account>· {formatDate(comment.createdAt)}</S.Account>
-            </S.UserProfile>
-               </Link>
-      
-             <button onClick={() => props.onChangeModal(comment, props.isMyComment(comment.author.accountname))}>
-               <S.IconMore src={moreIcon} alt='신고하기 모달창 불러오기' />
-             </button>
-           </S.UserInfo>
-           <S.CommentTxt>{comment.content}</S.CommentTxt>
-         </>
-         ))}
-        </S.CommentBox>
+   
+  <>
+         <SubContainer>
+            <S.CommentBox> 
+                   {comments.map((comment)=>(
+                   <>
+                       <S.UserInfo  key={comment}>
+                 
+                         <Link to={`/profile/${comment.author.accountname}`}>
+                      <S.UserProfile>
+                             <S.CommentImg src={comment.author.image  || defaultUserImg} alt='사용자 프로필 이미지' />
+                           <S.NameTxt>{comment.author.username} </S.NameTxt>
+                           <S.Account>· {formatDate(comment.createdAt)}</S.Account>
+                      </S.UserProfile>
+                         </Link>
+                
+                       <button onClick={() => onChangeModal(comment.author?.accountname, isMyComment(comment.author.accountname))}>
+                         <S.IconMore src={moreIcon} alt='신고하기 모달창 불러오기' />
+                       </button>
+                     </S.UserInfo>
+                     <S.CommentTxt>{comment.content}</S.CommentTxt>
+                   </>
+              ))}
+             </S.CommentBox>
+         </SubContainer>
+             {isModalOpen && (
+                    <>
+                      <Overlay onClick={() => setIsModalOpen(false)} />
+                      <BottomModal 
+                      setIsModalOpen={setIsModalOpen} 
+                      reports={reportOptions}
+                      onDelete={() => deleteComment(props.comment.id)}
+                      />
+                    </>
+                  )}
+  </>
 
     );
   }
@@ -162,7 +226,7 @@ console.log(responseData)
   // console.log(comment)
 
   return (
-   <Container>
+   <>
       <S.InputForm>
         <>
           <S.InputImg src={userImg  || defaultUserImg} alt="사용자 프로필" />
@@ -184,6 +248,6 @@ console.log(responseData)
           게시
         </S.InputBtn>
       </S.InputForm>
-   </Container>
+   </>
   );
 }

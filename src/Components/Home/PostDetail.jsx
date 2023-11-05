@@ -50,7 +50,33 @@ export default function PostDetail(props) {
       // 에러 처리
     }
   };
-
+// 댓글 삭제 함수
+  // const deleteComment = async (postId, commentId) => {
+  //   console.log('Delete comment for post:', postId, 'comment:', commentId);
+  //   try {
+  
+  //     const deleteResponse = await axios.delete(`https://api.mandarin.weniv.co.kr/post/${postId}/comments/${commentId}`, {
+  //       headers: {
+  //         Authorization: `Bearer ${localStorage.getItem('token')}`,
+  //         'Content-Type': 'application/json'
+  //       }
+  //     });
+  
+  //     if (deleteResponse.status === 200) {
+  //       // 삭제 성공
+  //       alert('댓글이 삭제되었습니다.');
+  //       // 댓글 목록 다시 불러오기 등의 로직 추가
+  //     } else {
+  //       // 삭제 실패
+  //       console.error('댓글 삭제 실패. 응답 상태 코드:', deleteResponse.status);
+  //       // 여기서 에러 처리 로직 추가
+  //     }
+  //   } catch (error) {
+  //     console.error('댓글 삭제 중 에러:', error);
+  //     // 여기서 에러 처리 로직 추가
+  //   }
+  // };
+  
 
   useEffect(()=>{
     fetchMyProfile()
@@ -87,7 +113,7 @@ export default function PostDetail(props) {
     if (isMyComment) {
       modalOptions = [
         { action: "수정하기", alertText: "수정하시겠습니까?" , onSelect: () => navigate(`/community/edit/${postId}`)},
-        { action: "삭제하기", alertText: "삭제하시겠습니까?" , onSelect: () => deletePost(selectedPost._id)},
+        { action: "삭제하기", alertText: "삭제하시겠습니까?" , onSelect: () => deletePost(selectedPost._id ) },
       ];
     } else {
       modalOptions = [
@@ -98,9 +124,6 @@ export default function PostDetail(props) {
     setIsModalOpen(true);
     setReportOptions(modalOptions);
   };
-
-
-
 
   // 추가: 댓글 입력 시 화면에 보이도록 처리
   const handlePostComment = () => {
@@ -126,47 +149,37 @@ export default function PostDetail(props) {
   return (
     <Container>
       <HeaderLayouts back search />
-    <SubContainer>
-        <S.UserInfo>
-        <Link to={`/profile/${selectedPost.author.accountname}`}>
-            <S.UserProfile>
-              <S.UserImg src={selectedPost.author?.image || defaultUserImg} alt='사용자 프로필 이미지' />
-              <div>
-                <S.NameTxt>{selectedPost.author?.username}</S.NameTxt>
-                <S.Account>{selectedPost.author?.accountname}</S.Account>
-              </div>
-            </S.UserProfile>
-        </Link>
-          <button onClick={() => onChangeModal(selectedPost.author?.accountname, isMyComment(selectedPost.author?.accountname))}><S.IconMore src={moreIcon} /></button>
-        </S.UserInfo>
-        <S.Content>
-          <S.ContentTxt className='text'>{JSON.parse(selectedPost.content).contentText}</S.ContentTxt>
-          {selectedPost.image && <S.ContentImg src={selectedPost.image} alt="포스팅 이미지" />}
-          <S.PostIcons>
-            <S.IconBtn onClick={handleLikeClick}>
-              <S.IconImg src={liked ? redHeartIcon : heartIcon} alt='좋아요 버튼' />
-              <S.Count>{likeNum}</S.Count>
-            </S.IconBtn>
-            <S.IconBtn onClick={() => setIsModalOpen(true)}>
-              <S.IconImg src={commentIcon} alt='댓글 개수' />
-              <S.Count>0</S.Count>
-            </S.IconBtn>
-          </S.PostIcons>
-          <S.PostDate>{formatDate(selectedPost.date)}</S.PostDate>
-        </S.Content>
-        {isModalOpen && (
-          <>
-            <Overlay onClick={() => setIsModalOpen(false)} />
-            <BottomModal 
-            setIsModalOpen={setIsModalOpen} 
-            reports={reportOptions}
-            onDelete={() => deletePost(selectedPost._id)}
-            />
-          </>
-        )}
+      <SubContainer>
+          <S.UserInfo>
+          <Link to={`/profile/${selectedPost.author.accountname}`}>
+              <S.UserProfile>
+                <S.UserImg src={selectedPost.author?.image || defaultUserImg} alt='사용자 프로필 이미지' />
+                <div>
+                  <S.NameTxt>{selectedPost.author?.username}</S.NameTxt>
+                  <S.Account>{selectedPost.author?.accountname}</S.Account>
+                </div>
+              </S.UserProfile>
+          </Link>
+            <button onClick={() => onChangeModal(selectedPost.author?.accountname, isMyComment(selectedPost.author?.accountname))}><S.IconMore src={moreIcon} /></button>
+          </S.UserInfo>
+          <S.Content>
+            <S.ContentTxt className='text'>{JSON.parse(selectedPost.content).contentText}</S.ContentTxt>
+            {selectedPost.image && <S.ContentImg src={selectedPost.image} alt="포스팅 이미지" />}
+            <S.PostIcons>
+              <S.IconBtn onClick={handleLikeClick}>
+                <S.IconImg src={liked ? redHeartIcon : heartIcon} alt='좋아요 버튼' />
+                <S.Count>{likeNum}</S.Count>
+              </S.IconBtn>
+              <S.IconBtn onClick={() => setIsModalOpen(true)}>
+                <S.IconImg src={commentIcon} alt='댓글 개수' />
+                <S.Count>0</S.Count>
+              </S.IconBtn>
+            </S.PostIcons>
+            <S.PostDate>{formatDate(selectedPost.createdAt)}</S.PostDate>
+          </S.Content>
+        
+   
           </SubContainer>
-        <S.Line/>
-       <SubContainer>
           <CommentList
             onChangeModal={onChangeModal}
             userImage={selectedPost.author?.image}
@@ -175,13 +188,23 @@ export default function PostDetail(props) {
             comment={commentToShow} // 변경: 입력된 댓글 내용을 CommentList로 전달
             isMyComment={isMyComment}
             />
-       </SubContainer>
+    
  
         <WriteComment
           comment={comment}
           setComment={setComment}
           handlePostComment={handlePostComment} // 변경: handlePostComment 함수 추가
         />
+{isModalOpen && (
+            <>
+              <Overlay onClick={() => setIsModalOpen(false)} />
+              <BottomModal 
+              setIsModalOpen={setIsModalOpen} 
+              reports={reportOptions}
+              onDelete={() => deletePost(selectedPost._id)}
+              />
+            </>
+          )}
    </Container>
 
   );
