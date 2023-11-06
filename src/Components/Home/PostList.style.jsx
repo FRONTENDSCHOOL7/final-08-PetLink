@@ -37,7 +37,7 @@ export const NameTxt =styled.p`
         white-space: nowrap;
 `
 export const Account =styled.span`
- font-size:12px ;
+  font-size:12px ;
         font-weight: 400;
 `
 

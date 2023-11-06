@@ -89,7 +89,7 @@ export default function PostList(props) {
     <GlobalStyle/>
       <Container>
         <HeaderLayouts title="반결고리" logo={true} search />
-      <>
+        <SubContainer>
           {posts.map((post, index) => (
             <div key={index}>
               <PostListItem
@@ -98,7 +98,7 @@ export default function PostList(props) {
                 onChangeModal={props.onChangeModal} />
             </div>
           ))}
-      </>
+        </SubContainer>
       <TabMenu />
       </Container>
     </>
@@ -227,7 +227,6 @@ export function PostListItem({ post }) {
 
   return (
     <>
-      <SubContainer style={{marginBottom:"0"}}>
           <S.UserInfo>
               <Link
                 to={`/profile/${post.author.accountname}`}
@@ -265,8 +264,6 @@ export function PostListItem({ post }) {
             </S.PostIcons>
             <S.PostDate>{formatDate(date)}</S.PostDate>
           </S.Content>
-    
-          </SubContainer>
             {isModalOpen && (
               <>
                 <Overlay onClick={() => setIsModalOpen(false)} />
