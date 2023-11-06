@@ -35,13 +35,32 @@ const ProfilePage = () => {
     const [myAccountname, setMyAccountname] = useState(null);
     const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [reportOptions, setReportOptions] = useState([]);
     const handleConfirmAction = () => {
         navigate('/login'); // 로그인 페이지로 이동
     };
     
-    const reportOptions = [
-        {action: "로그아웃", alertText: "로그아웃 하시겠습니까?", onSelect: () => navigate('/login')}
-    ]
+
+
+    const onChangeModal = () => {
+        let modalOptions = [];
+        if (!accountname) {
+            modalOptions = [
+                {action: "로그아웃", alertText: "로그아웃 하시겠습니까?", onSelect: () => navigate('/login')},
+                { action: "설정 및 개인정보", alertText: "설정으로 이동하시겠습니까?" , onSelect: () => navigate('/profile')},
+            ];
+          } else {
+            modalOptions = [
+              { action: "신고하기", alertText: "신고하시겠습니까?" },
+            ];
+          }
+      
+          setIsModalOpen(true);
+          setReportOptions(modalOptions);
+        };
+    
+
+
     const handleFollowClick = (type) => {
         const targetAccountname = accountname || accountnameFromMyInfo;
         if (targetAccountname) {
@@ -275,7 +294,7 @@ const ProfilePage = () => {
         <>
             <GlobalStyle />
             <Container>
-            <HeaderLayouts backTxt={true} onModalToggle={() => setIsModalOpen(true)} />
+            <HeaderLayouts backTxt={true} onModalToggle={() => onChangeModal()} />
                 <ProfileContainer>
                     <FollowInfo>
                         <FollowGroup onClick={() => handleFollowClick('follower')}>
@@ -352,4 +371,4 @@ const ProfilePage = () => {
     );
 };
 
-export default ProfilePage;
+export default ProfilePage
