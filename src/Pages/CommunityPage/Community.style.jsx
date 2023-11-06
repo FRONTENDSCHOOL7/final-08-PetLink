@@ -84,13 +84,24 @@ export const IconMapMark = styled.img`
   height: 20px;
 `;
 
-export const IconShareInfoMap = styled.img`
-  /* width: 349px;
-  height: 258px; */
+// export const IconShareInfoMap = styled.img`
+//   /* width: 349px;
+//   height: 258px; */
+//   width: 100%;
+//   height: 258px;
+//   object-fit: fill; // contain이랑 고민 필요
+//   margin-bottom: 30px;
+// `;
+
+export const IconShareInfoMap = styled.div`
   width: 100%;
-  height: 258px;
-  object-fit: fill; // contain이랑 고민 필요
-  margin-bottom: 30px;
+  margin: 0 auto 30px;
+  text-align: center;
+
+  img {
+    width: 80%;
+    object-fit: fill; // contain이랑 고민 필요
+  }
 `;
 
 
