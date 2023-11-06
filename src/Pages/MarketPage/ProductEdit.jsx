@@ -118,7 +118,6 @@ export default function ProductEdit() {
   // 상품 저장 버튼 클릭 시 실행되는 함수
   const handleUpdateProduct = async (e) => {
     e.preventDefault();
-      const token = localStorage.getItem('token');
 
     if(!isValidProductName(productName)) {
       alert("상품명은 2~15자 이내로 입력해주세요.");
@@ -133,15 +132,21 @@ export default function ProductEdit() {
       return;
     }
 
+    const token = localStorage.getItem('token');
+
+ // itemName을 GET 요청의 응답과 같은 형식으로 조합합니다.
+  const itemNameFormatted = `\n      productName: ${productName}\n      category: ${category}\n      description: ${description}`;
+    
+  // PUT 요청에 맞게 데이터 형식을 변경합니다.
     const updatedProductData = {
-      itemName: productName,
+      product: {
+      itemName: itemNameFormatted, // 위에서 조합한 문자열을 사용합니다.
       price: Number(price),
       link: productLink,
-      itemImage: imageUrl,
-      category: category,
-      description: description,
-    };
-
+      itemImage: imageUrl
+      // 카테고리와 설명은 별도의 필드가 아닌 itemName 안에 포함되어야 합니다.
+    }
+  };
 //     {
 //       "product": {
 //               "itemName": String,
