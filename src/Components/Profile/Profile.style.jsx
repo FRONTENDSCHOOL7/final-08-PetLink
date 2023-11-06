@@ -153,7 +153,6 @@ export const ImageWrap = styled.div`
     }
     `;
 
-
 export const Title = styled.label`
     display: flex;
     justify-content: center;
@@ -220,6 +219,7 @@ export const SubBtn = styled.button`
     margin-top: 21px;
     margin-left: auto;
     margin-right: auto;
+    margin-bottom: 20px;
     display: block;
 
     &:hover {
@@ -239,13 +239,13 @@ export const Intro = styled.div`
     font-size: 15px;
     color: #767676;
 `
-// 모달 클릭 시 배경화면 흐리게
+
 export const Overlay = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.3);
-  z-index: 10;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 10;
 `

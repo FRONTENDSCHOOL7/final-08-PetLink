@@ -3,7 +3,7 @@ import axios from "axios";
 import * as DropdownComponents from "./Dropdown";
 import TabMenu from "../Common/TabMenu/TabMenu";
 import HeaderLayouts from "../../Components/Common/Header/Header";
-import { GlobalStyle, Container } from "../../Styles/reset.style";
+import { GlobalStyle, Container, SubContainer } from "../../Styles/reset.style";
 import {
   Title,
   ProfileImage,
@@ -267,6 +267,7 @@ function ProfileEdit() {
       <GlobalStyle />
       <Container>
         <HeaderLayouts logo={true} backTxt={true} />
+        <SubContainer>
         <Title>프로필 수정</Title>
         <form onSubmit={handleSubmit}>
           <ImageWrap>
@@ -349,9 +350,10 @@ function ProfileEdit() {
                 />
               </InputGroup>
             </PetInfo>
-            <SubBtn type="submit">프로필 수정</SubBtn>
           </EditWrap>
+            <SubBtn type="submit">프로필 수정</SubBtn>
         </form>
+        </SubContainer>
         <TabMenu />
       </Container>
     </>
