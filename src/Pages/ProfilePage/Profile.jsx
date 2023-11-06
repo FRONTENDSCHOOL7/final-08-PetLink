@@ -142,19 +142,37 @@ const ProfilePage = () => {
         );
     }
     
+    // function parseIntro(intro) {
+    //     const tags = ['intro', 'pet', 'gender', 'birthdate', 'location'];
+    //     const info = {};
+    
+    //     tags.forEach(tag => {
+    //         const match = intro.match(new RegExp(`#${tag}:(.*?)(?=#|$)`));
+    //         if (match && match[1]) {
+    //             info[tag] = match[1].trim();
+    //         }
+    //     });
+    
+    //     return info;
+    // }
+
     function parseIntro(intro) {
         const tags = ['intro', 'pet', 'gender', 'birthdate', 'location'];
         const info = {};
     
         tags.forEach(tag => {
             const match = intro.match(new RegExp(`#${tag}:(.*?)(?=#|$)`));
-            if (match && match[1]) {
-                info[tag] = match[1].trim();
+            if (match) {
+                const value = match[1].trim();
+                // Check if value is not a boolean 'true' or 'false'
+                if (value !== 'true' && value !== 'false') {
+                    info[tag] = value;
+                }
             }
         });
     
         return info;
-    }
+    }    
     
     function capitalizeFirstLetter(string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
