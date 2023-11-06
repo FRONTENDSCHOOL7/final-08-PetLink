@@ -53,33 +53,7 @@ const [commentLoading, setCommentLoading ] = useState(false)
       // 에러 처리
     }
   };
-// 댓글 삭제 함수
-  // const deleteComment = async (postId, commentId) => {
-  //   console.log('Delete comment for post:', postId, 'comment:', commentId);
-  //   try {
-  
-  //     const deleteResponse = await axios.delete(`https://api.mandarin.weniv.co.kr/post/${postId}/comments/${commentId}`, {
-  //       headers: {
-  //         Authorization: `Bearer ${localStorage.getItem('token')}`,
-  //         'Content-Type': 'application/json'
-  //       }
-  //     });
-  
-  //     if (deleteResponse.status === 200) {
-  //       // 삭제 성공
-  //       alert('댓글이 삭제되었습니다.');
-  //       // 댓글 목록 다시 불러오기 등의 로직 추가
-  //     } else {
-  //       // 삭제 실패
-  //       console.error('댓글 삭제 실패. 응답 상태 코드:', deleteResponse.status);
-  //       // 여기서 에러 처리 로직 추가
-  //     }
-  //   } catch (error) {
-  //     console.error('댓글 삭제 중 에러:', error);
-  //     // 여기서 에러 처리 로직 추가
-  //   }
-  // };
-  
+
 
   useEffect(()=>{
     fetchMyProfile()
