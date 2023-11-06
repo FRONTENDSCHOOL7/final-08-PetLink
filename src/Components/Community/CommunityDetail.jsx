@@ -31,6 +31,7 @@ export default function CommunityDetail() {
   const { selectedPost } = location.state;
   const [userAccountName, setUserAccountName] = useState(false);
   const [isMyPost, setIsMyPost] = useState(false); // 추가: 현재 사용자의 게시물 여부
+  const [commentLoading, setCommentLoading ] = useState(false)
   const { postId } = useParams();
   const navigate = useNavigate();
 
@@ -148,7 +149,7 @@ export default function CommunityDetail() {
   return (
     <Container>
       <HeaderLayouts back search />
-      <SubContainer>
+      <SubContainer style={{marginBottom:"0"}}>
       <S.UserInfo>
       <Link to={`/profile/${selectedPost.author.accountname}`}>
           <S.UserProfile>
@@ -172,26 +173,15 @@ export default function CommunityDetail() {
               <S.IconImg src={liked ? redHeartIcon : heartIcon} alt='좋아요 버튼' />
               <S.Count>{likeNum}</S.Count>
             </S.IconBtn>
-            <S.IconBtn onClick={() => setIsModalOpen(true)}>
+            <S.IconBtn>
               <S.IconImg src={commentIcon} alt='댓글 개수' />
               <S.Count>0</S.Count>
             </S.IconBtn>
           </S.PostIcons>
           <S.PostDate>{formatDate(selectedPost.createdAt)}</S.PostDate>
-      </S.Content>
-      {isModalOpen && (
-          <>
-            <Overlay onClick={() => setIsModalOpen(false)} />
-            <BottomModal
-              setIsModalOpen={setIsModalOpen}
-              reports={reportOptions}
-              onDelete={() => deletePost(selectedPost._id)}
-            />
-          </>
-        )}
-        </SubContainer>
-        <Line/>
-      <SubContainer>
+        </S.Content>
+      </SubContainer>
+    <Line/>
       <CommentList
         onChangeModal={onChangeModal}
         userImage={selectedPost.author?.image}
@@ -199,13 +189,24 @@ export default function CommunityDetail() {
         date={selectedPost.date}
         comment={commentToShow}
         isMyComment={isMyComment}
+        commentLoading={commentLoading}
       />
-      </SubContainer>
       <WriteComment
         comment={comment}
         setComment={setComment}
         handlePostComment={handlePostComment}
+        setCommentLoading={setCommentLoading}
       />
+      {isModalOpen && (
+        <>
+          <Overlay onClick={() => setIsModalOpen(false)} />
+          <BottomModal
+            setIsModalOpen={setIsModalOpen}
+            reports={reportOptions}
+            onDelete={() => deletePost(selectedPost._id)}
+          />
+        </>
+      )}
     </Container>
   );
 }
@@ -230,6 +231,7 @@ export const Line = styled.div`
   max-width: 390px;
   transform: translateY(-40px);
   border-top: 1px solid #DBDBDB;
+  margin-top: 20px;
 
    // 768px 이상의 화면에서는 max-width를 100%로 설정
     @media (min-width: 768px) {
