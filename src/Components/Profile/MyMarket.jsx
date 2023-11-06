@@ -75,7 +75,7 @@ const MyMarket = ({ accountname }) => {
             products.map((product) => (
               <ProductCard
                 key={product.id}
-                onClick={() => goToProductDetail(product.id)}
+                onClick={() => goToProductDetail(product)}
               >
                 <ProductImage src={product.itemImage} alt={product.itemName} />
                 <MyItem>{extractProductName(product.itemName)}</MyItem>
