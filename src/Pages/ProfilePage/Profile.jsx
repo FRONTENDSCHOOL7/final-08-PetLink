@@ -280,7 +280,8 @@ const ProfilePage = () => {
                                     <GenderIcon gender={profileData.gender}>
                                         {genderUnicode(profileData.gender)}
                                     </GenderIcon>)}
-                                {profileData.pet && <span>{`${profileData.pet} `}</span>}
+                                {/* {profileData.pet && <span>{`${profileData.pet} `}</span>} */}
+                                {typeof profileData.pet !== 'boolean' && <span>{profileData.pet}</span>}
                                 {profileData.birthdate && <span>{`${calculateAge(profileData.birthdate)} `}</span>}
                                 {profileData.location && <span>{`${profileData.location} `}</span>}
                             </ProfilePet>
