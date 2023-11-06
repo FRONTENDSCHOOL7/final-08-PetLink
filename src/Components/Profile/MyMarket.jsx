@@ -69,8 +69,6 @@ const MyMarket = ({ accountname }) => {
     <>
       <GlobalStyle />
       <ContentContainer>
-        {loading && <div>Loading...</div>}
-        {error && <div>Error: {error.message}</div>}
         <SaleItem>판매 중인 상품</SaleItem>
         <ProductsContainer>
           {products.length > 0 ? (
