@@ -1,12 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Container, GlobalStyle } from '../../Styles/reset.style'
-import { ChatContent, ChatInput, ChatInputBar, ChatMessage, ChatRoomContents, ChatTime, Overlay, SendBtn, UserImg, AddImgBtn } from './ChatRoom.style'
+import { ChatContent, ChatInput, ChatInputBar, ChatMessage, ChatRoomContents, ChatTime, Overlay, SendBtn, UserImg, AddImgBtn, PreviewOverlay } from './ChatRoom.style'
+import BtnClose from '../../assets/image/icon-close.png'
 import BottomModal from '../../Components/Common/Modal/BottomModal';
 import profile1 from '../../assets/image/img-user-siroo.jpg'
 import profile2 from '../../assets/image/img-user-windy.png'
 import profile3 from '../../assets/image/img-user-whiteDog.jpg'
 import addImgBtn from '../../assets/image/icon-img-button.png'
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import HeaderLayouts from '../../Components/Common/Header/Header';
 
 
@@ -23,7 +24,9 @@ export default function ChatRoom() {
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState("");
   const [chatData, setChatData] = useState({});
+  const [imagePreview, setImagePreview] = useState(null); // 이미지 미리보기
   const chatRoomRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // id에 기반한 데이터 로딩
@@ -41,17 +44,37 @@ export default function ChatRoom() {
     }
   }, [messages]);
 
+   // 메시지 입력이 변경될 때 호출되는 함수 (이미지 미리보기 제거 로직 포함)
   const handleMessageChange = (e) => {
     setInputMessage(e.target.value);
     setIsActive(e.target.value.length > 0);
+    // 사용자가 텍스트를 입력하기 시작하면 이미지 미리보기를 제거
+    if (imagePreview && e.target.value) {
+      setImagePreview(null);
+    }
+  };
+
+  // 이미지 파일을 선택했을 때 호출되는 함수
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        // 미리보기 이미지를 상태에 설정
+        setImagePreview(reader.result);
+        // 이미지가 준비되었으므로 전송 버튼을 활성화
+        setIsActive(true);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleSendMessage = (e) => {
-    if(inputMessage.trim()) { // 메시지의 앞 뒤 공백 제거
+    if(imagePreview || inputMessage.trim()) { // 메시지의 앞 뒤 공백 제거
       const newMessage = {
         id: Date.now(),
         text: inputMessage,
-        img: null,
+        img: imagePreview,
         time: new Date().toLocaleTimeString('ko-KR', {hour12: false, hour: '2-digit', minute: '2-digit'}), // hour12: false => 24시간 형식 사용
         sender: 'me'
       };
@@ -60,6 +83,7 @@ export default function ChatRoom() {
       setMessages(currentMessages => [...currentMessages, newMessage]); // 새 메시지 추가
       console.log("Updated Messages:", messages); // 업데이트된 메시지 목록 확인
       setInputMessage(""); // 입력창 초기화
+      setImagePreview(null); // 이미지 미리보기 상태 초기화
       setIsActive(false); // 전송 버튼 비활성화
     }
   }
@@ -71,27 +95,13 @@ export default function ChatRoom() {
     }
   }
 
-  const handleInputFile = (e) => {
-    const file = e.target.files[0];
-    if(file) {
-      const reader = new FileReader(); // FileReader => 비동기적으로 데이터를 읽기 위해 사용되는 객체
-      reader.onloadend = () => { // 파일 읽기가 완료됐을 때 호출되는 이벤트 핸들러
-        const newMessage = {
-          id: Date.now(),
-          text: "", // 텍스트는 비워둠
-          img: reader.result, // 이미지 URL
-          time: new Date().toLocaleTimeString('ko-KR', { hour12: false, hour: '2-digit', minute: '2-digit' }),
-          sender: 'me'
-        };
-        setMessages(currentMessages => [...currentMessages, newMessage]);
-      };
-      reader.readAsDataURL(file); // 파일의 데이터 문자열로 표현
-    }
-  }
-
   const reportOptions = [
-    {action: "채팅방 나가기", alertText: "채팅방 나가시겠습니까?"}
-  ]
+    {
+      action: "채팅방 나가기",
+      alertText: "채팅방을 나가시겠습니까?",
+      onSelect: () => navigate(-1)
+    },
+  ];
   
   return (
     <>
@@ -150,7 +160,7 @@ export default function ChatRoom() {
                 type="file"
                 id='imgUpload'
                 style={{display: 'none'}}
-                onChange={handleInputFile}
+                onChange={handleImageChange}
               />
             </AddImgBtn>
 
@@ -173,11 +183,25 @@ export default function ChatRoom() {
           </ChatInputBar>
         </ChatRoomContents>
 
+        {/* 이미지 미리보기 */}
+        {imagePreview && (
+          <PreviewOverlay onClick={() => setImagePreview(null)}>
+            <img src={imagePreview} alt="미리보기" style={{ maxWidth: '50%', maxHeight: '50%', objectFit: "contain" }} />
+            <button onClick={() => setImagePreview(null)}>
+              <img src={BtnClose} alt="닫기" />
+            </button>
+          </PreviewOverlay>
+        )}
+
         {/* 모달창 */}
         {isModalOpen &&(
           <>
             <Overlay onClick={()=> setIsModalOpen(false)}/>
-            <BottomModal setIsModalOpen={setIsModalOpen} reports={reportOptions}/>
+            <BottomModal 
+              setIsModalOpen={setIsModalOpen} 
+              reports={reportOptions}
+              onLeave={() => navigate(-1)}
+            />
           </>
         )}
       </Container>
