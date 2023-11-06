@@ -25,11 +25,17 @@ export default function ProductDetail() {
 
   console.log("Received State:", location.state); 
 
-  useEffect(()=>{
-    console.log("Component did mount. Received State:", location.state);
+  // 현재 로그인한 사용자 정보를 가져오는 useEffect
+  useEffect(() => {
     fetchMyProfile();
-    fetchProductDetail();
-  },[productId]);
+  }, []); // 빈 배열을 전달하여 컴포넌트 마운트 시 한 번만 호출되도록 합니다.
+
+  // userAccountName 상태가 설정되면 상품 상세 정보를 가져오는 useEffect
+  useEffect(() => {
+    if (userAccountName) {
+      fetchProductDetail();
+    }
+  }, [userAccountName]); // userAccountName이 변경될 때마다 실행
 
   useEffect(() => {
     if (location.state?.updated) {
@@ -54,7 +60,7 @@ export default function ProductDetail() {
       const productData = response.data.product;
       setProductDetail(productData);
       setIsUpdated(productData.updated); // 상품의 updated 상태를 설정
-      setIsMyProduct(productData.author.accountname === currentUser); // 현재 사용자가 작성자와 일치하는지 확인
+      setIsMyProduct(productData.author.accountname === userAccountName); // 여기서 userAccountName을 사용
     } catch (error) {
       console.error("Error", error.response?.data || error.message);
     }
@@ -91,8 +97,7 @@ export default function ProductDetail() {
 
       if (data) {
         const userAccountName = data.user.accountname;
-        setUserAccountName(userAccountName);
-        setIsMyProduct(userAccountName === productDetail?.author?.accountname);
+        setUserAccountName(userAccountName); // 상태를 설정합니다.
         console.log("userAccountName:", userAccountName);
       }
     } catch (error) {
@@ -120,12 +125,12 @@ const productOpenModal = () => {
 
   if (isMyProduct) {
     modalOptions = [
-      { action: "수정하기", alertText: "수정 하시겠습니까?", onSelect: () => navigate(`/market/edit/${productId}`) },
-      { action: "삭제하기", alertText: "삭제 하시겠습니까?", onSelect: () => deleteProduct(productId) },
+      { action: "수정하기", alertText: "수정하시겠습니까?", onSelect: () => navigate(`/market/edit/${productId}`) },
+      { action: "삭제하기", alertText: "삭제하시겠습니까?", onSelect: () => deleteProduct(productId) },
     ];
   } else {
     modalOptions = [
-      { action: "신고하기", alertText: "신고 하시겠습니까?" },
+      { action: "신고하기", alertText: "신고하시겠습니까?" },
     ];
   }
 

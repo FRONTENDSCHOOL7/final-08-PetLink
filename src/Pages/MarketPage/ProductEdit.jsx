@@ -138,8 +138,8 @@ export default function ProductEdit() {
       price: Number(price),
       link: productLink,
       itemImage: imageUrl,
-      // category: category,
-      // description: description,
+      category: category,
+      description: description,
     };
 
 //     {
