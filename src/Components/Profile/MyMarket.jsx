@@ -4,76 +4,91 @@ import { useNavigate } from "react-router-dom";
 import { Container, GlobalStyle } from "../../Styles/reset.style";
 import styled from "styled-components";
 
+// 제품 이름을 추출하는 함수
 const extractProductName = (itemName) => {
   const match = itemName.match(/productName:\s*(.*?)\s*\n/);
   return match ? match[1] : "";
 };
 
-const MyMarket = ({ accountname, token }) => {
+// 제품 상세 설명 추출하는 함수
+const extractDescription = (itemName) => {
+  const match = itemName.match(/description:\s*(.*?)\s*(?=\n|$)/);
+  return match ? match[1] : "";
+};
+
+const MyMarket = ({ accountname }) => {
   const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const goToProductDetail = (productId) => {
-    navigate(`/market/detail/${productId}`);
+
+  // 제품 상세 페이지로 이동하는 함수
+  const goToProductDetail = (product) => {
+    navigate(`/market/detail/${product.id}`, { 
+      state: { 
+        pureProductName: extractProductName(product.itemName),
+        description: extractDescription(product.itemName) 
+      }
+    });
+  };
+
+  // 제품 목록을 불러오는 함수
+  const fetchProducts = async () => {
+    
+    try {
+      const response = await axios.get(`https://api.mandarin.weniv.co.kr/product/${accountname}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-type": "application/json",
+        },
+      });
+      setProducts(response.data.product);
+    } catch (error) {
+      console.error("Error", error);
+      setError(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      const token = localStorage.getItem("token");
-      try {
-        const endpoint = `https://api.mandarin.weniv.co.kr/product/${accountname}`;
-        const response = await axios.get(endpoint, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-type": "application/json",
-          },
-        });
-        console.log("Response data:", response.data);
-        setProducts(response.data.product);
-      } catch (error) {
-        console.error("Fetching products failed:", error);
-        setError(error);
-        setProducts([]); // Set to an empty array in case of error
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchProducts();
-  }, [accountname, token]);
+  }, [accountname]);
 
-  if (loading) {
+
+  // 로딩 중 혹은 에러 발생 시 메시지 표시
+  if (isLoading) {
     return <div>Loading...</div>;
   }
-
   if (error) {
     return <div>Error: {error.message}</div>;
   }
 
+// 제품 목록을 표시하는 UI 부분
   return (
-    <ContentContainer>
+    <>
       <GlobalStyle />
-      {loading && <div>Loading...</div>}
-      {error && <div>Error: {error.message}</div>}
-      <SaleItem>판매 중인 상품</SaleItem>
-      <ProductsContainer>
-        {products.map((product) => (
-          <ProductCard
-            key={product.id}
-            onClick={() => goToProductDetail(product.id)}
-          >
-            <ProductImage src={product.itemImage} alt={product.itemName} />
-            <MyItem>{extractProductName(product.itemName)}</MyItem>
-            <Price>{Number(product.price).toLocaleString()} 원</Price>
-          </ProductCard>
-        ))}
-      </ProductsContainer>
-    </ContentContainer>
+      <ContentContainer>
+        <SaleItem>판매 중인 상품</SaleItem>
+        <ProductsContainer>
+          {products.map((product) => (
+            <ProductCard
+              key={product.id}
+              onClick={() => goToProductDetail(product)}
+            >
+              <ProductImage src={product.itemImage} alt={product.itemName} />
+              <MyItem>{extractProductName(product.itemName)}</MyItem>
+              <Price>{Number(product.price).toLocaleString()} 원</Price>
+            </ProductCard>
+          ))}
+        </ProductsContainer>
+      </ContentContainer>
+    </>
   );
 };
 
 export default MyMarket;
+
 
 // 스타일 컴포넌트
 
@@ -87,7 +102,6 @@ const ProductsContainer = styled.div`
   overflow-x: auto;
   gap: 20px;
   padding: 16px 0 0 30px;
-  }
 `;
 
 const ProductCard = styled.div`
