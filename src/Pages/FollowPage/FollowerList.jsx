@@ -98,7 +98,8 @@ export default function FollowerList() {
             </Link>
             <S.UserName>
             {/* <p>{parseIntro(follower.intro).intro}</p> */}
-              <span>{follower.accountname}</span>
+              <S.NameTxt>{follower.username}</S.NameTxt>
+              <S.Account>{follower.accountname}</S.Account>
             </S.UserName>
           </S.UserProfile>
           <FollowBtn onClick={() => toggleFollow(follower.accountname, follower.isfollow)} isFollow={follower.isfollow}>
