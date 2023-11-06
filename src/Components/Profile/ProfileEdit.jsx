@@ -305,6 +305,7 @@ function ProfileEdit() {
         <StyledInput
           type="text"
           value={username}
+          minLength="2"
           maxLength="10"
           onChange={inputUsername}
           onBlur={handleBlur("username")}

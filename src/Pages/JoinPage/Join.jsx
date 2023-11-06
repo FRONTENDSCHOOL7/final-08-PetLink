@@ -378,6 +378,7 @@ const JoinPage = () => {
                 <StyledInput
                   type="text"
                   placeholder="2 ~ 10자 이내여야 합니다."
+                  minLength="2"
                   maxLength="10"
                   value={username}
                   onChange={inputUsername}
