@@ -69,17 +69,19 @@ export const FollowGroup = styled.div`
     flex-direction: column;
     align-items: center;
     height: 150px;
-`;
-
-export const FollowCount = styled.span`
+    `;
+    
+    export const FollowCount = styled.span`
     font-size: 30px;
     font-weight: bold;
     display: flex;
-`;
-
-export const FollowLabel = styled.span`
+    cursor:pointer
+    `;
+    
+    export const FollowLabel = styled.span`
     font-size: 12px;
     color: grey;
+    cursor:pointer
 `;
 
 export const FollowInfo = styled.div`
@@ -112,7 +114,7 @@ export const Button = styled.button`
     border-radius: 30px;
     cursor: pointer;
     font-size: 16px;
-    margin-top: 20px;
+    margin-top: 10px;
     margin-left: 10px;
 
 
@@ -122,27 +124,35 @@ export const Button = styled.button`
     }
 `;
 
-export const ImageWrap = styled.label`
+export const ImageWrap = styled.div`
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
-    position: relative;
-`;
+    height: 200px;
+    `;
 
-export const ImageUpbtn = styled.label`
+    export const ImageUpbtn = styled.label`
     position: absolute;
-    bottom: 18px;
-    right: 140px;
+    bottom: 45px;
+    right: 138px;
     width: 30px;
     height: 30px;
     background-image: url(${uploadIcon});
     background-size: cover;
     cursor: pointer;
-    
+    z-index: 10;
+
     input[type="file"] {
         display: none;
     }
-`;
+
+    @media (min-width: 768px) {
+        bottom: 45px;
+        right: 326px;
+    }
+    `;
+
 
 export const Title = styled.label`
     display: flex;
@@ -215,4 +225,8 @@ margin: 20px;
 export const PetInfo = styled.div`
 margin: 20px;
 `
-
+export const Intro = styled.div`
+    margin: 5px;
+    font-size: 15px;
+    color: #767676;
+`

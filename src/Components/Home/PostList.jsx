@@ -226,9 +226,9 @@ export function PostListItem({ post }) {
 
 
 
-  const handlePostClick = (post) => {
-    navigate(`/post/${post._id}`);
-  };
+  // const handlePostClick = (post) => {
+  //   navigate(`/post/${post._id}`);
+  // };
 
   useEffect(() => {
     console.log(post);

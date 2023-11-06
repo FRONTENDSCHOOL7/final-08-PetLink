@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
 import { Overlay } from '../Product/ProductDetail.style';
@@ -16,6 +16,7 @@ import { Container } from '../../Styles/reset.style';
 
 const MyFeed = (props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [reportOptions, setReportOptions] = useState([]);
   const [isAlbumActive, setIsAlbumActive] = useState(true);
   const [isListActive, setIsListActive] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -24,6 +25,9 @@ const MyFeed = (props) => {
   const postsPerPage = 10; // Set the posts per page as needed
   const { accountname: urlAccountname } = useParams();
   const [accountname, setAccountname] = useState(props.accountname || urlAccountname || localStorage.getItem('loggedInAccountname'));
+  const navigate = useNavigate();
+  const { postId } = useParams();
+  const [modalPost, setModalPost] = useState(null);
 
 
   // 토글버튼 리스트 엘범형
@@ -49,7 +53,17 @@ const MyFeed = (props) => {
           },
         }
       );
-      setPosts(response.data.post.map(p => ({ ...p, images: p.images || [] })));
+      // 서버로부터 받은 데이터에서 contentText만 추출합니다.
+      const newPosts = response.data.post.map(p => {
+        const contentObj = JSON.parse(p.content); // JSON 형태의 문자열을 객체로 변환
+        return {
+          ...p,
+          content: contentObj.contentText, // contentText만 추출하여 저장
+          images: p.images || []
+        };
+      });
+      setPosts(newPosts);
+      console.log("newPosts",newPosts)
     } catch (error) {
       console.error('Failed to fetch posts', error);
     } finally {
@@ -75,6 +89,47 @@ const MyFeed = (props) => {
     return <div>Loading...</div>;
   }
 
+
+
+  // 게시물 삭제 함수
+  const deletePost = async (postId) => {
+    console.log('deletePost is called with id:', postId)
+      try {
+        await axios.delete(`https://api.mandarin.weniv.co.kr/post/${postId}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        alert('삭제되었습니다.');
+        navigate('/profile');
+      } catch (error) {
+        // 에러 처리
+        console.error('Failed to delete post', error);
+      }
+  
+  };
+
+  const onChangeModal = (post) => {
+
+    let modalOptions = []
+
+    if(accountname){
+      modalOptions = [
+        { action: "수정하기", alertText: "수정하시겠습니까?"  , onSelect: () => navigate(`/profile/edit/${post._id}`)},
+        { action: "삭제하기", alertText: "삭제하시겠습니까?", onSelect: () => deletePost(post._id )},
+      ];
+
+    }else {
+      modalOptions = [
+        { action: "신고하기", alertText: "신고하시겠습니까?" },
+      ];
+    }
+    setIsModalOpen(true);
+    setReportOptions(modalOptions); // modalOptions 배열을 state로 설정
+  };
+
+
   return (
     <Container>
   <Layer>
@@ -92,21 +147,21 @@ const MyFeed = (props) => {
           <React.Fragment key={post.id}>
             <UserInfo>
               <UserProfile>
-                <UserImg src={post.author.profileImage || userImg} alt='사용자 프로필 이미지' />
+                <UserImg src={post.author.image} alt='사용자 프로필 이미지' />
                 <UserName>
                   <NameTxt>{post.author.username}</NameTxt>
                   <UserId>{post.author.accountname}</UserId>
                 </UserName>
               </UserProfile>
-              <MoreBtn onClick={() => setIsModalOpen(true)}>
-                <IconMore src={moreIcon} />
+              <MoreBtn onClick={() => onChangeModal(post)}>
+                <IconMore src={moreIcon} alt="수정/삭제 모달"/>
               </MoreBtn>
             </UserInfo>
             <ContentBox>
-                  {post.image && <ContentImg src={post.image} alt="Post" />}
               <ContentTxt className='text'>{post.content}</ContentTxt>
               {post.images && post.images.map((image, index) => (<ContentImg key={index} src={image.url} alt={`포스팅 이미지 ${index}`} />
               ))}
+              {post.image && <ContentImg src={post.image} alt="Post" />}
             </ContentBox>
             <ContentBox>
               <IconBox>
@@ -143,7 +198,10 @@ const MyFeed = (props) => {
       {isModalOpen && (
         <>
           <Overlay onClick={() => setIsModalOpen(false)} />
-          <BottomModal setIsModalOpen={setIsModalOpen} reportTxt={["수정", "삭제"]} />
+                <BottomModal 
+                setIsModalOpen={setIsModalOpen} 
+                reports={reportOptions}  
+                onDelete={() => deletePost(modalPost._id)}/>
         </>
       )}
     </Container>

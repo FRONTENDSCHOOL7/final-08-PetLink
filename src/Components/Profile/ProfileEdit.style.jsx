@@ -9,3 +9,9 @@ export const ProfileImage = styled.img`
     border: 1px solid var(--DBDBDB, #DBDBDB);
     background: url(<path-to-image>), lightgray 50% / cover no-repeat;
 `;
+
+export const Errormessage = styled.div`
+    margin-top:5px;
+    font-size: 14px;
+    color: red;
+`
