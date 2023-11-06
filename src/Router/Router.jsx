@@ -11,6 +11,7 @@ import CommunityDetail from '../Components/Community/CommunityDetail'
 import CommunityPostEdit from '../Pages/CommunityPage/CommunityPostEdit'
 import MarketPage from '../Pages/MarketPage/Market';
 import ProductDetail from '../Components/Product/ProductDetail';
+import ProductEdit from '../Pages/MarketPage/ProductEdit';
 import ProfilePage from '../Pages/ProfilePage/Profile';
 import FollowerPage from '../Pages/FollowPage/FollowerList';
 import FollowingPage from '../Pages/FollowPage/FollowingList';
@@ -23,6 +24,7 @@ import ChatRoom from '../Pages/ChatPage/ChatRoom';
 import Search from '../Pages/HomePage/Search';
 import NewChatRoom from '../Pages/ChatPage/NewChatRoom';
 import PostEdit from '../Components/Home/PostEdit'
+import MyFeedEdit from '../Components/Profile/MyFeedEdit'
 export default function Router() {
   return (
     <BrowserRouter>
@@ -46,10 +48,12 @@ export default function Router() {
         <Route path="/market/:accountname" element={<MarketPage />} />
         <Route path="/market/detail/:productId" element={<ProductDetail />} />
         <Route path="/market/add-product" element={<AddProduct />} />
+        <Route path="/market/edit/:productId" element={<ProductEdit />} />
         <Route path="/profile/" element={<ProfilePage />} />
         <Route path="/profile/:accountname" element={<ProfilePage />} />
         <Route path="/profile/:accountname/following" element={<FollowingPage />} />
         <Route path="/profile/edit" element={<ProfileEdit />} />
+        <Route path="/profile/edit/:postId" element={<MyFeedEdit />} />
         <Route path="/profile/:accountname/follower" element={<FollowerPage />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>

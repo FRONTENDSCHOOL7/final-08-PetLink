@@ -191,6 +191,7 @@ export const InputImg = styled.img`
       width:36px ;
       height: 36px;
       margin-right: 18px;
+      border-radius: 50%;
 `
 
 export const InputBtn = styled.button`
