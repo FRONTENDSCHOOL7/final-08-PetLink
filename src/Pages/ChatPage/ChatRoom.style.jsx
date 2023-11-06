@@ -121,3 +121,29 @@ export const Overlay = styled.div`
   background-color: rgba(0, 0, 0, 0.3);
   z-index: 10;
 `
+
+export const PreviewOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0 auto 60px;
+  width: 100%;
+  max-width: 390px; /* 혹은 '100%' */
+  height: auto; /* 혹은 '100%' */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5); /* 배경 반투명 */
+
+  button {
+    width: 30px;
+  }
+
+  @media (min-width: 768px) {
+    width: 100%;
+    max-width: 768px;
+    margin: 0 auto 80px;
+  }
+`
