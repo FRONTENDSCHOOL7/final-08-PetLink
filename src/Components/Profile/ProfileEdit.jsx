@@ -95,6 +95,7 @@ function ProfileEdit() {
   const [usernameError, setUsernameError] = useState("");
   const [accountnameError, setAccountnameError] = useState("");
   const [currentAccountname, setCurrentAccountname] = useState("");
+  
   // 수정 버튼 활성화
   const isEnabled = username.trim() && accountname.trim();
 
@@ -115,10 +116,10 @@ function ProfileEdit() {
 
         if (response.data && response.data.user) {
           const user = response.data.user;
+          const extractedInfo = extractInfoFromTags(user.intro);
           setUsername(user.username);
           setAccountname(user.accountname);
           setCurrentAccountname(user.accountname);
-          const extractedInfo = extractInfoFromTags(user.intro);
           setIntro(extractedInfo.intro);
           setPet(extractedInfo.pet);
           setGender(extractedInfo.gender);
