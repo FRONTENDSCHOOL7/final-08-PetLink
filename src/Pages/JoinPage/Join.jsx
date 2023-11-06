@@ -48,11 +48,17 @@ const JoinPage = () => {
   const [gender, setGender] = useState("");
   const [birthdate, setBirthdate] = useState("");
   const [location, setLocation] = useState("");
+  const [usernameTouched, setUsernameTouched] = useState(false);
   const [previewImage, setPreviewImage] = useState(null);
+  const [usernameError, setUsernameError] = useState('');
   const convertInfoToTags = (bangyeolgori) => {
     return `#bangyeolgori `;
   };
-
+  
+  // 텍스 빠질
+  const handleUsernameBlur = () => {
+    setUsernameTouched(true);
+  };
   
   const handleStartBanGyeol = () => {
     setIsModalOpen(true);
@@ -153,9 +159,20 @@ const JoinPage = () => {
     return res;
   };
 
+  // 활동명
   const inputUsername = (e) => {
-    setUsername(e.target.value);
+    const newUsername = e.target.value;
+    setUsername(newUsername);
+  
+    if (newUsername.length > 0 && newUsername.length < 2) {
+      setUsernameError('2글자 이상 입력하세요.');
+    } else if (newUsername.length > 10) {
+      setUsernameError('10자 이내여야 합니다.');
+    } else {
+      setUsernameError('');
+    }
   };
+
   const extractIntro = () => {
     const match = info.match(/#intro:([^#]*)/);
     return match ? match[1].trim() : "";
@@ -314,18 +331,21 @@ const JoinPage = () => {
                   )}
                 </InputField>
                 <InputField>
-                  <FieldLabel>비밀번호</FieldLabel>
-                  <StyledInput
-                    type="password"
-                    placeholder="비밀번호 입력해주세요."
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    onFocus={handlePasswordFocus} // 비밀번호 필드에 포커스가 가면 이메일 검증 실행
-                  />
-                  {validationErrors.password && (
-                    <span>{validationErrors.password}</span>
-                  )}
-                </InputField>
+                <FieldLabel>비밀번호</FieldLabel>
+                <StyledInput
+                  type="password"
+                  placeholder="비밀번호 입력해주세요."
+                  value={password}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                    // Call validateForm function here if you want to validate as the user types
+                  }}
+                  onFocus={handlePasswordFocus} // 비밀번호 필드에 포커스가 가면 이메일 검증 실행
+                />
+                {password.length > 0 && password.length < 6 && (
+                  <span style={{ fontSize: "14px", color: "red" }}>비밀번호 6자 미만입니다.</span>
+                )}
+              </InputField>
   
                 <SubmitButton
                   type="button"
@@ -354,14 +374,18 @@ const JoinPage = () => {
                     </ImageUpBtn>
                 </ImageWrap>
                 <InputField>
-                  <FieldLabel>활동명</FieldLabel>
-                  <StyledInput
-                    type="text"
-                    placeholder="2 ~ 10자 이내여야 합니다."
-                    value={username}
-                    onChange={inputUsername}
-                  />
-                </InputField>
+                <FieldLabel>활동명</FieldLabel>
+                <StyledInput
+                  type="text"
+                  placeholder="2 ~ 10자 이내여야 합니다."
+                  maxLength="10"
+                  value={username}
+                  onChange={inputUsername}
+                />
+                {usernameError && (
+                  <span style={{ fontSize: "14px", color: "red" }}>{usernameError}</span>
+                )}
+              </InputField>
                 <InputField>
                   <FieldLabel>계정 ID</FieldLabel>
                   <StyledInput
