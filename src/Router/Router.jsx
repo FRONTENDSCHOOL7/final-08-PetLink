@@ -11,6 +11,7 @@ import CommunityDetail from '../Components/Community/CommunityDetail'
 import CommunityPostEdit from '../Pages/CommunityPage/CommunityPostEdit'
 import MarketPage from '../Pages/MarketPage/Market';
 import ProductDetail from '../Components/Product/ProductDetail';
+import ProductEdit from '../Pages/MarketPage/ProductEdit';
 import ProfilePage from '../Pages/ProfilePage/Profile';
 import FollowerPage from '../Pages/FollowPage/FollowerList';
 import FollowingPage from '../Pages/FollowPage/FollowingList';
@@ -46,6 +47,7 @@ export default function Router() {
         <Route path="/market/:accountname" element={<MarketPage />} />
         <Route path="/market/detail/:productId" element={<ProductDetail />} />
         <Route path="/market/add-product" element={<AddProduct />} />
+        <Route path="/market/edit/:productId" element={<ProductEdit />} />
         <Route path="/profile/" element={<ProfilePage />} />
         <Route path="/profile/:accountname" element={<ProfilePage />} />
         <Route path="/profile/:accountname/following" element={<FollowingPage />} />
