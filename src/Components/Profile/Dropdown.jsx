@@ -3,7 +3,6 @@ import React from "react";
 export const petOptions = [
     { value: "강아지", label: "강아지" },
     { value: "고양이", label: "고양이" },
-    { value: "기타", label: "기타" },
 ];
 
 export const genderOptions = [
@@ -31,11 +30,7 @@ export const locationOptions = [
 export function DropdownSelect({ value, onChange, options, placeholder = "선택하세요" }) {
     return (
         <select value={value} onChange={onChange}>
-            {/* Add a disabled option as the first choice */}
-            <option value="" disabled={true}>
-                {placeholder}
-            </option>
-            {/* Map through the options provided */}
+            <option value="">{placeholder}</option>
             {options.map((option, index) => (
                 <option value={option.value} key={index}>
                     {option.label}
