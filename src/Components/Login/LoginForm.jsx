@@ -49,7 +49,7 @@ function LoginForm({ handlePage }) {
       console.log("API Response:", resJson);
 
       if (res.ok) {
-        saveToken(resJson.user.token); // 로그인 성공 시 토큰을 저장합니다.
+        saveToken(resJson.user.token);
         navigate("/home");
       } else {
         alert(resJson.message || "이메일 또는 비밀번호가 일치하지 않습니다.");
