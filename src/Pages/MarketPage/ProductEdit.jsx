@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { Header, HeaderButton, SaveButton, InputTitle, InputImg, AddImgBtn, ProductInfo, AddTxtForm, Required, CategoryContainer, DropdownSelect, AddImgWrap } from './AddProduct.style'
+import { Header, HeaderButton, DetailContainer, SaveButton, AddImg, InputTitle, InputImg, AddImgBtn, ProductInfo, AddTxtForm, Required, CategoryContainer, DropdownSelect, AddImgWrap } from './AddProduct.style'
 import { GlobalStyle, Container, SubContainer } from '../../Styles/reset.style'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import backBtn from '../../assets/image/icon-arrow-left.png'
 import imgBtn from '../../assets/image/icon-img-button.png'
 import axios from 'axios'
@@ -24,7 +24,7 @@ function ProductInput({title, isRequired, placeholder, type = "text", value, onC
   );
 }
 
-export default function AddProduct() {
+export default function ProductEdit() {
   const navigate = useNavigate();
 
   // 상품 정보 관련 상태
@@ -36,12 +36,57 @@ export default function AddProduct() {
   const [description, setDescription] = useState("");
 
   const [isActive, setIsActive] = useState(false);
-
+  const { productId } = useParams(); 
   
+
+   // 상품 데이터를 불러와서 상태를 초기화합니다.
+    useEffect(() => {
+    const fetchProductData = async () => {
+      const token = localStorage.getItem('token');
+
+      try {
+        const response = await axios.get(`https://api.mandarin.weniv.co.kr/product/detail/${productId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        const product = response.data.product;
+      const { price, link, itemImage } = product;
+
+      // 'itemName'에서 개별 정보 추출
+      const details = product.itemName
+        .split('\n')
+        .map(detail => detail.trim())
+        .filter(detail => detail);
+      
+      const productName = details.find(detail => detail.startsWith('productName:')).split(':')[1].trim();
+      const category = details.find(detail => detail.startsWith('category:')).split(':')[1].trim();
+      const description = details.find(detail => detail.startsWith('description:')).split(':')[1].trim();
+      
+      // 상태 업데이트
+      setProductName(productName);
+      setPrice(price);
+      setProductLink(link);
+      setImageUrl(itemImage);
+      setCategory(category);
+      setDescription(description);
+        console.log("데이터를 불러옵니다", response.data);
+
+      } catch (error) {
+        console.error('상품 데이터를 불러오는 데 실패했습니다.', error);
+      }
+    };
+
+    fetchProductData();
+  }, [productId]);
+
   // 상품정보 유효성 검사로 저장 버튼 활성화 여부 결정
   useEffect(()=> {
     const isValid = imageUrl && isValidProductName(productName) && price && productLink && description;
     setIsActive(!!isValid)
+    console.log(imageUrl, productName, price, productLink, description);
   }, [imageUrl, productName, price, productLink, description])
 
   // 이미지 파일 선택하고 서버에 업로드한 후 URL 받아오는 함수
@@ -71,7 +116,9 @@ export default function AddProduct() {
   }
 
   // 상품 저장 버튼 클릭 시 실행되는 함수
-  const handleSaveProduct = async () => {
+  const handleUpdateProduct = async (e) => {
+    e.preventDefault();
+
     if(!isValidProductName(productName)) {
       alert("상품명은 2~15자 이내로 입력해주세요.");
       return;
@@ -84,44 +131,54 @@ export default function AddProduct() {
       alert("필수 입력사항을 입력해주세요.");
       return;
     }
+
+    const token = localStorage.getItem('token');
+
+ // itemName을 GET 요청의 응답과 같은 형식으로 조합합니다.
+  const itemNameFormatted = `\n      productName: ${productName}\n      category: ${category}\n      description: ${description}`;
     
-
-    const token = localStorage.getItem("token"); // 로컬스토리지에서 사용자 토큰 가져오기
-
-    // 카테고리와 상품명을 결합하여 새로운 상품명을 생성
-    const formattedProductName = `
-      productName: ${productName}
-      category: ${category} 
-      description: ${description}`;
-
-    const productData = {
-      itemName: formattedProductName,
+  // PUT 요청에 맞게 데이터 형식을 변경합니다.
+    const updatedProductData = {
+      product: {
+      itemName: itemNameFormatted, // 위에서 조합한 문자열을 사용합니다.
       price: Number(price),
       link: productLink,
-      itemImage: imageUrl,
-      category: category,
-      description: description
+      itemImage: imageUrl
+      // 카테고리와 설명은 별도의 필드가 아닌 itemName 안에 포함되어야 합니다.
     }
+  };
+//     {
+//       "product": {
+//               "itemName": String,
+//               "price": Number,
+//               "link": String,
+//               "itemImage": String
+//       }
+// }
 
     try {
       // 상품 데이터를 서버에 전송
-      const res = await axios.post('https://api.mandarin.weniv.co.kr/product', {
-        product: productData, // 전송할 상품 데이터
-      }, {
+      const response = await axios.put(`https://api.mandarin.weniv.co.kr/product/${productId}`, updatedProductData, {
         headers: {
-          Authorization : `Bearer ${token}`,
-          "Content-type" : "application/json"
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
         },
       });
 
-      console.log(res.data); // 서버 응답 콘솔에 기록
-      navigate('/market'); // 성공 시 마켓 페이지로 이동
+      console.log("서버응답:", response.data); // 서버 응답 콘솔에 기록
+      navigate(`/market/`, { state: { updated: true } }); // 성공 시 마켓 페이지로 이동
     } catch (error) {
-      console.error(error); // 오류 발생 시 콘솔에 기록
-      alert("상품 등록에 실패했습니다.")
+      console.error('서버 오류:', error.response || error); // 오류 발생 시 콘솔에 기록
+      if (error.response) {
+        // 서버로부터 받은 응답을 상세히 로그
+        console.error('상태 코드:', error.response.status);
+        console.error('오류 데이터:', error.response.data);
+      }
+      alert("상품 업데이트에 실패했습니다.")
     }
   };
 
+  
   return (
     <>
       <GlobalStyle/>
@@ -130,7 +187,7 @@ export default function AddProduct() {
           <HeaderButton onClick={()=>navigate(-1)}>
             <img src={backBtn} alt="뒤로가기" />
           </HeaderButton>
-          <SaveButton $active={isActive} onClick={handleSaveProduct}>저장</SaveButton>
+          <SaveButton $active={isActive} onClick={handleUpdateProduct}>저장</SaveButton>
           {/* '$' 접두사 사용 이유 => "이 속성은 HTML 태그에 존재하지 않지만 스타일을 위해 임시로만 사용하겠다"는 의미 */}
         </Header>
 

@@ -67,7 +67,6 @@ export const ModalContent = styled.div`
 
 export const CloseButton = styled.span`
     color: #aaa;
-    float;
 `;
 
 export const TitleWrap = styled.div`
@@ -125,12 +124,37 @@ export const FieldLabel = styled.label`
 export const PetInfo = styled.div`
   font-size: 14px;
   margin: 20px;
-  gap: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 `;
 
-export const Styledpetinfo = styled.h2`
-font-size: 14px;
+export const StyledPetInfo = styled.p`
+  font-size: 14px;
+  color: #767676;
+  /* margin-bottom: 10px; */
 `;
+
+export const SelectInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+`
+
+export const SelectInfoItem = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+
+  label {
+    font-size: 14px;
+    color: #767676;
+
+    @media (min-width: 768px) {
+    font-size: 16px;
+  }
+  }
+`
 
 export const ImageWrap = styled.label`
     display: flex;
@@ -139,10 +163,10 @@ export const ImageWrap = styled.label`
     position: relative;
 `;
 
-export const ImageUpbtn = styled.label`
+export const ImageUpBtn = styled.label`
     position: absolute;
-    bottom: 18px;
-    right: 125px;
+    bottom: 5px;
+    right: 115px;
     width: 30px;
     height: 30px;
     background-image: url(${uploadIcon});
@@ -150,7 +174,11 @@ export const ImageUpbtn = styled.label`
     cursor: pointer;
     
     input[type="file"] {
-        display: none;
+      display: none;
+    }
+
+    @media (min-width: 768px) {
+      right: 295px;
     }
 `;
 
@@ -159,8 +187,18 @@ export const ProfileImage = styled.img`
     height: 110px;
     border-radius: 50%;
     object-fit: cover;
-    margin: 20px;
     border: 1px solid var(--DBDBDB, #DBDBDB);
     background: url(<path-to-image>), lightgray 50% / cover no-repeat;
 
 `;
+
+// 모달창 클릭 시 배경 흐리게
+export const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 10;
+`

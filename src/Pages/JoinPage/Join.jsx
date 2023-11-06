@@ -1,30 +1,27 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { GlobalStyle, Container } from "../../Styles/reset.style";
+import { GlobalStyle, Container, SubContainer } from "../../Styles/reset.style";
 import {
-  FormWrapper,
-  Button,
-  Modal,
-  ModalContent,
-  CloseButton,
-  TitleWrap,
-  SubmitButton,
   PetInfo,
-  Styledpetinfo,
+  StyledPetInfo,
   ImageWrap,
-  ImageUpbtn,
+  ImageUpBtn,
   ProfileImage,
+  SelectInfo,
+  SelectInfoItem,
+  Overlay,
 
 } from "../../Components/Join/JoinPage.style";
 import {
-  LoginTitleWrap,
-  SubmitButton as LoginSubmitButton,
+  TitleWrap,
+  SubmitButton,
   InputField,
   StyledInput,
   FieldLabel,
 } from "../../Components/Login/LoginForm.style";
-
+import PopupModal from '../../Components/Common/Modal/PopupModal'
 import * as DropdownComponents from "../../Components/Profile/Dropdown";
+import HeaderLayouts from "../../Components/Common/Header/Header";
 
 const JoinPage = () => {
   const navigate = useNavigate();
@@ -42,7 +39,9 @@ const JoinPage = () => {
   const [validationErrors, setValidationErrors] = useState({});
   const [info, setInfo] = useState("");
   const [currentPage, setCurrentPage] = useState("join");
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  // const [isModalVisible, setIsModalVisible] = useState(false);
   const [pet, setPet] = useState("");
   const [gender, setGender] = useState("");
   const [birthdate, setBirthdate] = useState("");
@@ -51,6 +50,15 @@ const JoinPage = () => {
   const convertInfoToTags = (bangyeolgori) => {
     return `#bangyeolgori `;
   };
+
+  
+  const handleStartBanGyeol = () => {
+    setIsModalOpen(true);
+  }
+
+  const handleLogin = () => {
+    navigate('/login');
+  }
 
   const validateForm = () => {
     const errors = {};
@@ -272,47 +280,49 @@ const JoinPage = () => {
 
   return (
     <>
+      <GlobalStyle />
       <Container>
-        <GlobalStyle />
-
-        <FormWrapper>
+        <HeaderLayouts back={true} />
+        {/* <FormWrapper> */}
 
           {currentPage === "join" && (
             <>
             <TitleWrap>이메일로 회원가입</TitleWrap>
-              <InputField>
-                <FieldLabel>이메일</FieldLabel>
-                <StyledInput
-                  type="email"
-                  placeholder="이메일 입력해주세요."
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-                {emailError && (
-                  <span style={{ color: "red" }}>{emailError}</span>
-                )}
-              </InputField>
-              <InputField>
-                <FieldLabel>비밀번호</FieldLabel>
-                <StyledInput
-                  type="password"
-                  placeholder="비밀번호 입력해주세요."
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  onFocus={handlePasswordFocus} // 비밀번호 필드에 포커스가 가면 이메일 검증 실행
-                />
-                {validationErrors.password && (
-                  <span>{validationErrors.password}</span>
-                )}
-              </InputField>
-
-              <SubmitButton
-                type="button"
-                onClick={handleSubmit}
-                disabled={!isValidEmailAndPassword()}
-              >
-                다음
-              </SubmitButton>
+              <SubContainer>
+                <InputField>
+                  <FieldLabel>이메일</FieldLabel>
+                  <StyledInput
+                    type="email"
+                    placeholder="이메일 입력해주세요."
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                  {emailError && (
+                    <span style={{ fontSize:"14px", color: "red" }}>{emailError}</span>
+                  )}
+                </InputField>
+                <InputField>
+                  <FieldLabel>비밀번호</FieldLabel>
+                  <StyledInput
+                    type="password"
+                    placeholder="비밀번호 입력해주세요."
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    onFocus={handlePasswordFocus} // 비밀번호 필드에 포커스가 가면 이메일 검증 실행
+                  />
+                  {validationErrors.password && (
+                    <span>{validationErrors.password}</span>
+                  )}
+                </InputField>
+  
+                <SubmitButton
+                  type="button"
+                  onClick={handleSubmit}
+                  disabled={!isValidEmailAndPassword()}
+                >
+                  다음
+                </SubmitButton>
+              </SubContainer>
             </>
           )}
 
@@ -320,121 +330,126 @@ const JoinPage = () => {
             <>
             <TitleWrap>프로필 설정</TitleWrap>
               {/* 새로운 레이아웃 */}
-              <ImageWrap>
+              <SubContainer>
+                <ImageWrap>
                     {previewImage ? (
                     <ProfileImage src={previewImage} alt="Profile Preview" />
                     ) : (
                     <ProfileImage src={imgSrc} alt="Profile" />
                     )}
-                    <ImageUpbtn uploaded={!!previewImage}>
+                    <ImageUpBtn uploaded={!!previewImage}>
                     <input type="file" onChange={handleChangeImage} />
-                    </ImageUpbtn>
+                    </ImageUpBtn>
                 </ImageWrap>
-              <InputField>
-                <FieldLabel>활동명</FieldLabel>
-                <StyledInput
-                  type="text"
-                  placeholder="2 ~ 10자 이내여야 합니다."
-                  value={username}
-                  onChange={inputUsername}
-                />
-              </InputField>
-              <InputField>
-                <FieldLabel>계정 ID</FieldLabel>
-                <StyledInput
-                  type="text"
-                  placeholder="영문, 숫자, 특수문자(.),(_)만 사용 가능합니다."
-                  onChange={(e) => {
-                    setAccountname(e.target.value);
-                    validateAccountname(e.target.value);
-                  }}
-                  onBlur={handleUsernameFocus} // 계정 이름 필드에서 포커스가 떠나면 계정 이름 검증 실행
-                />
-                {accountnameError && (
-                  <span style={{ color: "red" }}>{accountnameError}</span>
-                )}
-              </InputField>
-              <InputField>
-                <FieldLabel>상태메시지</FieldLabel>
-                <StyledInput
-                  type="text"
-                  placeholder="자신의 반려동물에 대해 소개해 주세요!"
-                  value={intro}
-                  onChange={(e) => setIntro(e.target.value)}
-                />
-              </InputField>
-              <PetInfo>
-                <Styledpetinfo>반려동물 정보등록</Styledpetinfo>
-                <div>
-                  <label>반려동물</label>
-                  <DropdownComponents.DropdownSelect
-                    value={pet}
-                    onChange={(e) => {
-                      setPet(e.target.value);
-                      handleIntroChange();
-                    }}
-                    options={DropdownComponents.petOptions}
+                <InputField>
+                  <FieldLabel>활동명</FieldLabel>
+                  <StyledInput
+                    type="text"
+                    placeholder="2 ~ 10자 이내여야 합니다."
+                    value={username}
+                    onChange={inputUsername}
                   />
-                </div>
-
-                <div>
-                  <label>성별</label>
-                  <DropdownComponents.DropdownSelect
-                    value={gender}
+                </InputField>
+                <InputField>
+                  <FieldLabel>계정 ID</FieldLabel>
+                  <StyledInput
+                    type="text"
+                    placeholder="영문, 숫자, 특수문자(.),(_)만 사용 가능합니다."
                     onChange={(e) => {
-                      setGender(e.target.value);
-                      handleIntroChange();
+                      setAccountname(e.target.value);
+                      validateAccountname(e.target.value);
                     }}
-                    options={DropdownComponents.genderOptions}
+                    onBlur={handleUsernameFocus} // 계정 이름 필드에서 포커스가 떠나면 계정 이름 검증 실행
                   />
-                </div>
-
-                <div>
-                  <label>생일</label>
-                  <input
-                    type="date"
-                    value={birthdate}
-                    onChange={(e) => {
-                      setBirthdate(e.target.value);
-                      handleIntroChange();
-                    }}
+                  {accountnameError && (
+                    <span style={{ fontSize:"14px", color: "red" }}>{accountnameError}</span>
+                  )}
+                </InputField>
+                <InputField>
+                  <FieldLabel>상태메시지</FieldLabel>
+                  <StyledInput
+                    type="text"
+                    placeholder="자신의 반려동물에 대해 소개해 주세요!"
+                    value={intro}
+                    onChange={(e) => setIntro(e.target.value)}
                   />
-                </div>
-
-                <div>
-                  <label>위치</label>
-                  <DropdownComponents.DropdownSelect
-                    value={location}
-                    onChange={(e) => {
-                      setLocation(e.target.value);
-                      handleIntroChange();
-                    }}
-                    options={DropdownComponents.locationOptions}
-                  />
-                </div>
-              </PetInfo>
-              <SubmitButton
-                type="button"
-                onClick={submitJoin}
-                disabled={!isValidProfile()}
-              >
-                반결고리 시작하기
-              </SubmitButton>
+                </InputField>
+                <PetInfo>
+                  <StyledPetInfo>반려동물 정보등록</StyledPetInfo>
+                  <SelectInfo>
+                    <SelectInfoItem>
+                      <label>종류</label>
+                      <DropdownComponents.DropdownSelect
+                        value={pet}
+                        onChange={(e) => {
+                          setPet(e.target.value);
+                          handleIntroChange();
+                        }}
+                        options={DropdownComponents.petOptions}
+                      />
+                    </SelectInfoItem>
+    
+                    <SelectInfoItem>
+                      <label>성별</label>
+                      <DropdownComponents.DropdownSelect
+                        value={gender}
+                        onChange={(e) => {
+                          setGender(e.target.value);
+                          handleIntroChange();
+                        }}
+                        options={DropdownComponents.genderOptions}
+                      />
+                    </SelectInfoItem>
+    
+                    <SelectInfoItem>
+                      <label>생일</label>
+                      <input
+                        type="date"
+                        value={birthdate}
+                        onChange={(e) => {
+                          setBirthdate(e.target.value);
+                          handleIntroChange();
+                        }}
+                      />
+                    </SelectInfoItem>
+    
+                    <SelectInfoItem>
+                      <label>위치</label>
+                      <DropdownComponents.DropdownSelect
+                        value={location}
+                        onChange={(e) => {
+                          setLocation(e.target.value);
+                          handleIntroChange();
+                        }}
+                        options={DropdownComponents.locationOptions}
+                      />
+                    </SelectInfoItem>
+                  </SelectInfo>
+                </PetInfo>
+                <SubmitButton onClick={handleStartBanGyeol}
+                  // type="button"
+                  // onClick={submitJoin}
+                  // disabled={!isValidProfile()}
+                >
+                  반결고리 시작하기
+                </SubmitButton>
+              </SubContainer>
             </>
           )}
 
-          {showModal && (
-            <Modal>
-              <ModalContent>
-                <TitleWrap>반결고리에 오신것을 환영합니다!</TitleWrap>
-                <Button type="button" onClick={() => navigate("/login")}>
-                  로그인
-                </Button>
-                <CloseButton>&times;</CloseButton>
-              </ModalContent>
-            </Modal>
-          )}
-        </FormWrapper>
+        {/* 모달창 */}
+        {isModalOpen &&(
+          <>
+            <Overlay onClick={()=> setIsModalOpen(false)}/>
+            <PopupModal 
+              isVisible={isModalOpen}
+              setIsVisible={setIsModalOpen}
+              alertText="반결고리에 오신 것을 환영합니다🎉"
+              confirmText="로그인하기"
+              onConfirm={handleLogin}
+            />
+          </>
+        )}
       </Container>
     </>
   );

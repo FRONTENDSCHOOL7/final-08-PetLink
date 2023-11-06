@@ -29,6 +29,23 @@ export const ProfileAccountname = styled.h3`
     color: #767676;
 `;
 
+export const ProfilePet = styled.div`
+    margin: 5px 0;
+    font-size: 15px;
+    color: #767676;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 5px;
+`;
+
+export const GenderIcon = styled.span`
+    font-size: 17px;
+    font-weight: bold;
+    color: ${props => props.gender === '남아' ? 'blue' : props.gender === '여아' ? 'red' : 'black'};
+`;
+
 export const ProfileEmail = styled.p`
     margin: 10px 0;
     font-size: 18px;
@@ -57,17 +74,19 @@ export const FollowGroup = styled.div`
     flex-direction: column;
     align-items: center;
     height: 150px;
-`;
-
-export const FollowCount = styled.span`
+    `;
+    
+    export const FollowCount = styled.span`
     font-size: 30px;
     font-weight: bold;
     display: flex;
-`;
-
-export const FollowLabel = styled.span`
+    cursor:pointer
+    `;
+    
+    export const FollowLabel = styled.span`
     font-size: 12px;
     color: grey;
+    cursor:pointer
 `;
 
 export const FollowInfo = styled.div`
@@ -100,7 +119,7 @@ export const Button = styled.button`
     border-radius: 30px;
     cursor: pointer;
     font-size: 16px;
-    margin-top: 20px;
+    margin-top: 10px;
     margin-left: 10px;
 
 
@@ -110,27 +129,34 @@ export const Button = styled.button`
     }
 `;
 
-export const ImageWrap = styled.label`
+export const ImageWrap = styled.div`
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
-    position: relative;
-`;
+    height: 200px;
+    `;
 
-export const ImageUpbtn = styled.label`
+    export const ImageUpbtn = styled.label`
     position: absolute;
-    bottom: 18px;
-    right: 140px;
     width: 30px;
     height: 30px;
     background-image: url(${uploadIcon});
     background-size: cover;
     cursor: pointer;
-    
+    z-index: 10;
+    transform: translate(40px, 40px);
+
     input[type="file"] {
         display: none;
     }
-`;
+
+    @media (min-width: 768px) {
+        bottom: 45px;
+        right: 326px;
+        transform: translate(40px, 0px)
+    }
+    `;
 
 export const Title = styled.label`
     display: flex;
@@ -152,48 +178,58 @@ export const InputGroup = styled.div`
     input, textarea, select {
         padding: 10px;
         font-size: 16px;
+        border: none;
+        border-bottom: 2px solid grey;
+    
+    &:focus {
+            border-bottom: 2px solid #6C9BD1;
+        }
     }
 `;
 
 export const StyledInput = styled.input`
     border: none;
-    border-bottom: 1px solid grey;
+    border-bottom: 2px solid grey;
     width: 100%;
     font-size: 16px;
 
     &:focus {
-        border-bottom: 1px solid #6C9BD1;
+        border-bottom: 2px solid #6C9BD1;
     }
 `;
 
 export const Styledlabel = styled.label`
     color: '#767676';
     font-Size: 12px;
-`
-
+    `
+    
 export const Styledpetinfo = styled.label`
+    font-weight: bold;
+    padding-bottom: 15px;
+    font-Size: 16px;
     color: black; 
-    font-Size: 15px;
+    display: inline-block;
 `
 
 export const SubBtn = styled.button`
-    border-color: var(--dbdbdb);
+    background-color: ${(props) => (props.disabled ? '#dbdbdb' : '#004e98')};
     position: relative;
     height: 34px;
     padding: 5px 20px;
-    color: #767676;
+    color: ${(props) => (props.disabled ? '#767676' : '#ffffff')};
     border: 1px solid;
     border-radius: 30px;
-    cursor: pointer;
+    cursor: ${(props) => (props.disabled ? 'default' : 'pointer')};
     font-size: 16px;
     margin-top: 21px;
     margin-left: auto;
     margin-right: auto;
+    margin-bottom: 20px;
     display: block;
 
     &:hover {
-        background-color: #004e98;
-        color: #ffffff;
+        background-color: ${(props) => (props.disabled ? '#dbdbdb' : '#004e98')};
+        color: ${(props) => (props.disabled ? '#767676' : '#ffffff')};
     }
 `;
 
@@ -201,5 +237,20 @@ export const EditWrap = styled.div`
 margin: 20px;
 `
 export const PetInfo = styled.div`
-margin: 20px;
+
+`
+export const Intro = styled.div`
+    margin: 5px;
+    font-size: 15px;
+    color: #767676;
+`
+
+export const Overlay = styled.div`
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 10;
 `

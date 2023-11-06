@@ -1,20 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { GlobalStyle, Container, SubContainer } from '../../Styles/reset.style';
-import { Header, HeaderButton, Required, SaveButton, AddImg, InputTitle, InputImg, AddImgBtn, PostInfo, CategoryContainer, DropdownSelect, AddTxtForm } from './CommunityUpload.style'
-import { useNavigate } from 'react-router-dom';
+import { GlobalStyle, Container } from '../../Styles/reset.style';
+import { Header, HeaderButton, DetailContainer, SaveButton, AddImg, InputTitle, InputImg, AddImgBtn, PostInfo, CategoryContainer, DropdownSelect } from '../../Pages/CommunityPage/CommunityUpload.style'
+import { useNavigate, useParams  } from 'react-router-dom';
 import backBtn from '../../assets/image/icon-arrow-left.png';
 import imgBtn from '../../assets/image/icon-img-button.png';
-import PopupModal from '../../Components/Common/Modal/PopupModal';
+import PopupModal from '../Common/Modal/PopupModal';
 import axios from 'axios';
+import '../../Pages/CommunityPage/CommunityUpload.style'
 
-function CustomInput({ title, isRequired, placeholder, type = "text", value, onChange }) {
+function CustomInput({ title, placeholder, type = "text", value, onChange }) {
   if (type === "dropdown") {
     return (
       <PostInfo>
-        <InputTitle>
-          {title}
-          {isRequired && <Required>*</Required>}
-        </InputTitle>
+        <InputTitle>{title}</InputTitle>
         <select value={value} onChange={onChange}>
           <option value="">선택</option>
           <option value="정보 공유">정보 공유</option>
@@ -29,10 +27,7 @@ function CustomInput({ title, isRequired, placeholder, type = "text", value, onC
   if (type === "textarea") {
     return (
       <PostInfo>
-        <InputTitle>
-          {title} 
-          {isRequired && <Required>*</Required>}
-        </InputTitle>
+        <InputTitle>{title}</InputTitle>
         <textarea placeholder={placeholder} value={value} onChange={onChange} rows="10" />
       </PostInfo>
     );
@@ -40,16 +35,13 @@ function CustomInput({ title, isRequired, placeholder, type = "text", value, onC
 
   return (
     <PostInfo>
-        <InputTitle>
-          {title} 
-          {isRequired && <Required>*</Required>}
-        </InputTitle>
+      <InputTitle>{title}</InputTitle>
       <input type={type} placeholder={placeholder} value={value} onChange={onChange} maxLength={title ? 15 : undefined} />
     </PostInfo>
   );
 }
 
-export default function CommunityUploadPage() {
+export default function CommunityEditUpload() {
     const navigate = useNavigate();
 
     const [title, setTitle] = useState('');
@@ -57,12 +49,59 @@ export default function CommunityUploadPage() {
     const [category, setCategory] = useState('');
     const [imgUrl, setImgUrl] = useState('');
     const [showModal, setShowModal] = useState(false);
-    const [isAllFieldsFilled, setIsAllFieldsFilled] = useState(false);
+    const { postId } = useParams(); // postId 가져오기
 
+    
     useEffect(() => {
-      const isTitleValid = title.length >= 2 && title.length <= 15;
-      setIsAllFieldsFilled(category && isTitleValid && content.trim() !== '');
-    }, [title, category, content]); // title, category, content가 변경될 때마다 실행됩니다.
+      const fetchPostDetails = async () => {
+        const token = localStorage.getItem('token');
+        try {
+          const response = await axios.get(`https://api.mandarin.weniv.co.kr/post/${postId}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          const postData = JSON.parse(response.data.post.content);
+          setTitle(postData.title);
+          setContent(postData.contentText);
+          setCategory(postData.category);
+          setImgUrl(response.data.post.image);
+        } catch (error) {
+          console.error('Failed to fetch post details', error);
+        }
+      };
+
+      fetchPostDetails();
+    }, [postId]);
+
+    const handlePostUpdate = async (e) => {
+      e.preventDefault();
+  
+      const token = localStorage.getItem('token');
+      const updateData = {
+        post: {
+          content: JSON.stringify({
+              title: title,
+              category: category,
+              contentText: content
+          }),
+          image: imgUrl
+        }
+      };
+  
+      try {
+        await axios.put(`https://api.mandarin.weniv.co.kr/post/${postId}`, updateData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+        
+        navigate('/community'); 
+      } catch (err) {
+        console.error(err);
+      }
+    };
 
     const handleImageUpload = async (e) => {
       const file = e.target.files[0];
@@ -86,37 +125,7 @@ export default function CommunityUploadPage() {
     };
     
     const handlePostSubmit = async (e) => {
-        e.preventDefault();
-
-      // 제목의 유효성 검사 (2~15자 검사)
-        const isTitleValid = title.length >= 2 && title.length <= 15;
-
-        // 모든 필드가 채워져 있는지 검사
-        const isAllFieldsFilled = category && isTitleValid && content.trim();
-
-        // 카테고리가 선택되지 않았을 경우
-        if (!category) {
-          alert("카테고리를 선택해주세요.");
-          return;
-        }
-
-        // 제목이 유효하지 않을 경우
-        if (!isTitleValid) {
-          alert("제목은 2~15자 이내로 입력해주세요.");
-          return;
-        }
-
-        // 내용이 입력되지 않았을 경우
-        if (!content.trim()) {
-          alert("내용을 입력해주세요.");
-          return;
-        }
-
-        // 모든 필드가 채워져 있지 않을 경우
-        if (!isAllFieldsFilled) {
-          alert("필수 입력사항을 입력해주세요.");
-          return;
-        }
+      e.preventDefault();
   
       const token = localStorage.getItem('token');
       const postData = {
@@ -146,14 +155,16 @@ export default function CommunityUploadPage() {
       }
     };
 
+    const isTitleValid = title.length >= 2 && title.length <= 15;
+    const isAllFieldsFilled = category && isTitleValid && content;
+
     return (
         <>
             <GlobalStyle />
-            <Container>
+        <Container>
             <Header>
-              <HeaderButton onClick={() => setShowModal(true)}><img src={backBtn} alt="뒤로가기 버튼" /></HeaderButton>
-              {/* isAllFieldsFilled 상태를 SaveButton의 isActive prop으로 전달 */}
-              <SaveButton isActive={isAllFieldsFilled} onClick={handlePostSubmit}>업로드</SaveButton>
+                <HeaderButton onClick={() => setShowModal(true)}><img src={backBtn} alt="" /></HeaderButton>
+                <SaveButton isActive={isAllFieldsFilled} onClick={handlePostUpdate}>업로드</SaveButton>
             </Header>
             <PopupModal 
                 isVisible={showModal}
@@ -164,9 +175,9 @@ export default function CommunityUploadPage() {
                 cancelText="취소"
                 confirmText="확인"
             />
-            <SubContainer>
+            <DetailContainer>
                 <CategoryContainer>
-                    <InputTitle>카테고리 <Required>*</Required></InputTitle>
+                    <InputTitle>카테고리</InputTitle>
                     <DropdownSelect value={category} onChange={e => setCategory(e.target.value)}>
                         <option value="">선택</option>
                         <option value="정보 공유">정보 공유</option>
@@ -175,23 +186,19 @@ export default function CommunityUploadPage() {
                         <option value="실종 신고">실종 신고</option>
                     </DropdownSelect>
                 </CategoryContainer>
-                <AddTxtForm>
                 <CustomInput
                     title="제목"
-                    isRequired={true}
                     placeholder="2~15자 이내여야 합니다."
                     value={title}
                     onChange={e => setTitle(e.target.value)}
                 />
                 <CustomInput
                     title="내용"
-                    isRequired={true}
                     type="textarea"
                     placeholder="내용을 입력해 주세요."
                     value={content}
                     onChange={e => setContent(e.target.value)}
                 />
-                </AddTxtForm>
                 <AddImg>
                     <InputTitle>이미지 등록</InputTitle>
                     <InputImg img={imgUrl}>
@@ -207,7 +214,7 @@ export default function CommunityUploadPage() {
                         </AddImgBtn>
                     </InputImg>
                 </AddImg>
-              </SubContainer>
+            </DetailContainer>
         </Container>
         </>
     );

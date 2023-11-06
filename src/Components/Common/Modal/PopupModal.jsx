@@ -8,10 +8,12 @@ function PopupModal({
     cancelText,  // 기본 취소 텍스트
     confirmText,  // 기본 확인 텍스트
     onConfirm,  // 확인 버튼 클릭 시 호출될 함수
-    onCancel  // 취소 버튼 클릭 시 호출될 함수
+    onCancel,  // 취소 버튼 클릭 시 호출될 함수
+    onDelete // 여기에 새로운 prop으로 onDelete를 추가
 }) {
   const handleConfirm = () => {
     if(onConfirm) onConfirm();
+    if(onDelete) onDelete(); // 여기에 onDelete 추가
     setIsVisible(false);
   };
 
@@ -25,8 +27,12 @@ function PopupModal({
       <ModalContainer>
         <ModalAlertText>{alertText}</ModalAlertText>
         <ModalButtonContainer>
-          <ModalButton onClick={handleCancel}>{cancelText}</ModalButton>
-          <ModalButton $isConfirm onClick={handleConfirm}>{confirmText}</ModalButton>
+          {cancelText && (
+            <ModalButton onClick={handleCancel}>{cancelText}</ModalButton>
+          )}
+          {confirmText && (
+            <ModalButton $isConfirm onClick={handleConfirm}>{confirmText}</ModalButton>
+          )}
         </ModalButtonContainer>
       </ModalContainer>
     </ModalOverlay>

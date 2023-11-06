@@ -1,47 +1,34 @@
 import styled from 'styled-components';
 
-export const Header = styled.header`
-  width: 100%;
-  height: 48px;
-  border-bottom: 1px solid #DBDBDB;
-  display: flex;
-  justify-content: space-between;
-`
-
-export const HeaderButton = styled.button`
-  width: 48px;
-  height: 48px;
-
-  img {
-    width: 22px;
-    height: 22px;
-    object-fit: cover;
-  }
-`
-
-export const DetailContainer = styled.main`
-  width: 100%;
-  padding: 17px 34px;
-`
 
 export const ProductImg = styled.div`
   img {
     width: 100%;
-    height: 247px;
-    object-fit: cover;
+    height: 250px;
+    object-fit: contain;
     margin-bottom: 15px;
   }
 `
 
 export const ProfileInfo = styled.div`
   height: 58px;
-  margin-bottom: 16px;
+  margin-bottom: 25px;
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
+
+export const UserProfile = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
 `
 
 export const ProfileImg = styled.img`
   margin-right: 12px;
   border-radius: 50%;
+  width: 60px;
+  height: 60px;
 `
 
 export const ProfileTxt = styled.div`
@@ -56,14 +43,14 @@ export const ProfileName = styled.p`
 `
 
 export const ProfileId = styled.p`
-  font-size: 12px;
+  font-size: 13px;
   color: #767676;
 `
 export const ChatBtn = styled.button`
   width: 87px;
-  height: 24px;
+  height: 30px;
   color: white;
-  font-size: 12px;
+  font-size: 13px;
   background-color: #004E98;
   border-radius: 30px;
 `
@@ -74,30 +61,27 @@ export const ProfileContents = styled.div`
   align-items: center;
 `
 export const ProductInfo = styled.div`
-  margin-bottom: 40px;
+  margin-bottom: 30px;
 
-  h4{
-    font-size: 14px;
-    margin-bottom: 6px;
+  h4 {
+    font-size: 16px;
+    margin-bottom: 10px;
   }
 
   strong {
-    font-size: 12px;
+    font-size: 16px;
+    font-weight: bold;
     color: #004E98;
   }
 `
 
 export const ProductDesc = styled.div`
-  h4 {
-    font-size: 14px;
-    margin-bottom: 6px;
-  }
-
   p {
     font-size: 14px;
     line-height: 1.5;
   }
 `
+
 export const Overlay = styled.div`
   position: fixed;
   top: 0;
