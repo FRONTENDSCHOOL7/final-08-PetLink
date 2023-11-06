@@ -28,9 +28,14 @@ export const locationOptions = [
     { value: "제주", label: "제주" },
 ];
 
-export function DropdownSelect({ value, onChange, options }) {
+export function DropdownSelect({ value, onChange, options, placeholder = "선택하세요" }) {
     return (
         <select value={value} onChange={onChange}>
+            {/* Add a disabled option as the first choice */}
+            <option value="" disabled={true}>
+                {placeholder}
+            </option>
+            {/* Map through the options provided */}
             {options.map((option, index) => (
                 <option value={option.value} key={index}>
                     {option.label}
