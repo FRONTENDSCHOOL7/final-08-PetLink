@@ -18,6 +18,7 @@ import {
   InputField,
   StyledInput,
   FieldLabel,
+  Label,
 } from "../../Components/Login/LoginForm.style";
 import PopupModal from '../../Components/Common/Modal/PopupModal'
 import * as DropdownComponents from "../../Components/Profile/Dropdown";
@@ -41,16 +42,23 @@ const JoinPage = () => {
   const [currentPage, setCurrentPage] = useState("join");
   const [showModal, setShowModal] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
-  // const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isAccountNameValid, setIsAccountNameValid] = useState(false);
   const [pet, setPet] = useState("");
   const [gender, setGender] = useState("");
   const [birthdate, setBirthdate] = useState("");
   const [location, setLocation] = useState("");
+  const [usernameTouched, setUsernameTouched] = useState(false);
   const [previewImage, setPreviewImage] = useState(null);
+  const [usernameError, setUsernameError] = useState('');
   const convertInfoToTags = (bangyeolgori) => {
     return `#bangyeolgori `;
   };
-
+  
+  // 텍스 빠질
+  const handleUsernameBlur = () => {
+    setUsernameTouched(true);
+  };
   
   const handleStartBanGyeol = () => {
     setIsModalOpen(true);
@@ -93,8 +101,10 @@ const JoinPage = () => {
     const accountNameRegex = /^[a-zA-Z0-9_.]+$/;
     if (!accountNameRegex.test(accountname)) {
       setAccountnameError("영문, 숫자, 밑줄, 마침표만 사용할 수 있습니다.");
+      setIsAccountNameValid(false); // Set account name as invalid
     } else {
       setAccountnameError("");
+      setIsAccountNameValid(true); // Set account name as valid
     }
   };
 
@@ -149,9 +159,20 @@ const JoinPage = () => {
     return res;
   };
 
+  // 활동명
   const inputUsername = (e) => {
-    setUsername(e.target.value);
+    const newUsername = e.target.value;
+    setUsername(newUsername);
+  
+    if (newUsername.length > 0 && newUsername.length < 2) {
+      setUsernameError('2글자 이상 입력하세요.');
+    } else if (newUsername.length > 10) {
+      setUsernameError('10자 이내여야 합니다.');
+    } else {
+      setUsernameError('');
+    }
   };
+
   const extractIntro = () => {
     const match = info.match(/#intro:([^#]*)/);
     return match ? match[1].trim() : "";
@@ -177,9 +198,9 @@ const JoinPage = () => {
 
   // 계정 이름 중복체크
   const checkAccountNameAvailability = async (accountname) => {
-    setAccountnameError(""); // 계정 이름 에러 메시지 초기화
-
-    if (!accountname) {
+    const accountNameRegex = /^[a-zA-Z0-9_.]+$/;
+    if (!accountNameRegex.test(accountname)) {
+      setAccountnameError("영문, 숫자, 밑줄, 마침표만 사용할 수 있습니다.");
       return;
     }
 
@@ -249,6 +270,14 @@ const JoinPage = () => {
 
     console.log("Form is valid. Proceeding to join."); // 유효성 검사 통과, 회원가입 진행
 
+    if (!/^[a-zA-Z0-9_.]+$/.test(accountname)) {
+      console.log("Validation Error: Account name is not valid."); // 계정 이름 유효성 검사 에러
+      setAccountnameError("영문, 숫자, 밑줄, 마침표만 사용할 수 있습니다.");
+      return;
+    }
+  
+    console.log("Form is valid. Proceeding to join.");
+
     const joinData = {
       user: {
         username: username,
@@ -302,18 +331,21 @@ const JoinPage = () => {
                   )}
                 </InputField>
                 <InputField>
-                  <FieldLabel>비밀번호</FieldLabel>
-                  <StyledInput
-                    type="password"
-                    placeholder="비밀번호 입력해주세요."
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    onFocus={handlePasswordFocus} // 비밀번호 필드에 포커스가 가면 이메일 검증 실행
-                  />
-                  {validationErrors.password && (
-                    <span>{validationErrors.password}</span>
-                  )}
-                </InputField>
+                <FieldLabel>비밀번호</FieldLabel>
+                <StyledInput
+                  type="password"
+                  placeholder="비밀번호 입력해주세요."
+                  value={password}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                    // Call validateForm function here if you want to validate as the user types
+                  }}
+                  onFocus={handlePasswordFocus} // 비밀번호 필드에 포커스가 가면 이메일 검증 실행
+                />
+                {password.length > 0 && password.length < 6 && (
+                  <span style={{ fontSize: "14px", color: "red" }}>비밀번호 6자 미만입니다.</span>
+                )}
+              </InputField>
   
                 <SubmitButton
                   type="button"
@@ -342,14 +374,19 @@ const JoinPage = () => {
                     </ImageUpBtn>
                 </ImageWrap>
                 <InputField>
-                  <FieldLabel>활동명</FieldLabel>
-                  <StyledInput
-                    type="text"
-                    placeholder="2 ~ 10자 이내여야 합니다."
-                    value={username}
-                    onChange={inputUsername}
-                  />
-                </InputField>
+                <FieldLabel>활동명</FieldLabel>
+                <StyledInput
+                  type="text"
+                  placeholder="2 ~ 10자 이내여야 합니다."
+                  minLength="2"
+                  maxLength="10"
+                  value={username}
+                  onChange={inputUsername}
+                />
+                {usernameError && (
+                  <span style={{ fontSize: "14px", color: "red" }}>{usernameError}</span>
+                )}
+              </InputField>
                 <InputField>
                   <FieldLabel>계정 ID</FieldLabel>
                   <StyledInput
@@ -366,7 +403,7 @@ const JoinPage = () => {
                   )}
                 </InputField>
                 <InputField>
-                  <FieldLabel>상태메시지</FieldLabel>
+                  <Label>상태메시지</Label>
                   <StyledInput
                     type="text"
                     placeholder="자신의 반려동물에 대해 소개해 주세요!"
@@ -426,13 +463,18 @@ const JoinPage = () => {
                     </SelectInfoItem>
                   </SelectInfo>
                 </PetInfo>
-                <SubmitButton onClick={handleStartBanGyeol}
-                  // type="button"
-                  // onClick={submitJoin}
-                  // disabled={!isValidProfile()}
-                >
-                  반결고리 시작하기
-                </SubmitButton>
+                <SubmitButton
+                type="button"
+                onClick={() => {
+                  if (isValidProfile() && isAccountNameValid) {
+                    submitJoin();
+                    handleStartBanGyeol();
+                  }
+                }}
+                disabled={!isValidProfile() || !isAccountNameValid}
+              >
+                반결고리 시작하기
+              </SubmitButton>
               </SubContainer>
             </>
           )}

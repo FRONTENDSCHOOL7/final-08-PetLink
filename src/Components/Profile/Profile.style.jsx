@@ -33,6 +33,11 @@ export const ProfilePet = styled.div`
     margin: 5px 0;
     font-size: 15px;
     color: #767676;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 5px;
 `;
 
 export const GenderIcon = styled.span`

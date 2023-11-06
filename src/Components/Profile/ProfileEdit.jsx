@@ -19,6 +19,7 @@ import {
   PetInfo,
 } from "./Profile.style";
 import { Errormessage } from "./ProfileEdit.style";
+import { FieldLabel } from "../Login/LoginForm.style";
 
 function convertInfoToTags(intro, pet, gender, birthdate, location) {
   // intro = `#intro:${intro ? intro.replace(/^(#intro:)+/, "") : ""}`;
@@ -265,6 +266,21 @@ function ProfileEdit() {
     }
   }
 
+  // 활동명 2 ~ 10자 제한
+  const inputUsername = (e) => {
+    const newUsername = e.target.value;
+    setUsername(newUsername);
+  
+    if (newUsername.length > 0 && newUsername.length < 2) {
+      setUsernameError('2글자 이상 입력하세요.');
+    } else if (newUsername.length > 10) {
+      setUsernameError('10자 이내여야 합니다.');
+    } else {
+      setUsernameError('');
+    }
+  };
+  
+
   return (
     <>
       <GlobalStyle />
@@ -284,40 +300,31 @@ function ProfileEdit() {
             </ImageUpbtn>
           </ImageWrap>
           <EditWrap>
+          <InputGroup>
+        <FieldLabel>활동명</FieldLabel>
+        <StyledInput
+          type="text"
+          value={username}
+          minLength="2"
+          maxLength="10"
+          onChange={inputUsername}
+          onBlur={handleBlur("username")}
+          required
+        />
+        {usernameError && <Errormessage>{usernameError}</Errormessage>}
+      </InputGroup>
             <InputGroup>
-              <Styledlabel>활동명*</Styledlabel>
-              <StyledInput
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                onBlur={handleBlur("username")}
-                required
-              />
-              {usernameError && <Errormessage>{usernameError}</Errormessage>}
-            </InputGroup>
-            <InputGroup>
-              <Styledlabel>계정 ID*</Styledlabel>
-              <StyledInput
-                type="text"
-                value={accountname}
-                onChange={(e) => setAccountname(e.target.value)}
-                onBlur={handleBlur("accountname")}
-                required
-              />
-              {accountnameError && (
-                <Errormessage>{accountnameError}</Errormessage>
-              )}
-            </InputGroup>
-            <InputGroup>
-              <Styledlabel>상태메시지</Styledlabel>
-              <StyledInput
+            <Styledlabel>상태메시지</Styledlabel>
+            <StyledInput
               value={intro}
               onChange={(e) => {
                 const newValue = e.target.value.replace(/^#intro:/, "");
-                setIntro(newValue);
+                if (!newValue.includes("accountname")) {
+                  setIntro(newValue);
+                }
               }}
             />
-            </InputGroup>
+          </InputGroup>
               <Styledpetinfo>반려동물 정보등록</Styledpetinfo>
             <PetInfo>
               <InputGroup>

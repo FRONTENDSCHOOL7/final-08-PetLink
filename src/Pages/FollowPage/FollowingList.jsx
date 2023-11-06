@@ -96,7 +96,8 @@ return info;
                         </Link>
                         <S.UserName>
                             <p>{parseIntro.intro}</p>
-                            <span>{user.accountname}</span>
+                            <S.NameTxt>{user.username}</S.NameTxt>
+                            <S.Account>{user.accountname}</S.Account>
                         </S.UserName>
                     </S.UserProfile>
                     <FollowBtn onClick={() => toggleFollow(user._id)} isFollowing={user.isfollow}>

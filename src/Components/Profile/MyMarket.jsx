@@ -69,18 +69,24 @@ const MyMarket = ({ accountname }) => {
     <>
       <GlobalStyle />
       <ContentContainer>
+        {loading && <div>Loading...</div>}
+        {error && <div>Error: {error.message}</div>}
         <SaleItem>판매 중인 상품</SaleItem>
         <ProductsContainer>
-          {products.map((product) => (
-            <ProductCard
-              key={product.id}
-              onClick={() => goToProductDetail(product)}
-            >
-              <ProductImage src={product.itemImage} alt={product.itemName} />
-              <MyItem>{extractProductName(product.itemName)}</MyItem>
-              <Price>{Number(product.price).toLocaleString()} 원</Price>
-            </ProductCard>
-          ))}
+          {products.length > 0 ? (
+            products.map((product) => (
+              <ProductCard
+                key={product.id}
+                onClick={() => goToProductDetail(product.id)}
+              >
+                <ProductImage src={product.itemImage} alt={product.itemName} />
+                <MyItem>{extractProductName(product.itemName)}</MyItem>
+                <Price>{Number(product.price).toLocaleString()} 원</Price>
+              </ProductCard>
+            ))
+          ) : (
+            <ProductEmpty>등록된 상품이 없습니다😥</ProductEmpty>
+          )}
         </ProductsContainer>
       </ContentContainer>
     </>
@@ -118,6 +124,23 @@ const ProductImage = styled.img`
   display: block;
   border-radius: 10px;
   margin: 0 auto;
+`;
+
+// 등록한 상품이 없을 때 스타일 컴포넌트
+const ProductEmpty = styled.div`
+  /* 상품이 없을 때 텍스트를 위한 스타일 */
+  display: flex;
+  align-items: center; /* 세로 중앙 정렬 */
+  justify-content: center; /* 가로 중앙 정렬 */
+  width: 100%; /* 컨테이너의 전체 너비를 사용 */
+  min-height: 140px; /* 컨테이너의 높이를 설정 */
+  background-color: #f2f2f2; /* 배경색 설정 */
+  font-size: 16px;
+  font-weight: 700;
+  color: #666; /* 텍스트 색상은 기본적으로 어두운 회색으로 설정 */
+  border-radius: 10px; /* 배경의 모서리를 둥글게 */
+  margin: 0 auto; /* 상하 자동 마진으로 중앙 정렬 */
+  margin-right: 30px;
 `;
 
 const MyItem = styled.div`
