@@ -176,7 +176,7 @@ const [commentLoading, setCommentLoading ] = useState(false)
                 <S.IconImg src={liked ? redHeartIcon : heartIcon} alt='좋아요 버튼' />
                 <S.Count>{likeNum}</S.Count>
               </S.IconBtn>
-              <S.IconBtn onClick={() => setIsModalOpen(true)}>
+              <S.IconBtn >
                 <S.IconImg src={commentIcon} alt='댓글 개수' />
                 <S.Count>0</S.Count>
               </S.IconBtn>
