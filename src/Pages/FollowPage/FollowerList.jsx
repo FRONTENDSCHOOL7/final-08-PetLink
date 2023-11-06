@@ -2,19 +2,18 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Container, SubContainer } from '../../Styles/reset.style';
 import * as S from '../../Components/Home/PostList.style';
-import { Link, useParams } from 'react-router-dom'; // Make sure useParams is imported here
+import { Link, useParams } from 'react-router-dom';
 import imgUrl from '../../assets/image/icon-basic-profile.png';
 import HeaderLayouts from '../../Components/Common/Header/Header';
 import styled from 'styled-components';
 
 export default function FollowerList() {
   const [followers, setFollowers] = useState([]);
-  const { accountname } = useParams(); // useParams is now defined
+  const { accountname } = useParams();
 
   useEffect(() => {
     const fetchFollowers = async () => {
       try {
-        // Correctly using template literals to embed accountname in URL
         const response = await axios.get(`https://api.mandarin.weniv.co.kr/profile/${accountname}/follower`, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -34,35 +33,46 @@ export default function FollowerList() {
 
   const toggleFollow = async (accountname, isCurrentlyFollowed) => {
     try {
-      const url = `https://api.mandarin.weniv.co.kr/profile/${accountname}/${isCurrentlyFollowed ? 'unfollow' : 'follow'}`;
       const method = isCurrentlyFollowed ? 'delete' : 'post';
-      const response = await axios[method](url, {}, {
+      const action = isCurrentlyFollowed ? 'unfollow' : 'follow';
+      const response = await axios({
+        method: method,
+        url: `https://api.mandarin.weniv.co.kr/profile/${accountname}/${action}`,
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-type': 'application/json'
         }
       });
-      if (response.data) {
-        setFollowers(prev => prev.map(follower => {
-          if (follower.accountname === accountname) {
-            return { ...follower, isfollow: !isCurrentlyFollowed };
-          }
-          return follower;
-        }));
+  
+      if (response.data && response.data.profile) {
+        setFollowers(prevFollowers =>
+          prevFollowers.map(follower => {
+            if (follower.accountname === accountname) {
+              return { ...follower, isfollow: response.data.profile.isfollow };
+            }
+            return follower;
+          })
+        );
       }
     } catch (error) {
       console.error(error);
+      if (error.response && error.response.data && error.response.data.message) {
+        alert(error.response.data.message);
+      } else {
+        alert('An error occurred while trying to follow/unfollow the user.');
+      }
     }
   };
+  
 
   function parseIntro(intro) {
     if (!intro) {
-        return { intro: '소개글이 없습니다.' }; // Return default message if intro is falsy
+        return { intro: '소개글이 없습니다.' };
     }
 
     const tags = ['intro', 'pet', 'gender', 'birthdate', 'location'];
     const info = {
-        intro: '소개글이 없습니다.' // Set a default message for intro
+        intro: '소개글이 없습니다.'
     };
     
     tags.forEach(tag => {

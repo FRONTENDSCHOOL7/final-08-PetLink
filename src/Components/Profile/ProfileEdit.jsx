@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import * as DropdownComponents from "./Dropdown";
 import TabMenu from "../Common/TabMenu/TabMenu";
@@ -95,6 +96,7 @@ function ProfileEdit() {
   const [usernameError, setUsernameError] = useState("");
   const [accountnameError, setAccountnameError] = useState("");
   const [currentAccountname, setCurrentAccountname] = useState("");
+  const navigate = useNavigate();
   
   // 수정 버튼 활성화
   const isEnabled = username.trim() && accountname.trim();
@@ -224,6 +226,7 @@ function ProfileEdit() {
 
       if (response.data && response.data.user) {
         console.log("Profile updated successfully:", response.data.user);
+        navigate('/profile');
       } else {
         console.error(
           "Update error:",

@@ -116,15 +116,15 @@ return info;
 export default FollowingList;
 
 const FollowBtn = styled.button`
-    background-color: ${(props) => (props.isFollowing ? '#004E98' : '#fff')};
-    color: ${(props) => (props.isFollowing ? '#fff' : '#767676')};
-    border: ${(props) => (props.isFollowing ? 'none' : '1px solid #DBDBDB')};
+    background-color: ${(props) => (props.isFollowing ? '#fff' : '#004E98')};
+    color: ${(props) => (props.isFollowing ? '#767676' : '#fff')};
+    border: ${(props) => (props.isFollowing ? '1px solid #DBDBDB' : 'none')};
     border-radius: 26px;
     transition: background-color 0.3s;
     width: 56px;
     height: 28px;
     cursor: pointer;
     &:hover {
-    opacity: 0.8;
-}
+        opacity: 0.8;
+    }
 `;

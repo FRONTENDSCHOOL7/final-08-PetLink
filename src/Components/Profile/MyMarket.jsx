@@ -65,7 +65,7 @@ const MyMarket = ({ accountname, token }) => {
           >
             <ProductImage src={product.itemImage} alt={product.itemName} />
             <MyItem>{extractProductName(product.itemName)}</MyItem>
-            <Price>{product.price}원</Price>
+            <Price>{Number(product.price).toLocaleString()} 원</Price>
           </ProductCard>
         ))}
       </ProductsContainer>
