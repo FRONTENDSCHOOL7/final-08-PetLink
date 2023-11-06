@@ -50,6 +50,12 @@ export const ChatInputBar = styled.div`
   position: fixed;
   bottom: 0;
   border-top: 1px solid #DBDBDB;
+
+  @media (min-width: 768px) {
+    width: 100%;
+    min-width: 768px;
+    height: 80px;
+  }
 `
 
 export const AddImgBtn = styled.button`
@@ -75,6 +81,10 @@ export const ChatInput = styled.input`
 
   &:focus {
     outline: none;
+  }
+
+  @media (min-width: 768px) {
+    font-size: 16px;
   }
 `
 
