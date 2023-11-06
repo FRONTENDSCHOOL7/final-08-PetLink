@@ -169,7 +169,7 @@ export default function CommunityEditUpload() {
             <PopupModal 
                 isVisible={showModal}
                 setIsVisible={setShowModal}
-                onConfirm={() => navigate('/community')}
+                onConfirm={() => navigate('/home')}
                 onCancel={() => console.log('Cancel')}
                 alertText="작성을 취소하시겠습니까?"
                 cancelText="취소"

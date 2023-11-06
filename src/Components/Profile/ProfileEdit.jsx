@@ -266,6 +266,21 @@ function ProfileEdit() {
     }
   }
 
+  // 활동명 2 ~ 10자 제한
+  const inputUsername = (e) => {
+    const newUsername = e.target.value;
+    setUsername(newUsername);
+  
+    if (newUsername.length > 0 && newUsername.length < 2) {
+      setUsernameError('2글자 이상 입력하세요.');
+    } else if (newUsername.length > 10) {
+      setUsernameError('10자 이내여야 합니다.');
+    } else {
+      setUsernameError('');
+    }
+  };
+  
+
   return (
     <>
       <GlobalStyle />
@@ -285,17 +300,19 @@ function ProfileEdit() {
             </ImageUpbtn>
           </ImageWrap>
           <EditWrap>
-            <InputGroup>
-              <FieldLabel>활동명</FieldLabel>
-              <StyledInput
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                onBlur={handleBlur("username")}
-                required
-              />
-              {usernameError && <Errormessage>{usernameError}</Errormessage>}
-            </InputGroup>
+          <InputGroup>
+        <FieldLabel>활동명</FieldLabel>
+        <StyledInput
+          type="text"
+          value={username}
+          minLength="2"
+          maxLength="10"
+          onChange={inputUsername}
+          onBlur={handleBlur("username")}
+          required
+        />
+        {usernameError && <Errormessage>{usernameError}</Errormessage>}
+      </InputGroup>
             <InputGroup>
             <Styledlabel>상태메시지</Styledlabel>
             <StyledInput

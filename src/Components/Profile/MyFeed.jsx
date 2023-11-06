@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
 import { Overlay } from '../Product/ProductDetail.style';
 import BottomModal from '../Common/Modal/BottomModal';
 import moreIcon from '../../assets/image/icon-more-vertical.png';
+import redHeartIcon from "../../assets/image/icon-heart-red.png";
 import HeartIcon from '../../assets/image/icon-heart.png';
 import userImg from '../../assets/image/icon-basic-profile.png';
 import onAllbumIcon from '../../assets/image/icon-post-album-on.png';
@@ -25,6 +26,9 @@ const MyFeed = (props) => {
   const postsPerPage = 10; // Set the posts per page as needed
   const { accountname: urlAccountname } = useParams();
   const [accountname, setAccountname] = useState(props.accountname || urlAccountname || localStorage.getItem('loggedInAccountname'));
+  const [content, setContent] = useState("");
+  const [likeCount, setLikeCount] = useState(0);
+  const [liked, setLiked] = useState(false);
   const navigate = useNavigate();
   const { postId } = useParams();
   const [modalPost, setModalPost] = useState(null);
@@ -85,6 +89,14 @@ const MyFeed = (props) => {
     }
   }, [accountname]);
 
+  const handleLikeClick = async () => {
+    if (liked) {
+      setLikeCount(likeCount - 1);
+    } else {
+      setLikeCount(likeCount + 1);
+    }
+    setLiked(!liked);
+  };
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -161,15 +173,17 @@ const MyFeed = (props) => {
               </MoreBtn>
             </UserInfo>
             <ContentBox>
-              <ContentTxt className='text'>{post.content}</ContentTxt>
-              {post.images && post.images.map((image, index) => (<ContentImg key={index} src={image.url} alt={`포스팅 이미지 ${index}`} />
-              ))}
-              {post.image && <ContentImg src={post.image} alt="Post" />}
+              <Link to={`/post/${post.id}`}  state={{ selectedPost: post }}>
+                <ContentTxt className='text'>{post.content}</ContentTxt>
+                {post.images && post.images.map((image, index) => (<ContentImg key={index} src={image.url} alt={`포스팅 이미지 ${index}`} />
+                ))}
+                {post.image && <ContentImg src={post.image} alt="Post" />}
+              </Link>
             </ContentBox>
             <ContentBox>
               <IconBox>
-                <IconBtn>
-                  <IconBtnImg src={HeartIcon} alt='하트 아이콘' />
+                <IconBtn onClick={handleLikeClick}>
+                  <IconBtnImg src={liked ? redHeartIcon : HeartIcon} alt='하트 아이콘' />
                   <IconCount>{post.likesCount}</IconCount>
                 </IconBtn>
                 <IconBtn>
