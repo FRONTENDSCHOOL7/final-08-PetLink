@@ -134,14 +134,13 @@ export const ImageWrap = styled.div`
 
     export const ImageUpbtn = styled.label`
     position: absolute;
-    bottom: 45px;
-    right: 138px;
     width: 30px;
     height: 30px;
     background-image: url(${uploadIcon});
     background-size: cover;
     cursor: pointer;
     z-index: 10;
+    transform: translate(40px, 40px);
 
     input[type="file"] {
         display: none;
@@ -150,6 +149,7 @@ export const ImageWrap = styled.div`
     @media (min-width: 768px) {
         bottom: 45px;
         right: 326px;
+        transform: translate(40px, 0px)
     }
     `;
 
@@ -207,14 +207,14 @@ export const Styledpetinfo = styled.label`
 `
 
 export const SubBtn = styled.button`
-    border-color: var(--dbdbdb);
+    background-color: ${(props) => (props.disabled ? '#dbdbdb' : '#004e98')};
     position: relative;
     height: 34px;
     padding: 5px 20px;
-    color: #767676;
+    color: ${(props) => (props.disabled ? '#767676' : '#ffffff')};
     border: 1px solid;
     border-radius: 30px;
-    cursor: pointer;
+    cursor: ${(props) => (props.disabled ? 'default' : 'pointer')};
     font-size: 16px;
     margin-top: 21px;
     margin-left: auto;
@@ -223,8 +223,8 @@ export const SubBtn = styled.button`
     display: block;
 
     &:hover {
-        background-color: #004e98;
-        color: #ffffff;
+        background-color: ${(props) => (props.disabled ? '#dbdbdb' : '#004e98')};
+        color: ${(props) => (props.disabled ? '#767676' : '#ffffff')};
     }
 `;
 

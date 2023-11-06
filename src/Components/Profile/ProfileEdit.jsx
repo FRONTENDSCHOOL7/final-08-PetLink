@@ -20,11 +20,12 @@ import {
 import { Errormessage } from "./ProfileEdit.style";
 
 function convertInfoToTags(intro, pet, gender, birthdate, location) {
-  intro = intro ? `#intro:${intro.replace(/^(#intro:)+/, "")}` : "";
-  pet = pet ? `#pet:${pet}` : "";
-  gender = gender ? `#gender:${gender}` : "";
-  birthdate = birthdate ? `#birthdate:${birthdate}` : "";
-  location = location ? `#location:${location}` : "";
+  // intro = `#intro:${intro ? intro.replace(/^(#intro:)+/, "") : ""}`;
+  intro = `#intro:${intro || ""}`;
+  pet = `#pet:${pet || ""}`;
+  gender = `#gender:${gender || ""}`;
+  birthdate = `#birthdate:${birthdate || ""}`;
+  location = `#location:${location || ""}`;
   return [intro, pet, gender, birthdate, location, "#bangyeolgori"]
     .filter(Boolean)
     .join(" ");
@@ -94,6 +95,8 @@ function ProfileEdit() {
   const [usernameError, setUsernameError] = useState("");
   const [accountnameError, setAccountnameError] = useState("");
   const [currentAccountname, setCurrentAccountname] = useState("");
+  // 수정 버튼 활성화
+  const isEnabled = username.trim() && accountname.trim();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -108,6 +111,7 @@ function ProfileEdit() {
             },
           }
         );
+        console.log("API response:", response.data);
 
         if (response.data && response.data.user) {
           const user = response.data.user;
@@ -181,7 +185,7 @@ function ProfileEdit() {
       formIsValid = false;
     }
 
-    if (!formIsValid) {
+    if (!formIsValid, !isEnabled) {
       return;
     }
 
@@ -195,13 +199,8 @@ function ProfileEdit() {
       }
     }
 
-    const taggedIntro = convertInfoToTags(
-      intro,
-      pet,
-      gender,
-      birthdate,
-      location
-    );
+    const taggedIntro = convertInfoToTags(intro, pet, gender, birthdate, location);
+
 
     const userData = {
       username,
@@ -308,12 +307,12 @@ function ProfileEdit() {
             <InputGroup>
               <Styledlabel>상태메시지</Styledlabel>
               <StyledInput
-                value={intro}
-                onChange={(e) => {
-                  const newValue = e.target.value.replace(/^#intro:/, "");
-                  setIntro(newValue);
-                }}
-              />
+              value={intro}
+              onChange={(e) => {
+                const newValue = e.target.value.replace(/^#intro:/, "");
+                setIntro(newValue);
+              }}
+            />
             </InputGroup>
               <Styledpetinfo>반려동물 정보등록</Styledpetinfo>
             <PetInfo>
@@ -351,7 +350,7 @@ function ProfileEdit() {
               </InputGroup>
             </PetInfo>
           </EditWrap>
-            <SubBtn type="submit">프로필 수정</SubBtn>
+            <SubBtn disabled={!isEnabled} type="submit">프로필 수정</SubBtn>
         </form>
         </SubContainer>
         <TabMenu />
