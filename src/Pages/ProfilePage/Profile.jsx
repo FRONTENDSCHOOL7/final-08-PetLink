@@ -248,12 +248,10 @@ const ProfilePage = () => {
 
     // intro: #intro 없을때
     function renderIntro(introText) {
-        console.log("introText:", introText); // 로그를 출력하여 introText 값을 확인합니다.
-    
+        console.log("introText:", introText);
         const introMatch = introText.match(/#intro:(.*?)(?=#|$)/);
-        console.log("introMatch:", introMatch); // 로그를 출력하여 매치된 값을 확인합니다.
-    
-        // #intro 태그가 있으면 해당 부분만, 없으면 전체 introText를 반환합니다.
+        console.log("introMatch:", introMatch);
+
         return introMatch ? introMatch[1].trim() : introText;
     }
     
@@ -280,7 +278,8 @@ const ProfilePage = () => {
                                     <GenderIcon gender={profileData.gender}>
                                         {genderUnicode(profileData.gender)}
                                     </GenderIcon>)}
-                                {profileData.pet && <span>{`${profileData.pet} `}</span>}
+                                {/* {profileData.pet && <span>{`${profileData.pet} `}</span>} */}
+                                {typeof profileData.pet !== 'boolean' && <span>{profileData.pet}</span>}
                                 {profileData.birthdate && <span>{`${calculateAge(profileData.birthdate)} `}</span>}
                                 {profileData.location && <span>{`${profileData.location} `}</span>}
                             </ProfilePet>
