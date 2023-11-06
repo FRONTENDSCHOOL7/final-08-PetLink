@@ -142,20 +142,6 @@ const ProfilePage = () => {
         );
     }
     
-    // function parseIntro(intro) {
-    //     const tags = ['intro', 'pet', 'gender', 'birthdate', 'location'];
-    //     const info = {};
-    
-    //     tags.forEach(tag => {
-    //         const match = intro.match(new RegExp(`#${tag}:(.*?)(?=#|$)`));
-    //         if (match && match[1]) {
-    //             info[tag] = match[1].trim();
-    //         }
-    //     });
-    
-    //     return info;
-    // }
-
     function parseIntro(intro) {
         const tags = ['intro', 'pet', 'gender', 'birthdate', 'location'];
         const info = {};
@@ -242,23 +228,33 @@ const ProfilePage = () => {
         }
     };
 
-    // birthdate를 개월 또는 일자로 변환
     function calculateAge(birthdateStr) {
+        if (!birthdateStr) {
+            // If birthdate is not provided, return "선택안함"
+            return " ";
+        }
+    
         const birthdate = new Date(birthdateStr);
         const today = new Date();
-
-        let months = (today.getFullYear() - birthdate.getFullYear()) * 12;
-        months -= birthdate.getMonth();
-        months += today.getMonth();
-        
-        if (months <= 0) {
-            const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
-            const diffDays = Math.round(Math.abs((today - birthdate) / oneDay));
-            return `${diffDays}일`;
+    
+        let years = today.getFullYear() - birthdate.getFullYear();
+        let months = today.getMonth() - birthdate.getMonth();
+        if (months < 0 || (months === 0 && today.getDate() < birthdate.getDate())) {
+            years--;
+            months = (months + 12) % 12;
         }
-        
-        return `${months}개월`;
+    
+        // If less than a year has passed, return the number of months
+        if (years === 0) {
+            return months > 0 ? `${months}개월` : "1개월 미만";
+        }
+    
+        // If more than a year has passed, return both years and months
+        const yearText = years > 1 ? `${years}년` : `${years}년`;
+        const monthText = months > 0 ? ` ${months}개월` : '';
+        return yearText + monthText;
     }
+    
     // gender 아이콘 변경
     function genderUnicode(gender) {
         return gender === '남아' ? '♂' : gender === '여아' ? '♀' : null;
@@ -291,16 +287,17 @@ const ProfilePage = () => {
                             <ProfileImage src={profileData.image} alt="Profile" />
                             <ProfileUsername>{profileData.username}</ProfileUsername>
                             <ProfileAccountname>@{profileData.accountname}</ProfileAccountname>
-                            <ProfilePet>
-                                {profileData.gender && (
-                                    <GenderIcon gender={profileData.gender}>
-                                        {genderUnicode(profileData.gender)}
-                                    </GenderIcon>)}
-                                {/* {profileData.pet && <span>{`${profileData.pet} `}</span>} */}
-                                {typeof profileData.pet !== 'boolean' && <span>{profileData.pet}</span>}
-                                {profileData.birthdate && <span>{`${calculateAge(profileData.birthdate)} `}</span>}
-                                {profileData.location && <span>{`${profileData.location} `}</span>}
-                            </ProfilePet>
+                        <ProfilePet>
+    {profileData.gender && (
+        <GenderIcon gender={profileData.gender}>
+            {genderUnicode(profileData.gender)}
+        </GenderIcon>
+    )}
+    {profileData.pet && <span>{`${profileData.pet} `}</span>}
+    <span>{calculateAge(profileData.birthdate)}</span>
+    {profileData.location && <span>{`${profileData.location} `}</span>}
+</ProfilePet>
+
                             {introContent && (<Intro>{introContent}</Intro>)}
                         </ProfileImageContainer>
                         
