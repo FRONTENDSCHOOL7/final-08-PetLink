@@ -206,7 +206,10 @@ function Community() {
               <IconMapMark src={iconMap} alt="위치표시" />
               <p>서울시 중구</p>
             </MyLocation>
-            <IconShareInfoMap src={currentMapImage} alt="지도 이미지" />
+            {/* <IconShareInfoMap src={currentMapImage} alt="지도 이미지" /> */}
+            <IconShareInfoMap>
+              <img src={currentMapImage} alt="지도 이미지" />
+            </IconShareInfoMap>
           </ShareInfoMap>
 
           {posts.map((post, index) => (
