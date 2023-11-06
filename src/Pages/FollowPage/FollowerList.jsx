@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Container } from '../../Styles/reset.style';
+import { Container, SubContainer } from '../../Styles/reset.style';
 import * as S from '../../Components/Home/PostList.style';
 import { Link, useParams } from 'react-router-dom'; // Make sure useParams is imported here
 import imgUrl from '../../assets/image/icon-basic-profile.png';
@@ -78,15 +78,16 @@ export default function FollowerList() {
 
   return (
     <Container>
-      <HeaderLayouts backTxt txt='Followers' />
+    <HeaderLayouts backTxt txt='Followers' />
+      <SubContainer>
       {followers.map(follower => (
-        <S.UserInfo key={follower._id}>
+        <S.UserInfo key={follower._id} style={{marginBottom:'5px'}}>
           <S.UserProfile>
             <Link to={`/profile/${follower.accountname}`}>
-              <img src={follower.image || imgUrl} alt={`${follower.username}의 프로필 이미지`} />
+              <S.UserImg src={follower.image || imgUrl} alt={`${follower.username} 프로필 이미지`} />
             </Link>
             <S.UserName>
-            <p>{parseIntro(follower.intro).intro}</p>
+            {/* <p>{parseIntro(follower.intro).intro}</p> */}
               <span>{follower.accountname}</span>
             </S.UserName>
           </S.UserProfile>
@@ -95,6 +96,7 @@ export default function FollowerList() {
           </FollowBtn>
         </S.UserInfo>
       ))}
+      </SubContainer>
     </Container>
   )
 }
