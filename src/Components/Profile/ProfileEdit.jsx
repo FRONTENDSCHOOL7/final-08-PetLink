@@ -19,6 +19,7 @@ import {
   PetInfo,
 } from "./Profile.style";
 import { Errormessage } from "./ProfileEdit.style";
+import { FieldLabel } from "../Login/LoginForm.style";
 
 function convertInfoToTags(intro, pet, gender, birthdate, location) {
   // intro = `#intro:${intro ? intro.replace(/^(#intro:)+/, "") : ""}`;
@@ -285,7 +286,7 @@ function ProfileEdit() {
           </ImageWrap>
           <EditWrap>
             <InputGroup>
-              <Styledlabel>활동명*</Styledlabel>
+              <FieldLabel>활동명</FieldLabel>
               <StyledInput
                 type="text"
                 value={username}
@@ -296,28 +297,17 @@ function ProfileEdit() {
               {usernameError && <Errormessage>{usernameError}</Errormessage>}
             </InputGroup>
             <InputGroup>
-              <Styledlabel>계정 ID*</Styledlabel>
-              <StyledInput
-                type="text"
-                value={accountname}
-                onChange={(e) => setAccountname(e.target.value)}
-                onBlur={handleBlur("accountname")}
-                required
-              />
-              {accountnameError && (
-                <Errormessage>{accountnameError}</Errormessage>
-              )}
-            </InputGroup>
-            <InputGroup>
-              <Styledlabel>상태메시지</Styledlabel>
-              <StyledInput
+            <Styledlabel>상태메시지</Styledlabel>
+            <StyledInput
               value={intro}
               onChange={(e) => {
                 const newValue = e.target.value.replace(/^#intro:/, "");
-                setIntro(newValue);
+                if (!newValue.includes("accountname")) {
+                  setIntro(newValue);
+                }
               }}
             />
-            </InputGroup>
+          </InputGroup>
               <Styledpetinfo>반려동물 정보등록</Styledpetinfo>
             <PetInfo>
               <InputGroup>
