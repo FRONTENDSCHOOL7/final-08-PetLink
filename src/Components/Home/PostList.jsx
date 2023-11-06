@@ -173,7 +173,7 @@ export function PostListItem({ post }) {
   const [userImg, setUserImg] = useState(null);
   const [contentImgUrl, setContentImgUrl] = useState(null);
   const [content, setContent] = useState("");
-  const [likeNum, setLikeNum] = useState(0);
+  const [likeCount, setLikeCount] = useState(0);
   const [date, setDate] = useState("");
   const [liked, setLiked] = useState(false);
   const [userAccountName, setUserAccountName] = useState(false);
@@ -249,7 +249,7 @@ export function PostListItem({ post }) {
 
       setContent(contentText);
       setDate(post.createdAt || "");
-      setLikeNum(post.likes || 0); // 초기 좋아요 수 설정
+      setLikeCount(post.likes || 0); // 초기 좋아요 수 설정
       setLiked(post.liked || false); // 사용자의 좋아요 상태 설정
     }
     fetchMyProfile()
@@ -257,9 +257,9 @@ export function PostListItem({ post }) {
 
   const handleLikeClick = async () => {
     if (liked) {
-      setLikeNum(likeNum - 1);
+      setLikeCount(likeCount - 1);
     } else {
-      setLikeNum(likeNum + 1);
+      setLikeCount(likeCount + 1);
     }
     setLiked(!liked);
   };
@@ -313,7 +313,7 @@ export function PostListItem({ post }) {
             <S.PostIcons>
               <S.IconBtn onClick={handleLikeClick}>
                 <S.IconImg  src={liked ? redHeartIcon : heartIcon} alt="하트 아이콘" />
-                <S.Count>{likeNum}</S.Count>
+                <S.Count>{likeCount}</S.Count>
               </S.IconBtn>
               <Link to={`/post/${post._id}`} state={{ selectedPost: post }}>
                 <S.IconBtn>
