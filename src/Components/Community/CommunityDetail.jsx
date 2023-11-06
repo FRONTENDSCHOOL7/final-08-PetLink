@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import styled from 'styled-components';
 import * as S from '../Home/PostList.style';
 import moreIcon from '../../assets/image/icon-more-vertical.png';
-import { Container } from '../../Styles/reset.style';
+import { Container, SubContainer } from '../../Styles/reset.style';
 import HeaderLayouts from '../Common/Header/Header';
 import heartIcon from "../../assets/image/icon-heart.png";
 import { Overlay } from '../Product/ProductDetail.style';
@@ -11,6 +12,12 @@ import BottomModal from '../Common/Modal/BottomModal';
 import redHeartIcon from '../../assets/image/icon-heart-red.png';
 import commentIcon from '../../assets/image/icon-comment.png';
 import CommentList, { WriteComment } from '../Home/CommentList';
+
+
+function formatDate(dateString) {
+  const options = { year: "numeric", month: "2-digit", day: "2-digit" };
+  return new Date(dateString).toLocaleDateString(undefined, options);
+}
 
 export default function CommunityDetail() {
   const defaultUserImg = "https://api.mandarin.weniv.co.kr/1698653743844.jpg";
@@ -76,14 +83,16 @@ export default function CommunityDetail() {
   const onChangeModal = (comment, isMyComment) => {
     let modalOptions = [];
 
+    // myPost와 action이 같아서 값이 bottomModal로 전달되어, 댓글 삭제/수정을 하면 게시글 수정/삭제 기능이 동작되고 있음. 둘의 기능을 분리시키기 위해 임시방편으로 action을 변경하였음.
+    // (기존) 수정하기,삭제하기,신고하기 (변경) 댓글 수정, 댓글 삭제, 댓글 신고
     if (isMyComment) {
       modalOptions = [
-        { action: "수정하기", alertText: "수정하시겠습니까?" },
-        { action: "삭제하기", alertText: "삭제하시겠습니까?" },
+        { action: "댓글 수정", alertText: "수정 하시겠습니까?" },
+        { action: "댓글 삭제", alertText: "삭제 하시겠습니까?" },
       ];
     } else {
       modalOptions = [
-        { action: "신고하기", alertText: "신고하시겠습니까?" },
+        { action: "댓글 신고", alertText: "신고 하시겠습니까?" },
       ];
     }
 
@@ -139,14 +148,15 @@ export default function CommunityDetail() {
   return (
     <Container>
       <HeaderLayouts back search />
+      <SubContainer>
       <S.UserInfo>
       <Link to={`/profile/${selectedPost.author.accountname}`}>
           <S.UserProfile>
-            <img src={selectedPost.author?.image || defaultUserImg} alt='사용자 프로필 이미지' />
-            <S.UserName>
-              <p>{selectedPost.author?.username}</p>
-              <p>{selectedPost.author?.accountname}</p>
-            </S.UserName>
+            <S.UserImg src={selectedPost.author?.image || defaultUserImg} alt='사용자 프로필 이미지' />
+            <div>
+              <S.NameTxt>{selectedPost.author?.username}</S.NameTxt>
+              <S.Account>{selectedPost.author?.accountname}</S.Account>
+            </div>
           </S.UserProfile>
       </Link>
         <button onClick={() => postOpenModal(myPost(selectedPost.author?.accountname))}><S.IconMore src={moreIcon} /></button>
@@ -155,18 +165,19 @@ export default function CommunityDetail() {
         <h4 style={{ marginBottom: '15px' }}>
           {JSON.parse(selectedPost.content).title}
         </h4>
-        <p className='text'>{JSON.parse(selectedPost.content).contentText}</p>
-        {selectedPost.image && <img src={selectedPost.image} alt="포스팅 이미지" />}
+        <CommunityContentTxt className='text'>{JSON.parse(selectedPost.content).contentText}</CommunityContentTxt>
+        {selectedPost.image && <S.ContentImg src={selectedPost.image} alt="포스팅 이미지" />}
         <S.PostIcons>
-          <button onClick={handleLikeClick}>
-              <img src={liked ? redHeartIcon : heartIcon} alt='좋아요 버튼' />
-              <span>{likeNum}</span>
-            </button>
-          <button onClick={() => setIsModalOpen(true)}>
-            <img src={commentIcon} alt='댓글 개수' />
-            <span>0</span>
-          </button>
-        </S.PostIcons>
+            <S.IconBtn onClick={handleLikeClick}>
+              <S.IconImg src={liked ? redHeartIcon : heartIcon} alt='좋아요 버튼' />
+              <S.Count>{likeNum}</S.Count>
+            </S.IconBtn>
+            <S.IconBtn onClick={() => setIsModalOpen(true)}>
+              <S.IconImg src={commentIcon} alt='댓글 개수' />
+              <S.Count>0</S.Count>
+            </S.IconBtn>
+          </S.PostIcons>
+          <S.PostDate>{formatDate(selectedPost.createdAt)}</S.PostDate>
       </S.Content>
       {isModalOpen && (
           <>
@@ -178,6 +189,9 @@ export default function CommunityDetail() {
             />
           </>
         )}
+        </SubContainer>
+        <Line/>
+      <SubContainer>
       <CommentList
         onChangeModal={onChangeModal}
         userImage={selectedPost.author?.image}
@@ -186,6 +200,7 @@ export default function CommunityDetail() {
         comment={commentToShow}
         isMyComment={isMyComment}
       />
+      </SubContainer>
       <WriteComment
         comment={comment}
         setComment={setComment}
@@ -194,3 +209,30 @@ export default function CommunityDetail() {
     </Container>
   );
 }
+
+
+// Community Styled 컴포넌트
+// PostList.style에서 CommunityDetail에만 필요한 스타일은 별도로 추가.
+export const CommunityContentTxt = styled.p`
+    font-size: 14px;
+    font-weight: 400;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    overflow: hidden;
+    margin: 5px 0 10px 0;
+`
+
+export const Line = styled.div`
+  position:absolute;
+ /* display: flex; */
+  width: 100%;
+  max-width: 390px;
+  transform: translateY(-40px);
+  border-top: 1px solid #DBDBDB;
+
+   // 768px 이상의 화면에서는 max-width를 100%로 설정
+    @media (min-width: 768px) {
+    max-width: 768px;
+  }
+`

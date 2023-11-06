@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { GlobalStyle, Container } from '../../Styles/reset.style';
-import { Header, HeaderButton, DetailContainer, SaveButton, AddImg, InputTitle, InputImg, AddImgBtn, PostInfo, CategoryContainer, DropdownSelect } from './CommunityUpload.style'
+import { GlobalStyle, Container, SubContainer } from '../../Styles/reset.style';
+import { Header, HeaderButton, Required, SaveButton, AddImg, InputTitle, InputImg, AddImgBtn, PostInfo, CategoryContainer, DropdownSelect, AddTxtForm } from './CommunityUpload.style'
 import { useNavigate, useParams  } from 'react-router-dom';
 import backBtn from '../../assets/image/icon-arrow-left.png';
 import imgBtn from '../../assets/image/icon-img-button.png';
 import PopupModal from '../../Components/Common/Modal/PopupModal';
 import axios from 'axios';
 
-function CustomInput({ title, placeholder, type = "text", value, onChange }) {
+function CustomInput({ title, isRequired, placeholder, type = "text", value, onChange }) {
   if (type === "dropdown") {
     return (
       <PostInfo>
-        <InputTitle>{title}</InputTitle>
+        <InputTitle>
+          {title}
+          {isRequired && <Required>*</Required>}
+        </InputTitle>
         <select value={value} onChange={onChange}>
           <option value="">선택</option>
           <option value="정보 공유">정보 공유</option>
@@ -26,7 +29,10 @@ function CustomInput({ title, placeholder, type = "text", value, onChange }) {
   if (type === "textarea") {
     return (
       <PostInfo>
-        <InputTitle>{title}</InputTitle>
+        <InputTitle>
+          {title} 
+          {isRequired && <Required>*</Required>}
+        </InputTitle>
         <textarea placeholder={placeholder} value={value} onChange={onChange} rows="10" />
       </PostInfo>
     );
@@ -34,7 +40,10 @@ function CustomInput({ title, placeholder, type = "text", value, onChange }) {
 
   return (
     <PostInfo>
-      <InputTitle>{title}</InputTitle>
+        <InputTitle>
+          {title} 
+          {isRequired && <Required>*</Required>}
+        </InputTitle>
       <input type={type} placeholder={placeholder} value={value} onChange={onChange} maxLength={title ? 15 : undefined} />
     </PostInfo>
   );
@@ -48,9 +57,15 @@ export default function CommunityEditUpload() {
     const [category, setCategory] = useState('');
     const [imgUrl, setImgUrl] = useState('');
     const [showModal, setShowModal] = useState(false);
+    const [isAllFieldsFilled, setIsAllFieldsFilled] = useState(false);
     const { postId } = useParams(); // postId 가져오기
 
-    
+    useEffect(() => {
+      const isTitleValid = title.length >= 2 && title.length <= 15;
+      setIsAllFieldsFilled(category && isTitleValid && content.trim() !== '');
+    }, [title, category, content]); // title, category, content가 변경될 때마다 실행됩니다.
+
+
     useEffect(() => {
       const fetchPostDetails = async () => {
         const token = localStorage.getItem('token');
@@ -75,6 +90,37 @@ export default function CommunityEditUpload() {
 
     const handlePostUpdate = async (e) => {
       e.preventDefault();
+
+      // 제목의 유효성 검사 (2~15자 검사)
+      const isTitleValid = title.length >= 2 && title.length <= 15;
+
+      // 모든 필드가 채워져 있는지 검사
+      const isAllFieldsFilled = category && isTitleValid && content.trim();
+
+      // 카테고리가 선택되지 않았을 경우
+      if (!category) {
+        alert("카테고리를 선택해주세요.");
+        return;
+      }
+
+      // 제목이 유효하지 않을 경우
+      if (!isTitleValid) {
+        alert("제목은 2~15자 이내로 입력해주세요.");
+        return;
+      }
+
+      // 내용이 입력되지 않았을 경우
+      if (!content.trim()) {
+        alert("내용을 입력해주세요.");
+        return;
+      }
+
+      // 모든 필드가 채워져 있지 않을 경우
+      if (!isAllFieldsFilled) {
+        alert("필수 입력사항을 입력해주세요.");
+        return;
+      }
+
   
       const token = localStorage.getItem('token');
       const updateData = {
@@ -154,12 +200,9 @@ export default function CommunityEditUpload() {
       }
     };
 
-    const isTitleValid = title.length >= 2 && title.length <= 15;
-    const isAllFieldsFilled = category && isTitleValid && content;
-
     return (
         <>
-            <GlobalStyle />
+        <GlobalStyle />
         <Container>
             <Header>
                 <HeaderButton onClick={() => setShowModal(true)}><img src={backBtn} alt="" /></HeaderButton>
@@ -174,9 +217,9 @@ export default function CommunityEditUpload() {
                 cancelText="취소"
                 confirmText="확인"
             />
-            <DetailContainer>
+            <SubContainer>
                 <CategoryContainer>
-                    <InputTitle>카테고리</InputTitle>
+                <InputTitle>카테고리 <Required>*</Required></InputTitle>
                     <DropdownSelect value={category} onChange={e => setCategory(e.target.value)}>
                         <option value="">선택</option>
                         <option value="정보 공유">정보 공유</option>
@@ -185,19 +228,23 @@ export default function CommunityEditUpload() {
                         <option value="실종 신고">실종 신고</option>
                     </DropdownSelect>
                 </CategoryContainer>
+                <AddTxtForm>
                 <CustomInput
                     title="제목"
+                    isRequired={true}
                     placeholder="2~15자 이내여야 합니다."
                     value={title}
                     onChange={e => setTitle(e.target.value)}
                 />
                 <CustomInput
                     title="내용"
+                    isRequired={true}
                     type="textarea"
                     placeholder="내용을 입력해 주세요."
                     value={content}
                     onChange={e => setContent(e.target.value)}
                 />
+                </AddTxtForm>
                 <AddImg>
                     <InputTitle>이미지 등록</InputTitle>
                     <InputImg img={imgUrl}>
@@ -213,7 +260,7 @@ export default function CommunityEditUpload() {
                         </AddImgBtn>
                     </InputImg>
                 </AddImg>
-            </DetailContainer>
+            </SubContainer>
         </Container>
         </>
     );
