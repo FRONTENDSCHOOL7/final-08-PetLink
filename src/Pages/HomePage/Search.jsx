@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Container } from '../../Styles/reset.style'
-import { UserInfo, UserName, UserProfile } from '../../Components/Home/PostList.style'
+import { UserInfo, UserName, UserProfile, UserImg,NameTxt,Account } from '../../Components/Home/PostList.style'
 import backIcon from '../../assets/image/icon-arrow-left.png'
 import { Link, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
@@ -83,10 +83,10 @@ if (apidata.length > 0) {
               <Link to={`/profile/${user.accountname}`} key={user._id}>
               <UserInfo>
           <UserProfile>
-                <img src={user.image || defaultUserImg} alt='프로필 이미지'/>
+                <UserImg src={user.image || defaultUserImg} alt='프로필 이미지'/>
               <UserName >
-                  <p >{user.username}</p>
-                  <span>{user.accountname}</span>
+                  <NameTxt >{user.username}</NameTxt>
+                  <Account>{user.accountname}</Account>
               </UserName> 
           </UserProfile>
             </UserInfo>
