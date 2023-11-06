@@ -248,12 +248,10 @@ const ProfilePage = () => {
 
     // intro: #intro 없을때
     function renderIntro(introText) {
-        console.log("introText:", introText); // 로그를 출력하여 introText 값을 확인합니다.
-    
+        console.log("introText:", introText);
         const introMatch = introText.match(/#intro:(.*?)(?=#|$)/);
-        console.log("introMatch:", introMatch); // 로그를 출력하여 매치된 값을 확인합니다.
-    
-        // #intro 태그가 있으면 해당 부분만, 없으면 전체 introText를 반환합니다.
+        console.log("introMatch:", introMatch);
+
         return introMatch ? introMatch[1].trim() : introText;
     }
     
