@@ -1,9 +1,8 @@
 import React from 'react';
+import { GlobalStyle } from '../../Styles/reset.style'
 import {
-  Container,
   ButtonContainer,
   GoogleButton,
-  FacebookButton,
   NaverButton,
   KakaoButton,
   SNSLoginWrapper,
@@ -42,22 +41,23 @@ const socialLogin = (platform) => {
 
 function SNSLoginSection({ children }) {
   return (
-    <Container>
-      <SNSLoginWrapper>
-        <ButtonContainer>
-          <GoogleButton onClick={() => socialLogin("google")}>
-            구글 계정으로 로그인
-          </GoogleButton>
-          <NaverButton onClick={() => socialLogin("naver")}>
-            네이버 계정으로 로그인
-          </NaverButton>
-          <KakaoButton onClick={() => socialLogin("kakao")}>
-            카카오톡 계정으로 로그인
-          </KakaoButton>
-        </ButtonContainer>
-        {children}
-      </SNSLoginWrapper>
-    </Container>
+    <>
+      <GlobalStyle/>
+        <SNSLoginWrapper>
+          <ButtonContainer>
+            <GoogleButton onClick={() => socialLogin("google")}>
+              구글 계정으로 로그인
+            </GoogleButton>
+            <NaverButton onClick={() => socialLogin("naver")}>
+              네이버 계정으로 로그인
+            </NaverButton>
+            <KakaoButton onClick={() => socialLogin("kakao")}>
+              카카오톡 계정으로 로그인
+            </KakaoButton>
+          </ButtonContainer>
+          {children}
+        </SNSLoginWrapper>
+    </>
   );
 }
 

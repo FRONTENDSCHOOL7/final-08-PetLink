@@ -1,157 +1,277 @@
-import React, { useEffect, useState } from 'react'
-import *as S from './PostList.style'
-import logoTxt from '../../assets/image/logo-color_txt.png'
-import searchIcon from '../../assets/image/icon-search.png'
-import profileIcon from '../../assets/image/icon-basic-profile.png'
-import moreIcon from '../../assets/image/icon- more-vertical.png'
-import redHeartIcon from '../../assets/image/icon-heart-red.png'
-import commentIcon from '../../assets/image/icon-comment.png'
-import { Link, json } from 'react-router-dom'
-import TabMenu from '../Common/TabMenu/TabMenu'
+import React, { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import * as S from "./PostList.style";
+import moreIcon from "../../assets/image/icon-more-vertical.png";
+import redHeartIcon from "../../assets/image/icon-heart-red.png";
+import heartIcon from "../../assets/image/icon-heart.png";
+import commentIcon from "../../assets/image/icon-comment.png";
+import TabMenu from "../Common/TabMenu/TabMenu";
+import { Container, GlobalStyle, SubContainer } from "../../Styles/reset.style";
+import HeaderLayouts from "../Common/Header/Header";
+import { Overlay } from "../Product/ProductDetail.style";
+import BottomModal from "../Common/Modal/BottomModal";
+import axios from 'axios';
+import Loading from "../Common/Modal/Loading";
 
-export default function PostList({handlePage}) {
-   const [likeNum, setLikeNum] = useState(0)
-   const onChangeNum = ()=>{
-  setLikeNum(likeNum+1)
-  }
-
-// URL : https://api.mandarin.weniv.co.kr/
-//   GET /post/feed
-//   GET /post/feed/?limit=Number&skip=Number
-//   {
-//     "Authorization" : "Bearer {token}",
-//     "Content-type" : "application/json"
-//   }
-//   const url = 'https://api.mandarin.weniv.co.kr/'
-//   const reqData = {
-//     "Authorization" : "Bearer {token}",
-//     "Content-type" : "application/json"
-//   }
-//   const token = 'your_user_token'; 
-//   // const [followedUserExists, setFollowedUserExists] = useState(false);
-
-// useEffect(()=>{
-//   const fetchUserData = async () => {
-//     try {
-//       const response = await fetch(url, {
-//         method: 'GET',
-//         headers: {
-//           'Authorization': `Bearer ${token}`,
-//           'Content-type': 'application/json',
-//         },
-//         body: JSON.stringify(reqData)
-//       });
-//       if (!response.ok) {
-//         throw new Error('서버에서 데이터를 가져오는 중에 문제가 발생했습니다.');
-//       }
-
-//       const data = await response.json();
-
-//       // 팔로우한 사용자가 있는지 여부 확인
-//       // const userExists = data.posts.length > 0;
-//       // setFollowedUserExists(userExists);
-//     } catch (error) {
-//       console.error('회원 정보를 가져오는 중에 오류가 발생했습니다:', error);
-//     }
-//   };
-
-//   fetchUserData();
-// }, [url]);
-
-
-async function PostFeedReq(){
-  const url = 'https://api.mandarin.weniv.co.kr/'
-  const reqData = {
-    "Authorization" : "Bearer {token}",
-    "Content-type" : "application/json"
-  }
-
-  try {
-    const res = await fetch(url+'/post/feed/?limit=Number&skip=Number' ,{
-      method : 'GET',
-      headers:{
-        "Content-type" : "application/json"
-    },
-      body: JSON.stringify(reqData)
-    })
-    const result = await res.json()
-    console.log(json)
-  }catch(err){
-    console.log(err)
-  }
+function formatDate(dateString) {
+  const options = { year: "numeric", month: "2-digit", day: "2-digit" };
+  return new Date(dateString).toLocaleDateString(undefined, options);
 }
 
+export default function PostList(props) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [posts, setPosts] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
+  const postsPerPage = 10;
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+    loadCachedPosts();
+    fetchPostList(); // 최초에 10개의 게시물을 불러옴
 
+    // 스크롤 이벤트 리스너 설정
+    const handleScroll = () => {
+      if (
+        window.innerHeight + document.documentElement.scrollTop !==
+        document.documentElement.offsetHeight || isLoading
+      ) return;
+      fetchNextPage(); // 스크롤이 바닥에 닿으면 다음 페이지를 불러옴
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [currentPage]);
+
+  const loadCachedPosts = () => {
+    const cachedPosts = localStorage.getItem('cachedPosts');
+    if (cachedPosts) {
+      setPosts(JSON.parse(cachedPosts));
+    }
+  };
+
+
+  const fetchPostList = async () => {
+    setIsLoading(true);
+  
+    try {
+      const response = await axios.get(
+        `https://api.mandarin.weniv.co.kr/post`,
+        {
+          params: { limit: postsPerPage, skip: (currentPage - 1) * postsPerPage },
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+        }
+      );
+      const data = response.data;
+  
+      // 필터링된 게시글만 가져오기
+      const filteredPosts = data.posts.filter((post) =>
+        post.author && post.author.intro && post.author.intro.includes('#bangyeolgori')
+      );
+      
+      setPosts((prevPosts) => [...prevPosts, ...filteredPosts]);
+      setCurrentPage(currentPage + 1);
+      setIsLoading(false);
+    } catch (error) {
+      console.error('에러:', error);
+      setIsLoading(false);
+    }
+  };
+
+
+  const fetchNextPage = async () => {
+    setCurrentPage((prevPage) => prevPage + 1);
+  };
 
 
   return (
-      <>
-           <S.PostLayout>
-              <PostHeader/>
-              <PostContents handlePage={handlePage} likeNum={likeNum} onChangeNum={onChangeNum}/>
-           </S.PostLayout>
-              <TabMenu/>
-      </>
-     
-  )
+    <>
+    <GlobalStyle/>
+      <Container>
+        <HeaderLayouts title="반결고리" logo={true} search />
+          {posts.length === 0 ? (
+            <Loading/>
+          ) : (
+            posts.map((post, index) => (
+              <div key={index}>
+                <PostListItem
+                  post={post}
+                  onProfileClick={() => navigate(`/profile/${post.author._id}`)}
+                  onChangeModal={props.onChangeModal} />
+              </div>
+            ))
+          )}
+      <TabMenu />
+      </Container>
+    </>
+  );
 }
 
+export function PostListItem({ post }) {
+  const defaultUserImg = "https://api.mandarin.weniv.co.kr/1698653743844.jpg";
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [reportOptions, setReportOptions] = useState([]);
+  const [accountname, setAccountName] = useState("");
+  const [username, setUserName] = useState("");
+  const [userImg, setUserImg] = useState(null);
+  const [contentImgUrl, setContentImgUrl] = useState(null);
+  const [content, setContent] = useState("");
+  const [likeCount, setLikeCount] = useState(0);
+  const [date, setDate] = useState("");
+  const [liked, setLiked] = useState(false);
+  const [userAccountName, setUserAccountName] = useState(false);
 
- export function PostHeader(){
-    return(
-   
-        <S.HomeHeader>
-            <img src={logoTxt} alt='반결고리 로고' width={75}/>
-            <a href="#"><img src={searchIcon} aria-label='검색하기'/></a>
-          </S.HomeHeader>
-  
-    )
-  }
+  const { postId } = useParams();
+  const navigate = useNavigate();
 
-  export function PostUserInfo(props){
-    return(
-      <S.UserInfo >
-       <S.UserProfile>
-        <a href='#'><img src={profileIcon} alt='사용자 프로필 이미지'/></a>
-        <S.UserName >
-            <p >애월읍에서 강아지들에게 유명한 곳</p>
-            <span> @활동명</span>
-        </S.UserName> 
-      </S.UserProfile>
-      <button ><S.IconMore src={moreIcon} alt='신고하기 모달창 불러오기'/></button>
-    </S.UserInfo>
-    )
+  // 게시물 삭제 함수
+  const deletePost = async (postId) => {
+    console.log('deletePost is called with id:', postId)
+    try {
+      await axios.delete(`https://api.mandarin.weniv.co.kr/post/${postId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      alert('삭제되었습니다.');
+      navigate('/home');
+    } catch (error) {
+      // 에러 처리
+    }
+  };
+
+
+
+  const fetchMyProfile = async () => {
+    try {
+      const response = await fetch(`https://api.mandarin.weniv.co.kr/user/myinfo`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-type": "application/json",
+        },
+      });
+      const data = await response.json();
+
+      if (data) {
+          const userAccountName = data.user.accountname
+        setUserAccountName(userAccountName)
+        // console.log(userAccountName)
+      }
+    } catch (error) {
+      console.error("에러:", error);
+    }
+  };
+
+
+  useEffect(() => {
+    console.log(post);
+    if (post.author.intro && post.author.intro.includes("#bangyeolgori")) {
+      setAccountName(post.author.accountname || "");
+      setUserName(post.author.username || "");
+      setUserImg(
+        post.author.image);
+      setContentImgUrl(post.image || "");
+      
+      let contentText = "";
+    try {
+      const contentData = JSON.parse(post.content || "{}");
+      contentText = contentData.contentText || "";
+    } catch (error) {
+      console.error("Error parsing content JSON:", error);
     }
 
+      setContent(contentText);
+      setDate(post.createdAt || "");
+      setLikeCount(post.likes || 0); // 초기 좋아요 수 설정
+      setLiked(post.liked || false); // 사용자의 좋아요 상태 설정
+    }
+    fetchMyProfile()
+  }, [post]);
 
+  const handleLikeClick = async () => {
+    if (liked) {
+      setLikeCount(likeCount - 1);
+    } else {
+      setLikeCount(likeCount + 1);
+    }
+    setLiked(!liked);
+  };
 
-export  function PostContents(props){
-        return(
-          <S.PostList> 
-            <li >
-              <PostUserInfo/>
-              <S.Content> 
-                <a href='/post/detail'>
-                    <p className='text'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore tenetur quaerat ut fugit sequi. Temporibus illo nihil facere tempora deserunt?</p>
-                    <img src="https://via.placeholder.com/304x228" alt="포스팅 이미지"  />
-                </a>
-                <S.PostIcons>
-                  <button aria-label='좋아요 누르기' onClick={props.onChangeNum}>
-                    <img src={redHeartIcon} alt='하트 아이콘'/>
-                    <span>{props.likeNum}</span>
-                  </button>
-                  <Link to='/post/detail' aria-label='댓글 남기기'  >
-                    <img src={commentIcon} alt='채팅 아이콘' />
-                  <span>1</span>
-                  </Link>
-                </S.PostIcons>
-        
-                <S.PostDate>2023년 10월 21일</S.PostDate>
-              
-              </S.Content>
-          </li>
-        </S.PostList>
-        
-        )
-        }
-        
+  const onChangeModal = () => {
+
+    const isMyPost = accountname === userAccountName
+    let modalOptions = []
+
+    if(isMyPost){
+      modalOptions = [
+        { action: "수정하기", alertText: "수정하시겠습니까?"  , onSelect: () => navigate(`/post/edit/${post._id}`)},
+        { action: "삭제하기", alertText: "삭제하시겠습니까?" , onSelect: () => deletePost(post._id )},
+      ];
+
+    }else {
+      modalOptions = [
+        { action: "신고하기", alertText: "신고하시겠습니까?" },
+      ];
+    }
+    setIsModalOpen(true);
+    setReportOptions(modalOptions); // modalOptions 배열을 state로 설정
+  };
+
+  return (
+    <>
+          <SubContainer style={{marginBottom:"0"}}>
+          <S.UserInfo>
+              <Link
+                to={`/profile/${post.author.accountname}`}
+                state={{ selectedPost: post }}
+              >
+            <S.UserProfile>
+                <S.UserImg src={userImg || defaultUserImg} alt="사용자 프로필 이미지" />
+              <S.UserName>
+                <S.NameTxt>{username}</S.NameTxt>
+                <S.Account>{accountname}</S.Account>
+              </S.UserName>
+            </S.UserProfile>
+              </Link>
+            <button onClick={onChangeModal}>
+              <S.IconMore src={moreIcon} alt="신고하기 모달창 불러오기" />
+            </button>
+          </S.UserInfo>
+    
+          <S.Content>
+            <Link to={`/post/${post._id}`} state={{ selectedPost: post }}>
+              <S.ContentTxt>{content}</S.ContentTxt>
+              {contentImgUrl && <S.ContentImg src={contentImgUrl} alt="포스팅 이미지" />}
+            </Link>
+            <S.PostIcons>
+              <S.IconBtn onClick={handleLikeClick}>
+                <S.IconImg  src={liked ? redHeartIcon : heartIcon} alt="하트 아이콘" />
+                <S.Count>{likeCount}</S.Count>
+              </S.IconBtn>
+              <Link to={`/post/${post._id}`} state={{ selectedPost: post }}>
+                <S.IconBtn>
+                  <S.IconImg src={commentIcon} alt="댓글 개수" />
+                  <S.Count>1</S.Count>
+                </S.IconBtn>
+              </Link>
+            </S.PostIcons>
+            <S.PostDate>{formatDate(date)}</S.PostDate>
+          </S.Content>
+
+          </SubContainer>
+            {isModalOpen && (
+              <>
+                <Overlay onClick={() => setIsModalOpen(false)} />
+                <BottomModal 
+                setIsModalOpen={setIsModalOpen} 
+                reports={reportOptions}  
+                onDelete={() => deletePost(post._id)}/>
+              </>
+            )}
+
+   </>
+ 
+  );
+}

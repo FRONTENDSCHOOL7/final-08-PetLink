@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { GlobalStyle, Container, SubContainer } from '../../Styles/reset.style'
+import { TitleWrap, SubmitButton, InputField, StyledInput, FieldLabel, ErrorMsg } from './LoginForm.style'
+import { LoginButton } from "../../Components/Login/Login.styles";
 import { useNavigate } from "react-router-dom";
 import { saveToken } from '../../utils/tokenUtils';
-import styles from "./LoginFrom.module.css";
 
 function LoginForm({ handlePage }) {
   const [email, setEmail] = useState("");
@@ -10,6 +12,11 @@ function LoginForm({ handlePage }) {
   const [pwValid, setPwValid] = useState(false);
   const [notAllow, setNotAllow] = useState(true);
   const [error, setError] = useState(null);
+  const [isActive, setIsActive] = useState(false);
+
+  const setErrorMsg = (msg) => {
+    setError(msg);
+  }
 
   useEffect(() => {
     if (emailValid && pwValid) {
@@ -42,14 +49,14 @@ function LoginForm({ handlePage }) {
       console.log("API Response:", resJson);
 
       if (res.ok) {
-        saveToken(resJson.user.token); // 로그인 성공 시 토큰을 저장합니다.
+        saveToken(resJson.user.token);
         navigate("/home");
       } else {
-        alert(resJson.message || "로그인에 실패했습니다!");
+        alert(resJson.message || "이메일 또는 비밀번호가 일치하지 않습니다.");
       }
     } catch (err) {
       console.error(err);
-      alert("로그인에 실패했습니다!");
+      setErrorMsg("이메일 또는 비밀번호가 일치하지 않습니다.");
     }
   };
 
@@ -76,7 +83,7 @@ function LoginForm({ handlePage }) {
 
   const submitLogin = async (e) => {
     e.preventDefault();
-    if (!emailValid || !pwValid) {
+    if (!emailValid || !pwValid || !email || !password) {
       alert("Please enter a valid email and password.");
     } else {
       await login(email, password);
@@ -84,49 +91,46 @@ function LoginForm({ handlePage }) {
   };
 
   return (
-    <div className={styles.page}>
-      <div className={styles.titleWrap}>로그인</div>
-      <form onSubmit={submitLogin}>
-        <div className={styles.contentWrap}>
-          {/* Email Input */}
-          <div className={styles.inputTitle}>이메일 주소</div>
-          <div className={styles.inputWrap}>
-            <input
-              className={styles.input}
+    <>
+      <GlobalStyle />
+      <Container>
+        <TitleWrap>로그인</TitleWrap>
+        <SubContainer>
+        <form onSubmit={submitLogin}>
+          
+          <InputField>
+            <FieldLabel>이메일</FieldLabel>
+            <StyledInput
               type="text"
               placeholder="이메일 입력"
               value={email}
               onChange={handleEmail}
             />
-          </div>
-
-          {/* Password Input */}
-          <div className={styles.inputTitle} style={{ marginTop: "26px" }}>
-            비밀번호
-          </div>
-          <div className={styles.inputWrap}>
-            <input
-              className={styles.input}
+          </InputField>
+          
+          <InputField>
+            <FieldLabel>비밀번호</FieldLabel>
+            <StyledInput
               type="password"
               placeholder="영문, 숫자, 특수문자 포함 8자 이상"
               value={password}
               onChange={handlePassword}
             />
-          </div>
-        </div>
-
-        {/* Submit Button */}
-        <div>
-          <button
-            type="submit"
-            disabled={notAllow}
-            className={styles.bottomButton}
-          >
+            {error && <ErrorMsg>{error}</ErrorMsg>}
+          </InputField>
+          
+          
+          <SubmitButton type="submit" disabled={notAllow}>
             로그인
-          </button>
-        </div>
-      </form>
-    </div>
+          </SubmitButton>
+          <LoginButton onClick={() => navigate("/join")}
+          style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto'}}>
+      이메일로 회원가입
+    </LoginButton>
+        </form>
+        </SubContainer>
+      </Container>
+    </>
   );
 }
 

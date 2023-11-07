@@ -1,24 +1,19 @@
 import styled from 'styled-components';
 
-export const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  height: 90vh;
-  padding: 0 20px 30px;
-`;
 
 export const SNSLoginWrapper = styled.div`
   background-color: white;
   padding: 20px;
   border-radius: 20px 20px 0 0;
   width: 100%;
-  max-width: 600px;
+  max-width: 390px; //컨테이너와 일치하도록 수정
   position: fixed;
   bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
   box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.1);
+
+  @media (min-width: 768px) {
+    max-width: 768px;
+  }
 `;
 
 export const ButtonContainer = styled.section`
@@ -30,7 +25,7 @@ export const ButtonContainer = styled.section`
 export const CustomButton = styled.button`
   width: 100%;
   max-width: 400px;
-  min-width: 350px;
+  min-width: 300px;
   height: 50px;
   margin: 10px 0;
   border-radius: 25px;

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import uploadIcon from '../../assets/image/icon-img-button.png';
 
 export const Wrapper = styled.div`
     display: flex;
@@ -16,7 +17,6 @@ export const FormWrapper = styled.div`
 `;
 
 export const Logo = styled.h1`
-    font-family: 'Pacifico', cursive;
     font-size: 36px;
     text-align: center;
 `;
@@ -67,5 +67,138 @@ export const ModalContent = styled.div`
 
 export const CloseButton = styled.span`
     color: #aaa;
-    float;
 `;
+
+export const TitleWrap = styled.div`
+  display: flex;
+  justify-content: center;
+  font-size: 24px;
+  color: black;
+  padding-top: 20px
+`;
+
+export const SubmitButton = styled.button`
+  width: 90%;
+  height: 50px;
+  border-radius: 50px;
+  background-color: #004e98;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  margin: auto;
+  margin-bottom: 20px;
+  display: block;
+`;
+
+export const InputField = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  padding: 0 20px;
+`;
+
+export const StyledInput = styled.input`
+  padding: 10px;
+  border: none;
+  border-bottom: 1px solid #dbdbdb;
+  font-size: 16px;
+  margin-top: 5px;
+  width: 100%;
+  
+  &:focus {
+    outline: none;
+    border-bottom: 2px solid #004E98;
+  }
+  
+  &::placeholder {
+    color: #dbdbdb;
+  }
+`;
+
+export const FieldLabel = styled.label`
+  font-size: 14px;
+  color: #767676;
+`;
+
+export const PetInfo = styled.div`
+  font-size: 14px;
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`;
+
+export const StyledPetInfo = styled.p`
+  font-size: 14px;
+  color: #767676;
+  /* margin-bottom: 10px; */
+`;
+
+export const SelectInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+`
+
+export const SelectInfoItem = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+
+  label {
+    font-size: 14px;
+    color: #767676;
+
+    @media (min-width: 768px) {
+    font-size: 16px;
+  }
+  }
+`
+
+export const ImageWrap = styled.label`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+`;
+
+export const ImageUpBtn = styled.label`
+    position: absolute;
+    bottom: 5px;
+    right: 115px;
+    width: 30px;
+    height: 30px;
+    background-image: url(${uploadIcon});
+    background-size: cover;
+    cursor: pointer;
+    
+    input[type="file"] {
+      display: none;
+    }
+
+    @media (min-width: 768px) {
+      right: 295px;
+    }
+`;
+
+export const ProfileImage = styled.img`
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid var(--DBDBDB, #DBDBDB);
+    background: url(<path-to-image>), lightgray 50% / cover no-repeat;
+
+`;
+
+// 모달창 클릭 시 배경 흐리게
+export const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 10;
+`
