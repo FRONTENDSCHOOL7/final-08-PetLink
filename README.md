@@ -176,7 +176,7 @@ git commit -m "✨ [Add] 로딩중 페이지 생성"
 
 ## 6. 🎨 UI
 
-![bangyeolgori_ui](https://github.com/FRONTENDSCHOOL7/final-08-PetLink/assets/30742914/066f6dda-2e57-4f1b-90b8-2ee37a1c2f0c)
+![bangyeolgori_ui](https://github.com/FRONTENDSCHOOL7/final-08-PetLink/assets/30742914/3fceb2ab-01a1-4ec8-8b7d-f649593bae9c)
 
 <br />
 
