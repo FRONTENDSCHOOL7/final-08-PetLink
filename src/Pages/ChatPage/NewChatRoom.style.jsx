@@ -82,6 +82,10 @@ export const ChatInput = styled.input`
   &:focus {
     outline: none;
   }
+
+  @media (min-width: 768px) {
+    font-size: 16px;
+  }
 `
 
 export const SendBtn = styled.button`
