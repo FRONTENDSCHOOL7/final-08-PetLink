@@ -4,8 +4,9 @@
 
 ## 1. 📱 서비스 소개
 
-<img width="1920" alt="bangyeolgori" src="https://github.com/FRONTENDSCHOOL7/final-08-PetLink/assets/30742914/1ed1145f-9fae-46d2-bfd6-97c4d53fd0ad">
+<img width="1920" alt="coverImg" src="https://github.com/FRONTENDSCHOOL7/final-08-PetLink/assets/125885922/bc4b64b7-cd41-402e-ac9c-16d420c9e392">
 
+<br>
 반결고리는 **반려동물과 사람을 이어주는 SNS 플랫폼**입니다. <br/>
 ‘반려동물’과 ‘연결고리’라는 단어를 결합하여 만들어졌습니다. 사용자들은 자신의 반려동물에 대한 사진과 이야기를 공유하고, 다른 반려인들과 소통할 수 있는 공간을 제공합니다. 반려동물이 없는 사람들도 다른 이용자들의 반려동물을 팔로우하며, 그들과의 교류를 통해 솥 할 수 있는 특별한 커뮤니티를 제공합니다.반결고리를 통해 애견인들은 서로의 경험을 공유하고 정보를 교류할 수 있으며, 반려동물과의 즐거운 일상을 함께 나눌 수 있습니다.
 
@@ -19,7 +20,7 @@
 - 지역 기반의 반려인 모임 및 이벤트 안내
 
 
->**반결고리를 통해 당신의 반려동물과 더 깊은 인연을 맺어보세요💙 **
+>** 반결고리를 통해 당신의 반려동물과 더 깊은 인연을 맺어보세요💙 **
 
 > ### [🚀 배포 URL](https://bangyeolgori.netlify.app/)
 
@@ -31,15 +32,24 @@ PW: qwer1234@
 
 <br/>
 
-## 2. 👥팀원 소개
+## 2. <img width="74" alt="반결고리" src="https://github.com/FRONTENDSCHOOL7/final-08-PetLink/assets/30742914/b3d82306-48f9-4721-b3a9-f8203fefdbc1"> 팀원 소개
 
 |**FE 한지훈**|**FE 강선희**|**FE 서세정**|**FE 송채윤** |
 | :------------------------------------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------: |
-| <img width="180" alt="JIHUN_profile_img" src="https://avatars.githubusercontent.com/u/30742914?v=4"> | <img width="180"  alt="SeoSejung_profile_img" src="https://github.com/FRONTENDSCHOOL7/final-08-PetLink/assets/30742914/b16533f8-18b4-44b3-8336-1cf9993941db"> | <img width="180" alt="KangSunhee_profile_img" src="https://github.com/FRONTENDSCHOOL7/final-08-PetLink/assets/30742914/b16533f8-18b4-44b3-8336-1cf9993941db"> | <img width="180" object-fit=cover alt="chaeyoon_profile_img" src="https://github.com/FRONTENDSCHOOL7/final-08-PetLink/assets/30742914/8da85d33-5a23-4196-bfec-fb1148617982"> |
+| <img width="180" alt="JIHUN_profile_img" src="https://avatars.githubusercontent.com/u/30742914?v=4"> | <img width="180"  alt="KangSunhee_profile_img" src="https://github.com/FRONTENDSCHOOL7/final-08-PetLink/assets/30742914/b16533f8-18b4-44b3-8336-1cf9993941db"> | <img width="180" alt="SeoSejung_profile_img" src="https://github.com/FRONTENDSCHOOL7/final-08-PetLink/assets/125885922/aec087ef-ebe0-4198-8e1e-2a3b59946c8f"> | <img width="180" object-fit=cover alt="chaeyoon_profile_img" src="https://github.com/FRONTENDSCHOOL7/final-08-PetLink/assets/30742914/8da85d33-5a23-4196-bfec-fb1148617982"> |
 | [maskelog](https://github.com/maskelog) | [ sunnya2023 ](https://github.com/sunnya2023) | [sejungseo](https://github.com/sejungseo) | [CreateSong](https://github.com/CreateSong) |
-| 팀장 | 팀원 | 팀원 | 팀원 |
+| <img alt='프론트엔드' src="https://camo.githubusercontent.com/57342b5050e1d856ff7ad4c535542ae4cfdb25d0e2a546cff8d15955daef8640/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f46726f6e74456e642d336639376662"><br><img alt='팀리더' src="https://camo.githubusercontent.com/9419ac77d6dc54a11d1616143e4d2087cc7701800bf5b8da452048b6260ab715/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f2d5465616d2532306c65616465722d79656c6c6f77"> | <img alt='프론트엔드' src="https://camo.githubusercontent.com/57342b5050e1d856ff7ad4c535542ae4cfdb25d0e2a546cff8d15955daef8640/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f46726f6e74456e642d336639376662"><br><img  alt= '팀원' src='https://camo.githubusercontent.com/20cac311f9f51ca33021450f9c12ee778976b737f6a7efcda1ea7e2d53146ae7/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f2d446576656c6f706d656e742532306c65616465722d677265656e'> | <img alt='프론트엔드' src="https://camo.githubusercontent.com/57342b5050e1d856ff7ad4c535542ae4cfdb25d0e2a546cff8d15955daef8640/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f46726f6e74456e642d336639376662"><br><img alt='디자이너 리더' src='https://camo.githubusercontent.com/141f17e857cd64cd8df95958336d7b8a80386e46b76596e05fd8395bf107a91a/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f2d44657369676e2532306c65616465722d707572706c65'> | <img alt='프론트엔드' src="https://camo.githubusercontent.com/57342b5050e1d856ff7ad4c535542ae4cfdb25d0e2a546cff8d15955daef8640/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f46726f6e74456e642d336639376662"><br><img alt='커뮤니케이션 리더' src='https://camo.githubusercontent.com/f6ecad5229f748a1226f1bb8631324117b34eec7f1209e89ef0561e13884720d/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f2d436f6d756e69636174696f6e2532304c65616465722d6f72616e6765'>
 
 <p align="right"><a href="#top">(🔼 Top)</a></p>
+
+### 😊팀 문화
+ - 빠르게 문제를 공유하고 함께 해결하기
+ - 긍정적인 팀 에너지
+ - 적극적인 피드백 교환
+ - 상호 존중의 작업 환경
+ - 팀원 간 유대감 형성
+
+<br>
 
 ## 3. 🗓️ 개발 기간 (23년 10월 10일 ~ 23년 11월 7일)
 
@@ -48,45 +58,108 @@ PW: qwer1234@
 | 주차                       |                                                                                                                                                              |
 | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | **1주차**<br>(10/16 ~ 10/20)   | - 주제 선정, 기술 스택 및 협업툴 결정 (`Notion`, `Discord`, `Figma`)<br>- GitProject, GitIssue 템플릿 적용, Figma 디자인 작업 및 기획, 컨벤션 설정 |
-| **2주차**<br>(10/23 ~ 10/27)  | - 초기 개발환경 세팅<br>- 로그인, 회원가입 페이지 마크업 & 스타일링 페어프로그래밍으로 구현                                                                  |
-| **3주차**<br>(10/30 ~ 11/3) | - 페이지 단위로 업무를 분담하여 작업 시작                                                                                                                    |
-| **4주차**<br>(11/6 ~ 11/7) | - 필수 기능 구현 1차 완료<br>- 추가기능 구현 (게시글 카테고리 기능) <br>- 배포<br>- 프로젝트를 시연해보며 보이는 에러 수정<br>- README 작성                  |
+| **2주차**<br>(10/23 ~ 10/27)  | - 초기 개발환경 세팅<br> - 페이지 단위로 업무를 분담하여 작업 <br>- UI 작업<br> - 스타일링 페어프로그래밍으로 구현시작                                                                                                        |
+| **3주차**<br>(10/30 ~ 11/3) | - API 기능 개발 <br>  - 필수 기능 구현 1차 완료                                                                      |
+| **4주차**<br>(11/6 ~ 11/7) | - 추가 기능 구현 (검색, 팔로우 등)  <br>- 배포<br>- 프로젝트를 시연해보며 보이는 에러 수정<br>- README 작성                  |
 
 <p align="right"><a href="#top">(🔼 Top)</a></p>
 <br>
 
-## 4. 🌳 개발 환경
+## 4. 🌳 기술 및 개발 환경
+
 
 ### 🛠️ 기술스택
 
-<p  align="left">
-
-<img  src="https://img.shields.io/badge/react-2D333B?style=for-the-badge&logo=react&logoColor=61DAFB">
-<img  src="https://img.shields.io/badge/Styled component-2D333B?style=for-the-badge&logo=styledcomponents&logoColor=#DB7093">
-<img  src="https://img.shields.io/badge/javascript-2D333B?style=for-the-badge&logo=javascript&logoColor=#F7DF1E">
-
-</p>
-
-- Axios를 사용하여 HTTP 요청과 응답처리를 보다 단순하고 직관적으로 처리하기 위해 사용
-- Styled Components를 사용해서 컴포넌트 내에서 스타일을 캡슐화하며 모듈성과 재사용성을 높임
+<table>
+<tr>
+ <td align="center" width="100px">사용 기술</td>
+ <td width="800px">
+  <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=ffffff"/>&nbsp
+   <img src="https://img.shields.io/badge/React%20Router-CA4245?style=for-the-badge&logo=ReactRouter&logoColor=white"/>&nbsp 
+  <img src="https://img.shields.io/badge/styled--components-DB7093?style=for-the-badge&logo=styled-components&logoColor=white"/>&nbsp 
+   <img src="https://img.shields.io/badge/axios-7F2B7B?style=for-the-badge&logo=axios&logoColor=white"/>&nbsp 
+    </td>
+</tr>
+<tr>
+ <td align="center">패키지</td>
+ <td>
+    <img src="https://img.shields.io/badge/npm-CB3837?style=for-the-badge&logo=NPM&logoColor=ffffff"/>&nbsp 
+  </td>
+</tr>
+<tr>
+</tr>
+<tr>
+ <td align="center">협업</td>
+ <td>
+    <img width="58" src="https://camo.githubusercontent.com/91271f210478908838baa7463daa6af4c78827b2d4d0a1ddfcdaf254b41edf87/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f4769742d4630353033323f7374796c653d666c61742d737175617265266c6f676f3d476974266c6f676f436f6c6f723d7768697465">
+    <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=GitHub&logoColor=white"/>&nbsp 
+    <img src="https://img.shields.io/badge/Notion-5a5d69?style=for-the-badge&logo=Notion&logoColor=white"/>&nbsp
+    <img src="https://img.shields.io/badge/Discord-4263f5?style=for-the-badge&logo=Discord&logoColor=white"/>&nbsp  
+ </td>
+ <tr>
+  <td align="center">디자인</td>
+ <td> 
+    <img src="https://img.shields.io/badge/Figma-d90f42?style=for-the-badge&logo=Figma&logoColor=white"/>&nbsp  
+ </td>
+</tr>
+<tr>
+ <td align="center">IDE</td>
+ <td>
+    <img src="https://img.shields.io/badge/VSCode-007ACC?style=for-the-badge&logo=Visual%20Studio%20Code&logoColor=white"/>&nbsp
+</tr>
+<td align="center">배포</td>
+<td>
+<img src="https://camo.githubusercontent.com/a4038ad7e74e3a0855f623765da7191606299c90d1b882fb0392197fd2f21ad4/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f6e65746c6966792d3030433742373f7374796c653d666f722d7468652d6261646765266c6f676f3d6e65746c696679266c6f676f436f6c6f723d7768697465"/>
+</table>
 
 <br />
 
-### Forking Workflow
+### ⚙ 개발 환경
 
-🚀 하나의 중앙 원격 저장소를 각자가 Fork해서 팀원마다 각자 저장소를 가지고 프로젝트를 진행하는 방식 <br/>
-🚀 팀원 모두 각자의 저장소를 가지고 있기 때문에 자유롭게 작업이 가능 <br/>
-🚀 각자 자신의 원격 저장소에 푸시하고, 디스코드 Pull Requests에 스레드에 작업내역을 공유하고 팀원들이 코드와 commit 내역을 확인하고 merge하기 때문에 안전하게 협업이 가능 <br/>
+### [ Git-flow ]
 
-### Git Branch
+기본적으로 5가지 브랜치를 활용하는 Git-flow 전략이 일방적이나, 프로젝트 규모에 맞춰 3가지로 축소하여 사용했습니다.
 
-🚀 Git Issue 작성 - Develop branch에서 branch 분기 후 작업
-<br/>
+- `main` : 최종 배포하기 위한 브랜치
+- `develop` : 기능 구현, 버그 수정과 같은 기능을 합쳐 확인하기 위한 브랜치
+- `feature` : 세부 기능 작업들을 위한 브랜치
+  - 각 브랜치의 이름은 `feat/세부기능`으로 이름 지어 어떠한 기능의 브랜치인지를 알 수 있도록 했습니다.
+  - push 완료 후에는 해당 브랜치를 develop으로 merge하여 역할 별로 진행한 기능을 확인하며 구현했습니다.
 
-### GitHub Flow
+###  [Git/Commit 컨벤션]
 
-🚀 main : 배포가 될 branch입니다.<br/>
-🚀 develop : 기능 개발이 완료된 branch가 합쳐지는 곳으로, 3명의 조원 승인 후에 merge됩니다.
+| 이모지 | 커밋 메세지 | 의미 |
+| --- | --- | --- |
+| 🎉 | `:tada: [Init]` | 프로젝트 시작 |
+| 🏗️ | `:building_construction: [Arc]` | 코드의 구조/형태 개선 |
+| ✨ | `:sparkles: [Add]` | 새로운 기능 |
+| ⚡️ | `:zap: [Improve]` | 성능 개선 |
+| 🎨 | `:art: [Design]` | CSS 등 사용자 UI 디자인 변경 |
+| 🚧 | `:construction: [Ing]` | 진행 중 |
+| ♻️ | `:recycle: [Refactor]` | 코드 리팩토링 |
+| 🐛 | `:bug: [Fix]` | 버그 수정 |
+| 🩹 | `:adhesive_bandage: [Resolve]` | 간단한 문제 해결 |
+| ✏️ | `:pencil2: [Typo]` | 오타 수정 |
+| 📝 | `:memo: [Modify]` | 코드 추가/ 수정 |
+| 💩 | `:poop: [Bad]` | 개선이 필요한 bad code |
+| 🔥 | `:fire: [RemoveC]` | 코드 제거 |                                                     
+| 🗑️ | `:wastebasket: [RemoveF]` | 파일 삭제 |
+| 🚑️ | `:ambulance: [Hotfix]` | 긴급 수정 |
+| 🚀 | `:rocket: [Release]` | 배포 |
+
+<details>
+<summary>커밋 메시지(커밋 구분, 작업 내용)</summary>
+<div markdown="1">
+
+```
+git commit -m "✨ [Add] 로딩중 페이지 생성"
+// 커밋 구분 , 본문
+
+```
+
+ </div>
+</details>
+
 
 <br />
 
@@ -136,129 +209,15 @@ PW: qwer1234@
 
 <br/>
 
-### ♻️ Refactoring: Tablet, PC 반응형 웹 및 추가 기능
+### ♻️ Refactoring 계획
 
-> - PC, Tablet, Mobile 반응형 적용
+> - 상태관리 적용
 > - aria-label, img alt, 메타 태그 활용으로 웹 접근성 향상
-> - Husky, ESLint, Prettier 적용
+> - ESLint, Prettier 적용
+> - 커뮤니티 게시판에 지도 API 적용 
+> - 이미지 압축 및 예외처리
+> - 채팅 기능 구현(웹소켓 적용)
 
- <br>
- <br>
-
-1. 랜딩페이지, 로그인 페이지
-
-- PC, Tablet에서 랜딩페이지 접근시 4.5초 동안 랜딩페이지 애니메이션 후 `/login`으로 이동
-- 랜딩, 로그인, 회원가입 새롭게 UI 구현
-
-<img width="800" alt="pc_landing" src="이미지">
-
-<br>
-
-<br>
-
-2. PC, Tablet 내비게이션
-
-- PC, Tablet 반응형 내비게이션 구현
-
-|                                                                        PC                                                                         |                                                           Tablet                                                           |
-| :-----------------------------------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------: |
-| <img width="1416" alt="pc_home" src="이미지"> | ![tablet_home](이미지) |
-
-<br>
-
-<br>
-
-3. 홈페이지
-
-- React-Query로 변경
-- 스크롤 감지 방식 react-intersection-observer API로 변경
-- 국내, 해외 카테고리 토글 상태 저장 및 유지 기능 추가
-- 로그아웃 시 캐시 삭제 기능 추가
-
-<img width="800" alt="pc_home" src="이미지">
-
-<br>
-
-<br>
-
-4. 검색
-
-- `/search` 엔드포인트는 pc 및 tablet 일 경우 접근 막기 대신 내비게이션 모달창으로 변경
-- 검색목록 키보드 조작 기능 추가
-- 이미지 예외처리 추가
-
-<img width="800" alt="pc_search" src="이미지">
-
-<br>
-
-<br>
-
-5. 상품
-
-- 상품/외화 카테고리에 따라 상품 모아보기 기능 추가
-- 이미지 업로드시 압축 후 업로드 기능 추가
-- 이미지 클릭시 원본 이미지 모달 띄우기 기능 추가
-- 상품 게시글 업로드 버튼 throttle 추가로 연속 게시 방지
-- React-Query 라이브러리로 캐싱 기능 추가
-- Lazy Loading 라이브러리로 리소스 크기를 줄여 로딩 속도 개선
-- 모달창 React portals로 변경
-
-|                                                                     상품 페이지                                                                      |                                                                       상품 상세페이지                                                                       |
-| :--------------------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------: |
-| <img width="1416" alt="tablet_product" src="이미지"> | <img width="1416" alt="tablet_product_detail" src="이미지"> |
-
-|                                                                       상품 업로드                                                                        |                                                                          상품 수정                                                                          |
-| :------------------------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------: |
-| <img width="1416" alt="tablet_add_product" src="이미지"> | <img width="1416" alt="tablet_modify_product" src="이미지"> |
-
-<br/>
-
-<br/>
-
-6. 게시글
-
-- 이미지 업로드 최적화
-- 이미지 클릭시 원본 이미지 모달 띄우기 기능 추가
-- 이미지 제스처로 넘기기 기능 추가
-- 게시글, 댓글 업로드 버튼 throttle 추가로 연속포스트 방지
-- 댓글 작성시간별 초, 분, 시간, 일자로 표시
-- 모달창 React portals로 변경
-
-|                                                                        게시글                                                                        |                                                                       게시글 상세                                                                        |                                                                     게시글 업로드                                                                     |
-| :--------------------------------------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------: |
-| <img width="1416" alt="tablet_profile" src="이미지삽입"> | <img width="1416" alt="tablet_post_detail" src="이미지삽입"> | <img width="1416" alt="tablet_add_post" src="이미지삽입"> |
-
-|                                                                       게시글 수정                                                                        |                                                                    이미지 원본 모달                                                                     |
-| :------------------------------------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------------------------------------: |
-| <img width="1416" alt="tablet_modify_post" src="이미지"> | <img width="1416" alt="tablet_image_zoom" src="이미지"> |
-
-<br>
-<br>
-
-7. 채팅
-
-- Tablet 채팅 페이지 UI 구현
-- 자연스러운 반응형을 위해 `/chat` `/chat/:username`을 PC Tablet에서는 UI를 동일하게 사용
-- 채팅 입력창 유저 이미지 띄우기
-
-<img width="800" alt="tablet_chatting" src="이미지">
-
-<br>
-<br>
-
-8. 프로필
-
-- React-Query로 캐싱 기능, 무한 스크롤 추가
-- 유저 정보창 PC, Tablet 용 UI 추가
-- 이미지 압축, 이미지 최적화 적용
-- 전체 페이지 My Pillowings 정보 띄우기 구현
-- PC, Tablet Skeleton UI 적용
-
-|                                                                        프로필                                                                        |                                                                         프로필 수정                                                                         |
-| :--------------------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------: |
-| <img width="1416" alt="tablet_profile" src="이미지"> | <img width="1416" alt="pc_modify_profile" src="이미지"> |
-
-<br>
 <br>
 
 ## 7. 📁 폴더 구조
@@ -315,57 +274,12 @@ final-08-PetLink
 
 <p align="right"><a href="#top">(🔼 Top)</a></p>
 
-<br />
-
-## 8. 🙏 팀 컨벤션
-
-### [ Git-flow ]
-
-기본적으로 5가지 브랜치를 활용하는 Git-flow 전략이 일방적이나, 프로젝트 규모에 맞춰 3가지로 축소하여 사용했습니다.
-
-- `main` : 최종 배포하기 위한 브랜치
-- `develop` : 기능 구현, 버그 수정과 같은 기능을 합쳐 확인하기 위한 브랜치
-- `feature` : 세부 기능 작업들을 위한 브랜치
-  - 각 브랜치의 이름은 `feat/세부기능`으로 이름 지어 어떠한 기능의 브랜치인지를 알 수 있도록 했습니다.
-  - push 완료 후에는 해당 브랜치를 develop으로 merge하여 역할 별로 진행한 기능을 확인하며 구현했습니다.
-
-<br>
-
-### [Git/Commit 컨벤션]
-
-| 이모지 | 커밋 메세지 | 의미 |
-| --- | --- | --- |
-| 🎉 | `:tada: [Init]` | 프로젝트 시작 |
-| 🏗️ | `:building_construction: [Arc]` | 코드의 구조/형태 개선 |
-| ✨ | `:sparkles: [Add]` | 새로운 기능 |
-| ⚡️ | `:zap: [Improve]` | 성능 개선 |
-| 🎨 | `:art: [Design]` | CSS 등 사용자 UI 디자인 변경 |
-| 🚧 | `:construction: [Ing]` | 진행 중 |
-| ♻️ | `:recycle: [Refactor]` | 코드 리팩토링 |
-| 🐛 | `:bug: [Fix]` | 버그 수정 |
-| 🩹 | `:adhesive_bandage: [Resolve]` | 간단한 문제 해결 |
-| ✏️ | `:pencil2: [Typo]` | 오타 수정 |
-| 📝 | `:memo: [Modify]` | 코드 추가/ 수정 |
-| 💩 | `:poop: [Bad]` | 개선이 필요한 bad code |
-| 🔥 | `:fire: [RemoveC]` | 코드 제거 |                                                     
-| 🗑️ | `:wastebasket: [RemoveF]` | 파일 삭제 |
-| 🚑️ | `:ambulance: [Hotfix]` | 긴급 수정 |
-| 🚀 | `:rocket: [Release]` | 배포 |
-
-<details>
-<summary>커밋 메시지(커밋 구분, 작업 내용)</summary>
-<div markdown="1">
-
-```
-git commit -m "✨ [Add] 로딩중 페이지 생성"
-// 커밋 구분 , 본문
-
-```
-
- </div>
-</details>
-
-
-<p align="right"><a href="#top">(🔼 Top)</a></p>
-
 </br>
+
+## 8. 💥트러블 슈팅
+
+### 주어진 API에 따른 다른 서비스 POST 필터링
+- 주어진 서비스 API를 다른 서비스와 공유하고 있어, 다른 서비스에서 작성한 게시글이 모두 불러와지는 문제가 발생하였습니다. 이를 해결 하기 위해 게시물을 불러올 때 intro #bangyeolgori 필터링을 적용하여 전체 게시물에서 반결고리 게시물만 불러올 수 있었습니다. 
+
+### 불필요한 반복문을 제거하여 페이지 로딩 시간 단축
+- 초기 상황에 페이지 로딩 시간이 긴 문제점을 분석해 과다한 리렌더링을 일으키는 반복문을 발견했습니다. 필요성과 효율성을 검토해 불필요한 반복문을 완전히 제거하고, 페이지 로딩 속도를 향상시켰습니다.
