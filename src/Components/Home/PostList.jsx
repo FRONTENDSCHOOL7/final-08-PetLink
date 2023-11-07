@@ -11,6 +11,7 @@ import HeaderLayouts from "../Common/Header/Header";
 import { Overlay } from "../Product/ProductDetail.style";
 import BottomModal from "../Common/Modal/BottomModal";
 import axios from 'axios';
+import Loading from "../Common/Modal/Loading";
 
 function formatDate(dateString) {
   const options = { year: "numeric", month: "2-digit", day: "2-digit" };
@@ -83,21 +84,24 @@ export default function PostList(props) {
   };
 
 
-
   return (
     <>
     <GlobalStyle/>
       <Container>
         <HeaderLayouts title="반결고리" logo={true} search />
         <SubContainer>
-          {posts.map((post, index) => (
-            <div key={index}>
-              <PostListItem
-                post={post}
-                onProfileClick={() => navigate(`/profile/${post.author._id}`)}
-                onChangeModal={props.onChangeModal} />
-            </div>
-          ))}
+          {posts.length === 0 ? (
+            <Loading/>
+          ) : (
+            posts.map((post, index) => (
+              <div key={index}>
+                <PostListItem
+                  post={post}
+                  onProfileClick={() => navigate(`/profile/${post.author._id}`)}
+                  onChangeModal={props.onChangeModal} />
+              </div>
+            ))
+          )}
         </SubContainer>
       <TabMenu />
       </Container>
@@ -236,7 +240,7 @@ export function PostListItem({ post }) {
                 <S.UserImg src={userImg || defaultUserImg} alt="사용자 프로필 이미지" />
               <S.UserName>
                 <S.NameTxt>{username}</S.NameTxt>
-                <S.Account>{accountname}</S.Account>
+                <S.Account>@{accountname}</S.Account>
               </S.UserName>
             </S.UserProfile>
               </Link>

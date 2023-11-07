@@ -30,7 +30,7 @@ function Loading() {
     isVisible && (
       <SplashContainer style={{backgroundColor: "white", height: "auto"}}>
         <SplashContent>
-          <LogoIcon src={logoPetlink} alt="반결고리 로고" />
+          <LogoIcon src={logoPetlink} alt="반결고리 로고" onError={() => console.log('이미지를 로드할 수 없습니다.')}/>
           <LogoText style={{color: "#6C9BD1"}}>
             {"로딩중".split("").map((char, index) => (
               <span key={index}>{char}</span>

@@ -12,26 +12,26 @@ export const ProfileImage = styled.img`
     height: 110px;
     border-radius: 50%;
     object-fit: cover;
-    margin: 20px;
+    margin-bottom: 10px;
     border: 1px solid var(--DBDBDB, #DBDBDB);
     background: url(<path-to-image>), lightgray 50% / cover no-repeat;
 
 `;
 
 export const ProfileUsername = styled.h2`
-    margin: 5px 0;
-    font-size: 20px;
+    margin-bottom: 5px;
+    font-size: 16px;
 `;
 
 export const ProfileAccountname = styled.h3`
-    margin: 10px 0;
+    margin-bottom: 5px;
     font-size: 12px;
     color: #767676;
 `;
 
 export const ProfilePet = styled.div`
-    margin: 5px 0;
-    font-size: 15px;
+    margin: 7px 0;
+    font-size: 14px;
     color: #767676;
     display: flex;
     justify-content: center;
@@ -113,12 +113,12 @@ export const Button = styled.button`
     border-color: var(--dbdbdb);
     position: relative;
     height: 34px;
-    padding: 5px 20px;
+    padding: 10px 20px;
     color: #767676;
     border: 1px solid;
     border-radius: 30px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 14px;
     margin-top: 10px;
     margin-left: 10px;
 
@@ -134,7 +134,7 @@ export const ImageWrap = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 200px;
+    margin-top: 40px;
     `;
 
     export const ImageUpbtn = styled.label`
@@ -163,68 +163,62 @@ export const Title = styled.label`
     justify-content: center;
     font-size: 24px;
     color: black;
-    padding-top: 20px
 `
 
 export const InputGroup = styled.div`
     display: flex;
     flex-direction: column;
     margin-bottom: 20px;
+    font-size: 14px;
+    color: #767676;
 
     label {
         margin-bottom: 10px;
-    }
-
-    input, textarea, select {
-        padding: 10px;
-        font-size: 16px;
-        border: none;
-        border-bottom: 2px solid grey;
-    
-    &:focus {
-            border-bottom: 2px solid #6C9BD1;
-        }
     }
 `;
 
 export const StyledInput = styled.input`
     border: none;
-    border-bottom: 2px solid grey;
+    border-bottom: 1px solid #dbdbdb;
+    font-size: 14px;
+    margin-top: 5px;
     width: 100%;
-    font-size: 16px;
-
+    
     &:focus {
-        border-bottom: 2px solid #6C9BD1;
+        outline: none;
+        border-bottom: 2px solid #004E98;
+    }
+
+    &::placeholder {
+        color: #dbdbdb;
     }
 `;
 
 export const Styledlabel = styled.label`
     color: '#767676';
     font-Size: 12px;
+    
     `
     
 export const Styledpetinfo = styled.label`
-    font-weight: bold;
-    padding-bottom: 15px;
-    font-Size: 16px;
-    color: black; 
+    padding-bottom: 20px;
+    font-Size: 14px;
+    color: #767676; 
     display: inline-block;
 `
 
 export const SubBtn = styled.button`
+    width: 90%;
+    height: 40px;
     background-color: ${(props) => (props.disabled ? '#dbdbdb' : '#004e98')};
     position: relative;
-    height: 34px;
     padding: 5px 20px;
     color: ${(props) => (props.disabled ? '#767676' : '#ffffff')};
     border: 1px solid;
     border-radius: 30px;
     cursor: ${(props) => (props.disabled ? 'default' : 'pointer')};
     font-size: 16px;
-    margin-top: 21px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 20px;
+    margin: 30px auto;
     display: block;
 
     &:hover {
