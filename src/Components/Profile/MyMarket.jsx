@@ -58,10 +58,10 @@ const MyMarket = ({ accountname }) => {
 
   // 로딩 중 혹은 에러 발생 시 메시지 표시
   if (isLoading) {
-    return <div>Loading...</div>;
+    return;
   }
   if (error) {
-    return <div>Error: {error.message}</div>;
+    return;
   }
 
 // 제품 목록을 표시하는 UI 부분

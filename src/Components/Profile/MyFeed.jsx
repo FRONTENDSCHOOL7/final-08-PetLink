@@ -98,7 +98,7 @@ const MyFeed = (props) => {
     setLiked(!liked);
   };
   if (isLoading) {
-    return <div>Loading...</div>;
+    return;
   }
 
 
