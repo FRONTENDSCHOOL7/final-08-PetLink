@@ -8,6 +8,7 @@ import redHeartIcon from '../../assets/image/icon-heart-red.png'
 import TabMenu from '../../Components/Common/TabMenu/TabMenu'
 import HeaderLayouts from '../../Components/Common/Header/Header'
 import axios from 'axios'
+import Loading from '../../Components/Common/Modal/Loading'
 
 export default function Market() {
   const navItems = ['강아지', '고양이', '기타']
@@ -175,7 +176,7 @@ const ProductsDisplay = ({products, handleLike, likes}) => (
     )
     })
     ) : (
-      <p>등록된 상품이 없습니다.</p>
+      <Loading/>
     )}
   </ItemContainer>
 )

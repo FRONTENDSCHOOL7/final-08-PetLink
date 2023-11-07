@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link, useParams, useNavigate } from 'react-router-dom';
+import HeaderLayouts from '../../Components/Common/Header/Header'
 import { Container, GlobalStyle } from '../../Styles/reset.style'
 import TabMenu from '../../Components/Common/TabMenu/TabMenu'
 import {
@@ -17,8 +18,12 @@ import {
     ProfileContainer,
     ProfilePet,
     GenderIcon,
+    Intro,
+    Overlay,
 } from '../../Components/Profile/Profile.style';
 import MyFeed from '../../Components/Profile/MyFeed';
+import MyMarket from '../../Components/Profile/MyMarket';
+import BottomModal from '../../Components/Common/Modal/BottomModal';
 
 const ProfilePage = () => {
     const [profileData, setProfileData] = useState(null);
@@ -27,8 +32,35 @@ const ProfilePage = () => {
     const [followers, setFollowers] = useState([]);
     const [following, setFollowing] = useState([]);
     const [showFollowList, setShowFollowList] = useState(null);
+    const [myAccountname, setMyAccountname] = useState(null);
     const navigate = useNavigate();
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [reportOptions, setReportOptions] = useState([]);
+    const handleConfirmAction = () => {
+        navigate('/login'); // 로그인 페이지로 이동
+    };
     
+
+
+    const onChangeModal = () => {
+        let modalOptions = [];
+        if (!accountname) {
+            modalOptions = [
+                {action: "로그아웃", alertText: "로그아웃 하시겠습니까?", onSelect: () => navigate('/login')},
+                { action: "설정 및 개인정보", alertText: "설정으로 이동하시겠습니까?" , onSelect: () => navigate('/profile')},
+            ];
+          } else {
+            modalOptions = [
+              { action: "신고하기", alertText: "신고하시겠습니까?" },
+            ];
+          }
+      
+          setIsModalOpen(true);
+          setReportOptions(modalOptions);
+        };
+    
+
+
     const handleFollowClick = (type) => {
         const targetAccountname = accountname || accountnameFromMyInfo;
         if (targetAccountname) {
@@ -38,44 +70,57 @@ const ProfilePage = () => {
         }
     };
     
+
     useEffect(() => {
         console.log('Account Name:', accountname);
         const fetchData = async () => {
-            try {
-                const token = localStorage.getItem('token');
-                let url = 'https://api.mandarin.weniv.co.kr/';
-                let profileEndPoint = accountname ? `profile/${accountname}` : 'user/myinfo';
-    
-                const response = await axios.get(url + profileEndPoint, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        'Content-type': 'application/json',
-                    },
-                });
-    
-                let profile;
-                if (response.data.user) { // 나의 프로필 데이터
-                    profile = response.data.user;
-                    setAccountname(profile.accountname);
-                } else if (response.data.profile) { // 다른 사용자의 프로필 데이터
-                    profile = response.data.profile;
-                } else {
-                    throw new Error('Unexpected response format');
-                }
-            
-                const parsedIntro = parseIntro(profile.intro);
-
-                setProfileData({
-                    ...profile,
-                    ...parsedIntro
-                });
-            } catch (error) {
-                setError(error);
+          try {
+            const token = localStorage.getItem('token');
+            let url = 'https://api.mandarin.weniv.co.kr/';
+            // 기본 엔드포인트를 'user/myinfo'로 설정하여 나의 정보를 가져옵니다.
+            let profileEndPoint = 'user/myinfo';
+      
+            const response = await axios.get(url + profileEndPoint, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-type': 'application/json',
+              },
+            });
+      
+            let profile;
+            if (response.data.user) { // 나의 프로필 데이터
+              profile = response.data.user;
+              setMyAccountname(profile.accountname); // 로그인한 사용자의 accountname 상태를 저장합니다.
+              if (!accountname) {
+                setAccountname(profile.accountname); // URL에 accountname이 없는 경우(즉, 내 프로필을 보는 경우)
+              }
             }
+      
+            if (accountname) { // URL에 accountname이 있는 경우, 다른 사용자의 프로필 데이터를 가져옵니다.
+              profileEndPoint = `profile/${accountname}`;
+              const profileResponse = await axios.get(url + profileEndPoint, {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                  'Content-type': 'application/json',
+                },
+              });
+      
+              profile = profileResponse.data.profile;
+            }
+      
+            const parsedIntro = parseIntro(profile.intro);
+      
+            setProfileData({
+              ...profile,
+              ...parsedIntro
+            });
+          } catch (error) {
+            setError(error);
+          }
         };
-    
+      
         fetchData();
-    }, [accountname]);
+      }, [accountname]);
 
     const [accountnameFromMyInfo, setAccountname] = useState(null);
     
@@ -122,13 +167,17 @@ const ProfilePage = () => {
     
         tags.forEach(tag => {
             const match = intro.match(new RegExp(`#${tag}:(.*?)(?=#|$)`));
-            if (match && match[1]) {
-                info[tag] = match[1].trim();
+            if (match) {
+                const value = match[1].trim();
+                // Check if value is not a boolean 'true' or 'false'
+                if (value !== 'true' && value !== 'false') {
+                    info[tag] = value;
+                }
             }
         });
     
         return info;
-    }
+    }    
     
     function capitalizeFirstLetter(string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
@@ -198,32 +247,54 @@ const ProfilePage = () => {
         }
     };
 
-    // birthdate를 개월 또는 일자로 변환
     function calculateAge(birthdateStr) {
+        if (!birthdateStr) {
+            // If birthdate is not provided, return "선택안함"
+            return " ";
+        }
+    
         const birthdate = new Date(birthdateStr);
         const today = new Date();
-
-        let months = (today.getFullYear() - birthdate.getFullYear()) * 12;
-        months -= birthdate.getMonth();
-        months += today.getMonth();
-        
-        if (months <= 0) {
-            const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
-            const diffDays = Math.round(Math.abs((today - birthdate) / oneDay));
-            return `${diffDays}일`;
+    
+        let years = today.getFullYear() - birthdate.getFullYear();
+        let months = today.getMonth() - birthdate.getMonth();
+        if (months < 0 || (months === 0 && today.getDate() < birthdate.getDate())) {
+            years--;
+            months = (months + 12) % 12;
         }
-        
-        return `${months}개월`;
+    
+        // If less than a year has passed, return the number of months
+        if (years === 0) {
+            return months > 0 ? `${months}개월` : "1개월 미만";
+        }
+    
+        // If more than a year has passed, return both years and months
+        const yearText = years > 1 ? `${years}년` : `${years}년`;
+        const monthText = months > 0 ? ` ${months}개월` : '';
+        return yearText + monthText;
     }
+    
     // gender 아이콘 변경
     function genderUnicode(gender) {
         return gender === '남아' ? '♂' : gender === '여아' ? '♀' : null;
     }
 
+    // intro: #intro 없을때
+    function renderIntro(introText) {
+        console.log("introText:", introText);
+        const introMatch = introText.match(/#intro:(.*?)(?=#|$)/);
+        console.log("introMatch:", introMatch);
+
+        return introMatch ? introMatch[1].trim() : introText;
+    }
+    
+    const introContent = renderIntro(profileData.intro);
+
     return (
         <>
             <GlobalStyle />
             <Container>
+            <HeaderLayouts backTxt={true} onModalToggle={() => onChangeModal()} />
                 <ProfileContainer>
                     <FollowInfo>
                         <FollowGroup onClick={() => handleFollowClick('follower')}>
@@ -235,15 +306,18 @@ const ProfilePage = () => {
                             <ProfileImage src={profileData.image} alt="Profile" />
                             <ProfileUsername>{profileData.username}</ProfileUsername>
                             <ProfileAccountname>@{profileData.accountname}</ProfileAccountname>
-                            <ProfilePet>
-                                {profileData.gender && (
-                                    <GenderIcon gender={profileData.gender}>
-                                        {genderUnicode(profileData.gender)}
-                                    </GenderIcon>)}
-                                {profileData.pet && <span>{`${profileData.pet} `}</span>}
-                                {profileData.birthdate && <span>{`${calculateAge(profileData.birthdate)} `}</span>}
-                                {profileData.location && <span>{`${profileData.location} `}</span>}
-                            </ProfilePet>
+                        <ProfilePet>
+                            {profileData.gender && (
+                                <GenderIcon gender={profileData.gender}>
+                                    {genderUnicode(profileData.gender)}
+                                </GenderIcon>
+                            )}
+                            {profileData.pet && <span>{`${profileData.pet} `}</span>}
+                            <span>{calculateAge(profileData.birthdate)}</span>
+                            {profileData.location && <span>{`${profileData.location} `}</span>}
+                        </ProfilePet>
+
+                            {introContent && (<Intro>{introContent}</Intro>)}
                         </ProfileImageContainer>
                         
                         <FollowGroup onClick={() => handleFollowClick('following')}>
@@ -252,8 +326,8 @@ const ProfilePage = () => {
                         </FollowGroup>
                     </FollowInfo>
                     
-                    {/* Button myinfo / userprofile depending on conditions */}
-                    {accountname ? (
+                    {/* accountname 구분하여 버튼 전환 */}
+                    {accountname && accountname !== myAccountname ? (
                         profileData.isfollow ? (
                             <BtnGroup style={{
                                 marginRight: "10px"
@@ -278,6 +352,18 @@ const ProfilePage = () => {
                         </BtnGroup>
                     )}
                 </ProfileContainer>
+                {/* 모달창 */}
+                {isModalOpen &&(
+                <>
+                    <Overlay onClick={()=> setIsModalOpen(false)}/>
+                    <BottomModal 
+                    setIsModalOpen={setIsModalOpen} 
+                    reports={reportOptions}
+                    onConfirm={handleConfirmAction}
+                    />
+                </>
+                )}
+                <MyMarket accountname={accountname || accountnameFromMyInfo} />
                 <MyFeed accountname={accountname || accountnameFromMyInfo} />
             <TabMenu />
         </Container>
@@ -285,4 +371,4 @@ const ProfilePage = () => {
     );
 };
 
-export default ProfilePage;
+export default ProfilePage

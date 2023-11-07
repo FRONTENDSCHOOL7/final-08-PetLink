@@ -116,6 +116,7 @@ export const Required = styled.span`
 
 // 이미지 등록
 export const AddImgWrap = styled.div`
+  margin-top: 18px;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -138,7 +139,7 @@ export const InputImg = styled.div`
   }
 
   @media (min-width: 768px) {
-    width: 90%;
+    width: 100%;
     margin: 0 auto 30px;
   }
 `;

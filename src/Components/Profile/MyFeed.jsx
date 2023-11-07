@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
 import { Overlay } from '../Product/ProductDetail.style';
 import BottomModal from '../Common/Modal/BottomModal';
 import moreIcon from '../../assets/image/icon-more-vertical.png';
+import redHeartIcon from "../../assets/image/icon-heart-red.png";
 import HeartIcon from '../../assets/image/icon-heart.png';
 import userImg from '../../assets/image/icon-basic-profile.png';
 import onAllbumIcon from '../../assets/image/icon-post-album-on.png';
@@ -16,6 +17,7 @@ import { Container } from '../../Styles/reset.style';
 
 const MyFeed = (props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [reportOptions, setReportOptions] = useState([]);
   const [isAlbumActive, setIsAlbumActive] = useState(true);
   const [isListActive, setIsListActive] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -24,6 +26,12 @@ const MyFeed = (props) => {
   const postsPerPage = 10; // Set the posts per page as needed
   const { accountname: urlAccountname } = useParams();
   const [accountname, setAccountname] = useState(props.accountname || urlAccountname || localStorage.getItem('loggedInAccountname'));
+  const [content, setContent] = useState("");
+  const [likeCount, setLikeCount] = useState(0);
+  const [liked, setLiked] = useState(false);
+  const navigate = useNavigate();
+  const { postId } = useParams();
+  const [modalPost, setModalPost] = useState(null);
 
 
   // 토글버튼 리스트 엘범형
@@ -49,7 +57,17 @@ const MyFeed = (props) => {
           },
         }
       );
-      setPosts(response.data.post.map(p => ({ ...p, images: p.images || [] })));
+      // 서버로부터 받은 데이터에서 contentText만 추출합니다.
+      const newPosts = response.data.post.map(p => {
+        const contentObj = JSON.parse(p.content); // JSON 형태의 문자열을 객체로 변환
+        return {
+          ...p,
+          content: contentObj.contentText, // contentText만 추출하여 저장
+          images: p.images || []
+        };
+      });
+      setPosts(newPosts);
+      console.log("newPosts",newPosts)
     } catch (error) {
       console.error('Failed to fetch posts', error);
     } finally {
@@ -71,9 +89,58 @@ const MyFeed = (props) => {
     }
   }, [accountname]);
 
+  const handleLikeClick = async () => {
+    if (liked) {
+      setLikeCount(likeCount - 1);
+    } else {
+      setLikeCount(likeCount + 1);
+    }
+    setLiked(!liked);
+  };
   if (isLoading) {
     return <div>Loading...</div>;
   }
+
+
+
+  // 게시물 삭제 함수
+  const deletePost = async (postId) => {
+    console.log('deletePost is called with id:', postId)
+      try {
+        await axios.delete(`https://api.mandarin.weniv.co.kr/post/${postId}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        alert('삭제되었습니다.');
+        navigate('/profile');
+      } catch (error) {
+        // 에러 처리
+        console.error('Failed to delete post', error);
+      }
+  
+  };
+
+  const onChangeModal = (post) => {
+
+    let modalOptions = []
+
+    if(accountname){
+      modalOptions = [
+        { action: "수정하기", alertText: "수정하시겠습니까?"  , onSelect: () => navigate(`/profile/edit/${post._id}`)},
+        { action: "삭제하기", alertText: "삭제하시겠습니까?", onSelect: () => deletePost(post._id )},
+      ];
+
+    }else {
+      modalOptions = [
+        { action: "신고하기", alertText: "신고하시겠습니까?" },
+      ];
+    }
+    setIsModalOpen(true);
+    setReportOptions(modalOptions); // modalOptions 배열을 state로 설정
+  };
+
 
   return (
     <Container>
@@ -86,32 +153,37 @@ const MyFeed = (props) => {
     </ViewBtn>
   </Layer>
   
-      {/* 리스트형 */}
+      {/* 앨범형 */}
+      {isAlbumActive && posts.length === 0 && (
+      <PostsEmpty>등록된 게시글이 없습니다😢</PostsEmpty>
+      )}
       {isAlbumActive &&
         posts.map((post) => (
           <React.Fragment key={post.id}>
             <UserInfo>
               <UserProfile>
-                <UserImg src={post.author.profileImage || userImg} alt='사용자 프로필 이미지' />
+                <UserImg src={post.author.image} alt='사용자 프로필 이미지' />
                 <UserName>
                   <NameTxt>{post.author.username}</NameTxt>
                   <UserId>{post.author.accountname}</UserId>
                 </UserName>
               </UserProfile>
-              <MoreBtn onClick={() => setIsModalOpen(true)}>
-                <IconMore src={moreIcon} />
+              <MoreBtn onClick={() => onChangeModal(post)}>
+                <IconMore src={moreIcon} alt="수정/삭제 모달"/>
               </MoreBtn>
             </UserInfo>
             <ContentBox>
-                  {post.image && <ContentImg src={post.image} alt="Post" />}
-              <ContentTxt className='text'>{post.content}</ContentTxt>
-              {post.images && post.images.map((image, index) => (<ContentImg key={index} src={image.url} alt={`포스팅 이미지 ${index}`} />
-              ))}
+              <Link to={`/post/${post.id}`}  state={{ selectedPost: post }}>
+                <ContentTxt className='text'>{post.content}</ContentTxt>
+                {post.images && post.images.map((image, index) => (<ContentImg key={index} src={image.url} alt={`포스팅 이미지 ${index}`} />
+                ))}
+                {post.image && <ContentImg src={post.image} alt="Post" />}
+              </Link>
             </ContentBox>
             <ContentBox>
               <IconBox>
-                <IconBtn>
-                  <IconBtnImg src={HeartIcon} alt='하트 아이콘' />
+                <IconBtn onClick={handleLikeClick}>
+                  <IconBtnImg src={liked ? redHeartIcon : HeartIcon} alt='하트 아이콘' />
                   <IconCount>{post.likesCount}</IconCount>
                 </IconBtn>
                 <IconBtn>
@@ -125,6 +197,10 @@ const MyFeed = (props) => {
         ))
       }
       
+      {/* 리스트형 */}
+      {isListActive && posts.length === 0 && (
+      <PostsEmpty>등록된 게시글이 없습니다😢</PostsEmpty>
+    )}
       {isListActive && (
       <ListImages>
             {posts
@@ -143,7 +219,10 @@ const MyFeed = (props) => {
       {isModalOpen && (
         <>
           <Overlay onClick={() => setIsModalOpen(false)} />
-          <BottomModal setIsModalOpen={setIsModalOpen} reportTxt={["수정", "삭제"]} />
+                <BottomModal 
+                setIsModalOpen={setIsModalOpen} 
+                reports={reportOptions}  
+                onDelete={() => deletePost(modalPost._id)}/>
         </>
       )}
     </Container>
@@ -220,6 +299,19 @@ export const IconMore = styled.img`
   margin-top: 4px;
   cursor: pointer;
 `
+// 등록한 게시글이 없을 때 스타일 컴포넌트
+const PostsEmpty = styled.div`
+  /* 스타일 코드 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 200px; /* 높이 설정, 필요에 따라 조정 */
+  color: #666;
+  font-size: 16px;
+  font-weight: 700;
+`;
+
 
 export const ContentBox = styled.div`
   margin: 0 16px 16px 54px;

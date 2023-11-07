@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { isLoggedIn } from '../../authService';
-import { LogoIcon, LogoText, SplashContainer, SplashContent, SubText } from '../../Components/Splash/Splash.styles';
-import logoPetlink from '../../assets/image/logo-petlink.png';
+import { isLoggedIn } from '../../../authService';
+import { LogoIcon, LogoText, SplashContainer, SplashContent, SubText } from '../../../Components/Splash/Splash.styles';
+import logoPetlink from '../../../assets/image/logo-petlink.png';
 
-function SplashPage() {
+function Loading() {
   const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(true); // isVisible 상태 변수 추가
 
@@ -28,19 +28,18 @@ function SplashPage() {
 
   return (
     isVisible && (
-      <SplashContainer>
+      <SplashContainer style={{backgroundColor: "white", height: "auto"}}>
         <SplashContent>
-          <LogoIcon src={logoPetlink} alt="반결고리 로고" />
-          <LogoText>
-            {"반결고리".split("").map((char, index) => (
+          <LogoIcon src={logoPetlink} alt="반결고리 로고" onError={() => console.log('이미지를 로드할 수 없습니다.')}/>
+          <LogoText style={{color: "#6C9BD1"}}>
+            {"로딩중".split("").map((char, index) => (
               <span key={index}>{char}</span>
             ))}
           </LogoText>
-          <SubText>반려동물 연결고리 </SubText>
         </SplashContent>
       </SplashContainer>
     )
   );
 }
 
-export default SplashPage;
+export default Loading;

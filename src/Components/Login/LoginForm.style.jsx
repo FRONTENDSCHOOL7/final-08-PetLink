@@ -61,11 +61,27 @@ export const StyledInput = styled.input`
 export const FieldLabel = styled.label`
   font-size: 14px;
   color: #767676;
+  position: relative;
+
+  &:after {
+    content: '*';
+    color: red;
+    position: absolute;
+    margin-left: 2px;
+    margin-top: -3px;
+    top: 0;
+  }
 
   @media (min-width: 768px) {
     font-size: 16px;
   }
 `;
+
+export const Label = styled.label`
+  font-size: 14px;
+  color: #767676;
+  position: relative;
+`
 
 export const ErrorMsg = styled.p`
   color: red;
