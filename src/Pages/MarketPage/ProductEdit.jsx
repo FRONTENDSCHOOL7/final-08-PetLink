@@ -147,14 +147,6 @@ export default function ProductEdit() {
       // 카테고리와 설명은 별도의 필드가 아닌 itemName 안에 포함되어야 합니다.
     }
   };
-//     {
-//       "product": {
-//               "itemName": String,
-//               "price": Number,
-//               "link": String,
-//               "itemImage": String
-//       }
-// }
 
     try {
       // 상품 데이터를 서버에 전송

@@ -25,7 +25,6 @@ export default function PostDetail(props) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [reportOptions, setReportOptions] = useState([]);
   const [comment, setComment] = useState(''); 
-  const [commentToShow, setCommentToShow] = useState(''); // 추가: 화면에 보이는 댓글 상태
   const location = useLocation();
   const { selectedPost } = location.state;
   const [userAccountName, setUserAccountName] = useState(false);
@@ -33,9 +32,6 @@ export default function PostDetail(props) {
 const [commentLoading, setCommentLoading ] = useState(false)
   const { postId } = useParams();
   const navigate = useNavigate();
-// 
-
-
 
   // 게시물 삭제 함수
   const deletePost = async (postId) => {
@@ -105,11 +101,7 @@ const [commentLoading, setCommentLoading ] = useState(false)
   // 추가: 댓글 입력 시 화면에 보이도록 처리
   const handlePostComment = () => {
     if (comment.trim() !== '') {
-      // setCommentToShow(comment);
       setComment('');
-      //   const addComment = (newComment) => {
-      //   setComments((prevComments) => [...prevComments, newComment]);
-      // };
     }
   };
 
@@ -164,7 +156,6 @@ const [commentLoading, setCommentLoading ] = useState(false)
             userImage={selectedPost.author?.image}
             username={selectedPost.author?.username}
             date={selectedPost.date}
-            comment={commentToShow} // 변경: 입력된 댓글 내용을 CommentList로 전달
             isMyComment={isMyComment}
             commentLoading={commentLoading}
             />
@@ -174,7 +165,7 @@ const [commentLoading, setCommentLoading ] = useState(false)
           handlePostComment={handlePostComment} // 변경: handlePostComment 함수 추가
           setCommentLoading={setCommentLoading}
         />
-{isModalOpen && (
+      {isModalOpen && (
             <>
               <Overlay onClick={() => setIsModalOpen(false)} />
               <BottomModal 

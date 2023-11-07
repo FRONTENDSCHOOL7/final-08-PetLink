@@ -49,7 +49,6 @@ export const IconMore = styled.img`
 
 export const Content = styled.div`
   margin: 10px 16px 16px 54px;
-  /* position: relative; */
 `
 export const ContentImg = styled.img`
     max-width: 304px;
@@ -107,10 +106,7 @@ margin-top: 20px;
   }
 `
 // CommentList 스타일 컴포넌트
-
 export const CommentBox = styled.div`
-/* padding: 20px 16px; */
-  /* border-top: 1px solid #dbdbdb; */
 div{
   display: flex;
   justify-content: space-between;

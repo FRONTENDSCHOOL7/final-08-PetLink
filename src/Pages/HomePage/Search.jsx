@@ -23,7 +23,6 @@ export default function Search() {
 
   //  API 통신
   const [userData, setUserData] = useState(null);
-  // const [data, setData] = useState(null); 
    const [accountname, setAccountName] = useState('');
    const [username, setUserName] = useState('');
    const [imgUrl, setImgUrl] = useState(null)
