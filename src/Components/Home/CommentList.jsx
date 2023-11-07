@@ -23,6 +23,7 @@ export default function CommentList(props) {
   const [isMyPost, setIsMyPost] = useState(false); // 추가: 현재 사용자의 게시물 여부
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [reportOptions, setReportOptions] = useState([]);
+
 // 댓글 삭제 함수
 const deleteComment = async (postId, commentId) => {
   try {
@@ -66,7 +67,6 @@ const onChangeModal = (comment, isMyComment) => {
   setIsModalOpen(true);
   setReportOptions(modalOptions);
 };
-
 
 
   useEffect(() => {
@@ -129,10 +129,6 @@ console.log(data)
   if (!selectedPost) {
     return null;
   }
-
-    //  const addComment = (newComment) => {
-    //     setComments((prevComments) => [...prevComments, newComment]);
-    //   };
 
     return (
    
