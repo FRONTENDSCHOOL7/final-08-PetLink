@@ -39,11 +39,6 @@ export default function Market() {
         return acc;
       }, {}));
 
-      // console.log("Fetched Products:", res.data.product); // API에서 가져온 상품 데이터 로깅
-      // // 가져온 데이터로 상태 업데이트
-      // const processedProducts = processProductsData(res.data.product);
-      // console.log("Processed Products:", processedProducts); // 처리된 상품 데이터 로깅
-      // setProducts(processedProducts); // 상태 업데이트
     } catch(error) {
       console.error("Error", error);
     }
