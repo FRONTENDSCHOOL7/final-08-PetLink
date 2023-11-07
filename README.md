@@ -102,7 +102,7 @@ PW: qwer1234@
 
 ### 정보구조도
 
-![정보구조도](https://github.com/FRONTENDSCHOOL7/final-08-PetLink/assets/30742914/066f6dda-2e57-4f1b-90b8-2ee37a1c2f0c)
+![정보구조도](https://github.com/FRONTENDSCHOOL7/final-08-PetLink/assets/30742914/1480461d-baf3-4183-b76a-eaac0cbb77f7)
 
 ### 모바일 각 페이지 기능
 

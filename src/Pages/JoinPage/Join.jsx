@@ -51,8 +51,8 @@ const JoinPage = () => {
   const [usernameTouched, setUsernameTouched] = useState(false);
   const [previewImage, setPreviewImage] = useState(null);
   const [usernameError, setUsernameError] = useState('');
-  const convertInfoToTags = (bangyeolgori) => {
-    return `#bangyeolgori `;
+  const convertInfoToTags = () => {
+    return `#bangyeolgori`;
   };
   
   // 텍스 빠질
@@ -227,17 +227,25 @@ const JoinPage = () => {
     await checkAccountNameAvailability(accountname);
   };
 
-  const handleIntroChange = () => {
+  const handleIntroChange = (e) => {
+    const introValue = e ? e.target.value : intro;
+    setIntro(introValue);
+  
     const hashtags = [
-      `#intro:${intro}`,
-      `#pet:${pet}`,
-      `#gender:${gender}`,
-      `#birthdate:${birthdate}`,
-      `#location:${location}`,
-      convertInfoToTags("bangyeolgori"),
-    ];
-    setInfo(hashtags.join(" "));
+      `#intro:${introValue || ''}`,
+      `#pet:${pet || ''}`,
+      `#gender:${gender || ''}`,
+      `#birthdate:${birthdate || ''}`,
+      `#location:${location || ''}`,
+      `#bangyeolgori`
+    ].join(" ").trim();
+  
+    setInfo(hashtags);
   };
+
+  useEffect(() => {
+    handleIntroChange();
+  }, []);
 
   const handleSubmit = async () => {
     const reqUrl = "https://api.mandarin.weniv.co.kr/user/";
@@ -408,60 +416,61 @@ const JoinPage = () => {
                     type="text"
                     placeholder="자신의 반려동물에 대해 소개해 주세요!"
                     value={intro}
-                    onChange={(e) => setIntro(e.target.value)}
+                    onChange={handleIntroChange}
                   />
                 </InputField>
                 <PetInfo>
-                  <StyledPetInfo>반려동물 정보등록</StyledPetInfo>
-                  <SelectInfo>
-                    <SelectInfoItem>
-                      <label>종류</label>
-                      <DropdownComponents.DropdownSelect
-                        value={pet}
-                        onChange={(e) => {
-                          setPet(e.target.value);
-                          handleIntroChange();
-                        }}
-                        options={DropdownComponents.petOptions}
-                      />
-                    </SelectInfoItem>
-    
-                    <SelectInfoItem>
-                      <label>성별</label>
-                      <DropdownComponents.DropdownSelect
-                        value={gender}
-                        onChange={(e) => {
-                          setGender(e.target.value);
-                          handleIntroChange();
-                        }}
-                        options={DropdownComponents.genderOptions}
-                      />
-                    </SelectInfoItem>
-    
-                    <SelectInfoItem>
-                      <label>생일</label>
-                      <input
-                        type="date"
-                        value={birthdate}
-                        onChange={(e) => {
-                          setBirthdate(e.target.value);
-                          handleIntroChange();
-                        }}
-                      />
-                    </SelectInfoItem>
-    
-                    <SelectInfoItem>
-                      <label>위치</label>
-                      <DropdownComponents.DropdownSelect
-                        value={location}
-                        onChange={(e) => {
-                          setLocation(e.target.value);
-                          handleIntroChange();
-                        }}
-                        options={DropdownComponents.locationOptions}
-                      />
-                    </SelectInfoItem>
-                  </SelectInfo>
+                <StyledPetInfo>반려동물 정보등록</StyledPetInfo>
+                <SelectInfo>
+                  <SelectInfoItem>
+                    <label>종류</label>
+                    <DropdownComponents.DropdownSelect
+                      value={pet}
+                      onChange={(e) => {
+                        setPet(e.target.value);
+                        handleIntroChange();
+                      }}
+                      options={DropdownComponents.petOptions}
+                    />
+                  </SelectInfoItem>
+
+                  <SelectInfoItem>
+                    <label>성별</label>
+                    <DropdownComponents.DropdownSelect
+                      value={gender}
+                      onChange={(e) => {
+                        setGender(e.target.value);
+                        handleIntroChange();
+                      }}
+                      options={DropdownComponents.genderOptions}
+                    />
+                  </SelectInfoItem>
+
+                  <SelectInfoItem>
+                    <label>생일</label>
+                    <input
+                      type="date"
+                      value={birthdate}
+                      onChange={(e) => {
+                        setBirthdate(e.target.value);
+                        handleIntroChange();
+                      }}
+                    />
+                  </SelectInfoItem>
+
+                  <SelectInfoItem>
+                    <label>위치</label>
+                    <DropdownComponents.DropdownSelect
+                      value={location}
+                      onChange={(e) => {
+                        setLocation(e.target.value);
+                        handleIntroChange();
+                      }}
+                      options={DropdownComponents.locationOptions}
+                    />
+                  </SelectInfoItem>
+                </SelectInfo>
+
                 </PetInfo>
                 <SubmitButton
                 type="button"
