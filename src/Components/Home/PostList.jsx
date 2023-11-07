@@ -84,7 +84,6 @@ export default function PostList(props) {
   };
 
 
-
   return (
     <>
     <GlobalStyle/>
