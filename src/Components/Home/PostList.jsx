@@ -89,7 +89,6 @@ export default function PostList(props) {
     <GlobalStyle/>
       <Container>
         <HeaderLayouts title="반결고리" logo={true} search />
-        <SubContainer>
           {posts.length === 0 ? (
             <Loading/>
           ) : (
@@ -102,7 +101,6 @@ export default function PostList(props) {
               </div>
             ))
           )}
-        </SubContainer>
       <TabMenu />
       </Container>
     </>
@@ -122,8 +120,7 @@ export function PostListItem({ post }) {
   const [date, setDate] = useState("");
   const [liked, setLiked] = useState(false);
   const [userAccountName, setUserAccountName] = useState(false);
-  // const location = useLocation();
-  // const { selectedPost } = location.state;
+
   const { postId } = useParams();
   const navigate = useNavigate();
 
@@ -167,13 +164,6 @@ export function PostListItem({ post }) {
     }
   };
 
-
-
-
-
-  // const handlePostClick = (post) => {
-  //   navigate(`/post/${post._id}`);
-  // };
 
   useEffect(() => {
     console.log(post);
@@ -231,6 +221,7 @@ export function PostListItem({ post }) {
 
   return (
     <>
+          <SubContainer style={{marginBottom:"0"}}>
           <S.UserInfo>
               <Link
                 to={`/profile/${post.author.accountname}`}
@@ -240,7 +231,7 @@ export function PostListItem({ post }) {
                 <S.UserImg src={userImg || defaultUserImg} alt="사용자 프로필 이미지" />
               <S.UserName>
                 <S.NameTxt>{username}</S.NameTxt>
-                <S.Account>@{accountname}</S.Account>
+                <S.Account>{accountname}</S.Account>
               </S.UserName>
             </S.UserProfile>
               </Link>
@@ -268,6 +259,8 @@ export function PostListItem({ post }) {
             </S.PostIcons>
             <S.PostDate>{formatDate(date)}</S.PostDate>
           </S.Content>
+
+          </SubContainer>
             {isModalOpen && (
               <>
                 <Overlay onClick={() => setIsModalOpen(false)} />
@@ -277,6 +270,7 @@ export function PostListItem({ post }) {
                 onDelete={() => deletePost(post._id)}/>
               </>
             )}
+
    </>
  
   );
