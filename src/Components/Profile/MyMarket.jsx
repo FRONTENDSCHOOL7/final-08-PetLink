@@ -139,7 +139,6 @@ const ProductEmpty = styled.div`
   color: #666; /* 텍스트 색상은 기본적으로 어두운 회색으로 설정 */
   border-radius: 10px; /* 배경의 모서리를 둥글게 */
   margin: 0 auto; /* 상하 자동 마진으로 중앙 정렬 */
-  margin-right: 30px;
 `;
 
 const MyItem = styled.div`
