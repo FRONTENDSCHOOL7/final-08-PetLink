@@ -15,30 +15,30 @@ export const UserProfile = styled.div`
 `
 
 export const UserImg = styled.img`  
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    object-fit: cover;
-    vertical-align: middle;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  vertical-align: middle;
 `
 
 export const UserName =styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  cursor: pointer;
 `
 
 export const NameTxt =styled.p`
-        font-size:14px ;
-        font-weight: bold;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
+  font-size:14px ;
+  font-weight: bold;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 `
 export const Account =styled.span`
   font-size:12px ;
-        font-weight: 400;
+  font-weight: 400;
 `
 
 export const IconMore = styled.img`
@@ -49,7 +49,7 @@ export const IconMore = styled.img`
 `
 
 export const Content = styled.div`
-  margin: 16px 16px 16px 54px;
+  margin: 10px 16px 16px 54px;
   /* position: relative; */
 `
 export const ContentImg = styled.img`
@@ -59,7 +59,7 @@ export const ContentImg = styled.img`
     padding-right: 25px;
 `
 export const ContentTxt = styled.p`
-   font-size: 16px;
+   font-size: 14px;
     font-weight: 400;
     display: -webkit-box;
     -webkit-box-orient: vertical;

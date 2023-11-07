@@ -18,6 +18,7 @@ import userProfile from '../../assets/image/icon-basic-profile.png';
 import userProfile2 from '../../assets/image/icon-test-user-profile.png';
 import userProfile3 from '../../assets/image/icon-test-user-profile2.png';
 import addBtn from '../../assets/image/icon-add.png';
+import Loading from '../../Components/Common/Modal/Loading';
 
 function Community() {
   const navigate = useNavigate();
@@ -201,49 +202,58 @@ function Community() {
           <button className={activeCategory === '실종 신고' ? 'active' : ''}
           onClick={() => setActiveCategory('실종 신고')}>실종 신고</button>
           </CommunityCategory>
-          <ShareInfoMap>
-            <MyLocation>
-              <IconMapMark src={iconMap} alt="위치표시" />
-              <p>서울시 중구</p>
-            </MyLocation>
-            {/* <IconShareInfoMap src={currentMapImage} alt="지도 이미지" /> */}
-            <IconShareInfoMap>
-              <img src={currentMapImage} alt="지도 이미지" />
-            </IconShareInfoMap>
-          </ShareInfoMap>
+          
 
-          {posts.map((post, index) => (
+          {posts.length === 0 ? (
+            <Loading/>
+          ) : (
+            <>
+              <ShareInfoMap>
+              <MyLocation>
+                <IconMapMark src={iconMap} alt="위치표시" />
+                <p>서울시 중구</p>
+              </MyLocation>
+              {/* <IconShareInfoMap src={currentMapImage} alt="지도 이미지" /> */}
+              <IconShareInfoMap>
+                <img src={currentMapImage} alt="지도 이미지" />
+              </IconShareInfoMap>
+            </ShareInfoMap>
             
-              // 유저 프로필 이미지
-              <ProfileInfo key={index}>
-                <UserProfile>
-                  <Link to={`/profile/${post.author.accountname}`} state={{ selectedPost: post }}>
-                    <ProfileImg src={post.author.image} alt="user-profile" />
+              {posts.map((post, index) => (
+              
+                // 유저 프로필 이미지
+                <ProfileInfo key={index}>
+                  <UserProfile>
+                    <Link to={`/profile/${post.author.accountname}`} state={{ selectedPost: post }}>
+                      <ProfileImg src={post.author.image} alt="user-profile" />
+                    </Link>
+  
+                  {/* 게시글 제목, 유저 네임 */}
+                  <Link to={`/community/${post._id}`} state={{ selectedPost: post }}>
+                      <ProfileTxt>
+                        <PostTitle>
+                          <h2>{JSON.parse(post.content).title}</h2>
+                        </PostTitle>
+                        <ProfileId>
+                          {post.author.username}
+                        </ProfileId>
+                      </ProfileTxt>
+                    </Link>
+                  </UserProfile>
+  
+                  {/* 이슈: 'ProfileTxt'과 'PostReaction' 사이에 여백이 존재하여, 여백에서는 게시글로 이동할 수 있는 마우스 포인터가 비활성화 됩니다. 이슈 발생 이유는 프로필을 클릭했을 때 프로필 페이지로 이동시키기 위해 Link를 분리하면서 레이아웃 구조를 재수정하면서 발생되었습니다.  ProductDetail.style을 참고하여 적용하였고,임시로 PostReaction에 Link를 추가하였습니다. 리팩토링 때 수정 필요한 부분입니다.  */}
+                  <Link to={`/community/${post._id}`} state={{ selectedPost: post }}>
+                    {/* 좋아요, 댓글 */}
+                        <PostReaction>
+                          <p>좋아요 {post.heartCount}</p>
+                          <p>댓글 {post.comments.length}</p>
+                        </PostReaction>
                   </Link>
-
-                {/* 게시글 제목, 유저 네임 */}
-                <Link to={`/community/${post._id}`} state={{ selectedPost: post }}>
-                    <ProfileTxt>
-                      <PostTitle>
-                        <h2>{JSON.parse(post.content).title}</h2>
-                      </PostTitle>
-                      <ProfileId>
-                        {post.author.username}
-                      </ProfileId>
-                    </ProfileTxt>
-                  </Link>
-                </UserProfile>
-
-                {/* 이슈: 'ProfileTxt'과 'PostReaction' 사이에 여백이 존재하여, 여백에서는 게시글로 이동할 수 있는 마우스 포인터가 비활성화 됩니다. 이슈 발생 이유는 프로필을 클릭했을 때 프로필 페이지로 이동시키기 위해 Link를 분리하면서 레이아웃 구조를 재수정하면서 발생되었습니다.  ProductDetail.style을 참고하여 적용하였고,임시로 PostReaction에 Link를 추가하였습니다. 리팩토링 때 수정 필요한 부분입니다.  */}
-                <Link to={`/community/${post._id}`} state={{ selectedPost: post }}>
-                  {/* 좋아요, 댓글 */}
-                      <PostReaction>
-                        <p>좋아요 {post.heartCount}</p>
-                        <p>댓글 {post.comments.length}</p>
-                      </PostReaction>
-                </Link>
-              </ProfileInfo>
-            ))}
+                </ProfileInfo>
+              ))}
+            </>
+          )}
+          
           <BtnAdd onClick={handleBtnAddClick}>
             <img src={addBtn} alt="추가버튼" />
           </BtnAdd>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { Container, GlobalStyle } from "../../Styles/reset.style";
+import { Container, GlobalStyle, SubContainer } from "../../Styles/reset.style";
 import styled from "styled-components";
 
 // 제품 이름을 추출하는 함수
@@ -98,6 +98,7 @@ export default MyMarket;
 
 const ContentContainer = styled(Container)`
   min-height: auto;
+  margin-top: 20px;
 `;
 
 const ProductsContainer = styled.div`
@@ -105,19 +106,19 @@ const ProductsContainer = styled.div`
   flex-direction: row;
   overflow-x: auto;
   gap: 20px;
-  padding: 16px 0 0 30px;
+  padding: 16px 25px 0 25px;
 `;
 
 const ProductCard = styled.div`
-  min-width: 200px;
+  min-width: 150px;
   text-align: center;
   margin-bottom: 0;
   cursor: pointer;
 `;
 
 const ProductImage = styled.img`
-  width: 200px;
-  height: 140px;
+  width: 100%;
+  height: 130px;
   object-fit: cover;
   display: block;
   border-radius: 10px;
@@ -143,9 +144,9 @@ const ProductEmpty = styled.div`
 
 const MyItem = styled.div`
   display: flex;
-  width: 200px;
+  width: 150px;
   margin: 10px 0 4px 0;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 700;
 `
 const Price = styled.div`
@@ -153,11 +154,11 @@ const Price = styled.div`
   width: 140px;
   margin-bottom: 10px;
   color: #004E98;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 700;
 `
 const SaleItem = styled.div`
-  margin: 14px 0 0 20px;
+  margin: 14px 0 0 25px;
   font-size: 16px;
   font-weight: bold;
 `

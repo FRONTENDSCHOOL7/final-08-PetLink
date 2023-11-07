@@ -300,23 +300,24 @@ function ProfileEdit() {
             </ImageUpbtn>
           </ImageWrap>
           <EditWrap>
-          <InputGroup>
-        <FieldLabel>활동명</FieldLabel>
-        <StyledInput
-          type="text"
-          value={username}
-          minLength="2"
-          maxLength="10"
-          onChange={inputUsername}
-          onBlur={handleBlur("username")}
-          required
-        />
+        <InputGroup>
+          <FieldLabel>활동명</FieldLabel>
+          <StyledInput
+            type="text"
+            value={username}
+            minLength="2"
+            maxLength="10"
+            onChange={inputUsername}
+            onBlur={handleBlur("username")}
+            required
+          />
         {usernameError && <Errormessage>{usernameError}</Errormessage>}
       </InputGroup>
             <InputGroup>
-            <Styledlabel>상태메시지</Styledlabel>
+            <FieldLabel>상태메시지</FieldLabel>
             <StyledInput
               value={intro}
+              placeholder="자신의 반려동물에 대해 소개해 주세요!"
               onChange={(e) => {
                 const newValue = e.target.value.replace(/^#intro:/, "");
                 if (!newValue.includes("accountname")) {
@@ -328,7 +329,7 @@ function ProfileEdit() {
               <Styledpetinfo>반려동물 정보등록</Styledpetinfo>
             <PetInfo>
               <InputGroup>
-                <label>반려동물</label>
+                <label>종류</label>
                 <DropdownComponents.DropdownSelect
                   value={pet}
                   onChange={(e) => setPet(e.target.value)}

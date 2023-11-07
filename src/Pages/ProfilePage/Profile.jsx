@@ -307,15 +307,15 @@ const ProfilePage = () => {
                             <ProfileUsername>{profileData.username}</ProfileUsername>
                             <ProfileAccountname>@{profileData.accountname}</ProfileAccountname>
                         <ProfilePet>
-    {profileData.gender && (
-        <GenderIcon gender={profileData.gender}>
-            {genderUnicode(profileData.gender)}
-        </GenderIcon>
-    )}
-    {profileData.pet && <span>{`${profileData.pet} `}</span>}
-    <span>{calculateAge(profileData.birthdate)}</span>
-    {profileData.location && <span>{`${profileData.location} `}</span>}
-</ProfilePet>
+                            {profileData.gender && (
+                                <GenderIcon gender={profileData.gender}>
+                                    {genderUnicode(profileData.gender)}
+                                </GenderIcon>
+                            )}
+                            {profileData.pet && <span>{`${profileData.pet} `}</span>}
+                            <span>{calculateAge(profileData.birthdate)}</span>
+                            {profileData.location && <span>{`${profileData.location} `}</span>}
+                        </ProfilePet>
 
                             {introContent && (<Intro>{introContent}</Intro>)}
                         </ProfileImageContainer>
