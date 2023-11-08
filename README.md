@@ -186,7 +186,7 @@ git commit -m "✨ [Add] 로딩중 페이지 생성"
 
 |                                                스플래쉬                                                 |                                                로그인                                                 |                                                회원가입                                                |
 | :-----------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------: |
-| ![스플래쉬](https://github.com/FRONTENDSCHOOL7/final-08-PetLink/assets/30742914/7ebf13e4-890c-452a-877c-eff62dc186f0) | ![로그인](https://github.com/FRONTENDSCHOOL7/final-08-PetLink/assets/30742914/147c357e-cb10-41c0-82cb-b604e8b2a410) | ![03 회원가입](![회원가입](https://github.com/FRONTENDSCHOOL7/final-08-PetLink/assets/128044906/366abac9-cb38-42fb-a527-0869a8b6955a)
+| ![스플래쉬](https://github.com/FRONTENDSCHOOL7/final-08-PetLink/assets/30742914/7ebf13e4-890c-452a-877c-eff62dc186f0) | ![로그인](https://github.com/FRONTENDSCHOOL7/final-08-PetLink/assets/30742914/147c357e-cb10-41c0-82cb-b604e8b2a410) | ![회원가입](https://github.com/FRONTENDSCHOOL7/final-08-PetLink/assets/128044906/366abac9-cb38-42fb-a527-0869a8b6955a)
 ) |
 
 |                                                     회원가입 프로필                                                    |                                                       검색                                                       |                                                      팔로워&팔로잉                                                      |
