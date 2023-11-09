@@ -136,6 +136,15 @@ export default function AddProduct() {
 
         <SubContainer>
           <CategorySection category={category} setCategory={setCategory}/>
+          
+
+          <ProductDetails 
+            productName={productName} setProductName={setProductName}
+            price={price} setPrice={setPrice}
+            productLink={productLink} setProductLink={setProductLink}
+            description={description} setDescription={setDescription}
+          />
+
           <AddImgWrap>
             <InputTitle>이미지 등록 <Required>*</Required></InputTitle>
             <InputImg img={imageUrl}>
@@ -151,13 +160,6 @@ export default function AddProduct() {
               </AddImgBtn>
             </InputImg>
           </AddImgWrap>
-
-          <ProductDetails 
-            productName={productName} setProductName={setProductName}
-            price={price} setPrice={setPrice}
-            productLink={productLink} setProductLink={setProductLink}
-            description={description} setDescription={setDescription}
-          />
         </SubContainer>
       </Container>
     </>

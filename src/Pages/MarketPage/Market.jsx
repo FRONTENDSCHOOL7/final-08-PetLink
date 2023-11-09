@@ -8,6 +8,7 @@ import redHeartIcon from '../../assets/image/icon-heart-red.png'
 import TabMenu from '../../Components/Common/TabMenu/TabMenu'
 import HeaderLayouts from '../../Components/Common/Header/Header'
 import axios from 'axios'
+import Loading from '../../Components/Common/Modal/Loading'
 
 export default function Market() {
   const navItems = ['강아지', '고양이', '기타']
@@ -38,11 +39,6 @@ export default function Market() {
         return acc;
       }, {}));
 
-      // console.log("Fetched Products:", res.data.product); // API에서 가져온 상품 데이터 로깅
-      // // 가져온 데이터로 상태 업데이트
-      // const processedProducts = processProductsData(res.data.product);
-      // console.log("Processed Products:", processedProducts); // 처리된 상품 데이터 로깅
-      // setProducts(processedProducts); // 상태 업데이트
     } catch(error) {
       console.error("Error", error);
     }
@@ -175,7 +171,7 @@ const ProductsDisplay = ({products, handleLike, likes}) => (
     )
     })
     ) : (
-      <p>Loading...</p>
+      <Loading/>
     )}
   </ItemContainer>
 )

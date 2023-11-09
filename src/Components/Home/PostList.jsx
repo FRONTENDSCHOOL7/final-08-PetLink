@@ -11,6 +11,7 @@ import HeaderLayouts from "../Common/Header/Header";
 import { Overlay } from "../Product/ProductDetail.style";
 import BottomModal from "../Common/Modal/BottomModal";
 import axios from 'axios';
+import Loading from "../Common/Modal/Loading";
 
 function formatDate(dateString) {
   const options = { year: "numeric", month: "2-digit", day: "2-digit" };
@@ -83,22 +84,23 @@ export default function PostList(props) {
   };
 
 
-
   return (
     <>
     <GlobalStyle/>
       <Container>
         <HeaderLayouts title="반결고리" logo={true} search />
-      <>
-          {posts.map((post, index) => (
-            <div key={index}>
-              <PostListItem
-                post={post}
-                onProfileClick={() => navigate(`/profile/${post.author._id}`)}
-                onChangeModal={props.onChangeModal} />
-            </div>
-          ))}
-      </>
+          {posts.length === 0 ? (
+            <Loading/>
+          ) : (
+            posts.map((post, index) => (
+              <div key={index}>
+                <PostListItem
+                  post={post}
+                  onProfileClick={() => navigate(`/profile/${post.author._id}`)}
+                  onChangeModal={props.onChangeModal} />
+              </div>
+            ))
+          )}
       <TabMenu />
       </Container>
     </>
@@ -118,8 +120,7 @@ export function PostListItem({ post }) {
   const [date, setDate] = useState("");
   const [liked, setLiked] = useState(false);
   const [userAccountName, setUserAccountName] = useState(false);
-  // const location = useLocation();
-  // const { selectedPost } = location.state;
+
   const { postId } = useParams();
   const navigate = useNavigate();
 
@@ -163,13 +164,6 @@ export function PostListItem({ post }) {
     }
   };
 
-
-
-
-
-  // const handlePostClick = (post) => {
-  //   navigate(`/post/${post._id}`);
-  // };
 
   useEffect(() => {
     console.log(post);
@@ -227,7 +221,7 @@ export function PostListItem({ post }) {
 
   return (
     <>
-      <SubContainer style={{marginBottom:"0"}}>
+          <SubContainer style={{marginBottom:"0"}}>
           <S.UserInfo>
               <Link
                 to={`/profile/${post.author.accountname}`}
@@ -265,7 +259,7 @@ export function PostListItem({ post }) {
             </S.PostIcons>
             <S.PostDate>{formatDate(date)}</S.PostDate>
           </S.Content>
-    
+
           </SubContainer>
             {isModalOpen && (
               <>
@@ -276,6 +270,7 @@ export function PostListItem({ post }) {
                 onDelete={() => deletePost(post._id)}/>
               </>
             )}
+
    </>
  
   );

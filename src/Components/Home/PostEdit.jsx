@@ -97,7 +97,7 @@ export default function CommunityEditUpload() {
           },
         });
         
-        navigate('/community'); 
+        navigate('/home'); 
       } catch (err) {
         console.error(err);
       }
@@ -148,7 +148,7 @@ export default function CommunityEditUpload() {
         });
         
         console.log(res.data);
-        navigate('/community'); 
+        navigate('/home'); 
 
       } catch (err) {
         console.error(err);
