@@ -116,18 +116,24 @@ function ProfileEdit() {
           }
         );
         console.log("API response:", response.data);
-
+  
         if (response.data && response.data.user) {
           const user = response.data.user;
-          const extractedInfo = extractInfoFromTags(user.intro);
+          const tags = user.intro ? user.intro.split(" ") : [];
+          const extractedTags = tags.reduce((acc, tag) => {
+            const [key, value] = tag.split(":");
+            acc[key] = value || "";
+            return acc;
+          }, {});
+  
           setUsername(user.username);
           setAccountname(user.accountname);
           setCurrentAccountname(user.accountname);
-          setIntro(extractedInfo.intro);
-          setPet(extractedInfo.pet);
-          setGender(extractedInfo.gender);
-          setBirthdate(extractedInfo.birthdate);
-          setLocation(extractedInfo.location);
+          setIntro(extractedTags['#intro'] || "");
+          setPet(extractedTags['#pet'] || "");
+          setGender(extractedTags['#gender'] || "");
+          setBirthdate(extractedTags['#birthdate'] || "");
+          setLocation(extractedTags['#location'] || "");
           setImage(user.image);
           setPreviewImage(user.image);
         }
@@ -135,9 +141,9 @@ function ProfileEdit() {
         console.error("Error fetching profile data:", error);
       }
     };
-
+  
     fetchData();
-  }, []);
+  }, []);  
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
