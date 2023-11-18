@@ -7,7 +7,7 @@ export const ProfileImage = styled.img`
     object-fit: cover;
     margin-bottom: 20px;
     border: 1px solid var(--DBDBDB, #DBDBDB);
-    background: url(<path-to-image>), lightgray 50% / cover no-repeat;
+    background: url(<path-to-image>), lightgray 50%
 `;
 
 export const Errormessage = styled.div`

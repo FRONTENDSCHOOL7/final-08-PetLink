@@ -154,7 +154,7 @@ export const ImageWrap = styled.div`
     @media (min-width: 768px) {
         bottom: 45px;
         right: 326px;
-        transform: translate(40px, 0px)
+        transform: translate(40px, 40px)
     }
     `;
 
