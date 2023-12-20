@@ -136,7 +136,7 @@ function Community() {
                 // / ProfileInfo에 onClick 이벤트를 추가하여 전체 영역을 클릭 가능하게 함(게시글 클릭 시, 게시글 상세 페이지로 이동)
                 <ProfileInfo key={index} onClick={() => navigate(`/community/${post._id}`, { state: { selectedPost: post } })}>
                   <UserProfile>
-                    {/* UserProfile 내부의 Link에 event.stopPropagation을 추가하여 ProfileInfo의 onClick 이벤트가 실행되지 않도록 하며(이벤트 버블링 방지), 유저 프로필 이미지 클릭 시, 해당 유저 프로필로 이동됨 */}
+                    {/* UserProfile 내부의 Link에 event.stopPropagation을 추가하여 ProfileInfo의 onClick 이벤트가 실행되지 않도록 하며(이벤트 버블링 방지), 유저 프로필 이미지 클릭 시, 해당 유저 프로필로 이동됨 */} 
                     <Link to={`/profile/${post.author.accountname}`} 
                       state={{ selectedPost: post }} 
                       onClick={(e) => e.stopPropagation()}>

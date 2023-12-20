@@ -176,3 +176,4 @@ export const BtnAdd = styled.button`
     right: calc((100% - 768px) / 2 + 45px); // 화면 너비가 768px 이상일 때 가운데 정렬
   }
 `
+
