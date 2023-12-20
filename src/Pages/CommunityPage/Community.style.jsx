@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+
+// 전체 컨테이너 스타일
 export const Container = styled.div`
   position: relative;
   background-color: white;
@@ -8,7 +10,7 @@ export const Container = styled.div`
   margin: auto;
 `;
 
-// Header
+// 헤더 섹션 스타일
 export const Header = styled.header`
   display: flex;
   padding: 16px 13px 12px 19px;
@@ -22,12 +24,13 @@ export const Header = styled.header`
   }
 `;
 
+// 검색 아이콘 스타일
 export const IconSearch = styled.img`
   width: 24px;
   height: 24px;
 `;
 
-// Community Category
+// 커뮤니티 카테고리 버튼 스타일
 export const CommunityCategory = styled.div`
   /* padding: 30px 13px; */
   margin-bottom: 30px;
@@ -84,15 +87,6 @@ export const IconMapMark = styled.img`
   height: 20px;
 `;
 
-// export const IconShareInfoMap = styled.img`
-//   /* width: 349px;
-//   height: 258px; */
-//   width: 100%;
-//   height: 258px;
-//   object-fit: fill; // contain이랑 고민 필요
-//   margin-bottom: 30px;
-// `;
-
 export const IconShareInfoMap = styled.div`
   width: 100%;
   margin: 0 auto 30px;
@@ -114,6 +108,7 @@ export const ProfileInfo = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  cursor: pointer; // 게시글 영역에 마우스 커서 올릴 시, 포인터로 변경됨 (클릭 시, 상세페이지 이동)
 `
 
 export const UserProfile = styled.div`
@@ -163,52 +158,7 @@ export const PostReaction = styled.div`
   color: #767676;
 `;
 
-
-// // Share Info Post
-// export const ShareInfoPost = styled.article`
-//   width: 100%;
-//   max-width: 390px;
-//   display: flex; // 이제 이 컴포넌트는 flex 컨테이너가 됩니다.
-//   align-items: center; // 자식 요소들을 중앙에 위치시킵니다.
-//   padding: 0 10px;
-//   margin-bottom: 20px;
-// `;
-
-// export const IconUserProfile = styled.img`
-//   margin-right: 12px;
-//   border-radius: 42px;
-//   width: 42px;
-//   height: 42px;
-// `;
-
-// export const PostTitle = styled.div`
-//   width: 100%;
-
-//   h2 {
-//     margin-bottom: 10px;
-//     font-weight: bold;
-//     font-size: 14px;
-//   }
-// `;
-
-// export const PostSubInfo = styled.div`
-//   font-size: 12px;
-//   color: #767676;
-// `;
-
-// export const PostUserName = styled.div`
-//   width: 100%;
-//   display: flex;
-//   justify-content: space-between;
-//   font-size: 12px;
-//   color: #767676;
-// `;
-
-// export const PostReaction = styled.div`
-//   display: flex;
-//   gap: 10px;
-// `;
-
+// '추가'버튼 스타일
 export const BtnAdd = styled.button`
   display: inline-block;
   position: fixed;
