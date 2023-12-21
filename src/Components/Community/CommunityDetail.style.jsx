@@ -1,12 +1,13 @@
 import styled from 'styled-components';
 
-// 홈 화면 스타일드 컴포넌트
+// 홈 화면 기본 레이아웃
 export const PostLayout = styled.div`
   width: 390px;
   background-color: #fff;
   margin: 0 auto;
 `
 
+// 헤더 스타일
 export const HomeHeader = styled.header`
   display: flex;
   justify-content: space-between;
@@ -27,12 +28,14 @@ export const HomeHeader = styled.header`
   }
 `
 
+// 사용자 정보를 표시하는 영역
 export const UserInfo = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
 `
 
+// 사용자 프로필 영역
 export const UserProfile = styled.div`
   display: flex;
   gap: 12px;
@@ -44,6 +47,7 @@ export const UserProfile = styled.div`
   }
 `
 
+// 사용자 이름 영역
 export const UserName =styled.div`
     display: flex;
     flex-direction: column;
@@ -65,6 +69,7 @@ export const UserName =styled.div`
     }
 `
 
+// 더 보기(세로 점 세개) 아이콘 스타일 컴포넌트
 export const IconMore = styled.img`
   width: 18px;
   height: 18px;
@@ -72,6 +77,7 @@ export const IconMore = styled.img`
   cursor: pointer;
 `
 
+// 게시물 내용 영역
 export const PostList = styled.ul`
   padding: 20px 16px;
   display: flex;
@@ -105,6 +111,7 @@ export const Content = styled.div`
   }
 `
 
+// 게시물 아이콘(좋아요, 댓글 등)영역
 export const PostIcons = styled.div`
   display: flex;
   align-items: center;
@@ -130,14 +137,13 @@ cursor: pointer;
   }
 `
 
+// 게시물 날짜를 표시하는 영역
 export const PostDate = styled.div`
   font-size: 12px;
   margin-top: 16px;
 `;
 
-
-// PostDetail 스타일 컴포넌트
-
+// 댓글 목록을 표시하는 영역
 export const CommentBox = styled.div`
 padding: 20px 16px;
   border-top: 1px solid #dbdbdb;
@@ -167,6 +173,8 @@ img{
 }
 
 `
+
+// 댓글 텍스트 영역 스타일 컴포넌트
 export const CommentTxt =styled.div`
 overflow: auto;
 max-height: calc(100vh - 120px);
@@ -179,7 +187,7 @@ padding-bottom:60px;
     overflow: hidden;
 
 `
-// 댓글 입력창 컴포넌트
+// 댓글 입력창 스타일 컴포넌트
 export const InputForm = styled.form`
   border-top: 1px solid #dbdbdb;
     display: flex;

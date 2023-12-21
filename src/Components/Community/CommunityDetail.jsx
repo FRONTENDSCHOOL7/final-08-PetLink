@@ -13,27 +13,56 @@ import redHeartIcon from '../../assets/image/icon-heart-red.png';
 import commentIcon from '../../assets/image/icon-comment.png';
 import CommentList, { WriteComment } from '../Home/CommentList';
 
-
+// 커뮤니티 게시물에 대한 날짜 형식을 설정하는 함수
 function formatDate(dateString) {
   const options = { year: "numeric", month: "2-digit", day: "2-digit" };
   return new Date(dateString).toLocaleDateString(undefined, options);
 }
 
+// 컴포넌트의 state들을 정의함. 각 state는 컴포넌트의 다양한 데이터와 상태를 관리함
 export default function CommunityDetail() {
+  // 기본 사용자 이미지 URL을 설정함
   const defaultUserImg = "https://api.mandarin.weniv.co.kr/1698653743844.jpg";
+
+  // 'liked'상태는 좋아요 여부를 나타내며, 'setLiked'는 이 상태를 업데이트하는 함수
   const [liked, setLiked] = useState(false);
+
+  // 'likedNum' 상태는 좋아요의 수를 나타내며, 'setLikeNum'은 이를 업데이트하는 함수
   const [likeNum, setLikeNum] = useState(0);
+  
+  // 'isModalOpen' 상태는 모달 창의 개방 여부를 관리하며, 'setIsModalOpen'은 이 상태를 업데이트하는 함수
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // 'reportOptions' 상태는 모달 창에 표시할 옵션들을 저장하며, 'setReportOptions'는 이를 업데이트 하는 함수
   const [reportOptions, setReportOptions] = useState([]);
+
+  // 'comment' 상태는 사용자가 입력한 댓글을 저장하며, 'setComment'는 이를 업데이트 하는 함수
   const [comment, setComment] = useState('');
+
+  // 'commentToShow' 상태는 화면에 표시될 댓글을 관리하며, 'setCommentToShow'는 이를 업데이트 하는 함수
   const [commentToShow, setCommentToShow] = useState('');
+
+  // 'useLocation' 훅을 사용하여 현재 페이지의 URL 정보를 가져옴
   const location = useLocation();
+
+  // 'location.state'에서 'selectedPost'를 추출함. 이는 이전 페이지에서 전달된 게시물 정보
   const { selectedPost } = location.state;
+
+  // 'userAccountName' 상태는 현재 로그인한 사용자의 계정명을 저장하며, 'setUserAccountName'은 이를 업데이트 하는 함수
   const [userAccountName, setUserAccountName] = useState(false);
-  const [isMyPost, setIsMyPost] = useState(false); // 추가: 현재 사용자의 게시물 여부
+
+  // 'isMyPost' 상태는 현재 보고 있는 게시물이 로그인한 사용자의 것인지를 나타내며, 'setIsMyPost'는 이를 업데이트 하는 함수
+  const [isMyPost, setIsMyPost] = useState(false); 
+
+  // 'commentLoading'상태는 댓글 로딩 상태를 나타내며, 'setCommentLoading'은 이를 업데이트 하는 함수
   const [commentLoading, setCommentLoading ] = useState(false)
+
+  // 'useParams' 훅을 사용하여 현재 페이지의 동적 경로 부분(여기서는 PostId)을 가져옴
   const { postId } = useParams();
+
+  // 'useNavigate' 훅을 사용하여 프로그래밍 방식으로 라우팅(페이지 이동)을 제어함
   const navigate = useNavigate();
+
 
   // 게시물 삭제 함수
   const deletePost = async (postId) => {
@@ -53,8 +82,10 @@ export default function CommunityDetail() {
   };
 
   useEffect(()=>{
-    fetchMyProfile()
+    fetchMyProfile() // 컴포넌트 마운트 시 내 프로필 정보를 가져오는 함수 호출
   })
+
+  // 현재 로그인한 사용자의 프로필 정보를 가져오는 함수 정의
   const fetchMyProfile = async () => {
     try {
       const response = await fetch(`https://api.mandarin.weniv.co.kr/user/myinfo`, {
@@ -77,10 +108,12 @@ export default function CommunityDetail() {
     }
   };
 
+  // 댓글이 현재 로그인한 사용자의 것인지 확인하는 함수 정의
   const isMyComment = (commentAuthorAccountName) => {
     return userAccountName === commentAuthorAccountName;
   };
 
+  // 모달 창 옵션 변경 함수 정의
   const onChangeModal = (comment, isMyComment) => {
     let modalOptions = [];
 
@@ -101,10 +134,12 @@ export default function CommunityDetail() {
     setReportOptions(modalOptions);
   };
 
+  // 게시물이 현재 로그인한 사용자의  것인지 확인하는 함수 정의
   const myPost = ( postAuthorAccountName) => {
     return userAccountName === postAuthorAccountName;
   };
 
+  // 게시물에 대한 모달 창 열기 함수 정의
   const postOpenModal = (myPost) => {
     let modalOptions = [];
 
@@ -125,7 +160,7 @@ export default function CommunityDetail() {
 
 
 
-  // 추가: 댓글 입력 시 화면에 보이도록 처리
+  // 댓글을 입력하면 화면에 보이도록하는 함수 정의
   const handlePostComment = () => {
     if (comment.trim() !== '') {
       setCommentToShow(comment);
@@ -133,6 +168,8 @@ export default function CommunityDetail() {
     }
   };
 
+
+  // 좋아요 클릭 처리 함수 정의
   const handleLikeClick = async () => {
     if (liked) {
       setLikeNum(likeNum - 1);
@@ -142,6 +179,7 @@ export default function CommunityDetail() {
     setLiked(!liked);
   };
 
+  // 선택된 게시물이 없는 경우 로딩 표시
   if (!selectedPost) {
     return <div>게시글을 불러오는 중...</div>;
   }
