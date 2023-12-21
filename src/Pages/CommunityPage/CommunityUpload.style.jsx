@@ -43,7 +43,8 @@ export const SaveButton = styled.button`
   }
 `;
 
-// SubContainer로 대체 (해당 코드 삭제)
+// DetailContainer => SubContainer로 대체
+// 해당 코드 제거하려했으나, PostEdit.jsx와 MyFeedEdit.jsx에서 import되어있어 오류 발생. 확인 및 논의 필요
 export const DetailContainer = styled.div`
   width: 100%;
   padding: 17px 34px;
