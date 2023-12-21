@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import dropdownIcon from '../../assets/image/icon-dropdown.png'
 
+// 페이지 헤더 스타일 정의
 export const Header = styled.header`
   width: 100%;
   height: 48px;
@@ -16,6 +17,7 @@ export const Header = styled.header`
   }
 `;
 
+// 헤더 내 뒤로가기 버튼 스타일
 export const HeaderButton = styled.button`
   width: 48px;
   height: 48px;
@@ -27,6 +29,7 @@ export const HeaderButton = styled.button`
   }
 `;
 
+// 업로드 버튼 스타일
 export const SaveButton = styled.button`
   width: 90px;
   height: 32px;
@@ -40,12 +43,14 @@ export const SaveButton = styled.button`
   }
 `;
 
+// SubContainer로 대체 (해당 코드 삭제)
 export const DetailContainer = styled.div`
   width: 100%;
   padding: 17px 34px;
   box-sizing: border-box;
 `;
 
+// 텍스트 입력 폼 스타일 정의
 export const AddTxtForm = styled.div`
   display: flex;
   flex-direction: column;
@@ -56,12 +61,13 @@ export const AddTxtForm = styled.div`
   }
 `
 
+// 사용자 입력 폼 스타일 정의(제목, 내용)
 export const CustomInput = styled.form`
   display: flex;
   flex-direction: column;
   gap: 16px;
 `
-
+// 게시 정보 스타일 정의
 export const PostInfo = styled.div` 
   display: flex;
   flex-direction: column;
@@ -108,6 +114,7 @@ export const PostInfo = styled.div`
   }
 `;
 
+// 카테고리 컨테이너 스타일 정의
 export const CategoryContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -122,6 +129,7 @@ export const CategoryContainer = styled.div`
   }
 `;
 
+// 드롭다운 선택 스타일 정의
 export const DropdownSelect = styled.select`
   width: 100%; 
   border: 1px solid #707070;  
@@ -152,6 +160,7 @@ export const DropdownSelect = styled.select`
   }
 `;
 
+// 타이틀 스타일 정의(카테고리,제목,내용,이미지 등록)
 export const InputTitle = styled.div`
   color: #767676;
   font-size: 12px;
@@ -171,12 +180,14 @@ export const Required = styled.span`
   }
 `
 
+// 이미지 추가 영역 스타일
 export const AddImg = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
 `;
 
+// 이미지 입력 필드 스타일
 export const InputImg = styled.div`
   width: 100%; // 모바일 화면 기준 너비
   max-height: 204px; // 최대 높이 설정
@@ -199,6 +210,7 @@ export const InputImg = styled.div`
   }
 `;
 
+// 이미지 추가 버튼 스타일
 export const AddImgBtn = styled.button`
   width: 60px;
   height: 60px;

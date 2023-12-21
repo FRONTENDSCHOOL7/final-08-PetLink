@@ -7,7 +7,9 @@ import imgBtn from '../../assets/image/icon-img-button.png';
 import PopupModal from '../../Components/Common/Modal/PopupModal';
 import axios from 'axios';
 
+// CustomInput 컴포넌트 정의: 다양한 타입의 입력 필드 생성
 function CustomInput({ title, isRequired, placeholder, type = "text", value, onChange }) {
+  // 드롭다운 타입의 입력 필드 생성
   if (type === "dropdown") {
     return (
       <PostInfo>
@@ -26,6 +28,7 @@ function CustomInput({ title, isRequired, placeholder, type = "text", value, onC
     );
   }
 
+  // 텍스트 영역 타입의 입력 필드 생성
   if (type === "textarea") {
     return (
       <PostInfo>
@@ -49,21 +52,36 @@ function CustomInput({ title, isRequired, placeholder, type = "text", value, onC
   );
 }
 
+// 커뮤니티 업로드 페이지 메인 컴포넌트
 export default function CommunityUploadPage() {
+     // 'useNavigate' 훅을 사용하여 라우터 내의 페이지 이동 기능을 활성화함. 이를 통해 사용자가 양식을 제출하거나 취소 버튼을 클릭했을 때 다른 페이지로 이동할 수 있음.
     const navigate = useNavigate();
-
+    
+    // 'title' 상태는 사용자가 입력한 게시글의 제목을 저장하며, 'setTitle'함수를 통해 상태 업데이트. 초기값은 빈 문자열('')
     const [title, setTitle] = useState('');
+
+    // 'content' 상태는 사용자가 입력한 게시글의 내용을 저장하며, 'setContent' 함수를 통해 상태 업데이트. 초기값은 빈 문자열('')
     const [content, setContent] = useState('');
+
+    // 'category' 상태는 사용자가 선택한 게시글의 카테고리 저장. 'setCategory' 함수를 통해 상태 업데이트. 초기값은 빈 문자열로, 어떤 카테고리도 선택되지 않은 상태를 나타냄.
     const [category, setCategory] = useState('');
+
+    // 'imgUrl'상태는 사용자가 업로드한 이미지의 URL저장. 'setImgUrl'함수를 통해 상태 업데이트. 초기값은 빈 문자열로, 아직 이미지가 업로드되지 않았음을 나타냄
     const [imgUrl, setImgUrl] = useState('');
+
+    // 'showModal'상태는 모달 창의 표시 여부를 관리하며, 'setShowModal'함수를 통해 이 상태를 업데이트하며, 초기값은 false로 설정되어 모달 창이 기본적으로 표시되지 않음
     const [showModal, setShowModal] = useState(false);
+
+    // 'isAllFieldsFilled' 상태는 폼의 모든 필드가 채워졌는지 여부를 나타냄. 이 상태는 사용자가 모든 필수 정보를 입력했는지 검사하는데 사용되며, 초기값은 false로 설정되어 있어 모든 필드가 채워지지 않은 상태로 간주함
     const [isAllFieldsFilled, setIsAllFieldsFilled] = useState(false);
 
+    // useEffect를 사용하여 입력 필드의 유효성을 검사함
     useEffect(() => {
       const isTitleValid = title.length >= 2 && title.length <= 15;
       setIsAllFieldsFilled(category && isTitleValid && content.trim() !== '');
     }, [title, category, content]); // title, category, content가 변경될 때마다 실행됩니다.
 
+    // 이미지 업로드 처리 함수
     const handleImageUpload = async (e) => {
       const file = e.target.files[0];
       const formData = new FormData();
@@ -85,6 +103,8 @@ export default function CommunityUploadPage() {
       }
     };
     
+
+    // 게시물 제출 처리 함수
     const handlePostSubmit = async (e) => {
         e.preventDefault();
 
@@ -146,6 +166,7 @@ export default function CommunityUploadPage() {
       }
     };
 
+    // 컴포넌트의 반환 부분
     return (
         <>
             <GlobalStyle />
