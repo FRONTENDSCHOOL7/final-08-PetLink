@@ -172,10 +172,13 @@ export default function CommunityUploadPage() {
             <GlobalStyle />
             <Container>
             <Header>
+              {/* 뒤로가기 버튼: 클릭 시 모달 창을 표시합니다. */}
               <HeaderButton onClick={() => setShowModal(true)}><img src={backBtn} alt="뒤로가기 버튼" /></HeaderButton>
-              {/* isAllFieldsFilled 상태를 SaveButton의 isActive prop으로 전달 */}
+              {/* 저장 버튼: isAllFieldsFilled 상태에 따라 활성화 상태가 결정되며, 게시물을 제출하는 함수를 호출합니다.
+              isAllFieldsFilled 상태를 SaveButton의 isActive prop으로 전달 */}
               <SaveButton isActive={isAllFieldsFilled} onClick={handlePostSubmit}>업로드</SaveButton>
             </Header>
+            {/* 팝업 모달 창: showModal 상태에 따라 표시 여부가 결정됩니다. */}
             <PopupModal 
                 isVisible={showModal}
                 setIsVisible={setShowModal}
