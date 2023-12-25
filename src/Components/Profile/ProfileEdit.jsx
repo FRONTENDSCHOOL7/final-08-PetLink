@@ -13,7 +13,6 @@ import {
   InputGroup,
   EditWrap,
   StyledInput,
-  Styledlabel,
   Styledpetinfo,
   SubBtn,
   PetInfo,
@@ -31,23 +30,6 @@ function convertInfoToTags(intro, pet, gender, birthdate, location) {
   return [intro, pet, gender, birthdate, location, "#bangyeolgori"]
     .filter(Boolean)
     .join(" ");
-}
-
-function extractInfoFromTags(tagString) {
-  const info = {};
-  const cleanedTagString = tagString.replace(/ undefined/g, "");
-  const tags = cleanedTagString.split(" #");
-
-  tags.forEach((tag) => {
-    const [key, value] = tag.includes(":") ? tag.split(":") : [tag, ""];
-    if (key && value) {
-      info[key.trim()] = value.trim();
-    } else if (key) {
-      info[key.trim()] = true;
-    }
-  });
-
-  return info;
 }
 
 async function checkAccountNameAvailability(accountname, currentAccountName) {
@@ -248,6 +230,7 @@ function ProfileEdit() {
     }
   };
 
+  // 프로필 사진 업로드
   async function imageUpload(file) {
     const url = "https://api.mandarin.weniv.co.kr";
     const formData = new FormData();
