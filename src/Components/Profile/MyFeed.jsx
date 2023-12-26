@@ -33,7 +33,6 @@ const MyFeed = (props) => {
   const { postId } = useParams();
   const [modalPost, setModalPost] = useState(null);
 
-
   // 토글버튼 리스트 엘범형
   const toggleAlbum = () => {
     setIsAlbumActive(true);
@@ -101,8 +100,6 @@ const MyFeed = (props) => {
     return;
   }
 
-
-
   // 게시물 삭제 함수
   const deletePost = async (postId) => {
     console.log('deletePost is called with id:', postId)
@@ -140,7 +137,6 @@ const MyFeed = (props) => {
     setIsModalOpen(true);
     setReportOptions(modalOptions); // modalOptions 배열을 state로 설정
   };
-
 
   return (
     <Container>
@@ -306,12 +302,11 @@ const PostsEmpty = styled.div`
   align-items: center;
   justify-content: center;
   text-align: center;
-  height: 200px; /* 높이 설정, 필요에 따라 조정 */
+  height: 200px;
   color: #666;
   font-size: 16px;
   font-weight: 700;
 `;
-
 
 export const ContentBox = styled.div`
   margin: 0 16px 16px 54px;
